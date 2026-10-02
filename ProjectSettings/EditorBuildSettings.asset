@@ -6,8 +6,25 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    path: Assets/MultiFPS/Levels/hub.unity
+    guid: b6a0f0fea4594c74c94a91f887e87e9d
+  - enabled: 0
+    path: Assets/MultiFPS/ServerListImplementation/hub_serverList.unity
+    guid: 6acb5d3243371164983609e96bc40a0c
+  - enabled: 1
+    path: Assets/MultiFPS/Levels/map_arena.unity
+    guid: 80a06711cb08f22429e753dc221ba401
+  - enabled: 1
+    path: Assets/MultiFPS/Levels/map_bombBuilding.unity
+    guid: dc840ef1e40157745a8e590166e9386c
+  - enabled: 1
+    path: Assets/MultiFPS/Levels/map_circleArena.unity
+    guid: d4c70669567b76442bd36c6a55765c48
+  - enabled: 1
+    path: Assets/MultiFPS/Levels/map_construction.unity
+    guid: 7ab3185e0be30124db592a9f5584d697
+  - enabled: 1
+    path: Assets/MultiFPS/Levels/map_range.unity
+    guid: f6bc4cc42d10ddc498ed916fd761add9
+  m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
