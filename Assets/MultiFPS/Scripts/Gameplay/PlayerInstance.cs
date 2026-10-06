@@ -163,7 +163,7 @@ namespace MultiFPS.Gameplay
 
         public void SetAsBot() 
         {
-            PlayerInfo.CharacterSkinID = UnityEngine.Random.Range(0, ClientInterfaceManager.Instance.characterSkins.Length);
+            PlayerInfo.CharacterSkinID = UserSettings.CharacterSkinID; //UnityEngine.Random.Range(0, ClientInterfaceManager.Instance.characterSkins.Length);
             BOT = true;
         }
 
