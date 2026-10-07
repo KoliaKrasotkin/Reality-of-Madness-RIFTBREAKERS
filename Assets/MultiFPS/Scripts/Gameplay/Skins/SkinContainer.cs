@@ -8,6 +8,8 @@ namespace MultiFPS
     {
         public string SkinName;
 
+        public SkinnedMeshRenderer Renderer;
+
         [Header("Model")]
         public Mesh Mesh;
         public Material Material;

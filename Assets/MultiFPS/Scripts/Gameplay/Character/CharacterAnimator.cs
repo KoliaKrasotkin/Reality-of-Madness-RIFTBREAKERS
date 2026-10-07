@@ -1,6 +1,7 @@
 using MultiFPS.Gameplay;
 using MultiFPS.UI;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -149,14 +150,17 @@ namespace MultiFPS
         }
 
 
-        public void ApplySkin(int skindID)
+        public void ApplySkin(int skinID)
         {
-            MySkin = ClientInterfaceManager.Instance.characterSkins[skindID];
+            MySkin = ClientInterfaceManager.Instance.characterSkins[skinID];
 
             if (!MySkin)
                 return;
 
-            // TPP original de MultiFPS
+            // =========================================================
+            // TPP
+            // =========================================================
+
             SkinnedMeshRenderer tppRenderer = null;
 
             foreach (SkinnedMeshRenderer renderer in
@@ -169,22 +173,126 @@ namespace MultiFPS
                 }
             }
 
-            if (tppRenderer != null)
+            if (tppRenderer != null && MySkin.Mesh != null)
             {
+                if (MySkin.Renderer == null)
+                {
+                    Debug.LogError(
+                        "ApplySkin: MySkin.Renderer no está asignado."
+                    );
+                    return;
+                }
+
+                Transform[] redHeadBones = MySkin.Renderer.bones;
+                Transform[] multiFPSBones = tppRenderer.bones;
+
+                // -----------------------------------------------------
+                // Crear diccionario de bones de MultiFPS
+                // -----------------------------------------------------
+
+                Dictionary<string, Transform> multiBonesByName =
+                    new Dictionary<string, Transform>();
+
+                foreach (Transform bone in multiFPSBones)
+                {
+                    if (bone != null && !multiBonesByName.ContainsKey(bone.name))
+                    {
+                        multiBonesByName.Add(bone.name, bone);
+                    }
+                }
+
+                // -----------------------------------------------------
+                // Crear array de bones para RedHead
+                // -----------------------------------------------------
+
+                Transform[] newBones =
+                    new Transform[redHeadBones.Length];
+
+                bool mappingOK = true;
+
+                for (int i = 0; i < redHeadBones.Length; i++)
+                {
+                    Transform redBone = redHeadBones[i];
+
+                    if (redBone == null)
+                    {
+                        newBones[i] = null;
+                        continue;
+                    }
+
+                    string boneName = redBone.name;
+
+                    // Corregimos el typo que tenía el FBX original.
+                    if (boneName == "lowerReg.R")
+                        boneName = "lowerLeg.R";
+
+                    if (multiBonesByName.TryGetValue(
+                        boneName,
+                        out Transform multiBone))
+                    {
+                        newBones[i] = multiBone;
+                    }
+                    else
+                    {
+                        newBones[i] = null;
+
+                        Debug.LogError(
+                            "ApplySkin: No se encontró el bone '" +
+                            boneName +
+                            "' en Soldier2."
+                        );
+
+                        mappingOK = false;
+                    }
+                }
+
+                if (!mappingOK)
+                {
+                    Debug.LogError(
+                        "ApplySkin: Mapping incompleto. " +
+                        "El modelo NO será aplicado."
+                    );
+
+                    return;
+                }
+
+                // -----------------------------------------------------
+                // Aplicar mesh + material + bones
+                // -----------------------------------------------------
+
                 tppRenderer.sharedMesh = MySkin.Mesh;
                 tppRenderer.sharedMaterial = MySkin.Material;
 
-                _characterMeshes = new SkinnedMeshRenderer[]
+                tppRenderer.bones = newBones;
+
+                // Root Bone
+                if (multiBonesByName.TryGetValue(
+                    "hips",
+                    out Transform hips))
                 {
-                    tppRenderer
-                };
+                    tppRenderer.rootBone = hips;
+                }
+
+                _characterMeshes =
+                    new SkinnedMeshRenderer[] { tppRenderer };
+
+                Debug.Log(
+                    "ApplySkin: RedHead TPP aplicado correctamente."
+                );
             }
 
+            // =========================================================
             // FPP
+            // =========================================================
+
             if (_fppCharacterMesh != null)
             {
-                _fppCharacterMesh.sharedMesh = MySkin.FPP_Mesh;
-                _fppCharacterMesh.sharedMaterial = MySkin.FPP_Material;
+                if (MySkin.FPP_Mesh != null)
+                    _fppCharacterMesh.sharedMesh = MySkin.FPP_Mesh;
+
+                if (MySkin.FPP_Material != null)
+                    _fppCharacterMesh.sharedMaterial =
+                        MySkin.FPP_Material;
             }
         }
 
