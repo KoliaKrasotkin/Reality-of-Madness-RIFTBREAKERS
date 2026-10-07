@@ -148,23 +148,44 @@ namespace MultiFPS
             enabled = true;
         }
 
+
         public void ApplySkin(int skindID)
         {
-            //apply skin for character, materials and meshed for both FPP hands model and TPP character model
             MySkin = ClientInterfaceManager.Instance.characterSkins[skindID];
-            if (!MySkin) return;
 
-            if (MySkin.Mesh)
-                _characterMeshes[0].sharedMesh = MySkin.Mesh;
+            if (!MySkin)
+                return;
 
-            if (MySkin.Material)
-                _characterMeshes[0].material = MySkin.Material;
+            // TPP original de MultiFPS
+            SkinnedMeshRenderer tppRenderer = null;
 
-            if (MySkin.FPP_Mesh)
+            foreach (SkinnedMeshRenderer renderer in
+                    GetComponentsInChildren<SkinnedMeshRenderer>(true))
+            {
+                if (renderer.name == "mesh_character_soldier2")
+                {
+                    tppRenderer = renderer;
+                    break;
+                }
+            }
+
+            if (tppRenderer != null)
+            {
+                tppRenderer.sharedMesh = MySkin.Mesh;
+                tppRenderer.sharedMaterial = MySkin.Material;
+
+                _characterMeshes = new SkinnedMeshRenderer[]
+                {
+                    tppRenderer
+                };
+            }
+
+            // FPP
+            if (_fppCharacterMesh != null)
+            {
                 _fppCharacterMesh.sharedMesh = MySkin.FPP_Mesh;
-
-            if (MySkin.FPP_Material)
-                _fppCharacterMesh.material = MySkin.FPP_Material;
+                _fppCharacterMesh.sharedMaterial = MySkin.FPP_Material;
+            }
         }
 
         #region callbacks

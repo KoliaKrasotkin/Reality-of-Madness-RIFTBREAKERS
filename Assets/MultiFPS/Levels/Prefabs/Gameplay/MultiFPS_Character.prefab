@@ -71,6 +71,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 8b35de0d4f3929146a63c1355673d08b,
     type: 2}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -380,7 +381,6 @@ CharacterController:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -568,6 +568,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _chestIK: {fileID: 6535006541524805839}
   _headIK: {fileID: 6609517790259035110}
+  _animator: {fileID: 0}
   _tppModelAnimator: {fileID: 731251257069921238}
   _fppModelAnimator: {fileID: 1266978326160222060}
   _baseAnimatorController: {fileID: 9100000, guid: 5a3e10f6cb0f89e46a5a7797005adff9,
@@ -576,7 +577,7 @@ MonoBehaviour:
     type: 2}
   _rigBuilder: {fileID: 1388095154340502422}
   _characterMeshes:
-  - {fileID: 5707934291392786521}
+  - {fileID: -1228883191147333892, guid: a77fc368c156af34c88ecb3e4ee7b7a7, type: 3}
   _fppCharacterMesh: {fileID: 7267462073961082341}
   _rotationAngleThreshold: 70
   _rotationAngleThresholdLeftSide: 20
@@ -670,6 +671,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 8b35de0d4f3929146a63c1355673d08b,
     type: 2}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -950,8 +952,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -745073389387746162, guid: 07504123bc274f34b9338e37e238f6db,
         type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5879972497300055999, guid: 07504123bc274f34b9338e37e238f6db,
+        type: 3}
+    - target: {fileID: -745073389387746162, guid: 07504123bc274f34b9338e37e238f6db,
+        type: 3}
       propertyPath: m_UpdateWhenOffscreen
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -745073389387746162, guid: 07504123bc274f34b9338e37e238f6db,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4180442569542952846, guid: 07504123bc274f34b9338e37e238f6db,
+        type: 3}
+    - target: {fileID: -360765115648521289, guid: 07504123bc274f34b9338e37e238f6db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 07504123bc274f34b9338e37e238f6db,
         type: 3}
@@ -986,7 +1005,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &1266978326160222060
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1000,6 +1019,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -1080,6 +1100,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1228883191147333892, guid: a77fc368c156af34c88ecb3e4ee7b7a7,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -7941620431085647198, guid: a77fc368c156af34c88ecb3e4ee7b7a7,
+        type: 3}
+    - target: {fileID: -1228883191147333892, guid: a77fc368c156af34c88ecb3e4ee7b7a7,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 6875250441344631262, guid: a77fc368c156af34c88ecb3e4ee7b7a7,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: a77fc368c156af34c88ecb3e4ee7b7a7,
         type: 3}
       propertyPath: m_Name
@@ -1130,7 +1162,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &731251257069921238
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1144,6 +1176,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -1170,12 +1203,6 @@ MonoBehaviour:
 --- !u!4 &4265667612159835747 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7280573651216828218, guid: a77fc368c156af34c88ecb3e4ee7b7a7,
-    type: 3}
-  m_PrefabInstance: {fileID: 2433217863759824549}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &5707934291392786521 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -1228883191147333892, guid: a77fc368c156af34c88ecb3e4ee7b7a7,
     type: 3}
   m_PrefabInstance: {fileID: 2433217863759824549}
   m_PrefabAsset: {fileID: 0}
