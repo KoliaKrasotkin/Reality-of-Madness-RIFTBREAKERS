@@ -162,6 +162,68 @@ namespace MultiFPS
             return path;
         }
 
+        private void DebugRedHeadWeights()
+        {
+            if (MySkin == null || MySkin.Mesh == null || MySkin.Renderer == null)
+                return;
+
+            Mesh mesh = MySkin.Mesh;
+            Transform[] bones = MySkin.Renderer.bones;
+            BoneWeight[] weights = mesh.boneWeights;
+
+            Dictionary<string, int> counts = new Dictionary<string, int>();
+
+            foreach (BoneWeight w in weights)
+            {
+                int[] indices =
+                {
+                    w.boneIndex0,
+                    w.boneIndex1,
+                    w.boneIndex2,
+                    w.boneIndex3
+                };
+
+                float[] values =
+                {
+                    w.weight0,
+                    w.weight1,
+                    w.weight2,
+                    w.weight3
+                };
+
+                for (int i = 0; i < 4; i++)
+                {
+                    if (values[i] <= 0)
+                        continue;
+
+                    int index = indices[i];
+
+                    if (index < 0 || index >= bones.Length)
+                        continue;
+
+                    string boneName = bones[index].name;
+
+                    if (!counts.ContainsKey(boneName))
+                        counts[boneName] = 0;
+
+                    counts[boneName]++;
+                }
+            }
+
+            Debug.Log("=== REDHEAD BONE WEIGHTS ===");
+
+            foreach (var pair in counts)
+            {
+                if (pair.Key == "hips" ||
+                    pair.Key == "spine" ||
+                    pair.Key == "chest" ||
+                    pair.Key == "IKRoot")
+                {
+                    Debug.Log(pair.Key + " -> " + pair.Value + " influences");
+                }
+            }
+        }
+
         public void ApplySkin(int skinID)
         {
             MySkin = ClientInterfaceManager.Instance.characterSkins[skinID];
@@ -425,6 +487,8 @@ namespace MultiFPS
                         MySkin.FPP_Material;
                 }
             }
+
+            DebugRedHeadWeights();
         }
 
         #region callbacks

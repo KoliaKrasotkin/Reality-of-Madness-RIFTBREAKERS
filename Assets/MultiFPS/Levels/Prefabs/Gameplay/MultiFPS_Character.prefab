@@ -204,7 +204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Weight: 1
   m_Data:
-    m_ConstrainedObject: {fileID: 0}
+    m_ConstrainedObject: {fileID: 4265667612159835747}
     m_OverrideSource: {fileID: 7010787812084002768}
     m_OverridePosition: {x: 0, y: 0, z: 0}
     m_OverrideRotation: {x: 0, y: 0, z: 0}
@@ -417,7 +417,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  CharacterMarkerPosition: {fileID: 2949608143316339763}
+  CharacterMarkerPosition: {fileID: 4265667612159835747}
   CharacterParent: {fileID: 1350217682571768396}
   FPPLook: {fileID: 2382563001975509360}
   FPPCameraTarget: {fileID: 8987498478785149855}
@@ -569,7 +569,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ragDoll_Prefab: {fileID: 6157475199273391684, guid: 51e324db2550d624393fbb2413baf896,
     type: 3}
-  _head: {fileID: 2949608143316339763}
+  _head: {fileID: 4265667612159835747}
   _impactClip_head: {fileID: 8300000, guid: 40de2af93d9ec7b47857665785c7efb9, type: 3}
   _impactClip_body: {fileID: 8300000, guid: cdab4f1a0ad41a949b9fd4fa2ecd3378, type: 3}
   _headImpactEffectPrefab: {fileID: 968750111475089187, guid: 476e07db43794cb469f4a61c2c249133,
@@ -769,7 +769,7 @@ GameObject:
   - component: {fileID: 6535006541524805839}
   - component: {fileID: 643746783083870380}
   m_Layer: 0
-  m_Name: IK_Spine
+  m_Name: IK_Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -804,7 +804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Weight: 1
   m_Data:
-    m_ConstrainedObject: {fileID: 0}
+    m_ConstrainedObject: {fileID: 1945584684678431179}
     m_OverrideSource: {fileID: 9136363324602403525}
     m_OverridePosition: {x: 0, y: 0, z: 0}
     m_OverrideRotation: {x: 0, y: 0, z: 0}
@@ -1112,15 +1112,15 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1388095154340502422}
   m_SourcePrefab: {fileID: 100100000, guid: a8ab0c79095381b43bb0f38822684f8b, type: 3}
---- !u!4 &2760213698851594574 stripped
+--- !u!4 &1945584684678431179 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a8ab0c79095381b43bb0f38822684f8b,
+  m_CorrespondingSourceObject: {fileID: -4988690726306396306, guid: a8ab0c79095381b43bb0f38822684f8b,
     type: 3}
   m_PrefabInstance: {fileID: 2433217863759824549}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2949608143316339763 stripped
+--- !u!4 &2760213698851594574 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8562580684723303786, guid: a8ab0c79095381b43bb0f38822684f8b,
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a8ab0c79095381b43bb0f38822684f8b,
     type: 3}
   m_PrefabInstance: {fileID: 2433217863759824549}
   m_PrefabAsset: {fileID: 0}
@@ -1170,6 +1170,12 @@ MonoBehaviour:
   - m_Rig: {fileID: 4739346315208639308}
     m_Active: 1
   m_Effectors: []
+--- !u!4 &4265667612159835747 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7280573651216828218, guid: a8ab0c79095381b43bb0f38822684f8b,
+    type: 3}
+  m_PrefabInstance: {fileID: 2433217863759824549}
+  m_PrefabAsset: {fileID: 0}
 --- !u!137 &5707934291392786521 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -1228883191147333892, guid: a8ab0c79095381b43bb0f38822684f8b,
