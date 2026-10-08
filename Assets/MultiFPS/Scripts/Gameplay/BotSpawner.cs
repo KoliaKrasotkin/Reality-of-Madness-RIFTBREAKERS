@@ -33,6 +33,8 @@ namespace MultiFPS
 
             if (_spawnedBot) return;
 
+            Debug.Log("ASSAULT: intentando crear bot");
+
             PlayerInstance ourBot = GameManager.Gamemode.SpawnBot(Team);
 
 
