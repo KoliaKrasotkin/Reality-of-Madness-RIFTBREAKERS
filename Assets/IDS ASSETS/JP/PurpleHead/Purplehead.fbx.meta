@@ -3,7 +3,17 @@ guid: ebc217bb409241e4ba52246ae3b2b465
 ModelImporter:
   serializedVersion: 24300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Purple_Head_Armor_MAT
+    second: {fileID: 2100000, guid: cba9ee166a57cdd459260dad9521b106, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Purple_Head_Body_MAT
+    second: {fileID: 2100000, guid: 419c8ecf4857acc44a13f00244ccafe1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

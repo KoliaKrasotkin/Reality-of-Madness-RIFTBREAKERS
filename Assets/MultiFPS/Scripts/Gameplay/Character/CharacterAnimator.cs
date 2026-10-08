@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+                using System.Text;
 
 namespace MultiFPS
 {
@@ -156,6 +157,10 @@ namespace MultiFPS
             if (!MySkin)
                 return;
 
+                            DebugSkinBoneIndices(MySkin);
+
+            Mesh skinMesh = MySkin.Mesh;
+
             // =========================================================
             // BUSCAR RIG SOLDIER
             // =========================================================
@@ -292,11 +297,9 @@ namespace MultiFPS
                     // Comprobamos si realmente está utilizado.
                     bool used = false;
 
-                    Mesh redMesh = MySkin.Mesh;
-
-                    if (redMesh != null)
+                    if (skinMesh != null)
                     {
-                        BoneWeight[] weights = redMesh.boneWeights;
+                        BoneWeight[] weights = skinMesh.boneWeights;
 
                         foreach (BoneWeight w in weights)
                         {
@@ -333,18 +336,28 @@ namespace MultiFPS
                 return;
             }
 
+                        // Validar materiales de la skin
+                        if (MySkin.Materials == null ||
+                            MySkin.Materials.Length != skinMesh.subMeshCount)
+                        {
+                            Debug.LogError(
+                                $"ApplySkin: La skin '{MySkin.SkinName}' tiene " +
+                                $"{skinMesh.subMeshCount} submeshes, pero " +
+                                $"{(MySkin.Materials == null ? 0 : MySkin.Materials.Length)} " +
+                                "materiales asignados."
+                            );
+
+                            return;
+                        }
+
+
             // =========================================================
             // APLICAR MESH
             // =========================================================
 
-            tppRenderer.sharedMesh = MySkin.Mesh;
-
-            if (MySkin.Material != null)
-            {
-                tppRenderer.sharedMaterial = MySkin.Material;
-            }
-
-            tppRenderer.bones = newBones;
+                                    tppRenderer.sharedMesh = MySkin.Mesh;
+                                    tppRenderer.sharedMaterials = MySkin.Materials;
+                                    tppRenderer.bones = newBones;
 
             // =========================================================
             // ROOT BONE
@@ -401,6 +414,70 @@ namespace MultiFPS
                 }
             }
         }
+
+
+                                
+                            private void DebugSkinBoneIndices(SkinContainer skin)
+                            {
+                                StringBuilder sb = new StringBuilder();
+
+                                Mesh mesh = skin.Mesh;
+                                Transform[] sourceBones = skin.Renderer.bones;
+
+                                sb.AppendLine("========== BONE INDEX DEBUG ==========");
+                                sb.AppendLine($"Mesh: {mesh.name}");
+                                sb.AppendLine($"Source bones: {sourceBones.Length}");
+                                sb.AppendLine($"Bindposes: {mesh.bindposes.Length}");
+
+                                // Comprobar qué índices de huesos se usan en los vértices.
+                                HashSet<int> usedIndices = new HashSet<int>();
+                                BoneWeight[] weights = mesh.boneWeights;
+
+                                foreach (BoneWeight w in weights)
+                                {
+                                    if (w.weight0 > 0) usedIndices.Add(w.boneIndex0);
+                                    if (w.weight1 > 0) usedIndices.Add(w.boneIndex1);
+                                    if (w.weight2 > 0) usedIndices.Add(w.boneIndex2);
+                                    if (w.weight3 > 0) usedIndices.Add(w.boneIndex3);
+                                }
+
+                                int outOfRange = 0;
+
+                                foreach (int index in usedIndices)
+                                {
+                                    if (index < 0 ||
+                                        index >= sourceBones.Length ||
+                                        index >= mesh.bindposes.Length)
+                                    {
+                                        sb.AppendLine($"ERROR: Índice utilizado fuera de rango: {index}");
+                                        outOfRange++;
+                                    }
+                                }
+
+                                sb.AppendLine($"Índices distintos utilizados: {usedIndices.Count}");
+                                sb.AppendLine($"Índices fuera de rango: {outOfRange}");
+
+                                // Mostrar los índices más altos utilizados.
+                                int maxIndex = -1;
+
+                                foreach (int index in usedIndices)
+                                    if (index > maxIndex) maxIndex = index;
+
+                                sb.AppendLine($"Índice de hueso máximo utilizado: {maxIndex}");
+
+                                // Comparar los nombres de huesos fuente con el rig asignado.
+                                for (int i = 0; i < sourceBones.Length; i++)
+                                {
+                                    sb.AppendLine(
+                                        $"Bone [{i}]: " +
+                                        $"{(sourceBones[i] != null ? sourceBones[i].name : "NULL")}"
+                                    );
+                                }
+
+                                sb.AppendLine("========== FIN BONE INDEX DEBUG ==========");
+
+                                Debug.Log(sb.ToString());
+                            }
 
         #region callbacks
 

@@ -38,6 +38,47 @@ namespace MultiFPS.Gameplay
 
         public void ApplySkin(SkinContainer skin)
         {
+            
+            // --------------------------------------------------
+            // BUSCAR RIG SOLDIER DEL RAGDOLL
+            // --------------------------------------------------
+
+            Transform rigSoldier = null;
+
+            foreach (Transform t in GetComponentsInChildren<Transform>(true))
+            {
+                if (t.name == "rig_soldier")
+                {
+                    rigSoldier = t;
+                    break;
+                }
+            }
+
+            if (rigSoldier == null)
+            {
+                Debug.LogError(
+                    "[RagDoll] ApplySkin: no se encontró rig_soldier."
+                );
+
+                return;
+            }
+
+
+
+
+            if (!SkinBoneMapper.TryMapBones(
+                    skin,
+                    rigSoldier,
+                    out Transform[] newBones,
+                    "[RagDoll]"))
+            {
+                Debug.LogError(
+                    "[RagDoll] No se aplicó la skin por un error de mapeo."
+                );
+                return;
+            }
+
+
             if (skin == null)
             {
                 Debug.LogError(
@@ -73,189 +114,42 @@ namespace MultiFPS.Gameplay
 
                 return;
             }
-
-            // --------------------------------------------------
-            // BUSCAR RIG SOLDIER DEL RAGDOLL
-            // --------------------------------------------------
-
-            Transform rigSoldier = null;
-
-            foreach (Transform t in
-                     GetComponentsInChildren<Transform>(true))
+            
+            if (skin.Materials == null ||
+                skin.Materials.Length != skin.Mesh.subMeshCount)
             {
-                if (t.name == "rig_soldier")
+                Debug.LogError(
+                    $"[RagDoll] Skin '{skin.SkinName}': cantidad de materiales incorrecta."
+                );
+                return;
+            }
+
+            _characterMesh.sharedMesh = skin.Mesh;
+            _characterMesh.sharedMaterials = skin.Materials;
+            _characterMesh.bones = newBones;
+
+            // Buscar hips en el rig de destino.
+            Transform hips = null;
+
+            foreach (Transform bone in
+                    rigSoldier.GetComponentsInChildren<Transform>(true))
+            {
+                if (bone.name == "hips")
                 {
-                    rigSoldier = t;
+                    hips = bone;
                     break;
                 }
             }
 
-            if (rigSoldier == null)
+            if (hips == null)
             {
-                Debug.LogError(
-                    "[RagDoll] ApplySkin: no se encontró rig_soldier."
-                );
-
+                Debug.LogError("[RagDoll] No se encontró hips.");
                 return;
             }
 
-            // --------------------------------------------------
-            // CREAR DICCIONARIO DE BONES DEL SOLDIER
-            // --------------------------------------------------
-
-            Dictionary<string, Transform> soldierBones =
-                new Dictionary<string, Transform>();
-
-            foreach (Transform bone in
-                     rigSoldier.GetComponentsInChildren<Transform>(true))
-            {
-                if (!soldierBones.ContainsKey(bone.name))
-                {
-                    soldierBones.Add(
-                        bone.name,
-                        bone
-                    );
-                }
-            }
-
-            // --------------------------------------------------
-            // OBTENER BONES DEL REDHEAD ORIGINAL
-            // --------------------------------------------------
-
-            Transform[] sourceBones =
-                skin.Renderer.bones;
-
-            Transform[] newBones =
-                new Transform[sourceBones.Length];
-
-            bool mappingOK = true;
-
-            // --------------------------------------------------
-            // MAPEAR CADA BONE POR NOMBRE
-            // --------------------------------------------------
-
-            for (int i = 0; i < sourceBones.Length; i++)
-            {
-                Transform sourceBone =
-                    sourceBones[i];
-
-                if (sourceBone == null)
-                {
-                    newBones[i] = null;
-                    continue;
-                }
-
-                string boneName =
-                    sourceBone.name;
-
-                // Corrección del typo que tenía el RedHead original
-                if (boneName == "lowerReg.R")
-                {
-                    boneName = "lowerLeg.R";
-                }
-
-                if (soldierBones.TryGetValue(
-                        boneName,
-                        out Transform soldierBone))
-                {
-                    newBones[i] = soldierBone;
-                }
-                else
-                {
-                    newBones[i] = null;
-
-                    // Comprobar si realmente es utilizado
-                    bool used = false;
-
-                    BoneWeight[] weights =
-                        skin.Mesh.boneWeights;
-
-                    foreach (BoneWeight w in weights)
-                    {
-                        if ((w.weight0 > 0 &&
-                             w.boneIndex0 == i) ||
-
-                            (w.weight1 > 0 &&
-                             w.boneIndex1 == i) ||
-
-                            (w.weight2 > 0 &&
-                             w.boneIndex2 == i) ||
-
-                            (w.weight3 > 0 &&
-                             w.boneIndex3 == i))
-                        {
-                            used = true;
-                            break;
-                        }
-                    }
-
-                    if (used)
-                    {
-                        Debug.LogError(
-                            "[RagDoll] FALTA BONE UTILIZADO: " +
-                            boneName
-                        );
-
-                        mappingOK = false;
-                    }
-                }
-            }
-
-            if (!mappingOK)
-            {
-                Debug.LogError(
-                    "[RagDoll] Mapping incompleto. " +
-                    "NO se aplicó el skin."
-                );
-
-                return;
-            }
-
-            // --------------------------------------------------
-            // APLICAR MESH
-            // --------------------------------------------------
-
-            _characterMesh.sharedMesh =
-                skin.Mesh;
-
-            if (skin.Material != null)
-            {
-                _characterMesh.sharedMaterial =
-                    skin.Material;
-            }
-
-            // --------------------------------------------------
-            // APLICAR BONES REMAPEADOS
-            // --------------------------------------------------
-
-            _characterMesh.bones =
-                newBones;
-
-            // --------------------------------------------------
-            // ROOT BONE
-            // --------------------------------------------------
-
-            if (soldierBones.TryGetValue(
-                    "hips",
-                    out Transform hips))
-            {
-                _characterMesh.rootBone =
-                    hips;
-            }
-            else
-            {
-                Debug.LogError(
-                    "[RagDoll] No se encontró hips."
-                );
-
-                return;
-            }
-
+            _characterMesh.rootBone = hips;
             _characterMesh.updateWhenOffscreen = true;
 
-            Debug.Log(
-                "[RagDoll] RedHead aplicado correctamente al ragdoll."
-            );
         }
 
         // client side ragdoll preparation
