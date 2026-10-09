@@ -534,7 +534,7 @@ namespace MultiFPS.Gameplay.Gamemodes
 
             for (int i = 0; i < neededBots; i++)
             {
-                SpawnBot();
+                SpawnBot(Indicator == Gamemodes.Assault ? 1 : 0);
             }
         }
 
@@ -603,5 +603,6 @@ namespace MultiFPS.Gameplay.Gamemodes
         TeamDeathmatch = 1,
         TeamEliminations = 2,
         Defuse = 3,
+        Assault =4,
     }
 }
