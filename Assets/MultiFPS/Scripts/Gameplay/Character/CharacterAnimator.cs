@@ -150,6 +150,19 @@ namespace MultiFPS
             enabled = true;
         }
 
+        private string GetPath(Transform t)
+        {
+            string path = t.name;
+
+            while (t.parent != null)
+            {
+                t = t.parent;
+                path = t.name + "/" + path;
+            }
+
+            return path;
+        }
+
         public void ApplySkin(int skinID)
         {
             MySkin = ClientInterfaceManager.Instance.characterSkins[skinID];
@@ -157,17 +170,22 @@ namespace MultiFPS
             if (!MySkin)
                 return;
 
-                            DebugSkinBoneIndices(MySkin);
-
             Mesh skinMesh = MySkin.Mesh;
 
             // =========================================================
-            // BUSCAR RIG SOLDIER
+            // BUSCAR RIG SOLDIER DENTRO DEL TPP ANIMATOR
             // =========================================================
+
+            if (_tppModelAnimator == null)
+            {
+                Debug.LogError("ApplySkin: _tppModelAnimator es null.");
+                return;
+            }
 
             Transform rigSoldier = null;
 
-            foreach (Transform t in GetComponentsInChildren<Transform>(true))
+            foreach (Transform t in
+                    _tppModelAnimator.GetComponentsInChildren<Transform>(true))
             {
                 if (t.name == "rig_soldier")
                 {
@@ -176,23 +194,12 @@ namespace MultiFPS
                 }
             }
 
-            Transform ikRoot = null;
-
-            foreach (Transform bone in rigSoldier.GetComponentsInChildren<Transform>(true))
-            {
-                if (bone.name == "IKRoot")
-                {
-                    ikRoot = bone;
-                    break;
-                }
-            }
-
             if (rigSoldier == null)
             {
                 Debug.LogError(
-                    "ApplySkin: No se encontró rig_soldier."
+                    "ApplySkin: No se encontró rig_soldier dentro de " +
+                    _tppModelAnimator.name
                 );
-
                 return;
             }
 
@@ -219,7 +226,7 @@ namespace MultiFPS
             SkinnedMeshRenderer tppRenderer = null;
 
             foreach (SkinnedMeshRenderer renderer in
-                    GetComponentsInChildren<SkinnedMeshRenderer>(true))
+                    _tppModelAnimator.GetComponentsInChildren<SkinnedMeshRenderer>(true))
             {
                 if (renderer.name == "mesh_character_soldier2")
                 {
@@ -336,28 +343,28 @@ namespace MultiFPS
                 return;
             }
 
-                        // Validar materiales de la skin
-                        if (MySkin.Materials == null ||
-                            MySkin.Materials.Length != skinMesh.subMeshCount)
-                        {
-                            Debug.LogError(
-                                $"ApplySkin: La skin '{MySkin.SkinName}' tiene " +
-                                $"{skinMesh.subMeshCount} submeshes, pero " +
-                                $"{(MySkin.Materials == null ? 0 : MySkin.Materials.Length)} " +
-                                "materiales asignados."
-                            );
+            // Validar materiales de la skin
+            if (MySkin.Materials == null ||
+                MySkin.Materials.Length != skinMesh.subMeshCount)
+            {
+                Debug.LogError(
+                    $"ApplySkin: La skin '{MySkin.SkinName}' tiene " +
+                    $"{skinMesh.subMeshCount} submeshes, pero " +
+                    $"{(MySkin.Materials == null ? 0 : MySkin.Materials.Length)} " +
+                    "materiales asignados."
+                );
 
-                            return;
-                        }
+                return;
+            }
 
 
             // =========================================================
             // APLICAR MESH
             // =========================================================
 
-                                    tppRenderer.sharedMesh = MySkin.Mesh;
-                                    tppRenderer.sharedMaterials = MySkin.Materials;
-                                    tppRenderer.bones = newBones;
+            tppRenderer.sharedMesh = MySkin.Mesh;
+            tppRenderer.sharedMaterials = MySkin.Materials;
+            tppRenderer.bones = newBones;
 
             // =========================================================
             // ROOT BONE
@@ -388,12 +395,7 @@ namespace MultiFPS
             // ACTUALIZAR ARRAY UTILIZADO POR CHARACTER ANIMATOR
             // =========================================================
 
-            _characterMeshes =
-                new SkinnedMeshRenderer[] { tppRenderer };
-
-            Debug.Log(
-                "ApplySkin: RedHead TPP aplicado correctamente."
-            );
+            _characterMeshes = new SkinnedMeshRenderer[] { tppRenderer };
 
             // =========================================================
             // FPP
@@ -415,70 +417,6 @@ namespace MultiFPS
             }
         }
 
-
-                                
-                            private void DebugSkinBoneIndices(SkinContainer skin)
-                            {
-                                StringBuilder sb = new StringBuilder();
-
-                                Mesh mesh = skin.Mesh;
-                                Transform[] sourceBones = skin.Renderer.bones;
-
-                                sb.AppendLine("========== BONE INDEX DEBUG ==========");
-                                sb.AppendLine($"Mesh: {mesh.name}");
-                                sb.AppendLine($"Source bones: {sourceBones.Length}");
-                                sb.AppendLine($"Bindposes: {mesh.bindposes.Length}");
-
-                                // Comprobar qué índices de huesos se usan en los vértices.
-                                HashSet<int> usedIndices = new HashSet<int>();
-                                BoneWeight[] weights = mesh.boneWeights;
-
-                                foreach (BoneWeight w in weights)
-                                {
-                                    if (w.weight0 > 0) usedIndices.Add(w.boneIndex0);
-                                    if (w.weight1 > 0) usedIndices.Add(w.boneIndex1);
-                                    if (w.weight2 > 0) usedIndices.Add(w.boneIndex2);
-                                    if (w.weight3 > 0) usedIndices.Add(w.boneIndex3);
-                                }
-
-                                int outOfRange = 0;
-
-                                foreach (int index in usedIndices)
-                                {
-                                    if (index < 0 ||
-                                        index >= sourceBones.Length ||
-                                        index >= mesh.bindposes.Length)
-                                    {
-                                        sb.AppendLine($"ERROR: Índice utilizado fuera de rango: {index}");
-                                        outOfRange++;
-                                    }
-                                }
-
-                                sb.AppendLine($"Índices distintos utilizados: {usedIndices.Count}");
-                                sb.AppendLine($"Índices fuera de rango: {outOfRange}");
-
-                                // Mostrar los índices más altos utilizados.
-                                int maxIndex = -1;
-
-                                foreach (int index in usedIndices)
-                                    if (index > maxIndex) maxIndex = index;
-
-                                sb.AppendLine($"Índice de hueso máximo utilizado: {maxIndex}");
-
-                                // Comparar los nombres de huesos fuente con el rig asignado.
-                                for (int i = 0; i < sourceBones.Length; i++)
-                                {
-                                    sb.AppendLine(
-                                        $"Bone [{i}]: " +
-                                        $"{(sourceBones[i] != null ? sourceBones[i].name : "NULL")}"
-                                    );
-                                }
-
-                                sb.AppendLine("========== FIN BONE INDEX DEBUG ==========");
-
-                                Debug.Log(sb.ToString());
-                            }
-
         #region callbacks
 
         private void OnHealthDepleted(CharacterPart damagedPart, byte attackerID)
@@ -492,9 +430,12 @@ namespace MultiFPS
             //would be immortal to bots
             foreach (SkinnedMeshRenderer mesh in _characterMeshes)
             {
-                //if character is dead, then player model should not be reenabled, 
-                //because it is replaced by ragdoll prefab
-                mesh.enabled = !fpp && _characterInstance.Health.CurrentHealth > 0;
+                if (mesh == null)
+                    continue;
+
+                mesh.enabled = !fpp &&
+                            _characterInstance != null &&
+                            _characterInstance.Health.CurrentHealth > 0;
             }
 
             _fppModelAnimator.gameObject.SetActive(fpp);
@@ -657,12 +598,25 @@ namespace MultiFPS
         }
 
         #region external access
+
         public void PlayAnimation(string name)
         {
-            if(_animator.enabled)
+            if (_animator != null &&
+                _animator.isActiveAndEnabled)
+            {
                 _animator.Play(name);
+            }
         }
-        public void PlayAnimation(int hash) => _animator.Play(hash);
+
+        public void PlayAnimation(int hash)
+        {
+            if (_animator != null &&
+                _animator.isActiveAndEnabled)
+            {
+                _animator.Play(hash);
+            }
+        }
+
         public void SetTrigger(string triggerName)
         {
             if (_animator.gameObject.activeInHierarchy) 
@@ -678,13 +632,23 @@ namespace MultiFPS
             _tppModelAnimator.WriteDefaultValues();
         }
 
-        public void RenderCharacterModel(bool render) 
+        public void RenderCharacterModel(bool render)
         {
+            Debug.Log(
+                $"[RENDER BEFORE] render={render} | " +
+                $"CharacterMeshes length={_characterMeshes?.Length ?? -1}"
+            );
+
             _rigBuilder.enabled = render;
             _tppModelAnimator.gameObject.SetActive(render);
 
-            if(_characterInstance.IsObserved)
+            if (_characterInstance.IsObserved)
                 _fppModelAnimator.gameObject.SetActive(render);
+
+            Debug.Log(
+                $"[RENDER AFTER] render={render} | " +
+                $"CharacterMeshes length={_characterMeshes?.Length ?? -1}"
+            );
         }
         #endregion
 
@@ -692,7 +656,7 @@ namespace MultiFPS
         {
             _characterInstance.Client_OnPerspectiveSet -= OnPerspectiveChanged;
             _characterItemManager.Client_EquipmentChanged -= AssingCharacterAnimationsForCurrentlyUsedItem;
-            _characterInstance.Health.Client_OnHealthDepleted += OnHealthDepleted;
+            _characterInstance.Health.Client_OnHealthDepleted -= OnHealthDepleted;
 
             _characterInstance = null;
             _characterItemManager = null;

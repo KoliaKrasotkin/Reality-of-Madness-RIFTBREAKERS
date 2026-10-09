@@ -9539,7 +9539,6 @@ GameObject:
   - component: {fileID: 1855280224}
   - component: {fileID: 1855280223}
   - component: {fileID: 1855280226}
-  - component: {fileID: 1855280228}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -9665,22 +9664,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &1855280228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1855280222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9451af943bafbe345835b99101dbea67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: MultiFPS::DebugBoneMapping
-  redHeadRenderer: {fileID: -7247163193196983945, guid: 90d7f0b292a642f41b32f8488d1ea4d1,
-    type: 3}
-  multiFPSTppRenderer: {fileID: -1228883191147333892, guid: a8ab0c79095381b43bb0f38822684f8b,
-    type: 3}
 --- !u!1 &1860548036
 GameObject:
   m_ObjectHideFlags: 0
