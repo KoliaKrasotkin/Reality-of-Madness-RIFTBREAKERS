@@ -8227,6 +8227,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Soldier moro
       m_Image: {fileID: 0}
+    - m_Text: Black Panther
+      m_Image: {fileID: 0}
     - m_Text: Redhead
       m_Image: {fileID: 0}
     - m_Text: Purplehead
@@ -11285,7 +11287,7 @@ PrefabInstance:
     - target: {fileID: 5546447072185059298, guid: bd1deb83e2e038c46887720eb47eee1e,
         type: 3}
       propertyPath: characterSkins.Array.size
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5546447072185059298, guid: bd1deb83e2e038c46887720eb47eee1e,
         type: 3}
@@ -11321,17 +11323,23 @@ PrefabInstance:
         type: 3}
       propertyPath: 'characterSkins.Array.data[5]'
       value: 
-      objectReference: {fileID: 11400000, guid: ff5f66616c02dba4fa207d6d6867b8b7,
+      objectReference: {fileID: 11400000, guid: 37ff79ab050a5014bb10f61ea0a05f33,
         type: 2}
     - target: {fileID: 5546447072185059298, guid: bd1deb83e2e038c46887720eb47eee1e,
         type: 3}
       propertyPath: 'characterSkins.Array.data[6]'
       value: 
-      objectReference: {fileID: 11400000, guid: 1097f493ce78c674184a42690abea062,
+      objectReference: {fileID: 11400000, guid: ff5f66616c02dba4fa207d6d6867b8b7,
         type: 2}
     - target: {fileID: 5546447072185059298, guid: bd1deb83e2e038c46887720eb47eee1e,
         type: 3}
       propertyPath: 'characterSkins.Array.data[7]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 1097f493ce78c674184a42690abea062,
+        type: 2}
+    - target: {fileID: 5546447072185059298, guid: bd1deb83e2e038c46887720eb47eee1e,
+        type: 3}
+      propertyPath: 'characterSkins.Array.data[8]'
       value: 
       objectReference: {fileID: 11400000, guid: 472ccbba1a34c044580ce5f9a23d02e0,
         type: 2}
