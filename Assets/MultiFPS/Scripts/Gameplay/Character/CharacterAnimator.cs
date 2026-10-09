@@ -228,7 +228,7 @@ namespace MultiFPS
             foreach (SkinnedMeshRenderer renderer in
                     _tppModelAnimator.GetComponentsInChildren<SkinnedMeshRenderer>(true))
             {
-                if (renderer.name == "mesh_character_soldier2")
+                if (renderer.name == "mesh_Soldier")
                 {
                     tppRenderer = renderer;
                     break;
@@ -238,7 +238,7 @@ namespace MultiFPS
             if (tppRenderer == null)
             {
                 Debug.LogError(
-                    "ApplySkin: No se encontró mesh_character_soldier2."
+                    "ApplySkin: No se encontró mesh_Soldier."
                 );
 
                 return;
@@ -450,20 +450,28 @@ namespace MultiFPS
         }
         #endregion
 
+
         void AssingCharacterAnimationsForCurrentlyUsedItem(int slotID = -1)
         {
-            Item currentlyUsedItem = slotID >= 0 ? _characterItemManager.Slots[slotID].Item : null;
+            Item currentlyUsedItem = slotID >= 0
+                ? _characterItemManager.Slots[slotID].Item
+                : null;
 
             if (currentlyUsedItem)
-                _animator.runtimeAnimatorController = _characterInstance.FPP ? currentlyUsedItem.AnimatorControllerForCharacterFPP : currentlyUsedItem.AnimatorControllerForCharacter;
+                _animator.runtimeAnimatorController = _characterInstance.FPP
+                    ? currentlyUsedItem.AnimatorControllerForCharacterFPP
+                    : currentlyUsedItem.AnimatorControllerForCharacter;
             else
-                _animator.runtimeAnimatorController = _characterInstance.FPP ? BaseAnimatorControllerFPP : _baseAnimatorController;
+                _animator.runtimeAnimatorController = _characterInstance.FPP
+                    ? BaseAnimatorControllerFPP
+                    : _baseAnimatorController;
 
-            if(_animator.runtimeAnimatorController == null)
+            if (_animator.runtimeAnimatorController == null)
                 _animator.runtimeAnimatorController = _baseAnimatorController;
 
             SetTrigger(AnimationNames.ITEM_TAKE);
         }
+
 
         void UpdateAnimationProperties()
         {
@@ -617,11 +625,33 @@ namespace MultiFPS
             }
         }
 
-        public void SetTrigger(string triggerName)
-        {
-            if (_animator.gameObject.activeInHierarchy) 
-                _animator.SetTrigger(triggerName);
-        }
+        // public void SetTrigger(string triggerName)
+        // {
+        //     if (_animator.gameObject.activeInHierarchy) 
+        //         _animator.SetTrigger(triggerName);
+        // }
+
+                                    public void SetTrigger(string triggerName)
+                                    {
+                                        if (_animator == null || !_animator.gameObject.activeInHierarchy)
+                                            return;
+
+                                        foreach (AnimatorControllerParameter parameter in _animator.parameters)
+                                        {
+                                            if (parameter.nameHash == Animator.StringToHash(triggerName) &&
+                                                parameter.type == AnimatorControllerParameterType.Trigger)
+                                            {
+                                                _animator.SetTrigger(triggerName);
+                                                return;
+                                            }
+                                        }
+
+                                        Debug.LogWarning(
+                                            $"[ANIMATOR] El parámetro Trigger '{triggerName}' no existe " +
+                                            $"en el controller '{_animator.runtimeAnimatorController?.name}'.",
+                                            _animator
+                                        );
+                                    }
         public void ResetTrigger(string triggerName) => _animator.ResetTrigger(triggerName);
         public void SetTrigger(int triggerHash) => _animator.SetTrigger(triggerHash);
         public void ResetTrigger(int triggerHash) => _animator.ResetTrigger(triggerHash);
@@ -634,21 +664,8 @@ namespace MultiFPS
 
         public void RenderCharacterModel(bool render)
         {
-            Debug.Log(
-                $"[RENDER BEFORE] render={render} | " +
-                $"CharacterMeshes length={_characterMeshes?.Length ?? -1}"
-            );
-
             _rigBuilder.enabled = render;
             _tppModelAnimator.gameObject.SetActive(render);
-
-            if (_characterInstance.IsObserved)
-                _fppModelAnimator.gameObject.SetActive(render);
-
-            Debug.Log(
-                $"[RENDER AFTER] render={render} | " +
-                $"CharacterMeshes length={_characterMeshes?.Length ?? -1}"
-            );
         }
         #endregion
 
