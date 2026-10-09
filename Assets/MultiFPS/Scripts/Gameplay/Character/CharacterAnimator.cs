@@ -38,6 +38,7 @@ namespace MultiFPS
         /// </summary>
         [Header("Character meshes")]
         [SerializeField] SkinnedMeshRenderer[] _characterMeshes;
+        [SerializeField] SkinnedMeshRenderer tppRenderer;
         [SerializeField] SkinnedMeshRenderer _fppCharacterMesh;
 
         public SkinContainer MySkin { private set; get; }
@@ -172,10 +173,6 @@ namespace MultiFPS
 
             Mesh skinMesh = MySkin.Mesh;
 
-            // =========================================================
-            // BUSCAR RIG SOLDIER DENTRO DEL TPP ANIMATOR
-            // =========================================================
-
             if (_tppModelAnimator == null)
             {
                 Debug.LogError("ApplySkin: _tppModelAnimator es null.");
@@ -203,10 +200,6 @@ namespace MultiFPS
                 return;
             }
 
-            // =========================================================
-            // CREAR DICCIONARIO DEL RIG DE SOLDIER
-            // =========================================================
-
             Dictionary<string, Transform> soldierBones =
                 new Dictionary<string, Transform>();
 
@@ -216,22 +209,6 @@ namespace MultiFPS
                 if (!soldierBones.ContainsKey(bone.name))
                 {
                     soldierBones.Add(bone.name, bone);
-                }
-            }
-
-            // =========================================================
-            // TPP
-            // =========================================================
-
-            SkinnedMeshRenderer tppRenderer = null;
-
-            foreach (SkinnedMeshRenderer renderer in
-                    _tppModelAnimator.GetComponentsInChildren<SkinnedMeshRenderer>(true))
-            {
-                if (renderer.name == "mesh_Soldier")
-                {
-                    tppRenderer = renderer;
-                    break;
                 }
             }
 
@@ -262,29 +239,25 @@ namespace MultiFPS
                 return;
             }
 
-            // =========================================================
-            // OBTENER BONES ORIGINALES DE REDHEAD
-            // =========================================================
-
-            Transform[] redHeadBones = MySkin.Renderer.bones;
+            Transform[] rendererBones = MySkin.Renderer.bones;
 
             Transform[] newBones =
-                new Transform[redHeadBones.Length];
+                new Transform[rendererBones.Length];
 
             bool mappingOK = true;
 
-            for (int i = 0; i < redHeadBones.Length; i++)
+            for (int i = 0; i < rendererBones.Length; i++)
             {
-                Transform redBone = redHeadBones[i];
+                Transform renderBone = rendererBones[i];
 
                 // Bone vacío/no utilizado
-                if (redBone == null)
+                if (renderBone == null)
                 {
                     newBones[i] = null;
                     continue;
                 }
 
-                string boneName = redBone.name;
+                string boneName = renderBone.name;
 
                 if (soldierBones.TryGetValue(
                     boneName,
@@ -294,14 +267,9 @@ namespace MultiFPS
                 }
                 else
                 {
-                    // -------------------------------------------------
-                    // El bone puede existir solamente en RedHead
-                    // pero no ser utilizado por ningún vértice.
-                    // -------------------------------------------------
 
                     newBones[i] = null;
 
-                    // Comprobamos si realmente está utilizado.
                     bool used = false;
 
                     if (skinMesh != null)
@@ -343,7 +311,6 @@ namespace MultiFPS
                 return;
             }
 
-            // Validar materiales de la skin
             if (MySkin.Materials == null ||
                 MySkin.Materials.Length != skinMesh.subMeshCount)
             {
@@ -357,18 +324,9 @@ namespace MultiFPS
                 return;
             }
 
-
-            // =========================================================
-            // APLICAR MESH
-            // =========================================================
-
             tppRenderer.sharedMesh = MySkin.Mesh;
             tppRenderer.sharedMaterials = MySkin.Materials;
             tppRenderer.bones = newBones;
-
-            // =========================================================
-            // ROOT BONE
-            // =========================================================
 
             if (soldierBones.TryGetValue(
                 "hips",
@@ -385,21 +343,9 @@ namespace MultiFPS
                 return;
             }
 
-            // =========================================================
-            // EVITAR CULLING POR BOUNDS
-            // =========================================================
-
             tppRenderer.updateWhenOffscreen = true;
 
-            // =========================================================
-            // ACTUALIZAR ARRAY UTILIZADO POR CHARACTER ANIMATOR
-            // =========================================================
-
             _characterMeshes = new SkinnedMeshRenderer[] { tppRenderer };
-
-            // =========================================================
-            // FPP
-            // =========================================================
 
             if (_fppCharacterMesh != null)
             {
@@ -625,33 +571,12 @@ namespace MultiFPS
             }
         }
 
-        // public void SetTrigger(string triggerName)
-        // {
-        //     if (_animator.gameObject.activeInHierarchy) 
-        //         _animator.SetTrigger(triggerName);
-        // }
+        public void SetTrigger(string triggerName)
+        {
+            if (_animator.gameObject.activeInHierarchy) 
+                _animator.SetTrigger(triggerName);
+        }
 
-                                    public void SetTrigger(string triggerName)
-                                    {
-                                        if (_animator == null || !_animator.gameObject.activeInHierarchy)
-                                            return;
-
-                                        foreach (AnimatorControllerParameter parameter in _animator.parameters)
-                                        {
-                                            if (parameter.nameHash == Animator.StringToHash(triggerName) &&
-                                                parameter.type == AnimatorControllerParameterType.Trigger)
-                                            {
-                                                _animator.SetTrigger(triggerName);
-                                                return;
-                                            }
-                                        }
-
-                                        Debug.LogWarning(
-                                            $"[ANIMATOR] El parámetro Trigger '{triggerName}' no existe " +
-                                            $"en el controller '{_animator.runtimeAnimatorController?.name}'.",
-                                            _animator
-                                        );
-                                    }
         public void ResetTrigger(string triggerName) => _animator.ResetTrigger(triggerName);
         public void SetTrigger(int triggerHash) => _animator.SetTrigger(triggerHash);
         public void ResetTrigger(int triggerHash) => _animator.ResetTrigger(triggerHash);
