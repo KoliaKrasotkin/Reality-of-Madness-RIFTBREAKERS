@@ -556,6 +556,8 @@ namespace MultiFPS.Gameplay.Gamemodes
                 //make bot join some team
                 playerInstance.ProcessRequestToJoinTeam(team);
 
+               
+
                 //if bot after trying to join team 0 is not in team 0, then try to join team 1
                 if (playerInstance.Team == -1)
                     playerInstance.ProcessRequestToJoinTeam(1);

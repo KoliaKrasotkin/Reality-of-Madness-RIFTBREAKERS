@@ -282,6 +282,17 @@ namespace MultiFPS.Gameplay
             if (BOT)
                 MyCharacter.SetAsBOT(BOT);
 
+            if (BOT && isServer)
+            {
+                MultiFPS.Gameplay.Gamemodes.Assault assault =
+                    GameManager.Gamemode.GetComponent<MultiFPS.Gameplay.Gamemodes.Assault>();
+
+                if (assault != null && assault.WaveManager != null)
+                {
+                    assault.WaveManager.RegisterEnemy(MyCharacter.Health);
+                }
+            }
+
             WritePlayerData(PlayerInfo, Team, MyCharacter.netIdentity);
             RpcReceivePlayerData(PlayerInfo, MyCharacter.netIdentity, Team);
 
@@ -328,6 +339,8 @@ namespace MultiFPS.Gameplay
         public void Server_CountCooldown()
         {
             if (!GameManager.Gamemode.LetPlayersSpawnOnTheirOwn) return;
+            if (BOT && GameManager.Gamemode.GetComponent<MultiFPS.Gameplay.Gamemodes.Assault>() != null)
+                return;
 
             SpawnCooldown = false;
 
