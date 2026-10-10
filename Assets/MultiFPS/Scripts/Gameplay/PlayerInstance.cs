@@ -282,16 +282,7 @@ namespace MultiFPS.Gameplay
             if (BOT)
                 MyCharacter.SetAsBOT(BOT);
 
-            if (BOT && isServer)
-            {
-                MultiFPS.Gameplay.Gamemodes.Assault assault =
-                    GameManager.Gamemode.GetComponent<MultiFPS.Gameplay.Gamemodes.Assault>();
-
-                if (assault != null && assault.WaveManager != null)
-                {
-                    assault.WaveManager.RegisterEnemy(MyCharacter.Health);
-                }
-            }
+           
 
             WritePlayerData(PlayerInfo, Team, MyCharacter.netIdentity);
             RpcReceivePlayerData(PlayerInfo, MyCharacter.netIdentity, Team);

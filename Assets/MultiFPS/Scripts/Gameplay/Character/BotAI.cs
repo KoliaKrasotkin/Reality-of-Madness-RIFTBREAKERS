@@ -12,8 +12,9 @@ namespace MultiFPS.Gameplay
         public bool Passive = false;
         public float RotationToTargetSpeed = 350f;
         public float fireTime = 1.55f;
-        public float waitForFireTime = 0.75f; //gap between firing
+        public float waitForFireTime = 0.75f;
         public bool SwitchItemsRandomly = false;
+
         [SerializeField] float DistanceFromTarget = 34f;
 
         Transform _transform;
@@ -23,39 +24,41 @@ namespace MultiFPS.Gameplay
         Quaternion mindRotation;
 
         #region navigation
-        //executing this method will make bot travel to given destination. It can be stopped by giving him new destination or 
-        //simply by reaching given target at some point in time
+
         int _currentCorner;
         bool _isMoving;
         bool _rotateToDestination;
         int _pathCorners;
+
         #endregion
 
         float _focusEnemyTimer = 0;
-        float _focusEnemyTime = 1.5f; //time that enemy must be in sight to be noticed by us
+        float _focusEnemyTime = 1.5f;
 
         bool _maintainPosition;
         Vector3 _positionToMaintain;
         float _maxAllowedDistanceFromPositionToMaintain;
 
         bool _enemyInSight;
-        float _takeRandomItemTimer;
 
-        //firing
+        // Firing
         float _fireTime;
         float _stepAsideCooldownTimer;
 
         float _stuckTimer;
+        float _takeRandomItemTimer;
 
         Gamemode _gamemode;
         GameSync _gameSync;
 
         #region drunkLook
+
         Vector2 _lerpedFuzzyLook;
         Vector2 _fuzzyLook;
         float _fuzzyLoookLerpSpeed = 1.8f;
         int _fuzzyLookUpdateTickInverval = 2;
         int _fuzzyLookUpdateCurrentTick = 0;
+
         #endregion
 
         PhysicsScene _physicsScene;
@@ -76,16 +79,19 @@ namespace MultiFPS.Gameplay
         {
             _characterInstance = GetComponent<CharacterInstance>();
             _characterInstance.Server_SetAsBOT += SetAsBot;
+
             enabled = false;
+
             _path = new NavMeshPath();
             _transform = transform;
         }
+
         protected void Start()
-        {            
+        {
             _characterInstance.Health.Server_OnHealthDepleted += OnDeath;
             _characterInstance.Health.Server_Resurrect += ServerOnResurrect;
 
-            if (isServer) 
+            if (isServer)
             {
                 _gameSync = GameSync.Singleton;
                 _gamemode = GameManager.Gamemode;
@@ -117,56 +123,77 @@ namespace MultiFPS.Gameplay
             enabled = _set;
         }
 
-        public void ServerMantainPosition(Vector3 pos, float maxDistance = 0.5f) 
+        public void ServerMantainPosition(Vector3 pos, float maxDistance = 0.5f)
         {
             _positionToMaintain = pos;
             _maintainPosition = true;
             _maxAllowedDistanceFromPositionToMaintain = maxDistance;
         }
-        public void ServerForgetPositionToMaintain() 
+
+        public void ServerForgetPositionToMaintain()
         {
             _maintainPosition = false;
         }
 
         void TakeRandomItem()
         {
-            int randomSlot = Random.Range(0, _characterInstance.CharacterItemManager.Slots.Count);
+            int randomSlot = Random.Range(
+                0,
+                _characterInstance.CharacterItemManager.Slots.Count
+            );
 
             _characterInstance.CharacterItemManager.ServerCommandTakeItem(randomSlot);
         }
-        void OnDeath(CharacterPart hittedPartID, AttackType attackType, Health killer, int attackForce)
+
+        void OnDeath(
+            CharacterPart hittedPartID,
+            AttackType attackType,
+            Health killer,
+            int attackForce
+        )
         {
             ServerForgetPositionToMaintain();
         }
-        void ServerOnResurrect(int health) 
+
+        void ServerOnResurrect(int health)
         {
             enabled = _characterInstance.BOT;
         }
 
         void AIUpdate(float timestep)
         {
-            if (_characterInstance.Health.CurrentHealth <= 0) return;
+            if (_characterInstance.Health.CurrentHealth <= 0)
+                return;
 
             if (SwitchItemsRandomly && Time.time > _takeRandomItemTimer)
             {
-                _takeRandomItemTimer = Time.time+Random.Range(6f, 18f);
+                _takeRandomItemTimer = Time.time + Random.Range(6f, 18f);
                 TakeRandomItem();
             }
 
-            if (Passive) return;
+            if (Passive)
+                return;
 
-            //commit sepuku if stuck for more than 5 seconds
+            // Commit sepuku if stuck for more than 5 seconds
             if (_stuckTimer > 5f)
             {
                 _stuckTimer = 0f;
-                _characterInstance.Health.Server_ChangeHealthState(9999, CharacterPart.body, AttackType.falldamage, _characterInstance.Health, 255);
+
+                _characterInstance.Health.Server_ChangeHealthState(
+                    9999,
+                    CharacterPart.body,
+                    AttackType.falldamage,
+                    _characterInstance.Health,
+                    255
+                );
             }
-            
+
             UpdatePath();
 
             _enemyInSight = EnemyInSight();
 
             #region fuzzy look swinging calculations
+
             if (_enemyInSight)
             {
                 if (_fuzzyLookUpdateCurrentTick >= _fuzzyLookUpdateTickInverval)
@@ -175,6 +202,7 @@ namespace MultiFPS.Gameplay
                     _fuzzyLook.y = Random.Range(-12f, 12f);
                     _fuzzyLookUpdateCurrentTick = 0;
                 }
+
                 _fuzzyLookUpdateCurrentTick++;
 
                 _focusEnemyTimer += timestep;
@@ -185,197 +213,366 @@ namespace MultiFPS.Gameplay
                 _fuzzyLookUpdateCurrentTick = _fuzzyLookUpdateTickInverval;
                 _fuzzyLook = Vector2.zero;
             }
+
             #endregion
 
-            _lerpedFuzzyLook = Vector2.Lerp(_lerpedFuzzyLook, _fuzzyLook, _fuzzyLoookLerpSpeed * timestep);
+            _lerpedFuzzyLook = Vector2.Lerp(
+                _lerpedFuzzyLook,
+                _fuzzyLook,
+                _fuzzyLoookLerpSpeed * timestep
+            );
 
             if (_enemyInSight)
-                _focusEnemyTimer += timestep;               
-            else 
+                _focusEnemyTimer += timestep;
+            else
                 _focusEnemyTimer = 0;
 
-            //AI LOGIC
-            if (!_enemyInSight || targetedEnemy && targetedEnemy.CurrentHealth <= 0)
+            // AI LOGIC
+            if (!_enemyInSight ||
+                (targetedEnemy && targetedEnemy.CurrentHealth <= 0))
+            {
                 targetedEnemy = GetClosestEnemy();
+            }
 
-            //If there is someone to attack
+            // If there is someone to attack
             if (targetedEnemy)
             {
-                float distanceFromEnemy = Vector3.Distance(_transform.position, targetedEnemy.transform.position);
+                float distanceFromEnemy = Vector3.Distance(
+                    _transform.position,
+                    targetedEnemy.transform.position
+                );
 
-                if (_focusEnemyTime < _focusEnemyTimer || distanceFromEnemy < 5f)
+                // Enemy in sight -> attack
+                if (_enemyInSight &&
+                    (_focusEnemyTime < _focusEnemyTimer || distanceFromEnemy < 5f))
                 {
-                    ///ENEMY IN SIGHT -> attack
-                    if (Time.time > _fireTime) 
+                    if (Time.time > _fireTime)
                     {
-                        _fireTime = Time.time + (_pushTrigger ? waitForFireTime : fireTime);
+                        _fireTime = Time.time +
+                            (_pushTrigger ? waitForFireTime : fireTime);
+
                         _pushTrigger = !_pushTrigger;
                     }
 
                     if (_pushTrigger)
                         _characterInstance.CharacterItemManager.Fire1();
 
-                    _characterInstance.SetActionKeyCode(ActionCodes.Sprint, false);
+                    _characterInstance.SetActionKeyCode(
+                        ActionCodes.Sprint,
+                        false
+                    );
 
                     if (distanceFromEnemy < DistanceFromTarget)
                     {
                         Vector3 newFreeVector;
 
-                        if (_stepAsideCooldownTimer < Time.time) //decision if ai wants to increase distance of target and if its able to                                                                //    if (distance < minDistanceFromTarget && !increasingDistanceFromTarget) //decision if ai wants to increase distance of target and if its able to
+                        if (_stepAsideCooldownTimer < Time.time)
                         {
-                            //setting cooldown to prevent enemy from moving all the time
+                            // Setting cooldown to prevent enemy from moving all the time
                             _stepAsideCooldownTimer += 2f;
- 
-                            Vector3[] increasingDistancePossibleDirections = { -transform.right, transform.right, -transform.forward };
-                            newFreeVector = FreeSpace(increasingDistancePossibleDirections, 8f);
-                            if (Vector3.Distance(newFreeVector, transform.position) > 0.5f)
-                                SetTravelDestinationByNavMesh(newFreeVector, false);
+
+                            Vector3[] increasingDistancePossibleDirections =
+                            {
+                                -transform.right,
+                                transform.right,
+                                -transform.forward
+                            };
+
+                            newFreeVector = FreeSpace(
+                                increasingDistancePossibleDirections,
+                                8f
+                            );
+
+                            if (Vector3.Distance(
+                                newFreeVector,
+                                transform.position
+                            ) > 0.5f)
+                            {
+                                SetTravelDestinationByNavMesh(
+                                    newFreeVector,
+                                    false
+                                );
+                            }
                         }
                     }
                     else
                     {
-                        SetTravelDestinationByNavMesh(targetedEnemy.transform.position, false);
+                        SetTravelDestinationByNavMesh(
+                            targetedEnemy.transform.position,
+                            false
+                        );
                     }
 
-                    LookAt(targetedEnemy.GetPositionToAttack(), timestep);
+                    LookAt(
+                        targetedEnemy.GetPositionToAttack(),
+                        timestep
+                    );
                 }
                 else
                 {
-                    _characterInstance.SetActionKeyCode(ActionCodes.Sprint, distanceFromEnemy > 2f);
+                    _characterInstance.SetActionKeyCode(
+                        ActionCodes.Sprint,
+                        distanceFromEnemy > 2f
+                    );
 
-                    //if enemy is not in sight then do not shot and go to nearest enemy position
+                    // Enemy is not in sight: do not shoot.
+                    // Move toward the enemy's current position.
                     if (!_maintainPosition)
-                        SetTravelDestinationByNavMesh(targetedEnemy.transform.position, true, true);
-                    else 
                     {
-                        float distanceFromTarget = Vector3.Distance(transform.position, _positionToMaintain);
-                        if (distanceFromTarget > _maxAllowedDistanceFromPositionToMaintain)
-                            SetTravelDestinationByNavMesh(_positionToMaintain, true, true);
-                    }     
+                        SetTravelDestinationByNavMesh(
+                            targetedEnemy.transform.position,
+                            true,
+                            true
+                        );
+                    }
+                    else
+                    {
+                        float distanceFromTarget = Vector3.Distance(
+                            transform.position,
+                            _positionToMaintain
+                        );
+
+                        if (distanceFromTarget >
+                            _maxAllowedDistanceFromPositionToMaintain)
+                        {
+                            SetTravelDestinationByNavMesh(
+                                _positionToMaintain,
+                                true,
+                                true
+                            );
+                        }
+                    }
                 }
             }
             else
             {
                 if (_maintainPosition)
                 {
-                    float distanceFromTarget = Vector3.Distance(transform.position, _positionToMaintain);
-                    if (distanceFromTarget > _maxAllowedDistanceFromPositionToMaintain)
-                        SetTravelDestinationByNavMesh(_positionToMaintain, true, true);
-                }else
-                    SetTravelDestinationByNavMesh(transform.position, false);
+                    float distanceFromTarget = Vector3.Distance(
+                        transform.position,
+                        _positionToMaintain
+                    );
+
+                    if (distanceFromTarget >
+                        _maxAllowedDistanceFromPositionToMaintain)
+                    {
+                        SetTravelDestinationByNavMesh(
+                            _positionToMaintain,
+                            true,
+                            true
+                        );
+                    }
+                }
+                else
+                {
+                    SetTravelDestinationByNavMesh(
+                        transform.position,
+                        false
+                    );
+                }
             }
         }
 
         protected Vector3 FreeSpace(Vector3[] direction, float range)
         {
             Vector3 bestVector = _transform.position;
+
             for (int i = 0; i < direction.Length; i++)
             {
-                if (_physicsScene.Raycast(_transform.position + _transform.up * 0.25f, direction[i], out RaycastHit freePoint, range, GameManager.environmentLayer)) //if we hit something
+                if (_physicsScene.Raycast(
+                    _transform.position + _transform.up * 0.25f,
+                    direction[i],
+                    out RaycastHit freePoint,
+                    range,
+                    GameManager.environmentLayer
+                ))
                 {
-                    if (Vector3.Distance(_transform.position, freePoint.point) > Vector3.Distance(_transform.position, bestVector) && freePoint.collider.gameObject.layer != 13) //avoiding this layer to make bots not stucking on each other
+                    if (
+                        Vector3.Distance(
+                            _transform.position,
+                            freePoint.point
+                        ) > Vector3.Distance(
+                            _transform.position,
+                            bestVector
+                        )
+                        && freePoint.collider.gameObject.layer != 13
+                    )
+                    {
                         bestVector = freePoint.point;
+                    }
                 }
                 else
                 {
-                    float difference = Vector3.Distance(_transform.position, _transform.position + direction[i] * range) - Vector3.Distance(_transform.position, bestVector);
+                    float difference =
+                        Vector3.Distance(
+                            _transform.position,
+                            _transform.position + direction[i] * range
+                        )
+                        - Vector3.Distance(
+                            _transform.position,
+                            bestVector
+                        );
+
                     if (Mathf.Abs(difference) < 2f)
                     {
-                        if (UnityEngine.Random.Range(0, 3) == 1) bestVector = _transform.position + direction[i] * range;
+                        if (UnityEngine.Random.Range(0, 3) == 1)
+                        {
+                            bestVector =
+                                _transform.position + direction[i] * range;
+                        }
                     }
                     else if (difference > 0)
-                        bestVector = _transform.position + direction[i] * range;
+                    {
+                        bestVector =
+                            _transform.position + direction[i] * range;
+                    }
                 }
             }
+
             return bestVector;
         }
 
-        //makes bot look at given spot, rotation is not instant
+        // Makes bot look at given spot; rotation is not instant.
         protected void LookAt(Vector3 _lookTarget, float timestep)
         {
-            _characterInstance.characterMind.position = _characterInstance.Health.GetPositionToAttack();
+            _characterInstance.characterMind.position =
+                _characterInstance.Health.GetPositionToAttack();
 
-            Vector3 lookRotationVector = _lookTarget - _characterInstance.characterMind.position;
+            Vector3 lookRotationVector =
+                _lookTarget - _characterInstance.characterMind.position;
 
-            if(lookRotationVector != Vector3.zero)
-                mindRotation = Quaternion.Lerp(mindRotation, Quaternion.LookRotation(lookRotationVector), RotationToTargetSpeed * timestep);
+            if (lookRotationVector != Vector3.zero)
+            {
+                mindRotation = Quaternion.Lerp(
+                    mindRotation,
+                    Quaternion.LookRotation(lookRotationVector),
+                    RotationToTargetSpeed * timestep
+                );
+            }
 
             _characterInstance.characterMind.rotation = mindRotation;
-            _characterInstance.Input.LookY = mindRotation.eulerAngles.y + _lerpedFuzzyLook.y;
 
-            //look up/down correction
+            _characterInstance.Input.LookY =
+                mindRotation.eulerAngles.y + _lerpedFuzzyLook.y;
+
+            // Look up/down correction
             float lookx = -mindRotation.eulerAngles.x;
             float fixedLookX = lookx < -90 ? lookx += 360 : lookx;
-            _characterInstance.Input.LookX = -fixedLookX + _lerpedFuzzyLook.x;
+
+            _characterInstance.Input.LookX =
+                -fixedLookX + _lerpedFuzzyLook.x;
         }
 
         protected void LookAtSharp(Vector3 _lookTarget)
         {
-            _characterInstance.characterMind.position = _characterInstance.Health.GetPositionToAttack();
-            _characterInstance.characterMind.LookAt(_lookTarget);           
+            _characterInstance.characterMind.position =
+                _characterInstance.Health.GetPositionToAttack();
+
+            _characterInstance.characterMind.LookAt(_lookTarget);
             mindRotation = _characterInstance.characterMind.rotation;
 
             _characterInstance.Input.LookY = mindRotation.eulerAngles.y;
 
-            //look up/down correction
+            // Look up/down correction
             float lookx = -mindRotation.eulerAngles.x;
             float fixedLookX = lookx < -90 ? lookx += 360 : lookx;
+
             _characterInstance.Input.LookX = -fixedLookX;
         }
 
         /// <summary>
-        /// Can we see nearest enemy or there is something beetwen us?
+        /// Can we see the current enemy, or is there something between us?
         /// </summary>
         protected bool EnemyInSight()
         {
             if (!targetedEnemy)
                 return false;
 
-            Vector3 direction = targetedEnemy.GetPositionToAttack() - _characterInstance.Health.GetPositionToAttack();
-            return !_physicsScene.Raycast(_characterInstance.Health.GetPositionToAttack(), direction, direction.magnitude, GameManager.environmentLayer);
+            Vector3 direction =
+                targetedEnemy.GetPositionToAttack()
+                - _characterInstance.Health.GetPositionToAttack();
+
+            return !_physicsScene.Raycast(
+                _characterInstance.Health.GetPositionToAttack(),
+                direction,
+                direction.magnitude,
+                GameManager.environmentLayer
+            );
         }
 
-
         #region navigation tools
+
         protected virtual void MovementTick()
         {
             if (isFollowingPath)
-                desiredVelocity = transform.InverseTransformDirection(directTravelTargetPoint - transform.position).normalized;
+            {
+                desiredVelocity = transform.InverseTransformDirection(
+                    directTravelTargetPoint - transform.position
+                ).normalized;
+            }
             else
+            {
                 desiredVelocity = Vector3.zero;
+            }
         }
-        protected void SetTravelDestinationByNavMesh(Vector3 destinationPosition, bool rotateToDestination, bool overrideCurrentIfExistPath = true)
+
+        protected void SetTravelDestinationByNavMesh(
+            Vector3 destinationPosition,
+            bool rotateToDestination,
+            bool overrideCurrentIfExistPath = true
+        )
         {
-            if (_isMoving && !overrideCurrentIfExistPath) return;
+            if (_isMoving && !overrideCurrentIfExistPath)
+                return;
 
             _rotateToDestination = rotateToDestination;
-
             _isMoving = true;
 
-            NavMesh.CalculatePath(transform.position, destinationPosition, NavMesh.AllAreas, _path);
+            NavMesh.CalculatePath(
+                transform.position,
+                destinationPosition,
+                NavMesh.AllAreas,
+                _path
+            );
+
             _currentCorner = 1;
             _pathCorners = _path.corners.Length;
         }
 
-        void UpdatePath() 
+        void UpdatePath()
         {
-            if (!_isMoving) return;
+            if (!_isMoving)
+                return;
 
             if (_currentCorner < _pathCorners)
             {
                 directTravelTargetPoint = _path.corners[_currentCorner];
 
-                desiredVelocity = transform.InverseTransformDirection(directTravelTargetPoint - transform.position).normalized;
-                
+                desiredVelocity = transform.InverseTransformDirection(
+                    directTravelTargetPoint - transform.position
+                ).normalized;
+
                 _characterInstance.Input.Movement = new Vector2(
                     Mathf.Clamp(desiredVelocity.x, -1.0f, 1.0f),
                     Mathf.Clamp(desiredVelocity.z, -1.0f, 1.0f)
-                    );
+                );
 
                 if (_rotateToDestination)
-                    LookAt(_path.corners[_currentCorner] + new Vector3(0, _characterInstance.characterMind.localPosition.y), Time.fixedDeltaTime);
+                {
+                    LookAt(
+                        _path.corners[_currentCorner]
+                        + new Vector3(
+                            0,
+                            _characterInstance.characterMind.localPosition.y
+                        ),
+                        Time.fixedDeltaTime
+                    );
+                }
 
-                float distanceFromCurrentCorner = Vector3.Distance(transform.position, _path.corners[_currentCorner]);
+                float distanceFromCurrentCorner = Vector3.Distance(
+                    transform.position,
+                    _path.corners[_currentCorner]
+                );
 
                 if (distanceFromCurrentCorner <= 0.35f)
                     _currentCorner++;
@@ -386,13 +583,15 @@ namespace MultiFPS.Gameplay
                 _characterInstance.Input.Movement = new Vector2(0, 0);
             }
         }
-#endregion
 
-        protected Health GetClosestEnemy() {
+        #endregion
+
+        protected Health GetClosestEnemy()
+        {
             _potentialNearestEnemy = null;
             _potentialEnemy = null;
 
-            if (targetedEnemy && targetedEnemy.CurrentHealth <= 0) 
+            if (targetedEnemy && targetedEnemy.CurrentHealth <= 0)
                 targetedEnemy = null;
 
             if (_gamemode.PeacefulBots)
@@ -406,13 +605,31 @@ namespace MultiFPS.Gameplay
             int myTeam = _characterInstance.Health.Team;
             Vector3 we = transform.position;
 
-            for (int characterUnit = 0; characterUnit < _gameSync.Characters.Obj.Length; characterUnit++) {
-                CharacterInstance characterInstance = _gameSync.Characters.Obj[characterUnit];
-                if (characterInstance == null) continue;
+            for (
+                int characterUnit = 0;
+                characterUnit < _gameSync.Characters.Obj.Length;
+                characterUnit++
+            )
+            {
+                CharacterInstance characterInstance =
+                    _gameSync.Characters.Obj[characterUnit];
+
+                if (characterInstance == null)
+                    continue;
+
                 _potentialEnemy = characterInstance.Health;
-                if ((_potentialEnemy.Team != myTeam || ffa) && _potentialEnemy != _characterInstance.Health && _potentialEnemy.CurrentHealth > 0)
+
+                if (
+                    (_potentialEnemy.Team != myTeam || ffa)
+                    && _potentialEnemy != _characterInstance.Health
+                    && _potentialEnemy.CurrentHealth > 0
+                )
                 {
-                    float distance = Vector3.Distance(we, _potentialEnemy.transform.position);
+                    float distance = Vector3.Distance(
+                        we,
+                        _potentialEnemy.transform.position
+                    );
+
                     if (distance < lastDistance)
                     {
                         _potentialNearestEnemy = _potentialEnemy;
