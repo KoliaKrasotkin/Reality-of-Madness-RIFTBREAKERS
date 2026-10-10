@@ -346,19 +346,18 @@ namespace MultiFPS
             tppRenderer.updateWhenOffscreen = true;
 
             _characterMeshes = new SkinnedMeshRenderer[] { tppRenderer };
-
+            
             if (_fppCharacterMesh != null)
             {
                 if (MySkin.FPP_Mesh != null)
                 {
-                    _fppCharacterMesh.sharedMesh =
-                        MySkin.FPP_Mesh;
+                    _fppCharacterMesh.sharedMesh = MySkin.FPP_Mesh;
                 }
 
-                if (MySkin.FPP_Material != null)
+                if (MySkin.FPP_Materials != null)
                 {
-                    _fppCharacterMesh.sharedMaterial =
-                        MySkin.FPP_Material;
+                    _fppCharacterMesh.sharedMaterials =
+                        MySkin.FPP_Materials;
                 }
             }
         }

@@ -16,7 +16,7 @@ namespace MultiFPS
 
         [Header("FPP Model")]
         public Mesh FPP_Mesh;
-        public Material FPP_Material;
+        public Material[] FPP_Materials;
 
     }
 }
