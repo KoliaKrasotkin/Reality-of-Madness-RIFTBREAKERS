@@ -41,6 +41,15 @@ namespace MultiFPS
         [SerializeField] SkinnedMeshRenderer tppRenderer;
         [SerializeField] SkinnedMeshRenderer _fppCharacterMesh;
 
+        
+        [Header("Skin rig mapping")]
+        [SerializeField] private Transform _tppRigRoot;
+        [SerializeField] private Transform _tppRootBone;
+
+        [SerializeField] private Transform _fppRigRoot;
+        [SerializeField] private Transform _fppRootBone;
+
+
         public SkinContainer MySkin { private set; get; }
 
         #region step animation variables
@@ -164,203 +173,393 @@ namespace MultiFPS
             return path;
         }
 
+       
         public void ApplySkin(int skinID)
         {
-            MySkin = ClientInterfaceManager.Instance.characterSkins[skinID];
+            var manager = ClientInterfaceManager.Instance;
+
+            if (manager == null || manager.characterSkins == null)
+            {
+                Debug.LogError("ApplySkin: ClientInterfaceManager o characterSkins es null.");
+                return;
+            }
+
+            if (skinID < 0 || skinID >= manager.characterSkins.Length)
+            {
+                Debug.LogError($"ApplySkin: ID de skin inválido: {skinID}.");
+                return;
+            }
+
+            MySkin = manager.characterSkins[skinID];
 
             if (!MySkin)
+            {
+                Debug.LogError($"ApplySkin: La skin del ID {skinID} es null.");
                 return;
-
-            Mesh skinMesh = MySkin.Mesh;
-
-            if (_tppModelAnimator == null)
-            {
-                Debug.LogError("ApplySkin: _tppModelAnimator es null.");
-                return;
-            }
-
-            Transform rigSoldier = null;
-
-            foreach (Transform t in
-                    _tppModelAnimator.GetComponentsInChildren<Transform>(true))
-            {
-                if (t.name == "rig_soldier")
-                {
-                    rigSoldier = t;
-                    break;
-                }
-            }
-
-            if (rigSoldier == null)
-            {
-                Debug.LogError(
-                    "ApplySkin: No se encontró rig_soldier dentro de " +
-                    _tppModelAnimator.name
-                );
-                return;
-            }
-
-            Dictionary<string, Transform> soldierBones =
-                new Dictionary<string, Transform>();
-
-            foreach (Transform bone in
-                    rigSoldier.GetComponentsInChildren<Transform>(true))
-            {
-                if (!soldierBones.ContainsKey(bone.name))
-                {
-                    soldierBones.Add(bone.name, bone);
-                }
             }
 
             if (tppRenderer == null)
             {
-                Debug.LogError(
-                    "ApplySkin: No se encontró mesh_Soldier."
-                );
-
+                Debug.LogError("ApplySkin: Falta asignar el renderer TPP de destino.");
                 return;
             }
 
-            if (MySkin.Mesh == null)
+            if (_tppRigRoot == null || _tppRootBone == null)
             {
-                Debug.LogError(
-                    "ApplySkin: MySkin.Mesh es null."
-                );
-
+                Debug.LogError("ApplySkin: Faltan asignar las referencias del rig TPP.");
                 return;
             }
 
-            if (MySkin.Renderer == null)
-            {
-                Debug.LogError(
-                    "ApplySkin: MySkin.Renderer no está asignado."
-                );
+            Mesh tppMesh = MySkin.Mesh;
 
+            if (tppMesh == null)
+            {
+                Debug.LogError("ApplySkin: MySkin.Mesh es null.");
                 return;
             }
 
-            Transform[] rendererBones = MySkin.Renderer.bones;
+            if (!ValidateSkinMaterials("TPP", tppMesh, MySkin.Materials))
+                return;
 
-            Transform[] newBones =
-                new Transform[rendererBones.Length];
-
-            bool mappingOK = true;
-
-            for (int i = 0; i < rendererBones.Length; i++)
+            if (!IsWithinRig(_tppRootBone, _tppRigRoot))
             {
-                Transform renderBone = rendererBones[i];
+                Debug.LogError(
+                    "ApplySkin: _tppRootBone no pertenece a _tppRigRoot."
+                );
+                return;
+            }
 
-                // Bone vacío/no utilizado
-                if (renderBone == null)
+            // Preparar el mapeo TPP sin modificar todavía el renderer de destino.
+            if (!TryBuildBoneMap(
+                    "TPP",
+                    MySkin.Renderer,
+                    tppMesh,
+                    _tppRigRoot,
+                    out Transform[] tppBones))
+            {
+                Debug.LogError("ApplySkin: No se pudo validar el mapeo TPP.");
+                return;
+            }
+
+            // FPP es opcional: solo se mapea si existen el destino y la malla.
+            Mesh fppMesh = MySkin.FPP_Mesh;
+
+            bool applyFPP =
+                _fppCharacterMesh != null &&
+                fppMesh != null;
+
+            Transform[] fppBones = null;
+
+            if (applyFPP)
+            {
+                if (_fppRigRoot == null || _fppRootBone == null)
                 {
-                    newBones[i] = null;
-                    continue;
+                    Debug.LogError("ApplySkin: Faltan asignar las referencias del rig FPP.");
+                    return;
                 }
 
-                string boneName = renderBone.name;
-
-                if (soldierBones.TryGetValue(
-                    boneName,
-                    out Transform soldierBone))
+                if (!IsWithinRig(_fppRootBone, _fppRigRoot))
                 {
-                    newBones[i] = soldierBone;
+                    Debug.LogError(
+                        "ApplySkin: _fppRootBone no pertenece a _fppRigRoot."
+                    );
+                    return;
+                }
+
+                if (!ValidateSkinMaterials(
+                        "FPP",
+                        fppMesh,
+                        MySkin.FPP_Materials))
+                {
+                    return;
+                }
+
+                // Importante: usar el renderer de origen FPP, no el Renderer de TPP.
+                if (!TryBuildBoneMap(
+                        "FPP",
+                        MySkin.fppRenderer,
+                        fppMesh,
+                        _fppRigRoot,
+                        out fppBones))
+                {
+                    Debug.LogError("ApplySkin: No se pudo validar el mapeo FPP.");
+                    return;
+                }
+            }
+            else if (fppMesh != null && _fppCharacterMesh == null)
+            {
+                Debug.LogWarning(
+                    "ApplySkin: No hay renderer FPP de destino; se aplicará solamente TPP."
+                );
+            }
+
+            // Ambos mapeos requeridos se validaron. Ahora sí aplicamos los cambios.
+
+            tppRenderer.sharedMesh = tppMesh;
+            tppRenderer.sharedMaterials = MySkin.Materials;
+            tppRenderer.bones = tppBones;
+            tppRenderer.rootBone = _tppRootBone;
+            tppRenderer.updateWhenOffscreen = true;
+
+            _characterMeshes = new SkinnedMeshRenderer[] { tppRenderer };
+
+            if (applyFPP)
+            {
+                _fppCharacterMesh.sharedMesh = fppMesh;
+                _fppCharacterMesh.sharedMaterials = MySkin.FPP_Materials;
+                _fppCharacterMesh.bones = fppBones;
+                _fppCharacterMesh.rootBone = _fppRootBone;
+            }
+        }
+
+                
+        private bool TryBuildBoneMap(
+            string label,
+            SkinnedMeshRenderer sourceRenderer,
+            Mesh mesh,
+            Transform targetRigRoot,
+            out Transform[] mappedBones)
+        {
+            mappedBones = null;
+
+            if (sourceRenderer == null)
+            {
+                Debug.LogError($"[{label}] Falta asignar el renderer de origen.");
+                return false;
+            }
+
+            if (mesh == null)
+            {
+                Debug.LogError($"[{label}] La malla es null.");
+                return false;
+            }
+
+            if (targetRigRoot == null)
+            {
+                Debug.LogError($"[{label}] La raíz del rig de destino es null.");
+                return false;
+            }
+
+            // El renderer de origen debe describir esta misma malla.
+            if (sourceRenderer.sharedMesh != mesh)
+            {
+                Debug.LogError(
+                    $"[{label}] La malla de origen no coincide con la malla asignada. " +
+                    $"Renderer: {sourceRenderer.sharedMesh?.name ?? "null"}, " +
+                    $"Mesh: {mesh.name}."
+                );
+                return false;
+            }
+
+            Transform[] sourceBones = sourceRenderer.bones;
+
+            if (mesh.bindposes.Length != sourceBones.Length)
+            {
+                Debug.LogError(
+                    $"[{label}] Cantidades incompatibles: " +
+                    $"Bindposes={mesh.bindposes.Length}, " +
+                    $"SourceBones={sourceBones.Length}, Mesh={mesh.name}."
+                );
+                return false;
+            }
+
+            bool[] usedBones = new bool[sourceBones.Length];
+
+            if (!CollectUsedBones(mesh, usedBones, label))
+                return false;
+
+            // Crear el índice del rig de destino sin aceptar nombres ambiguos.
+            var targetByName = new Dictionary<string, Transform>();
+            var ambiguousNames = new HashSet<string>();
+
+            Transform[] targetTransforms =
+                targetRigRoot.GetComponentsInChildren<Transform>(true);
+
+            foreach (Transform targetBone in targetTransforms)
+            {
+                string boneName = targetBone.name;
+
+                if (ambiguousNames.Contains(boneName))
+                    continue;
+
+                if (targetByName.ContainsKey(boneName))
+                {
+                    targetByName.Remove(boneName);
+                    ambiguousNames.Add(boneName);
                 }
                 else
                 {
+                    targetByName.Add(boneName, targetBone);
+                }
+            }
 
-                    newBones[i] = null;
+            mappedBones = new Transform[sourceBones.Length];
 
-                    bool used = false;
+            bool mappingOK = true;
 
-                    if (skinMesh != null)
-                    {
-                        BoneWeight[] weights = skinMesh.boneWeights;
+            for (int i = 0; i < sourceBones.Length; i++)
+            {
+                Transform sourceBone = sourceBones[i];
 
-                        foreach (BoneWeight w in weights)
-                        {
-                            if ((w.weight0 > 0 && w.boneIndex0 == i) ||
-                                (w.weight1 > 0 && w.boneIndex1 == i) ||
-                                (w.weight2 > 0 && w.boneIndex2 == i) ||
-                                (w.weight3 > 0 && w.boneIndex3 == i))
-                            {
-                                used = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (used)
+                if (sourceBone == null)
+                {
+                    if (usedBones[i])
                     {
                         Debug.LogError(
-                            "ApplySkin: FALTA bone UTILIZADO: " +
-                            boneName
+                            $"[{label}] El índice {i} está utilizado, " +
+                            "pero su hueso de origen es null."
                         );
 
                         mappingOK = false;
                     }
+
+                    continue;
                 }
+
+                string boneName = sourceBone.name;
+
+                if (ambiguousNames.Contains(boneName))
+                {
+                    if (usedBones[i])
+                    {
+                        Debug.LogError(
+                            $"[{label}] El hueso utilizado '{boneName}' " +
+                            "tiene múltiples coincidencias en el rig de destino."
+                        );
+
+                        mappingOK = false;
+                    }
+
+                    continue;
+                }
+
+                if (targetByName.TryGetValue(
+                        boneName,
+                        out Transform targetBone))
+                {
+                    mappedBones[i] = targetBone;
+                }
+                else if (usedBones[i])
+                {
+                    Debug.LogError(
+                        $"[{label}] Falta el hueso utilizado '{boneName}' " +
+                        $"(índice {i}) en el rig de destino."
+                    );
+
+                    mappingOK = false;
+                }
+                // Si no se utiliza, el hueso puede quedar sin mapear.
+                // Esto permite tolerar huesos terminales adicionales.
             }
 
             if (!mappingOK)
-            {
-                Debug.LogError(
-                    "ApplySkin: Mapping incompleto. " +
-                    "No se aplicó el TPP."
-                );
+                mappedBones = null;
 
-                return;
-            }
-
-            if (MySkin.Materials == null ||
-                MySkin.Materials.Length != skinMesh.subMeshCount)
-            {
-                Debug.LogError(
-                    $"ApplySkin: La skin '{MySkin.SkinName}' tiene " +
-                    $"{skinMesh.subMeshCount} submeshes, pero " +
-                    $"{(MySkin.Materials == null ? 0 : MySkin.Materials.Length)} " +
-                    "materiales asignados."
-                );
-
-                return;
-            }
-
-            tppRenderer.sharedMesh = MySkin.Mesh;
-            tppRenderer.sharedMaterials = MySkin.Materials;
-            tppRenderer.bones = newBones;
-
-            if (soldierBones.TryGetValue(
-                "hips",
-                out Transform hips))
-            {
-                tppRenderer.rootBone = hips;
-            }
-            else
-            {
-                Debug.LogError(
-                    "ApplySkin: No se encontró hips en rig_soldier."
-                );
-
-                return;
-            }
-
-            tppRenderer.updateWhenOffscreen = true;
-
-            _characterMeshes = new SkinnedMeshRenderer[] { tppRenderer };
-            
-            if (_fppCharacterMesh != null)
-            {
-                if (MySkin.FPP_Mesh != null)
-                {
-                    _fppCharacterMesh.sharedMesh = MySkin.FPP_Mesh;
-                }
-
-                if (MySkin.FPP_Materials != null)
-                {
-                    _fppCharacterMesh.sharedMaterials =
-                        MySkin.FPP_Materials;
-                }
-            }
+            return mappingOK;
         }
+
+        
+        private bool CollectUsedBones(Mesh mesh, bool[] usedBones, string label)
+        {
+            BoneWeight[] weights = mesh.boneWeights;
+
+            if (weights.Length != mesh.vertexCount)
+            {
+                Debug.LogError(
+                    $"[{label}] La cantidad de BoneWeights ({weights.Length}) " +
+                    $"no coincide con los vértices ({mesh.vertexCount}) " +
+                    $"en {mesh.name}."
+                );
+
+                return false;
+            }
+
+            bool valid = true;
+            var reportedInvalidIndices = new HashSet<int>();
+
+            for (int vertex = 0; vertex < weights.Length; vertex++)
+            {
+                BoneWeight weight = weights[vertex];
+
+                valid = MarkBoneUsed(
+                    weight.boneIndex0, weight.weight0, usedBones,
+                    reportedInvalidIndices, label, vertex) && valid;
+
+                valid = MarkBoneUsed(
+                    weight.boneIndex1, weight.weight1, usedBones,
+                    reportedInvalidIndices, label, vertex) && valid;
+
+                valid = MarkBoneUsed(
+                    weight.boneIndex2, weight.weight2, usedBones,
+                    reportedInvalidIndices, label, vertex) && valid;
+
+                valid = MarkBoneUsed(
+                    weight.boneIndex3, weight.weight3, usedBones,
+                    reportedInvalidIndices, label, vertex) && valid;
+            }
+
+            return valid;
+        }
+
+        private bool MarkBoneUsed(
+            int index,
+            float weight,
+            bool[] usedBones,
+            HashSet<int> reportedInvalidIndices,
+            string label,
+            int vertex)
+        {
+            if (weight <= 0f)
+                return true;
+
+            if (index < 0 || index >= usedBones.Length)
+            {
+                if (reportedInvalidIndices.Add(index))
+                {
+                    Debug.LogError(
+                        $"[{label}] El vértice {vertex} utiliza el índice " +
+                        $"{index}, fuera del rango de huesos " +
+                        $"0..{usedBones.Length - 1}."
+                    );
+                }
+
+                return false;
+            }
+
+            usedBones[index] = true;
+            return true;
+        }
+
+        private bool ValidateSkinMaterials(
+            string label,
+            Mesh mesh,
+            Material[] materials)
+        {
+            int materialCount = materials == null ? 0 : materials.Length;
+
+            if (materialCount != mesh.subMeshCount)
+            {
+                Debug.LogError(
+                    $"[{label}] La malla '{mesh.name}' tiene " +
+                    $"{mesh.subMeshCount} submeshes, pero " +
+                    $"{materialCount} materiales."
+                );
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsWithinRig(Transform bone, Transform rigRoot)
+        {
+            return bone != null &&
+                rigRoot != null &&
+                (bone == rigRoot || bone.IsChildOf(rigRoot));
+        }
+
+
+
 
         #region callbacks
 

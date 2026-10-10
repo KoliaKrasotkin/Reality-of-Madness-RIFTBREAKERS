@@ -9,6 +9,7 @@ namespace MultiFPS
         public string SkinName;
 
         public SkinnedMeshRenderer Renderer;
+        public SkinnedMeshRenderer fppRenderer;
 
         [Header("Model")]
         public Mesh Mesh;
