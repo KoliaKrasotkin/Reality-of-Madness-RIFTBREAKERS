@@ -27,15 +27,13 @@ namespace MultiFPS.Gameplay.Gamemodes
             if (raid == null ||
                 raid.SelectedPlayerSpawnZone == null)
             {
-                Debug.LogError(
-                    "Asalto: no se encontró la zona inicial del jugador.");
+               
                 return false;
             }
 
             if (spawnPoints == null || spawnPoints.Length < 4)
             {
-                Debug.LogError(
-                    "Asalto: se necesitan al menos 4 puntos candidatos.");
+               
                 return false;
             }
 
@@ -68,9 +66,7 @@ namespace MultiFPS.Gameplay.Gamemodes
 
             if (candidates.Count < 4)
             {
-                Debug.LogError(
-                    "Asalto: no hay 4 puntos suficientemente alejados " +
-                    "de la zona del jugador.");
+                
                 return false;
             }
 
@@ -121,10 +117,7 @@ namespace MultiFPS.Gameplay.Gamemodes
                 }
             }
 
-            Debug.LogError(
-                "Asalto: no se encontraron 4 puntos que respeten " +
-                "las distancias configuradas.");
-
+           
             return false;
         }
         public Transform GetNextEnemySpawnPoint()
@@ -155,7 +148,6 @@ namespace MultiFPS.Gameplay.Gamemodes
 
             if (raid == null)
             {
-                Debug.LogError("Asalto: no se encontró el modo Assault.");
                 return;
             }
 
@@ -163,11 +155,10 @@ namespace MultiFPS.Gameplay.Gamemodes
 
             if (bot == null)
             {
-                Debug.LogError("Asalto: no se pudo crear el bot enemigo.");
                 return;
             }
 
-            Debug.Log("Asalto: bot enemigo solicitado por AssaultEnemySpawner.");
+            
         }
         [ContextMenu("Prueba/Generar un enemigo")]
         private void TestSpawnEnemy()
