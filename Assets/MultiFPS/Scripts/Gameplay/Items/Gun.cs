@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using MultiFPS.Gameplay.Gamemodes;
 
 namespace MultiFPS.Gameplay
 {
@@ -379,6 +380,27 @@ namespace MultiFPS.Gameplay
                 !_isReloading && CurrentAmmo > 0;
         }
 
+        [Command]
+        protected void CmdDamageObjective(
+    NetworkIdentity objectiveIdentity,
+    float damagePercentage)
+        {
+            if (Server_CurrentAmmo <= 0 || objectiveIdentity == null)
+                return;
+
+            AssaultDestructibleObjective objective =
+                objectiveIdentity.GetComponent<AssaultDestructibleObjective>();
+
+            if (objective == null)
+                return;
+
+            damagePercentage = Mathf.Clamp01(damagePercentage);
+
+            int damage = Mathf.FloorToInt(_damage * damagePercentage);
+
+            objective.ServerTakeDamage(damage);
+        }
+
         #region impact
 
         protected void SpawnImpact(Vector3 decalPos, Quaternion decalRot, byte hittedMaterialID) 
@@ -427,6 +449,42 @@ namespace MultiFPS.Gameplay
                         else
                         {
                             ServerDamage(hb._health, hb.part, 1f / (i + 1), i == 0 ? AttackType.hitscan : AttackType.hitscanPenetrated);
+                        }
+                    }
+                    else
+                    {
+                        AssaultDestructibleObjective objective =
+                            go.GetComponentInParent<AssaultDestructibleObjective>();
+
+                        if (objective != null)
+                        {
+                            NetworkIdentity objectiveIdentity =
+                                objective.GetComponent<NetworkIdentity>();
+
+                            if (objectiveIdentity == null)
+                            {
+                                Debug.LogError(
+                                    "Asalto: el objetivo destructible necesita NetworkIdentity."
+                                );
+                            }
+                            else
+                            {
+                                float damagePercentage = 1f / (i + 1);
+
+                                if (MyOwner.BOT)
+                                {
+                                    objective.ServerTakeDamage(
+                                        Mathf.FloorToInt(_damage * damagePercentage)
+                                    );
+                                }
+                                else
+                                {
+                                    CmdDamageObjective(
+                                        objectiveIdentity,
+                                        damagePercentage
+                                    );
+                                }
+                            }
                         }
                     }
                     if (go.layer == 0) //if we hitted solid wall, dont penetrate it further

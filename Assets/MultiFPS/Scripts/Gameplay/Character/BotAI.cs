@@ -16,6 +16,14 @@ namespace MultiFPS.Gameplay
         public bool SwitchItemsRandomly = false;
 
         [SerializeField] float DistanceFromTarget = 34f;
+        [SerializeField] private float assaultDetectionRange = 20f;
+        [SerializeField] private float assaultPatrolRadius = 12f;
+        [SerializeField] private float assaultPatrolWaitTime = 1.5f;
+        [SerializeField] private float assaultPatrolArrivalDistance = 1.2f;
+
+        private Vector3 assaultPatrolDestination;
+        private bool hasAssaultPatrolDestination;
+        private float nextAssaultPatrolTime;
 
         Transform _transform;
         protected Health targetedEnemy;
@@ -233,6 +241,21 @@ namespace MultiFPS.Gameplay
             {
                 targetedEnemy = GetClosestEnemy();
             }
+            // En Asalto, abandonar objetivos que se alejan demasiado.
+            if (_gamemode is Assault && targetedEnemy != null)
+            {
+                float targetDistance = Vector3.Distance(
+                    _transform.position,
+                    targetedEnemy.transform.position
+                );
+
+                if (targetDistance > assaultDetectionRange)
+                {
+                    targetedEnemy = null;
+                    _enemyInSight = false;
+                    _focusEnemyTimer = 0f;
+                }
+            }
 
             // If there is someone to attack
             if (targetedEnemy)
@@ -363,6 +386,10 @@ namespace MultiFPS.Gameplay
                         );
                     }
                 }
+                else if (_gamemode is Assault)
+                {
+                    PatrolAssault();
+                }
                 else
                 {
                     SetTravelDestinationByNavMesh(
@@ -373,6 +400,102 @@ namespace MultiFPS.Gameplay
             }
         }
 
+        void PatrolAssault()
+        {
+            _characterInstance.SetActionKeyCode(ActionCodes.Sprint, false);
+
+            if (hasAssaultPatrolDestination)
+            {
+                float distance = Vector3.Distance(
+                    _transform.position,
+                    assaultPatrolDestination
+                );
+
+                if (distance <= assaultPatrolArrivalDistance)
+                {
+                    hasAssaultPatrolDestination = false;
+                    nextAssaultPatrolTime =
+                        Time.time + assaultPatrolWaitTime;
+
+                    _characterInstance.Input.Movement = Vector2.zero;
+                }
+                else if (_isMoving)
+                {
+                    return;
+                }
+                else
+                {
+                    // Si no pudo completar el recorrido, buscar otro destino.
+                    hasAssaultPatrolDestination = false;
+                    nextAssaultPatrolTime = Time.time + 0.5f;
+                }
+            }
+
+            if (Time.time < nextAssaultPatrolTime)
+            {
+                _characterInstance.Input.Movement = Vector2.zero;
+                return;
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                Vector3 offset =
+                    Random.insideUnitSphere * assaultPatrolRadius;
+
+                offset.y = 0f;
+
+                Vector3 candidatePosition =
+                    _transform.position + offset;
+
+                if (!NavMesh.SamplePosition(
+                    candidatePosition,
+                    out NavMeshHit hit,
+                    3f,
+                    NavMesh.AllAreas))
+                {
+                    continue;
+                }
+
+                if (Vector3.Distance(
+                    _transform.position,
+                    hit.position) <
+                    assaultPatrolArrivalDistance * 2f)
+                {
+                    continue;
+                }
+
+                NavMeshPath patrolPath = new NavMeshPath();
+
+                bool validPath = NavMesh.CalculatePath(
+                    _transform.position,
+                    hit.position,
+                    NavMesh.AllAreas,
+                    patrolPath
+                );
+
+                if (!validPath ||
+                    patrolPath.status != NavMeshPathStatus.PathComplete ||
+                    patrolPath.corners.Length <= 1)
+                {
+                    continue;
+                }
+
+                assaultPatrolDestination = hit.position;
+                hasAssaultPatrolDestination = true;
+
+                SetTravelDestinationByNavMesh(
+                    assaultPatrolDestination,
+                    true,
+                    true
+                );
+
+                return;
+            }
+
+            // Reintentar si no encuentra un destino transitable.
+            nextAssaultPatrolTime = Time.time + 1f;
+            _characterInstance.Input.Movement = Vector2.zero;
+        }
         protected Vector3 FreeSpace(Vector3[] direction, float range)
         {
             Vector3 bestVector = _transform.position;
@@ -626,9 +749,14 @@ namespace MultiFPS.Gameplay
                 )
                 {
                     float distance = Vector3.Distance(
-                        we,
-                        _potentialEnemy.transform.position
+                     we,
+                    _potentialEnemy.transform.position
                     );
+
+                    bool assaultMode = _gamemode is Assault;
+
+                    if (assaultMode && distance > assaultDetectionRange)
+                        continue;
 
                     if (distance < lastDistance)
                     {

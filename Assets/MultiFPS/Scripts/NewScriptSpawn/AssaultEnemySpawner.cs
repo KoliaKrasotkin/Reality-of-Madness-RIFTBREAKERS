@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using System.Collections.Generic;
 
 namespace MultiFPS.Gameplay.Gamemodes
 {
@@ -9,60 +10,164 @@ namespace MultiFPS.Gameplay.Gamemodes
         [SerializeField] private GameObject enemyPrefab;
 
         private int nextSpawnPointIndex = 0;
-        public void SpawnEnemy(GameObject enemyPrefab)
+
+        private Transform[] selectedSpawnPoints;
+
+        [SerializeField] private float minDistanceFromPlayer = 15f;
+        [SerializeField] private float minDistanceBetweenEnemyPoints = 8f;
+
+        private bool SelectEnemySpawnPoints()
         {
+            if (selectedSpawnPoints != null &&
+                selectedSpawnPoints.Length == 4)
+                return true;
 
-            if (!NetworkServer.active || enemyPrefab == null)
-                return;
+            Assault assault = FindFirstObjectByType<Assault>();
 
-            if (spawnPoints == null || spawnPoints.Length == 0)
-            {
-                Debug.LogError("Asalto: no hay puntos de aparición asignados.");
-                return;
-            }
-
-            Transform spawnPoint = spawnPoints[nextSpawnPointIndex];
-
-            nextSpawnPointIndex = (nextSpawnPointIndex + 1) % spawnPoints.Length;
-            GameObject enemy = Instantiate(
-                enemyPrefab,
-                spawnPoint.position,
-                spawnPoint.rotation
-            );
-
-            NetworkIdentity networkIdentity = enemy.GetComponent<NetworkIdentity>();
-
-            if (networkIdentity == null)
+            if (assault == null ||
+                assault.SelectedPlayerSpawnZone == null)
             {
                 Debug.LogError(
-                    "Asalto: el prefab no tiene NetworkIdentity: " + enemyPrefab.name
-                );
+                    "Asalto: no se encontró la zona inicial del jugador.");
+                return false;
+            }
 
-                Destroy(enemy);
+            if (spawnPoints == null || spawnPoints.Length < 4)
+            {
+                Debug.LogError(
+                    "Asalto: se necesitan al menos 4 puntos candidatos.");
+                return false;
+            }
+
+            Transform playerZone = assault.SelectedPlayerSpawnZone;
+            List<Transform> candidates = new List<Transform>();
+
+            foreach (Transform point in spawnPoints)
+            {
+                if (point == null)
+                    continue;
+
+                bool tooCloseToPlayer = false;
+
+                for (int i = 0; i < playerZone.childCount; i++)
+                {
+                    Transform playerPoint = playerZone.GetChild(i);
+
+                    if (Vector3.Distance(
+                        point.position, playerPoint.position)
+                        < minDistanceFromPlayer)
+                    {
+                        tooCloseToPlayer = true;
+                        break;
+                    }
+                }
+
+                if (!tooCloseToPlayer)
+                    candidates.Add(point);
+            }
+
+            if (candidates.Count < 4)
+            {
+                Debug.LogError(
+                    "Asalto: no hay 4 puntos suficientemente alejados " +
+                    "de la zona del jugador.");
+                return false;
+            }
+
+            for (int attempt = 0; attempt < 100; attempt++)
+            {
+                List<Transform> shuffled = new List<Transform>(candidates);
+
+                for (int i = shuffled.Count - 1; i > 0; i--)
+                {
+                    int j = Random.Range(0, i + 1);
+
+                    Transform temp = shuffled[i];
+                    shuffled[i] = shuffled[j];
+                    shuffled[j] = temp;
+                }
+
+                List<Transform> selected = new List<Transform>();
+
+                foreach (Transform point in shuffled)
+                {
+                    bool tooCloseToAnotherEnemy = false;
+
+                    foreach (Transform chosen in selected)
+                    {
+                        if (Vector3.Distance(
+                            point.position, chosen.position)
+                            < minDistanceBetweenEnemyPoints)
+                        {
+                            tooCloseToAnotherEnemy = true;
+                            break;
+                        }
+                    }
+
+                    if (!tooCloseToAnotherEnemy)
+                        selected.Add(point);
+
+                    if (selected.Count == 4)
+                        break;
+                }
+
+                if (selected.Count == 4)
+                {
+
+                    selectedSpawnPoints = selected.ToArray();
+                    nextSpawnPointIndex = 0;
+
+                    return true;
+                }
+            }
+
+            Debug.LogError(
+                "Asalto: no se encontraron 4 puntos que respeten " +
+                "las distancias configuradas.");
+
+            return false;
+        }
+        public Transform GetNextEnemySpawnPoint()
+        {
+            if ((selectedSpawnPoints == null ||
+                 selectedSpawnPoints.Length != 4) &&
+                !SelectEnemySpawnPoints())
+            {
+                return null;
+            }
+
+            Transform spawnPoint = selectedSpawnPoints[nextSpawnPointIndex];
+
+            nextSpawnPointIndex =
+                (nextSpawnPointIndex + 1) % selectedSpawnPoints.Length;
+
+            return spawnPoint;
+        }
+        public void SpawnEnemy(GameObject enemyPrefab)
+        {
+            if (!NetworkServer.active)
+                return;
+
+            if (!SelectEnemySpawnPoints())
+                return;
+
+            Assault assault = FindFirstObjectByType<Assault>();
+
+            if (assault == null)
+            {
+                Debug.LogError("Asalto: no se encontró el modo Assault.");
                 return;
             }
 
-            NetworkServer.Spawn(enemy);
-            Health enemyHealth = enemy.GetComponent<Health>();
+            PlayerInstance bot = assault.SpawnBot(1);
 
-            if (enemyHealth != null)
+            if (bot == null)
             {
-                AssaultWaveManager waveManager =
-                    FindFirstObjectByType<AssaultWaveManager>();
-
-                if (waveManager != null)
-                    waveManager.RegisterEnemy(enemyHealth);
-                else
-                    Debug.LogError("Asalto: no se encontró AssaultWaveManager.");
-            }
-            else
-            {
-                Debug.LogError("Asalto: el enemigo no tiene Health en el objeto raíz.");
+                Debug.LogError("Asalto: no se pudo crear el bot enemigo.");
+                return;
             }
 
-            Debug.Log("Asalto: enemigo creado: " + enemyPrefab.name);
-
-
+            Debug.Log("Asalto: bot enemigo solicitado por AssaultEnemySpawner.");
         }
         [ContextMenu("Prueba/Generar un enemigo")]
         private void TestSpawnEnemy()

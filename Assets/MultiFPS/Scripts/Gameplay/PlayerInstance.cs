@@ -198,6 +198,8 @@ namespace MultiFPS.Gameplay
         public void Server_SpawnCharacter(Transform spawnPoint) 
         {
             if (Team == -1) return; //dont spawn character if we are not assigned to a team
+            
+
 
             if (CurrentlyControlledCharacter != null && CurrentlyControlledCharacter != MyCharacter) 
             {
@@ -240,6 +242,18 @@ namespace MultiFPS.Gameplay
 
                 MyCharacter.Health.ServerResurrect();
             }
+            if (BOT && isServer && GameManager.Gamemode != null)
+            {
+                MultiFPS.Gameplay.Gamemodes.Assault assault =
+                    GameManager.Gamemode.GetComponent<
+                        MultiFPS.Gameplay.Gamemodes.Assault>();
+
+                if (assault != null && assault.WaveManager != null)
+                {
+                    assault.WaveManager.RegisterEnemy(MyCharacter.Health);
+                }
+            }
+
             MyCharacter.BlockCharacter(false);
             CurrentlyControlledCharacter = MyCharacter;
 

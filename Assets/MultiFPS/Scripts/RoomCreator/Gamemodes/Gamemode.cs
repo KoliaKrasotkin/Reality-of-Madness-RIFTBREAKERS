@@ -529,12 +529,16 @@ namespace MultiFPS.Gameplay.Gamemodes
         #region bots management
         public void FillEmptySlotsWithBots()
         {
-            List<PlayerInstance> players = new (GameManager.Players);
+            // Assault uses its own enemy wave system.
+            if (Indicator == Gamemodes.Assault)
+                return;
+
+            List<PlayerInstance> players = new(GameManager.Players);
             int neededBots = RoomSetup.Properties.P_MaxPlayers - players.Count;
 
             for (int i = 0; i < neededBots; i++)
             {
-                SpawnBot(Indicator == Gamemodes.Assault ? 1 : 0);
+                SpawnBot(0);
             }
         }
 
