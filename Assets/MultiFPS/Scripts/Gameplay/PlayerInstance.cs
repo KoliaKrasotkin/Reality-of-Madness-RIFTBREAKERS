@@ -244,13 +244,13 @@ namespace MultiFPS.Gameplay
             }
             if (BOT && isServer && GameManager.Gamemode != null)
             {
-                MultiFPS.Gameplay.Gamemodes.Raid assault =
+                MultiFPS.Gameplay.Gamemodes.Raid raid =
                     GameManager.Gamemode.GetComponent<
                         MultiFPS.Gameplay.Gamemodes.Raid>();
 
-                if (assault != null && assault.WaveManager != null)
+                if (raid != null && raid.WaveManager != null)
                 {
-                    assault.WaveManager.RegisterEnemy(MyCharacter.Health);
+                    raid.WaveManager.RegisterEnemy(MyCharacter.Health);
                 }
             }
 

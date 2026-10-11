@@ -529,7 +529,6 @@ namespace MultiFPS.Gameplay.Gamemodes
         #region bots management
         public void FillEmptySlotsWithBots()
         {
-            // Assault uses its own enemy wave system.
             if (Indicator == Gamemodes.Raid)
                 return;
 

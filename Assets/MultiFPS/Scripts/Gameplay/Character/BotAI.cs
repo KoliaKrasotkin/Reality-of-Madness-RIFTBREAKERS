@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using MultiFPS.Gameplay.Gamemodes;
+using UnityEngine.Serialization;
 
 namespace MultiFPS.Gameplay
 {
@@ -16,14 +17,18 @@ namespace MultiFPS.Gameplay
         public bool SwitchItemsRandomly = false;
 
         [SerializeField] float DistanceFromTarget = 34f;
-        [SerializeField] private float assaultDetectionRange = 20f;
-        [SerializeField] private float assaultPatrolRadius = 12f;
-        [SerializeField] private float assaultPatrolWaitTime = 1.5f;
-        [SerializeField] private float assaultPatrolArrivalDistance = 1.2f;
+        [FormerlySerializedAs("assaultDetectionRange")]
+        [SerializeField] private float raidDetectionRange = 20f;
+        [FormerlySerializedAs("assaultPatrolRadius")]
+        [SerializeField] private float raidPatrolRadius = 12f;
+        [FormerlySerializedAs("assaultPatrolWaitTime")]
+        [SerializeField] private float raidPatrolWaitTime = 1.5f;
+        [FormerlySerializedAs("assaultPatrolArrivalDistance")]
+        [SerializeField] private float raidPatrolArrivalDistance = 1.2f;
 
-        private Vector3 assaultPatrolDestination;
-        private bool hasAssaultPatrolDestination;
-        private float nextAssaultPatrolTime;
+        private Vector3 raidPatrolDestination;
+        private bool hasRaidPatrolDestination;
+        private float nextRaidPatrolTime;
 
         Transform _transform;
         protected Health targetedEnemy;
@@ -249,7 +254,7 @@ namespace MultiFPS.Gameplay
                     targetedEnemy.transform.position
                 );
 
-                if (targetDistance > assaultDetectionRange)
+                if (targetDistance > raidDetectionRange)
                 {
                     targetedEnemy = null;
                     _enemyInSight = false;
@@ -388,7 +393,7 @@ namespace MultiFPS.Gameplay
                 }
                 else if (_gamemode is Raid)
                 {
-                    PatrolAssault();
+                    PatrolRaid();
                 }
                 else
                 {
@@ -400,22 +405,22 @@ namespace MultiFPS.Gameplay
             }
         }
 
-        void PatrolAssault()
+        void PatrolRaid()
         {
             _characterInstance.SetActionKeyCode(ActionCodes.Sprint, false);
 
-            if (hasAssaultPatrolDestination)
+            if (hasRaidPatrolDestination)
             {
                 float distance = Vector3.Distance(
                     _transform.position,
-                    assaultPatrolDestination
+                    raidPatrolDestination
                 );
 
-                if (distance <= assaultPatrolArrivalDistance)
+                if (distance <= raidPatrolArrivalDistance)
                 {
-                    hasAssaultPatrolDestination = false;
-                    nextAssaultPatrolTime =
-                        Time.time + assaultPatrolWaitTime;
+                    hasRaidPatrolDestination = false;
+                    nextRaidPatrolTime =
+                        Time.time + raidPatrolWaitTime;
 
                     _characterInstance.Input.Movement = Vector2.zero;
                 }
@@ -426,12 +431,12 @@ namespace MultiFPS.Gameplay
                 else
                 {
                     // Si no pudo completar el recorrido, buscar otro destino.
-                    hasAssaultPatrolDestination = false;
-                    nextAssaultPatrolTime = Time.time + 0.5f;
+                    hasRaidPatrolDestination = false;
+                    nextRaidPatrolTime = Time.time + 0.5f;
                 }
             }
 
-            if (Time.time < nextAssaultPatrolTime)
+            if (Time.time < nextRaidPatrolTime)
             {
                 _characterInstance.Input.Movement = Vector2.zero;
                 return;
@@ -440,7 +445,7 @@ namespace MultiFPS.Gameplay
             for (int i = 0; i < 8; i++)
             {
                 Vector3 offset =
-                    Random.insideUnitSphere * assaultPatrolRadius;
+                    Random.insideUnitSphere * raidPatrolRadius;
 
                 offset.y = 0f;
 
@@ -459,7 +464,7 @@ namespace MultiFPS.Gameplay
                 if (Vector3.Distance(
                     _transform.position,
                     hit.position) <
-                    assaultPatrolArrivalDistance * 2f)
+                    raidPatrolArrivalDistance * 2f)
                 {
                     continue;
                 }
@@ -480,11 +485,11 @@ namespace MultiFPS.Gameplay
                     continue;
                 }
 
-                assaultPatrolDestination = hit.position;
-                hasAssaultPatrolDestination = true;
+                raidPatrolDestination = hit.position;
+                hasRaidPatrolDestination = true;
 
                 SetTravelDestinationByNavMesh(
-                    assaultPatrolDestination,
+                    raidPatrolDestination,
                     true,
                     true
                 );
@@ -493,7 +498,7 @@ namespace MultiFPS.Gameplay
             }
 
             // Reintentar si no encuentra un destino transitable.
-            nextAssaultPatrolTime = Time.time + 1f;
+            nextRaidPatrolTime = Time.time + 1f;
             _characterInstance.Input.Movement = Vector2.zero;
         }
         protected Vector3 FreeSpace(Vector3[] direction, float range)
@@ -753,9 +758,9 @@ namespace MultiFPS.Gameplay
                     _potentialEnemy.transform.position
                     );
 
-                    bool assaultMode = _gamemode is Raid;
+                    bool raidMode = _gamemode is Raid;
 
-                    if (assaultMode && distance > assaultDetectionRange)
+                    if (raidMode && distance > raidDetectionRange)
                         continue;
 
                     if (distance < lastDistance)

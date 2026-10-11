@@ -30,11 +30,7 @@ namespace MultiFPS.Gameplay.Gamemodes
             LetPlayersSpawnOnTheirOwn = true;
 
             WaveManager = GetComponent<RaidWaveManager>();
-
-            if (WaveManager == null)
-            {
-                Debug.LogError("Asalto: falta AssaultWaveManager en el objeto del modo Assault.");
-            }
+                       
         }
 
         public override void PlayerSpawnCharacterRequest(PlayerInstance playerInstance)
@@ -46,7 +42,6 @@ namespace MultiFPS.Gameplay.Gamemodes
 
                 if (enemySpawner == null)
                 {
-                    Debug.LogError("Asalto: no se encontró AssaultEnemySpawner.");
                     return;
                 }
 
@@ -54,7 +49,6 @@ namespace MultiFPS.Gameplay.Gamemodes
 
                 if (enemySpawnPoint == null)
                 {
-                    Debug.LogError("Asalto: no se pudo obtener un punto para el bot.");
                     return;
                 }
 
@@ -65,7 +59,6 @@ namespace MultiFPS.Gameplay.Gamemodes
             {
                 if (playerSpawnZones == null || playerSpawnZones.Length == 0)
                 {
-                    Debug.LogError("Asalto: no hay zonas de aparición asignadas.");
 
                     base.PlayerSpawnCharacterRequest(playerInstance);
                     return;
@@ -76,14 +69,11 @@ namespace MultiFPS.Gameplay.Gamemodes
 
                 nextPlayerSpawnPointIndex = 0;
 
-                Debug.Log("Asalto: zona inicial seleccionada: "
-                    + selectedPlayerSpawnZone.name);
             }
 
             if (selectedPlayerSpawnZone == null ||
                 selectedPlayerSpawnZone.childCount == 0)
             {
-                Debug.LogError("Asalto: la zona seleccionada no tiene puntos.");
                 base.PlayerSpawnCharacterRequest(playerInstance);
                 return;
             }
@@ -104,14 +94,12 @@ namespace MultiFPS.Gameplay.Gamemodes
 
             if (objectivePrefab == null)
             {
-                Debug.LogError("Asalto: falta asignar el prefab del objetivo.");
                 return;
             }
 
             if (objectiveSpawnPoints == null ||
                 objectiveSpawnPoints.Length == 0)
             {
-                Debug.LogError("Asalto: no hay puntos para el objetivo.");
                 return;
             }
 
@@ -125,7 +113,6 @@ namespace MultiFPS.Gameplay.Gamemodes
 
             if (validPoints.Count == 0)
             {
-                Debug.LogError("Asalto: todos los puntos del objetivo son nulos.");
                 return;
             }
 
@@ -140,9 +127,7 @@ namespace MultiFPS.Gameplay.Gamemodes
 
             if (objective.GetComponent<NetworkIdentity>() == null)
             {
-                Debug.LogError(
-                    "Asalto: el prefab del objetivo necesita NetworkIdentity en la raíz."
-                );
+                
 
                 Destroy(objective);
                 return;
@@ -151,9 +136,7 @@ namespace MultiFPS.Gameplay.Gamemodes
             NetworkServer.Spawn(objective);
             objectiveSpawned = true;
 
-            Debug.Log(
-                "Asalto: objetivo generado en " + selectedPoint.name
-            );
+            
         }
         public override void OnStartServer()
         {
@@ -162,12 +145,12 @@ namespace MultiFPS.Gameplay.Gamemodes
 
             if (WaveManager == null)
             {
-                Debug.LogError("Asalto: no se puede iniciar, falta AssaultWaveManager.");
+                
                 return;
             }
 
-            Debug.Log("Asalto: servidor iniciado y administrador de oleadas encontrado.");
-            WaveManager.StartAssault();
+            
+            WaveManager.StartRaid();
         }
 
 

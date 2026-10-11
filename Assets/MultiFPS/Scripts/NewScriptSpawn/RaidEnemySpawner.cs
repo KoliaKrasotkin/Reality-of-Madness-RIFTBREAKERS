@@ -22,10 +22,10 @@ namespace MultiFPS.Gameplay.Gamemodes
                 selectedSpawnPoints.Length == 4)
                 return true;
 
-            Raid assault = FindFirstObjectByType<Raid>();
+            Raid raid = FindFirstObjectByType<Raid>();
 
-            if (assault == null ||
-                assault.SelectedPlayerSpawnZone == null)
+            if (raid == null ||
+                raid.SelectedPlayerSpawnZone == null)
             {
                 Debug.LogError(
                     "Asalto: no se encontró la zona inicial del jugador.");
@@ -39,7 +39,7 @@ namespace MultiFPS.Gameplay.Gamemodes
                 return false;
             }
 
-            Transform playerZone = assault.SelectedPlayerSpawnZone;
+            Transform playerZone = raid.SelectedPlayerSpawnZone;
             List<Transform> candidates = new List<Transform>();
 
             foreach (Transform point in spawnPoints)
@@ -151,15 +151,15 @@ namespace MultiFPS.Gameplay.Gamemodes
             if (!SelectEnemySpawnPoints())
                 return;
 
-            Raid assault = FindFirstObjectByType<Raid>();
+            Raid raid = FindFirstObjectByType<Raid>();
 
-            if (assault == null)
+            if (raid == null)
             {
                 Debug.LogError("Asalto: no se encontró el modo Assault.");
                 return;
             }
 
-            PlayerInstance bot = assault.SpawnBot(1);
+            PlayerInstance bot = raid.SpawnBot(1);
 
             if (bot == null)
             {

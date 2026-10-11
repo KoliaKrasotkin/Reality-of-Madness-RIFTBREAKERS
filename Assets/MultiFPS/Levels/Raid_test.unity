@@ -461,7 +461,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 546682828}
-  - component: {fileID: 546682827}
+  - component: {fileID: 546682829}
   m_Layer: 0
   m_Name: AssaultEnemySpawner
   m_TagString: Untagged
@@ -469,31 +469,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &546682827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 546682826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dc8dadfb1ee65a438d5965fd7959ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.Gamemodes.AssaultEnemySpawner
-  spawnPoints:
-  - {fileID: 178507232}
-  - {fileID: 1534885862}
-  - {fileID: 1758990675}
-  - {fileID: 491898087}
-  - {fileID: 2025138019}
-  - {fileID: 439694425}
-  - {fileID: 967416485}
-  - {fileID: 363726320}
-  enemyPrefab: {fileID: 2382563002283882899, guid: cd38c8bd09efe494f91412b5ab331529,
-    type: 3}
-  minDistanceFromPlayer: 15
-  minDistanceBetweenEnemyPoints: 8
 --- !u!4 &546682828
 Transform:
   m_ObjectHideFlags: 0
@@ -509,6 +484,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &546682829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546682826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 442f9c4df6b5e3245b8de575c14ec808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.Gamemodes.RaidEnemySpawner
+  spawnPoints:
+  - {fileID: 178507232}
+  - {fileID: 1534885862}
+  - {fileID: 1758990675}
+  - {fileID: 491898087}
+  - {fileID: 2025138019}
+  - {fileID: 439694425}
+  - {fileID: 967416485}
+  - {fileID: 363726320}
+  enemyPrefab: {fileID: 0}
+  minDistanceFromPlayer: 15
+  minDistanceBetweenEnemyPoints: 8
 --- !u!1 &726201513
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +856,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1220939861}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78d074efb477364891d192f665a9b0f, type: 3}
+  m_Script: {fileID: 11500000, guid: f7736bf59153f3c408d67a8f815c06a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.Gamemodes.Assault
   syncDirection: 0

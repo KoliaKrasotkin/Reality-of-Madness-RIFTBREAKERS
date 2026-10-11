@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class RaidWaveManager : NetworkBehaviour
 {
-    [SerializeField] private AssaultWaveData[] waves;
+    [SerializeField] private RaidWaveData[] waves;
     private MultiFPS.Gameplay.Gamemodes.RaidEnemySpawner enemySpawner;
 
     private int enemiesAlive = 0;
@@ -56,7 +56,7 @@ public class RaidWaveManager : NetworkBehaviour
         Debug.Log("Asalto: enemigos vivos = " + enemiesAlive);
     }
 
-    public void StartAssault()
+    public void StartRaid()
     {
         if (!isServer)
             return;
@@ -110,14 +110,14 @@ public class RaidWaveManager : NetworkBehaviour
         StartWave(nextWaveIndex);
     }
 
-    private IEnumerator SpawnWaveCoroutine(AssaultWaveData wave)
+    private IEnumerator SpawnWaveCoroutine(RaidWaveData wave)
     {
         yield return new WaitForSeconds(wave.timeBeforeWave);
         Debug.Log("Asalto: terminó la espera de la oleada " + wave.name);
         Debug.Log("Asalto: grupos configurados = " +
          (wave.enemies == null ? "NULL" : wave.enemies.Count.ToString()));
 
-        foreach (AssaultEnemyData enemyData in wave.enemies)
+        foreach (RaidEnemyData enemyData in wave.enemies)
         {
             Debug.Log("Asalto: oleada " + wave.name
     + " | prefab = " + (enemyData.enemyPrefab != null
