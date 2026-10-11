@@ -20,6 +20,9 @@ namespace ROM.Difficulty
 
         [SerializeField] ThreatLevelCatalog _catalog;
 
+        [Tooltip("Loguea en consola cada cambio de nivel activo y de qué lado se aplicó. Sirve para verificar el sync; se puede apagar cuando el sistema esté estable.")]
+        [SerializeField] bool _logChanges = true;
+
         [Tooltip("Nivel con el que arranca el servidor. Provisional: cuando exista la selección de incursión en el hub, el nivel va a llegar desde ahí.")]
         [SerializeField] ThreatLevel _startingLevel = ThreatLevel.I;
 
@@ -117,9 +120,33 @@ namespace ROM.Difficulty
             ActiveLevel = level;
             Active = definition;
 
+            if (_logChanges)
+            {
+                string side = isServer ? (isClient ? "host" : "servidor") : "cliente";
+
+                Debug.Log($"[ROM] Threat Level activo en {side}: {definition.DisplayName} " +
+                          $"(bleed-out {definition.BleedOutSeconds}s, revive {definition.ReviveHoldSeconds}s " +
+                          $"al {definition.ReviveHealthPercent}%, revividas {DescribeBudget(definition)})", this);
+            }
+
             OnActiveLevelChanged?.Invoke(ActiveLevel, Active);
 
             return true;
+        }
+
+        static string DescribeBudget(ThreatLevelDefinition definition)
+        {
+            switch (definition.BudgetMode)
+            {
+                case ReviveBudgetMode.Unlimited:
+                    return "ilimitadas";
+                case ReviveBudgetMode.SquadPool:
+                    return $"pool de escuadra de {definition.SquadReviveBudget}";
+                case ReviveBudgetMode.PerPlayer:
+                    return $"{definition.RevivesPerPlayer} por jugador (modo todavía no implementado)";
+                default:
+                    return "modo desconocido";
+            }
         }
     }
 }
