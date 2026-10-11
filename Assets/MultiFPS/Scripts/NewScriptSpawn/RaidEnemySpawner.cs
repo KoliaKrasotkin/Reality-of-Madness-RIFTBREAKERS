@@ -141,25 +141,65 @@ namespace MultiFPS.Gameplay.Gamemodes
             if (!NetworkServer.active)
                 return;
 
-            if (!SelectEnemySpawnPoints())
-                return;
-
-            Raid raid = FindFirstObjectByType<Raid>();
-
-            if (raid == null)
+            if (enemyPrefab == null)
             {
+                Debug.LogError("Raid: falta asignar el prefab de la oleada.");
                 return;
             }
 
-            PlayerInstance bot = raid.SpawnBot(1);
-
-            if (bot == null)
+            if (enemyPrefab.GetComponent<NetworkIdentity>() == null)
             {
+                Debug.LogError(
+                    $"Raid: {enemyPrefab.name} necesita NetworkIdentity en la raíz."
+                );
                 return;
             }
 
-            
+            Health prefabHealth = enemyPrefab.GetComponentInChildren<Health>(true);
+
+            if (prefabHealth == null)
+            {
+                Debug.LogError(
+                    $"Raid: {enemyPrefab.name} no contiene un componente Health."
+                );
+                return;
+            }
+
+            RaidWaveManager waveManager =
+                FindFirstObjectByType<RaidWaveManager>();
+
+            if (waveManager == null)
+            {
+                Debug.LogError("Raid: no se encontró RaidWaveManager.");
+                return;
+            }
+
+            Transform spawnPoint = GetNextEnemySpawnPoint();
+
+            if (spawnPoint == null)
+                return;
+
+            GameObject enemy = Instantiate(
+                enemyPrefab,
+                spawnPoint.position,
+                spawnPoint.rotation
+            );
+
+            NetworkServer.Spawn(enemy);
+
+            Health enemyHealth = enemy.GetComponentInChildren<Health>(true);
+
+            if (enemyHealth == null)
+            {
+                NetworkServer.Destroy(enemy);
+                return;
+            }
+
+            waveManager.RegisterEnemy(enemyHealth);
         }
+
+
+        
         [ContextMenu("Prueba/Generar un enemigo")]
         private void TestSpawnEnemy()
         {

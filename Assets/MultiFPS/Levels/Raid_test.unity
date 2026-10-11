@@ -505,7 +505,8 @@ MonoBehaviour:
   - {fileID: 439694425}
   - {fileID: 967416485}
   - {fileID: 363726320}
-  enemyPrefab: {fileID: 0}
+  enemyPrefab: {fileID: 2382563002283882899, guid: cd38c8bd09efe494f91412b5ab331529,
+    type: 3}
   minDistanceFromPlayer: 15
   minDistanceBetweenEnemyPoints: 8
 --- !u!1 &726201513
@@ -899,6 +900,7 @@ MonoBehaviour:
   waves:
   - {fileID: 11400000, guid: fb13492869cf7fa45a6ae4deb237fa2f, type: 2}
   - {fileID: 11400000, guid: 1077cea5e0e243c4cbccd9266e78c46a, type: 2}
+  enableEnemyWaves: 1
 --- !u!1 &1328200902
 GameObject:
   m_ObjectHideFlags: 0

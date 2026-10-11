@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class RaidWaveManager : NetworkBehaviour
 {
     [SerializeField] private RaidWaveData[] waves;
+    [SerializeField] private bool enableEnemyWaves = true;
     private MultiFPS.Gameplay.Gamemodes.RaidEnemySpawner enemySpawner;
 
     private int enemiesAlive = 0;
@@ -59,6 +60,8 @@ public class RaidWaveManager : NetworkBehaviour
     public void StartRaid()
     {
         if (!isServer)
+            return;
+        if (!enableEnemyWaves)
             return;
 
         if (waves == null || waves.Length == 0)

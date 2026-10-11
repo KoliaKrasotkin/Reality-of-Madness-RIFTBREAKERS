@@ -342,6 +342,7 @@ GameObject:
   - component: {fileID: -1024173836351892984}
   - component: {fileID: 657671019429238111}
   - component: {fileID: -9103784586693039298}
+  - component: {fileID: 8293247249561774943}
   m_Layer: 0
   m_Name: MultiFPS_RaidEnemy
   m_TagString: Untagged
@@ -659,6 +660,10 @@ MonoBehaviour:
   waitForFireTime: 1
   SwitchItemsRandomly: 0
   DistanceFromTarget: 999
+  raidDetectionRange: 20
+  raidPatrolRadius: 12
+  raidPatrolWaitTime: 1.5
+  raidPatrolArrivalDistance: 1.2
 --- !u!82 &-9103784586693039298
 AudioSource:
   m_ObjectHideFlags: 0
@@ -757,6 +762,34 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8293247249561774943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382563002283882899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b09273a7c97d7e9429fd11d83dec2346, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.PlayerInstance
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  PlayerInfo:
+    Username: 
+    CharacterSkinID: 0
+    SelectedItemSkins: 
+    Lodout: 
+  Kills: 0
+  Deaths: 0
+  Assists: 0
+  SpawnCooldown: 1
+  MyCharacter: {fileID: 0}
+  CurrentlyControlledCharacter: {fileID: 0}
+  Latency: 0
+  AlwaysReinstantiateOnRespawn: 0
 --- !u!1 &4997286635398803933
 GameObject:
   m_ObjectHideFlags: 0
