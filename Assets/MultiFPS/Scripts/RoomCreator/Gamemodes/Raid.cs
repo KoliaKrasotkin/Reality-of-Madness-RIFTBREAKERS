@@ -36,6 +36,9 @@ namespace MultiFPS.Gameplay.Gamemodes
 
         public override void PlayerSpawnCharacterRequest(PlayerInstance playerInstance)
         {
+            if (playerInstance == null)
+                return;
+
             if (playerCheckpoints.TryGetValue(playerInstance, out Transform checkpoint)
                 && checkpoint != null)
             {

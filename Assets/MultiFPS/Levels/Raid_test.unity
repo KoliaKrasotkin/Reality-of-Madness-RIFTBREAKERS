@@ -551,8 +551,8 @@ MonoBehaviour:
   _teams:
   - PlayerInstances: []
   - PlayerInstances: []
-  defaultSpawnPoints: {fileID: 0}
-  playerSpawn: {fileID: 0}
+  defaultSpawnPoints: {fileID: 1273160403}
+  playerSpawn: {fileID: 3163936905956036556}
   spawnpointsContainer: {fileID: 1273160403}
 --- !u!114 &1220939868
 MonoBehaviour:
@@ -2039,6 +2039,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7aca6ae5e102889438742ba244d75b11, type: 3}
+--- !u!114 &3163936905956036556 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5304136071800962965, guid: 7aca6ae5e102889438742ba244d75b11,
+    type: 3}
+  m_PrefabInstance: {fileID: 3163936905956036555}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cfacdb4e3a417242b687f1d83cd0faa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.Gamemodes.PlayerSpawn
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
