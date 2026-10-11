@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MultiFPS.Gameplay.Gamemodes
 {
-    public class AssaultEnemySpawner : MonoBehaviour
+    public class RaidEnemySpawner : MonoBehaviour
     {
         [SerializeField] private Transform[] spawnPoints;
         [SerializeField] private GameObject enemyPrefab;
@@ -22,7 +22,7 @@ namespace MultiFPS.Gameplay.Gamemodes
                 selectedSpawnPoints.Length == 4)
                 return true;
 
-            Assault assault = FindFirstObjectByType<Assault>();
+            Raid assault = FindFirstObjectByType<Raid>();
 
             if (assault == null ||
                 assault.SelectedPlayerSpawnZone == null)
@@ -151,7 +151,7 @@ namespace MultiFPS.Gameplay.Gamemodes
             if (!SelectEnemySpawnPoints())
                 return;
 
-            Assault assault = FindFirstObjectByType<Assault>();
+            Raid assault = FindFirstObjectByType<Raid>();
 
             if (assault == null)
             {

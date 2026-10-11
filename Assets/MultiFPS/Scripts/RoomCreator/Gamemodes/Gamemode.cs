@@ -530,7 +530,7 @@ namespace MultiFPS.Gameplay.Gamemodes
         public void FillEmptySlotsWithBots()
         {
             // Assault uses its own enemy wave system.
-            if (Indicator == Gamemodes.Assault)
+            if (Indicator == Gamemodes.Raid)
                 return;
 
             List<PlayerInstance> players = new(GameManager.Players);
@@ -609,6 +609,6 @@ namespace MultiFPS.Gameplay.Gamemodes
         TeamDeathmatch = 1,
         TeamEliminations = 2,
         Defuse = 3,
-        Assault =4,
+        Raid =4,
     }
 }

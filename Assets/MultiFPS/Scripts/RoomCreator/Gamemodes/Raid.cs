@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace MultiFPS.Gameplay.Gamemodes
 {
-    [AddComponentMenu("MultiFPS/gamemodes/Assault")]
-    public class Assault : Gamemode 
+    [AddComponentMenu("MultiFPS/gamemodes/Raid")]
+    public class Raid : Gamemode 
     {
-        public AssaultWaveManager WaveManager { get; private set; }
+        public RaidWaveManager WaveManager { get; private set; }
         [SerializeField] private Transform[] playerSpawnZones;
 
         private Transform selectedPlayerSpawnZone;
@@ -24,12 +24,12 @@ namespace MultiFPS.Gameplay.Gamemodes
            base.Awake();
 
 
-            Indicator = Gamemodes.Assault;
+            Indicator = Gamemodes.Raid;
             FFA = false;
             FriendyFire = false;
             LetPlayersSpawnOnTheirOwn = true;
 
-            WaveManager = GetComponent<AssaultWaveManager>();
+            WaveManager = GetComponent<RaidWaveManager>();
 
             if (WaveManager == null)
             {
@@ -41,8 +41,8 @@ namespace MultiFPS.Gameplay.Gamemodes
         {
             if (playerInstance.BOT)
             {
-                AssaultEnemySpawner enemySpawner =
-                    FindFirstObjectByType<AssaultEnemySpawner>();
+                RaidEnemySpawner enemySpawner =
+                    FindFirstObjectByType<RaidEnemySpawner>();
 
                 if (enemySpawner == null)
                 {

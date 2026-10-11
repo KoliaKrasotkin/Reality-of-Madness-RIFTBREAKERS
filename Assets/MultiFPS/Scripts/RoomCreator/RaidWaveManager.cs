@@ -4,10 +4,10 @@ using Mirror;
 using MultiFPS.Gameplay;
 using System.Collections.Generic;
 
-public class AssaultWaveManager : NetworkBehaviour
+public class RaidWaveManager : NetworkBehaviour
 {
     [SerializeField] private AssaultWaveData[] waves;
-    private MultiFPS.Gameplay.Gamemodes.AssaultEnemySpawner enemySpawner;
+    private MultiFPS.Gameplay.Gamemodes.RaidEnemySpawner enemySpawner;
 
     private int enemiesAlive = 0;
     public int EnemiesAlive => enemiesAlive;
@@ -22,13 +22,13 @@ public class AssaultWaveManager : NetworkBehaviour
         base.OnStartServer();
 
         enemySpawner = FindFirstObjectByType<
-            MultiFPS.Gameplay.Gamemodes.AssaultEnemySpawner>();
+            MultiFPS.Gameplay.Gamemodes.RaidEnemySpawner>();
         Debug.Log("Asalto: spawner encontrado = " + (enemySpawner != null));
 
         if (enemySpawner == null)
         {
             enemySpawner = FindFirstObjectByType<
-                MultiFPS.Gameplay.Gamemodes.AssaultEnemySpawner>();
+                MultiFPS.Gameplay.Gamemodes.RaidEnemySpawner>();
         }
 
         if (enemySpawner == null)
@@ -70,7 +70,7 @@ public class AssaultWaveManager : NetworkBehaviour
         if (enemySpawner == null)
         {
             enemySpawner = FindFirstObjectByType<
-                MultiFPS.Gameplay.Gamemodes.AssaultEnemySpawner>();
+                MultiFPS.Gameplay.Gamemodes.RaidEnemySpawner>();
         }
 
         if (enemySpawner == null)

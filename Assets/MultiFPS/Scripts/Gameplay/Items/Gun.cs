@@ -388,8 +388,8 @@ namespace MultiFPS.Gameplay
             if (Server_CurrentAmmo <= 0 || objectiveIdentity == null)
                 return;
 
-            AssaultDestructibleObjective objective =
-                objectiveIdentity.GetComponent<AssaultDestructibleObjective>();
+            RaidDestructibleObjective objective =
+                objectiveIdentity.GetComponent<RaidDestructibleObjective>();
 
             if (objective == null)
                 return;
@@ -453,8 +453,8 @@ namespace MultiFPS.Gameplay
                     }
                     else
                     {
-                        AssaultDestructibleObjective objective =
-                            go.GetComponentInParent<AssaultDestructibleObjective>();
+                        RaidDestructibleObjective objective =
+                            go.GetComponentInParent<RaidDestructibleObjective>();
 
                         if (objective != null)
                         {

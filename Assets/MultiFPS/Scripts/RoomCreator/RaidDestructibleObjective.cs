@@ -4,7 +4,7 @@ using Mirror;
 
 namespace MultiFPS.Gameplay.Gamemodes
 {
-    public class AssaultDestructibleObjective : NetworkBehaviour
+    public class RaidDestructibleObjective : NetworkBehaviour
     {
         [Header("Objetivo destructible")]
         [SerializeField] private int maxHealth = 300;

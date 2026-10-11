@@ -242,7 +242,7 @@ namespace MultiFPS.Gameplay
                 targetedEnemy = GetClosestEnemy();
             }
             // En Asalto, abandonar objetivos que se alejan demasiado.
-            if (_gamemode is Assault && targetedEnemy != null)
+            if (_gamemode is Raid && targetedEnemy != null)
             {
                 float targetDistance = Vector3.Distance(
                     _transform.position,
@@ -386,7 +386,7 @@ namespace MultiFPS.Gameplay
                         );
                     }
                 }
-                else if (_gamemode is Assault)
+                else if (_gamemode is Raid)
                 {
                     PatrolAssault();
                 }
@@ -753,7 +753,7 @@ namespace MultiFPS.Gameplay
                     _potentialEnemy.transform.position
                     );
 
-                    bool assaultMode = _gamemode is Assault;
+                    bool assaultMode = _gamemode is Raid;
 
                     if (assaultMode && distance > assaultDetectionRange)
                         continue;

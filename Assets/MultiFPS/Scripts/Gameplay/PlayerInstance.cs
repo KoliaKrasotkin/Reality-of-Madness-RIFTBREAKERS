@@ -244,9 +244,9 @@ namespace MultiFPS.Gameplay
             }
             if (BOT && isServer && GameManager.Gamemode != null)
             {
-                MultiFPS.Gameplay.Gamemodes.Assault assault =
+                MultiFPS.Gameplay.Gamemodes.Raid assault =
                     GameManager.Gamemode.GetComponent<
-                        MultiFPS.Gameplay.Gamemodes.Assault>();
+                        MultiFPS.Gameplay.Gamemodes.Raid>();
 
                 if (assault != null && assault.WaveManager != null)
                 {
@@ -344,7 +344,7 @@ namespace MultiFPS.Gameplay
         public void Server_CountCooldown()
         {
             if (!GameManager.Gamemode.LetPlayersSpawnOnTheirOwn) return;
-            if (BOT && GameManager.Gamemode.GetComponent<MultiFPS.Gameplay.Gamemodes.Assault>() != null)
+            if (BOT && GameManager.Gamemode.GetComponent<MultiFPS.Gameplay.Gamemodes.Raid>() != null)
                 return;
 
             SpawnCooldown = false;
