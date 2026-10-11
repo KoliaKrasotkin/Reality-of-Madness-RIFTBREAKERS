@@ -242,18 +242,7 @@ namespace MultiFPS.Gameplay
 
                 MyCharacter.Health.ServerResurrect();
             }
-            if (BOT && isServer && GameManager.Gamemode != null)
-            {
-                MultiFPS.Gameplay.Gamemodes.Raid raid =
-                    GameManager.Gamemode.GetComponent<
-                        MultiFPS.Gameplay.Gamemodes.Raid>();
-
-                if (raid != null && raid.WaveManager != null)
-                {
-                    raid.WaveManager.RegisterEnemy(MyCharacter.Health);
-                }
-            }
-
+           
             MyCharacter.BlockCharacter(false);
             CurrentlyControlledCharacter = MyCharacter;
 
@@ -608,12 +597,20 @@ namespace MultiFPS.Gameplay
                 GameManager.Gamemode.Relay_ClientDisconnected(connectionToClient, this.netIdentity);
                 GameManager.RemoveConnectedPlayer(_connectionToClient);
             }
+            if (GameManager.Gamemode is Raid raid)
+            {
+                raid.UnregisterCheckpoint(this);
+            }
 
             _disconnected = true;
         }
 
         private void OnDestroy()
         {
+            if (GameManager.Gamemode is Raid raid)
+            {
+                raid.UnregisterCheckpoint(this);
+            }
             GameManager.RemovePlayerInstance(this);
 
             if (_subbedToNetworkManager)

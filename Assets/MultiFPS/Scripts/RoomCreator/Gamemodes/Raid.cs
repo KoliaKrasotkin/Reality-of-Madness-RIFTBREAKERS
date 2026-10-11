@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
@@ -5,156 +6,80 @@ using System.Collections.Generic;
 namespace MultiFPS.Gameplay.Gamemodes
 {
     [AddComponentMenu("MultiFPS/gamemodes/Raid")]
-    public class Raid : Gamemode 
+    public class Raid : Gamemode
     {
-        public RaidWaveManager WaveManager { get; private set; }
-        [SerializeField] private Transform[] playerSpawnZones;
+        [SerializeField] private PlayerSpawn playerSpawn;
+        [SerializeField] private SpawnpointsContainer spawnpointsContainer;
 
-        private Transform selectedPlayerSpawnZone;
-        private int nextPlayerSpawnPointIndex = 0;
-      
-        [SerializeField] private GameObject objectivePrefab;
-        [SerializeField] private Transform[] objectiveSpawnPoints;
-        
-        private bool objectiveSpawned;
+        private readonly Dictionary<PlayerInstance, Transform> playerCheckpoints =
+            new Dictionary<PlayerInstance, Transform>();
 
-        public Transform SelectedPlayerSpawnZone => selectedPlayerSpawnZone;
         protected override void Awake()
         {
-           base.Awake();
-
+            base.Awake();
 
             Indicator = Gamemodes.Raid;
             FFA = false;
             FriendyFire = false;
             LetPlayersSpawnOnTheirOwn = true;
+        }
 
-            WaveManager = GetComponent<RaidWaveManager>();
-                       
+        public void RegisterCheckpoint(PlayerInstance player, Transform checkpoint)
+        {
+            if (!NetworkServer.active || player == null || checkpoint == null)
+                return;
+
+            playerCheckpoints[player] = checkpoint;
+
+            Debug.Log("Raid: checkpoint registrado para un jugador.");
         }
 
         public override void PlayerSpawnCharacterRequest(PlayerInstance playerInstance)
         {
-            if (playerInstance.BOT)
+            if (playerCheckpoints.TryGetValue(playerInstance, out Transform checkpoint)
+                && checkpoint != null)
             {
-                RaidEnemySpawner enemySpawner =
-                    FindFirstObjectByType<RaidEnemySpawner>();
-
-                if (enemySpawner == null)
-                {
-                    return;
-                }
-
-                Transform enemySpawnPoint = enemySpawner.GetNextEnemySpawnPoint();
-
-                if (enemySpawnPoint == null)
-                {
-                    return;
-                }
-
-                playerInstance.Server_SpawnCharacter(enemySpawnPoint);
-                return;
-            }
-            if (selectedPlayerSpawnZone == null)
-            {
-                if (playerSpawnZones == null || playerSpawnZones.Length == 0)
-                {
-
-                    base.PlayerSpawnCharacterRequest(playerInstance);
-                    return;
-                }
-
-                selectedPlayerSpawnZone =
-                    playerSpawnZones[Random.Range(0, playerSpawnZones.Length)];
-
-                nextPlayerSpawnPointIndex = 0;
-
-            }
-
-            if (selectedPlayerSpawnZone == null ||
-                selectedPlayerSpawnZone.childCount == 0)
-            {
-                base.PlayerSpawnCharacterRequest(playerInstance);
+                playerInstance.Server_SpawnCharacter(checkpoint);
+                Debug.Log("Raid: jugador reaparece en su último checkpoint.");
                 return;
             }
 
-            Transform spawnPoint = selectedPlayerSpawnZone.GetChild(
-                nextPlayerSpawnPointIndex % selectedPlayerSpawnZone.childCount);
+            if (spawnpointsContainer != null)
+            {
+                Transform spawnPoint = spawnpointsContainer.GetNextSpawnPoint();
 
-            nextPlayerSpawnPointIndex++;
-          
+                if (spawnPoint != null)
+                {
+                    playerInstance.Server_SpawnCharacter(spawnPoint);
+                    return;
+                }
+            }
 
-            playerInstance.Server_SpawnCharacter(spawnPoint);
+            if (playerSpawn == null)
+            {
+                Debug.LogError("Raid: no hay puntos de aparición asignados.");
+                return;
+            }
+
+            playerInstance.Server_SpawnCharacter(playerSpawn.transform);
         }
 
-        private void SpawnObjective()
+
+        public void UnregisterCheckpoint(PlayerInstance player)
         {
-            if (!isServer || objectiveSpawned)
+            if (!NetworkServer.active || player == null)
                 return;
 
-            if (objectivePrefab == null)
+            if (playerCheckpoints.Remove(player))
             {
-                return;
+                Debug.Log("Raid: checkpoint eliminado para un jugador desconectado.");
             }
-
-            if (objectiveSpawnPoints == null ||
-                objectiveSpawnPoints.Length == 0)
-            {
-                return;
-            }
-
-            List<Transform> validPoints = new List<Transform>();
-
-            foreach (Transform point in objectiveSpawnPoints)
-            {
-                if (point != null)
-                    validPoints.Add(point);
-            }
-
-            if (validPoints.Count == 0)
-            {
-                return;
-            }
-
-            Transform selectedPoint =
-                validPoints[Random.Range(0, validPoints.Count)];
-
-            GameObject objective = Instantiate(
-                objectivePrefab,
-                selectedPoint.position,
-                selectedPoint.rotation
-            );
-
-            if (objective.GetComponent<NetworkIdentity>() == null)
-            {
-                
-
-                Destroy(objective);
-                return;
-            }
-
-            NetworkServer.Spawn(objective);
-            objectiveSpawned = true;
-
-            
         }
+
+
         public override void OnStartServer()
         {
             base.OnStartServer();
-            SpawnObjective();
-
-            if (WaveManager == null)
-            {
-                
-                return;
-            }
-
-            
-            WaveManager.StartRaid();
         }
-
-
     }
-
-
 }
