@@ -198,6 +198,8 @@ namespace MultiFPS.Gameplay
         public void Server_SpawnCharacter(Transform spawnPoint) 
         {
             if (Team == -1) return; //dont spawn character if we are not assigned to a team
+            
+
 
             if (CurrentlyControlledCharacter != null && CurrentlyControlledCharacter != MyCharacter) 
             {
@@ -240,6 +242,7 @@ namespace MultiFPS.Gameplay
 
                 MyCharacter.Health.ServerResurrect();
             }
+           
             MyCharacter.BlockCharacter(false);
             CurrentlyControlledCharacter = MyCharacter;
 
@@ -281,6 +284,8 @@ namespace MultiFPS.Gameplay
 
             if (BOT)
                 MyCharacter.SetAsBOT(BOT);
+
+           
 
             WritePlayerData(PlayerInfo, Team, MyCharacter.netIdentity);
             RpcReceivePlayerData(PlayerInfo, MyCharacter.netIdentity, Team);
@@ -328,6 +333,8 @@ namespace MultiFPS.Gameplay
         public void Server_CountCooldown()
         {
             if (!GameManager.Gamemode.LetPlayersSpawnOnTheirOwn) return;
+            if (BOT && GameManager.Gamemode.GetComponent<MultiFPS.Gameplay.Gamemodes.Raid>() != null)
+                return;
 
             SpawnCooldown = false;
 
@@ -590,12 +597,20 @@ namespace MultiFPS.Gameplay
                 GameManager.Gamemode.Relay_ClientDisconnected(connectionToClient, this.netIdentity);
                 GameManager.RemoveConnectedPlayer(_connectionToClient);
             }
+            if (GameManager.Gamemode is Raid raid)
+            {
+                raid.UnregisterCheckpoint(this);
+            }
 
             _disconnected = true;
         }
 
         private void OnDestroy()
         {
+            if (GameManager.Gamemode is Raid raid)
+            {
+                raid.UnregisterCheckpoint(this);
+            }
             GameManager.RemovePlayerInstance(this);
 
             if (_subbedToNetworkManager)

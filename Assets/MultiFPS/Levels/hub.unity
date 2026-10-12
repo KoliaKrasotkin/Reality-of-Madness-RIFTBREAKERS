@@ -2361,6 +2361,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aeec232dd64835e41acdca9bba9b237d, type: 2}
   - {fileID: 11400000, guid: a58c2617df0e4cd4ebb422daf4c24f2d, type: 2}
   - {fileID: 11400000, guid: aa021d259a5d06a49b39a6ceff60b2d7, type: 2}
+  - {fileID: 11400000, guid: 9a60cd492b600d34388152359d79e78a, type: 2}
   TimeOptionsInMinutes: 0100000002000000050000000a000000
   _loadingScreen: {fileID: 1556226994}
   _loadingScreenMessage: {fileID: 1811093645}
@@ -11480,6 +11481,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6290211825898679236, guid: e7be98cf306bf1f428d27af5d2318ac2,
+        type: 3}
+      propertyPath: spawnPrefabs.Array.size
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290211825898679236, guid: e7be98cf306bf1f428d27af5d2318ac2,
+        type: 3}
+      propertyPath: 'spawnPrefabs.Array.data[13]'
+      value: 
+      objectReference: {fileID: 3469849409596549595, guid: c84860b59a00fc641becb6aa6e55845e,
+        type: 3}
+    - target: {fileID: 6290211825898679236, guid: e7be98cf306bf1f428d27af5d2318ac2,
+        type: 3}
+      propertyPath: 'spawnPrefabs.Array.data[14]'
+      value: 
+      objectReference: {fileID: 2382563002283882899, guid: cd38c8bd09efe494f91412b5ab331529,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
