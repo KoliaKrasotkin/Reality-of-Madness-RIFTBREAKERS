@@ -14,6 +14,7 @@ namespace ROM.Difficulty
     ///
     /// Va en el mismo GameObject que ROOMMANAGER, al lado del Gamemode.
     /// </summary>
+    [DisallowMultipleComponent]
     public class ThreatLevelController : DNNetworkBehaviour
     {
         public static ThreatLevelController Instance { private set; get; }
@@ -103,6 +104,13 @@ namespace ROM.Difficulty
         /// </summary>
         bool ApplyLevel(ThreatLevel level)
         {
+            //idempotente a propósito: durante el arranque del host llega dos veces
+            //sobre el mismo componente. Reaplicar el mismo nivel volvería a disparar
+            //OnActiveLevelChanged, y un suscriptor que inicialice estado con ese
+            //evento lo haría dos veces.
+            if (level == ActiveLevel && Active)
+                return true;
+
             if (!_catalog)
             {
                 Debug.LogError($"[ROM] {nameof(ThreatLevelController)} no tiene catálogo asignado, el Threat Level no se puede resolver.", this);
