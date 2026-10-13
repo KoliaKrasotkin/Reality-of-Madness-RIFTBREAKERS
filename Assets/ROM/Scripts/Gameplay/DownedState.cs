@@ -85,6 +85,7 @@ namespace ROM.Gameplay
             if (!Managed) return;
 
             _health.Server_OnHealthDepleted += Server_OnHealthDepleted;
+            _health.Server_Resurrect += Server_OnResurrect;
         }
 
         public override void OnStopServer()
@@ -92,6 +93,29 @@ namespace ROM.Gameplay
             if (!Managed) return;
 
             _health.Server_OnHealthDepleted -= Server_OnHealthDepleted;
+            _health.Server_Resurrect -= Server_OnResurrect;
+        }
+
+        /// <summary>
+        /// Someone brought the character back without going through Server_Revive —
+        /// today that is the respawn of PlayerInstance, which is still active in the
+        /// gamemodes of the kit. Without this the character would be walking around
+        /// while this component still believed it was downed, and would bleed it out
+        /// when the timer ran out.
+        ///
+        /// A revive started here clears the state before resurrecting, so this is a
+        /// no-op in that case.
+        /// </summary>
+        void Server_OnResurrect(int health)
+        {
+            if (!IsDowned) return;
+
+            ClearDowned();
+
+            Log("de pie por una resurrección externa");
+            OnGotUp?.Invoke(this);
+
+            RpcGotUp();
         }
 
         void Server_OnHealthDepleted(CharacterPart part, AttackType attackType, Health attacker, int attackForce)
