@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d4a85a73807a243bad2650e9490d15, type: 3}
+  m_Name: CharacterSkin_WhiteKnight
+  m_EditorClassIdentifier: 
+  SkinName: White Knight
+  Renderer: {fileID: 449101767722035970, guid: c34877708dceb6344a6ed9be38a3a09f, type: 3}
+  fppRenderer: {fileID: 3430837881704057389, guid: 9fc923f235a08da43a093178e6881041,
+    type: 3}
+  Mesh: {fileID: 365076472740480101, guid: c34877708dceb6344a6ed9be38a3a09f, type: 3}
+  Materials:
+  - {fileID: 2100000, guid: b4fb0b21c3ca59b4fb73e30b647b895f, type: 2}
+  FPP_Mesh: {fileID: 1664254892036513834, guid: 9fc923f235a08da43a093178e6881041,
+    type: 3}
+  FPP_Materials:
+  - {fileID: 2100000, guid: b4fb0b21c3ca59b4fb73e30b647b895f, type: 2}
