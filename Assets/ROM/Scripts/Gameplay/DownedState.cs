@@ -22,13 +22,12 @@ namespace ROM.Gameplay
     /// Goes on the character prefab, next to CharacterInstance and Health.
     /// </summary>
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(CharacterInstance))]
+    [RequireComponent(typeof(Health))]
     public class DownedState : DNNetworkBehaviour
     {
         [Tooltip("Loguea en consola las transiciones y de qué lado se aplicaron. Sirve para verificar el sync; se puede apagar cuando el sistema esté estable.")]
         [SerializeField] bool _logChanges = true;
 
-        CharacterInstance _character;
         Health _health;
 
         /// <summary>
@@ -68,8 +67,11 @@ namespace ROM.Gameplay
 
         void Awake()
         {
-            _character = GetComponent<CharacterInstance>();
-            _health = _character.Health;
+            //straight off the GameObject, not through CharacterInstance.Health:
+            //that property is assigned in the Awake of CharacterInstance, and Unity
+            //does not guarantee Awake order between components of the same object,
+            //so reading it here would be null intermittently.
+            _health = GetComponent<Health>();
         }
 
         #region server
