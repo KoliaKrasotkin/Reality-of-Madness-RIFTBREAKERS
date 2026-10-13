@@ -14,8 +14,18 @@ Ajustá la versión de Unity en la ruta si usás otra:
 
 ```bash
 git config merge.unityyamlmerge.name "Unity YAML merge"
-git config merge.unityyamlmerge.driver '"C:/Program Files/Unity/Hub/Editor/6000.3.23f1/Editor/Data/Tools/UnityYAMLMerge.exe" merge -p --force --fallback-none "$BASE" "$REMOTE" "$LOCAL" "$MERGED"'
+git config merge.unityyamlmerge.driver '"C:/Program Files/Unity/Hub/Editor/6000.3.23f1/Editor/Data/Tools/UnityYAMLMerge.exe" merge -p -h --force --fallback none "%O" "%B" "%A" "%A"'
 ```
+
+Los `%O`, `%B` y `%A` son los marcadores que git le pasa a un **merge driver**:
+ancestro común, versión de la otra rama, y versión propia — que además es donde
+hay que escribir el resultado. No confundirlos con `$BASE`, `$LOCAL`, `$REMOTE`
+y `$MERGED`, que son de un **mergetool** (`git mergetool`), un mecanismo
+distinto: si se usan esos en el driver, los paths llegan vacíos y la herramienta
+falla con `Error parsing file ... Cannot open file`.
+
+El `--fallback none` va con espacio, no con guion, y `-h` evita que la
+herramienta abra diálogos de error en medio de un merge automático.
 
 Verificar que quedó:
 
