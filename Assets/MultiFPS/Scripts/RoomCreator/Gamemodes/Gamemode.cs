@@ -529,37 +529,79 @@ namespace MultiFPS.Gameplay.Gamemodes
         #region bots management
         public void FillEmptySlotsWithBots()
         {
-            List<PlayerInstance> players = new (GameManager.Players);
+            if (Indicator == Gamemodes.Raid)
+                return;
+
+            List<PlayerInstance> players = new(GameManager.Players);
             int neededBots = RoomSetup.Properties.P_MaxPlayers - players.Count;
 
             for (int i = 0; i < neededBots; i++)
             {
-                SpawnBot();
+                SpawnBot(0);
             }
         }
 
         public PlayerInstance SpawnBot(int team = 0)
         {
-            if (!DNNetworkManager.Instance.isNetworkActive) return null;
+            if (DNNetworkManager.Instance == null)
+                return null;
 
-            PlayerInstance playerInstance = Instantiate(DNNetworkManager.Instance.playerPrefab, transform.position, transform.rotation).GetComponent<PlayerInstance>();
-            NetworkServer.Spawn(playerInstance.gameObject);
+            return SpawnBot(DNNetworkManager.Instance.playerPrefab, team);
+        }
 
-            playerInstance.PlayerInfo.Username = "BOT " + Random.Range(0, 9999).ToString();
+        public PlayerInstance SpawnBot(GameObject botPrefab, int team = 0)
+        {
+            if (DNNetworkManager.Instance == null ||
+                !DNNetworkManager.Instance.isNetworkActive)
+                return null;
 
-            if (playerInstance)
+            if (botPrefab == null)
             {
-                playerInstance.SetAsBot();
-                playerInstance.RegisterPlayerInstance(); //this method is launched when server receives client data, but since server 
-                //won't receive anything here, because server is the one creating this data, we have to launch it manually after spawning bot
-
-                //make bot join some team
-                playerInstance.ProcessRequestToJoinTeam(team);
-
-                //if bot after trying to join team 0 is not in team 0, then try to join team 1
-                if (playerInstance.Team == -1)
-                    playerInstance.ProcessRequestToJoinTeam(1);
+                Debug.LogError("Raid: no hay un prefab de enemigo asignado.");
+                return null;
             }
+
+            GameObject botObject = Instantiate(
+                botPrefab,
+                transform.position,
+                transform.rotation
+            );
+
+            PlayerInstance playerInstance =
+                botObject.GetComponent<PlayerInstance>();
+
+            if (playerInstance == null)
+            {
+                Debug.LogError(
+                    "Raid: el prefab necesita PlayerInstance en el objeto raíz."
+                );
+
+                Destroy(botObject);
+                return null;
+            }
+
+            if (botObject.GetComponent<NetworkIdentity>() == null)
+            {
+                Debug.LogError(
+                    "Raid: el prefab necesita NetworkIdentity en el objeto raíz."
+                );
+
+                Destroy(botObject);
+                return null;
+            }
+
+            NetworkServer.Spawn(botObject);
+
+            playerInstance.PlayerInfo.Username =
+                "BOT " + Random.Range(0, 9999).ToString();
+
+            playerInstance.SetAsBot();
+            playerInstance.RegisterPlayerInstance();
+
+            playerInstance.ProcessRequestToJoinTeam(team);
+
+            if (playerInstance.Team == -1)
+                playerInstance.ProcessRequestToJoinTeam(1);
 
             return playerInstance;
         }
@@ -603,5 +645,6 @@ namespace MultiFPS.Gameplay.Gamemodes
         TeamDeathmatch = 1,
         TeamEliminations = 2,
         Defuse = 3,
+        Raid =4,
     }
 }

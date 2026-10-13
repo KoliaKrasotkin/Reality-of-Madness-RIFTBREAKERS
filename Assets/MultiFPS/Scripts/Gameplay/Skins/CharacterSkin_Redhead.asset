@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d4a85a73807a243bad2650e9490d15, type: 3}
+  m_Name: CharacterSkin_Redhead
+  m_EditorClassIdentifier: 
+  SkinName: Redhead
+  Renderer: {fileID: -7247163193196983945, guid: 7ddfcb788c0c99741b1ee5d0f3c75b70,
+    type: 3}
+  fppRenderer: {fileID: 4685209191317834652, guid: b4129d0119255be448916594f9c73595,
+    type: 3}
+  Mesh: {fileID: 5191310998764043734, guid: 7ddfcb788c0c99741b1ee5d0f3c75b70, type: 3}
+  Materials:
+  - {fileID: 2100000, guid: 24ef903ffc8509d48b8e338b0b82ec07, type: 2}
+  FPP_Mesh: {fileID: 7838740134234047087, guid: b4129d0119255be448916594f9c73595,
+    type: 3}
+  FPP_Materials:
+  - {fileID: 2100000, guid: 24ef903ffc8509d48b8e338b0b82ec07, type: 2}
