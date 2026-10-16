@@ -12,6 +12,9 @@ namespace MultiFPS.Gameplay {
     [RequireComponent(typeof(Health))]
     public class CharacterInstance : DNNetworkBehaviour
     {
+                                                [SyncVar(hook = nameof(OnForcedSkinChanged))]
+                                                int _forcedSkinID = -1;
+
         [Header("Character setup")]
         //determines point to which we will attach player marker with nickname and healthbar
         public Transform CharacterMarkerPosition;
@@ -379,6 +382,17 @@ namespace MultiFPS.Gameplay {
             Physics.SyncTransforms();
             RpcTeleport(pos, rotationY);
         }
+
+                                                public void Server_SetForcedSkin(int skinID)
+                                                {
+                                                    _forcedSkinID = skinID;
+                                                }
+
+                                                void OnForcedSkinChanged(int oldID, int newID)
+                                                {
+                                                    if (newID >= 0 && CharacterAnimator != null)
+                                                        CharacterAnimator.ApplySkin(newID);
+                                                }
 
         [ClientRpc]
         public void RpcTeleport(Vector3 pos, float rotationY)

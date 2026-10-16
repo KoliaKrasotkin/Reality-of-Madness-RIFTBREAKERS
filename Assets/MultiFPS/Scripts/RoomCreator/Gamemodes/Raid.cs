@@ -43,7 +43,7 @@ namespace MultiFPS.Gameplay.Gamemodes
                 && checkpoint != null)
             {
                 playerInstance.Server_SpawnCharacter(checkpoint);
-                Debug.Log("Raid: jugador reaparece en su último checkpoint.");
+                Debug.Log("Raid: jugador reaparece en su ï¿½ltimo checkpoint.");
                 return;
             }
 
@@ -60,7 +60,7 @@ namespace MultiFPS.Gameplay.Gamemodes
 
             if (playerSpawn == null)
             {
-                Debug.LogError("Raid: no hay puntos de aparición asignados.");
+                Debug.LogError("Raid: no hay puntos de apariciï¿½n asignados.");
                 return;
             }
 
