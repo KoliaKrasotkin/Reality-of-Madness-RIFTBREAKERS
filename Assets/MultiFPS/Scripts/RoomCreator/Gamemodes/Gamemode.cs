@@ -527,8 +527,18 @@ namespace MultiFPS.Gameplay.Gamemodes
         }
 
         #region bots management
+        /// <summary>
+        /// Gamemodes that manage their own enemies turn this off, so the room is not
+        /// filled with PvP bots. Virtual on purpose: a gamemode should be able to opt
+        /// out without this method having to know which gamemode it is.
+        /// </summary>
+        protected virtual bool AllowBotFilling { get { return true; } }
+
         public void FillEmptySlotsWithBots()
         {
+            if (!AllowBotFilling)
+                return;
+
             if (Indicator == Gamemodes.Raid)
                 return;
 
@@ -646,5 +656,6 @@ namespace MultiFPS.Gameplay.Gamemodes
         TeamEliminations = 2,
         Defuse = 3,
         Raid =4,
+        Incursion = 5,
     }
 }
