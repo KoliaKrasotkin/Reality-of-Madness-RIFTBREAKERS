@@ -54,6 +54,29 @@ namespace ROM.Gameplay
         /// </summary>
         public float BleedOutRemaining { private set; get; }
 
+        /// <summary>
+        /// True while a teammate is holding the revive on this character. Lives here
+        /// rather than on the reviver so the downed player can see it without having
+        /// to find out who is picking them up.
+        /// </summary>
+        public bool IsBeingRevived { private set; get; }
+
+        /// <summary>How long the revive in progress takes in total, in seconds.</summary>
+        public float ReviveDuration { private set; get; }
+
+        /// <summary>
+        /// Seconds of revive accumulated. Runs on both sides off the same duration,
+        /// so no progress has to be streamed per frame; the server still owns the
+        /// decision of when the revive completes.
+        /// </summary>
+        public float ReviveElapsed { private set; get; }
+
+        /// <summary>Revive progress in 0..1, for progress bars.</summary>
+        public float ReviveProgress
+        {
+            get { return ReviveDuration > 0f ? Mathf.Clamp01(ReviveElapsed / ReviveDuration) : 0f; }
+        }
+
         public delegate void DownedStateChanged(DownedState state);
 
         /// <summary>Raised on server and clients when the character goes down.</summary>
@@ -147,6 +170,9 @@ namespace ROM.Gameplay
         {
             if (!IsDowned) return;
 
+            if (IsBeingRevived)
+                ReviveElapsed += Time.deltaTime;
+
             //both sides run the clock: the server to decide, each client for its UI
             BleedOutRemaining -= Time.deltaTime;
 
@@ -194,6 +220,24 @@ namespace ROM.Gameplay
             return true;
         }
 
+        /// <summary>
+        /// Marks that a teammate started or stopped holding the revive on this
+        /// character. Called by the reviver, which is the side that owns the
+        /// interaction; this component only carries the state so everyone can see it.
+        /// </summary>
+        [Server]
+        internal void Server_SetBeingRevived(bool beingRevived, float duration)
+        {
+            if (!IsDowned) return;
+            if (IsBeingRevived == beingRevived) return;
+
+            IsBeingRevived = beingRevived;
+            ReviveDuration = beingRevived ? duration : 0f;
+            ReviveElapsed = 0f;
+
+            RpcSetBeingRevived(IsBeingRevived, ReviveDuration);
+        }
+
         [Server]
         void Server_BleedOut()
         {
@@ -233,6 +277,16 @@ namespace ROM.Gameplay
         }
 
         [ClientRpc]
+        void RpcSetBeingRevived(bool beingRevived, float duration)
+        {
+            if (isServer) return;
+
+            IsBeingRevived = beingRevived;
+            ReviveDuration = duration;
+            ReviveElapsed = 0f;
+        }
+
+        [ClientRpc]
         void RpcBledOut()
         {
             if (isServer) return;
@@ -250,24 +304,36 @@ namespace ROM.Gameplay
         {
             if (!IsDowned && !IsOut) return;
 
-            TargetRpcUpdateForLatePlayer(conn, IsDowned, IsOut, BleedOutDuration, BleedOutRemaining);
+            TargetRpcUpdateForLatePlayer(conn, new DownedSnapshot
+            {
+                IsDowned = IsDowned,
+                IsOut = IsOut,
+                BleedOutDuration = BleedOutDuration,
+                BleedOutRemaining = BleedOutRemaining,
+                IsBeingRevived = IsBeingRevived,
+                ReviveDuration = ReviveDuration,
+                ReviveElapsed = ReviveElapsed,
+            });
         }
 
         [TargetRpc]
-        void TargetRpcUpdateForLatePlayer(NetworkConnection conn, bool isDowned, bool isOut, float duration, float remaining)
+        void TargetRpcUpdateForLatePlayer(NetworkConnection conn, DownedSnapshot snapshot)
         {
             if (isServer) return;
 
-            IsDowned = isDowned;
-            IsOut = isOut;
-            BleedOutDuration = duration;
-            BleedOutRemaining = remaining;
+            IsDowned = snapshot.IsDowned;
+            IsOut = snapshot.IsOut;
+            BleedOutDuration = snapshot.BleedOutDuration;
+            BleedOutRemaining = snapshot.BleedOutRemaining;
+            IsBeingRevived = snapshot.IsBeingRevived;
+            ReviveDuration = snapshot.ReviveDuration;
+            ReviveElapsed = snapshot.ReviveElapsed;
 
-            Log(isOut ? "desangrado, fuera de la incursión" : "caído");
+            Log(IsOut ? "desangrado, fuera de la incursión" : "caído");
 
-            if (isOut)
+            if (IsOut)
                 OnBledOut?.Invoke(this);
-            else if (isDowned)
+            else if (IsDowned)
                 OnWentDown?.Invoke(this);
         }
         #endregion
@@ -277,6 +343,10 @@ namespace ROM.Gameplay
             IsDowned = false;
             BleedOutDuration = 0f;
             BleedOutRemaining = 0f;
+
+            IsBeingRevived = false;
+            ReviveDuration = 0f;
+            ReviveElapsed = 0f;
         }
 
         static ThreatLevelDefinition ActiveThreatLevel()
@@ -295,5 +365,21 @@ namespace ROM.Gameplay
             Debug.Log($"[ROM] {_health.CharacterName} {state} (en {side}" +
                       (IsDowned ? $", {BleedOutRemaining:0.#}s de {BleedOutDuration:0.#}s" : "") + ")", this);
         }
+    }
+
+    /// <summary>
+    /// Whole downed state of a character in one message, for bringing a client that
+    /// joined mid-incursion up to date. A struct instead of a long parameter list so
+    /// that adding state later does not change every call site.
+    /// </summary>
+    public struct DownedSnapshot
+    {
+        public bool IsDowned;
+        public bool IsOut;
+        public float BleedOutDuration;
+        public float BleedOutRemaining;
+        public bool IsBeingRevived;
+        public float ReviveDuration;
+        public float ReviveElapsed;
     }
 }
