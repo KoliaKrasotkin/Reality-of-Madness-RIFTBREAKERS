@@ -412,11 +412,6 @@ namespace ROM.Gameplay
                 Log($"dejó de revivir a {target.name}: {reason}");
         }
 
-        bool ServerCanRevive(DownedState target)
-        {
-            return ServerRefusalReason(target) == null;
-        }
-
         /// <summary>
         /// Why this revive is not allowed, or null when it is.
         ///
