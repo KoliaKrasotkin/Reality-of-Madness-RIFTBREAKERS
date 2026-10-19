@@ -57,6 +57,12 @@ namespace ROM.Gameplay
         //not resent every frame
         DownedState _requested;
 
+        //owner only: diagnostics state, so the log reports changes and not one line
+        //per frame
+        bool _loggedInputReady;
+        bool _wasHolding;
+        DownedState _loggedCandidate;
+
         //server only
         DownedState _target;
         float _holdSeconds;
@@ -101,7 +107,20 @@ namespace ROM.Gameplay
         #region owner
         void OwnerTick()
         {
-            if (_input == null) return;
+            //created here and not only in OnStartAuthority: if that callback does not
+            //fire for some reason, the whole interaction would be silently dead with
+            //nothing in the log to show it
+            if (_input == null)
+            {
+                _input = new MultiFPSInputs();
+                _input.Enable();
+            }
+
+            if (!_loggedInputReady)
+            {
+                _loggedInputReady = true;
+                Log("puede revivir: input activo");
+            }
 
             //a downed player cannot pick anyone else up. Self-revive is a separate
             //Threat Level setting and is not implemented yet.
@@ -122,6 +141,21 @@ namespace ROM.Gameplay
             //itself, so it works whatever the action type is.
             bool holding = _input.Player.Interaction.IsPressed();
 
+            if (Candidate != _loggedCandidate)
+            {
+                _loggedCandidate = Candidate;
+                Log(Candidate == null
+                    ? "ya no tiene a nadie para revivir"
+                    : $"puede revivir a {Candidate.name}");
+            }
+
+            //only when the key is actually pressed, and only on the first frame of
+            //the press: enough to diagnose without filling the log
+            if (holding && !_wasHolding && Candidate == null)
+                LogWhyNoCandidate();
+
+            _wasHolding = holding;
+
             if (!holding || Candidate == null)
             {
                 StopRequestIfAny();
@@ -132,6 +166,56 @@ namespace ROM.Gameplay
 
             _requested = Candidate;
             CmdStartRevive(Candidate.netIdentity);
+        }
+
+        /// <summary>
+        /// Says why nobody can be revived right now, going through every character in
+        /// the registry and reporting the conditions one by one. Exists because the
+        /// failure of this interaction is otherwise completely silent: if nothing
+        /// matches, no request is sent and the server never learns anything happened.
+        /// </summary>
+        void LogWhyNoCandidate()
+        {
+            if (!_logChanges) return;
+
+            if (GameSync.Singleton == null)
+            {
+                Debug.Log("[ROM] No se puede buscar a quién revivir: GameSync no existe todavía.", this);
+                return;
+            }
+
+            CharacterInstance[] characters = GameSync.Singleton.Characters.Obj;
+            int seen = 0;
+
+            for (int i = 0; i < characters.Length; i++)
+            {
+                CharacterInstance other = characters[i];
+
+                if (other == null || other == _character) continue;
+
+                seen++;
+
+                DownedState downed = other.GetComponent<DownedState>();
+                Health otherHealth = other.GetComponent<Health>();
+
+                Vector3 toTarget = other.transform.position - transform.position;
+                toTarget.y = 0f;
+
+                float distance = Vector3.Distance(transform.position, other.transform.position);
+                float dot = toTarget.sqrMagnitude < 0.0001f ? 1f : Vector3.Dot(transform.forward, toTarget.normalized);
+
+                Debug.Log($"[ROM] Candidato descartado: {other.name} | " +
+                          $"tiene DownedState={downed != null} | " +
+                          $"caído={(downed != null && downed.IsDowned)} | " +
+                          $"fuera={(downed != null && downed.IsOut)} | " +
+                          $"equipo={(otherHealth != null ? otherHealth.Team : -99)} (el mío {_health.Team}) | " +
+                          $"distancia={distance:0.##}m (alcance {_range:0.##}m) | " +
+                          $"mirándolo={dot:0.##} (hace falta {_facingDot:0.##})", this);
+            }
+
+            if (seen == 0)
+                Debug.Log($"[ROM] No hay ningún otro personaje en el registro del kit, " +
+                          $"así que no hay a quién revivir.", this);
         }
 
         void StopRequestIfAny()
