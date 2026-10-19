@@ -118,7 +118,7 @@ namespace ROM.Horde
         [Header("HUD")]
         [Tooltip("Instancia del prefab HordeHUD que está en la escena.")]
         [SerializeField] HordeHUD _hud;
-        [SerializeField] string _mapDisplayName = "Plataforma de la Grieta";
+        [SerializeField] string _mapDisplayName = "El Rift";
 
         [Header("Equipo")]
         [Tooltip("Equipo con el que aparecen los jugadores, un elemento por slot del personaje. Slots vacíos quedan sin arma.")]

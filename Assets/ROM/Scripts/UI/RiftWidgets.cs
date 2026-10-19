@@ -21,7 +21,13 @@ namespace ROM.UI.Sprint01
         public static Text Label(Transform p,string value,float x,float y,float w,float h,int size=22,Color? color=null,bool title=false)
         {
             var t=Rect(p,"Text",x,y,w,h).gameObject.AddComponent<Text>(); t.font=title?Title:Body; t.fontSize=size; t.color=color??White; t.text=value;
-            t.alignment=TextAnchor.MiddleLeft; t.raycastTarget=false; t.verticalOverflow=VerticalWrapMode.Truncate; return t;
+            t.alignment=TextAnchor.MiddleLeft; t.fontStyle=title?FontStyle.Bold:FontStyle.Normal; t.raycastTarget=false; t.supportRichText=false; t.verticalOverflow=VerticalWrapMode.Truncate; return t;
+        }
+        public static RectTransform ScrollArea(Transform parent,string name,float x,float y,float width,float height,float contentHeight,bool bottom=false)
+        {
+            var root=Rect(parent,name,x,y,width,height);var scroll=root.gameObject.AddComponent<ScrollRect>();scroll.horizontal=false;scroll.vertical=true;scroll.movementType=ScrollRect.MovementType.Clamped;
+            var viewport=Rect(root,"Viewport",0,0,width,height);viewport.gameObject.AddComponent<RectMask2D>();var surface=viewport.gameObject.AddComponent<Image>();surface.color=new Color(0,0,0,.01f);surface.raycastTarget=true;
+            var content=Rect(viewport,"Content",0,0,width,Mathf.Max(height,contentHeight));scroll.viewport=viewport;scroll.content=content;scroll.verticalNormalizedPosition=bottom?0:1;return content;
         }
         public static RectTransform Panel(Transform p,string n,float x,float y,float w,float h)
         {

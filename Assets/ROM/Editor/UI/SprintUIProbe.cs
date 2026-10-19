@@ -71,12 +71,23 @@ namespace ROM.UI.EditorTools
         static void Assert(bool condition,string name){if(!condition)throw new Exception(name);}
         public static void Capture(RiftHub hub,string file,int width,int height)
         {
-            var canvas=hub.GetComponent<Canvas>();var go=new GameObject("CaptureCamera");var camera=go.AddComponent<Camera>();camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.black;camera.orthographic=true;camera.cullingMask=1<<5;
-            var rt=new RenderTexture(width,height,24);camera.targetTexture=rt;canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;
-            foreach(var t in hub.GetComponentsInChildren<Transform>())t.gameObject.layer=5;
-            Canvas.ForceUpdateCanvases();var fit=hub.Design;fit.anchorMin=fit.anchorMax=fit.pivot=new Vector2(.5f,.5f);fit.anchoredPosition=Vector2.zero;fit.localScale=Vector3.one*Mathf.Min(((RectTransform)hub.transform).rect.width/1920f,((RectTransform)hub.transform).rect.height/1080f);
-            Canvas.ForceUpdateCanvases();camera.Render();var old=RenderTexture.active;RenderTexture.active=rt;var texture=new Texture2D(width,height,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,width,height),0,0);texture.Apply();File.WriteAllBytes(file,texture.EncodeToPNG());RenderTexture.active=old;
-            canvas.renderMode=RenderMode.ScreenSpaceOverlay;canvas.worldCamera=null;camera.targetTexture=null;rt.Release();UnityEngine.Object.DestroyImmediate(rt);UnityEngine.Object.DestroyImmediate(texture);UnityEngine.Object.DestroyImmediate(go);
+            var canvas=hub.GetComponent<Canvas>();var rect=(RectTransform)hub.transform;
+            var scaler=hub.GetComponent<CanvasScaler>();var oldScaleMode=scaler.uiScaleMode;var oldScale=scaler.scaleFactor;var oldDynamic=scaler.dynamicPixelsPerUnit;
+            Vector3 oldPosition=rect.position;var oldSize=rect.sizeDelta;
+            var go=new GameObject("CaptureCamera");var camera=go.AddComponent<Camera>();camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.black;camera.orthographic=true;camera.cullingMask=1<<5;
+            camera.transform.position=new Vector3(0,0,-1000);camera.orthographicSize=540;camera.farClipPlane=2000;
+            var target=new RenderTexture(width,height,24);camera.targetTexture=target;
+            canvas.renderMode=RenderMode.WorldSpace;canvas.worldCamera=camera;canvas.scaleFactor=1;
+            scaler.uiScaleMode=CanvasScaler.ScaleMode.ConstantPixelSize;scaler.scaleFactor=1;scaler.dynamicPixelsPerUnit=1;
+            rect.position=Vector3.zero;rect.rotation=Quaternion.identity;rect.localScale=Vector3.one;rect.sizeDelta=new Vector2(1920,1080);
+            hub.Design.anchorMin=hub.Design.anchorMax=hub.Design.pivot=new Vector2(.5f,.5f);hub.Design.anchoredPosition=Vector2.zero;hub.Design.localScale=Vector3.one;
+            foreach(var transform in hub.GetComponentsInChildren<Transform>())transform.gameObject.layer=5;
+            foreach(var text in hub.GetComponentsInChildren<Text>()){text.font.RequestCharactersInTexture(text.text,text.fontSize,text.fontStyle);text.SetAllDirty();}
+            Canvas.ForceUpdateCanvases();camera.Render();var old=RenderTexture.active;RenderTexture.active=target;
+            var texture=new Texture2D(width,height,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,width,height),0,0);texture.Apply();File.WriteAllBytes(file,texture.EncodeToPNG());RenderTexture.active=old;
+            canvas.renderMode=RenderMode.ScreenSpaceOverlay;canvas.worldCamera=null;rect.position=oldPosition;rect.sizeDelta=oldSize;
+            scaler.uiScaleMode=oldScaleMode;scaler.scaleFactor=oldScale;scaler.dynamicPixelsPerUnit=oldDynamic;
+            camera.targetTexture=null;target.Release();UnityEngine.Object.DestroyImmediate(target);UnityEngine.Object.DestroyImmediate(texture);UnityEngine.Object.DestroyImmediate(go);
         }
     }
 }

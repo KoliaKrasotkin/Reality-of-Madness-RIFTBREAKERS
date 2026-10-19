@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace ROM.Horde.EditorTools
 {
@@ -25,7 +26,8 @@ namespace ROM.Horde.EditorTools
         static void CaptureEclipse(string file,Vector3 position,Vector3 lookAt)
         {
             var go=new GameObject("Sprint QA Camera",typeof(Camera));var camera=go.GetComponent<Camera>();camera.transform.position=position;camera.transform.LookAt(lookAt);
-            camera.fieldOfView=60;camera.nearClipPlane=.3f;camera.farClipPlane=3000;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.12f,.17f,.23f);
+            camera.fieldOfView=60;camera.nearClipPlane=.3f;camera.farClipPlane=3000;camera.clearFlags=CameraClearFlags.Skybox;camera.backgroundColor=new Color(.12f,.17f,.23f);
+            camera.GetUniversalAdditionalCameraData().renderPostProcessing=true;
             float fog=RenderSettings.fogDensity;RenderSettings.fogDensity=.0007f;
             var lods=UnityEngine.Object.FindObjectsByType<LODGroup>(FindObjectsSortMode.None);foreach(var lod in lods)lod.ForceLOD(0);
             var target=new RenderTexture(1600,1000,24);camera.targetTexture=target;camera.Render();var previous=RenderTexture.active;RenderTexture.active=target;

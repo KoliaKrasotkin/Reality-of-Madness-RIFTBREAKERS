@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ROM.UI.Sprint01
 {
@@ -9,6 +10,14 @@ namespace ROM.UI.Sprint01
         IInventoryService, IMissionService, IMarketplaceService, IAuctionHouseService,
         ICurrencyExchangeService, IRewardService, IPartyService
     {
+        public SprintMockServices(FrontEndCatalog catalog=null)
+        {
+            Missions=new[]{new MissionRecord{Id="horde",Name="El Rift",Type="Horda cooperativa",Difficulty="Normal",Objectives="Defender las fisuras y explorar las islas",Duration="Sesión abierta",Rewards="Pendientes de validación",Available=true}};
+            if(!catalog)return;
+            Products=catalog.Models.Where(m=>m.ForSale&&m.Prefab).Select(m=>new ProductRecord{Id=m.Key,ModelKey=m.Key,Name=m.Name,Category=m.Category,Description="Vista 3D del modelo incluido. Compra de prueba.",Season="Colección IDS",GoldPrice=m.GoldPrice}).ToArray();
+            Items=catalog.Models.Where(m=>m.Category=="Arma").Take(4).Select((m,i)=>new ItemRecord{Id="local-item-"+i,DefinitionId=m.Key,Name=m.Name,Category="Arma",CosmeticReference=m.Key,OwnerId="mock-local",Rarity=i==0?Rarity.Legendary:Rarity.Rare,Tradable=true,Stats="Modelo IDS · Datos de equipamiento de prueba"}).ToArray();
+            Listings=Items.Take(3).Select((item,i)=>new ListingRecord{Id="local-listing-"+i,Item=item.Name,ModelKey=item.CosmeticReference,Category=item.Category,Rarity=item.Rarity,Seller="Anuncio local de ejemplo",Price=150+i*250}).ToArray();
+        }
         public string Name => string.IsNullOrWhiteSpace(MultiFPS.UserSettings.UserNickname) ? "RiftWalker" : MultiFPS.UserSettings.UserNickname;
         public int Level => 42;
         public float Experience => .56f;

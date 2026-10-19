@@ -29,7 +29,7 @@ namespace ROM.UI.EditorTools
             EditorSceneManager.SaveScene(preview,Root+"/ROM_UI_Sprint01.unity");
             var scene=EditorSceneManager.OpenScene("Assets/MultiFPS/Levels/hub.unity");
             foreach(var old in scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<RiftHub>(true)).ToArray())UnityEngine.Object.DestroyImmediate(old.gameObject);
-            hub=Create();hub.Creator=UnityEngine.Object.FindFirstObjectByType<RoomCreator>(FindObjectsInactive.Include);
+            hub=Create();hub.Creator=UnityEngine.Object.FindFirstObjectByType<RoomCreator>(FindObjectsInactive.Include);hub.Connector=UnityEngine.Object.FindFirstObjectByType<RoomConnector>(FindObjectsInactive.Include);
             var legacy=UnityEngine.Object.FindFirstObjectByType<ROMMainMenu>(FindObjectsInactive.Include);
             if(legacy){hub.LegacyMenu=legacy.gameObject;legacy.gameObject.SetActive(false);
                 var previous=legacy.transform.Find("SprintReturn");if(previous)UnityEngine.Object.DestroyImmediate(previous.gameObject);
@@ -50,8 +50,8 @@ namespace ROM.UI.EditorTools
         {
             var go=new GameObject("ROM_RiftHub",typeof(RectTransform));ROMUIFactory.Canvas(go,25,true);
             var scaler=go.GetComponent<CanvasScaler>();scaler.screenMatchMode=CanvasScaler.ScreenMatchMode.Expand;
-            var hub=go.AddComponent<RiftHub>();hub.Theme=ROMUITheme.Load();hub.Background=AssetDatabase.LoadAssetAtPath<Sprite>(Root+"/Art/RiftCitadel.png");hub.Logo=AssetDatabase.LoadAssetAtPath<Sprite>(Root+"/Art/ROMLogo.png");
-            hub.Build();return hub;
+            var hub=go.AddComponent<RiftHub>();hub.Theme=ROMUITheme.Load();hub.Catalog=AssetDatabase.LoadAssetAtPath<ROM.UI.Sprint01.FrontEndCatalog>("Assets/ROM/UI/FrontEnd/FrontEndCatalog.asset");hub.Background=AssetDatabase.LoadAssetAtPath<Sprite>(Root+"/Art/RiftCitadel.png");hub.Logo=AssetDatabase.LoadAssetAtPath<Sprite>(Root+"/Art/ROMLogo.png");
+            hub.InterfaceFont=AssetDatabase.LoadAssetAtPath<Font>("Assets/TextMesh Pro/Fonts/LiberationSans.ttf");hub.Build();return hub;
         }
         public static void FromCommandLine(){try{Build();EditorApplication.Exit(0);}catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
     }

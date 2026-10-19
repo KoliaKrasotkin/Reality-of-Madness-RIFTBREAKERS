@@ -18,8 +18,8 @@ namespace ROM.UI.Sprint01
         public int MinPlayers = 1, MaxPlayers = 4;
         public bool Available;
     }
-    [Serializable] public class ProductRecord { public string Id, Name, Category, Description, Season; public int GoldPrice; public bool Owned; }
-    [Serializable] public class ListingRecord { public string Id, Seller, Item, Category; public Rarity Rarity; public int Price; public string Status = "Activa"; }
+    [Serializable] public class ProductRecord { public string Id, Name, Category, Description, Season, ModelKey; public int GoldPrice; public bool Owned; }
+    [Serializable] public class ListingRecord { public string Id, Seller, Item, Category,ModelKey; public Rarity Rarity; public int Price; public string Status = "Activa"; }
     public struct ServiceResult { public bool Success; public string Message, TransactionId; }
     public interface IPlayerProfileService { string Name { get; } int Level { get; } float Experience { get; } }
     public interface ICurrencyBalanceService { long AncientGold { get; } long RiftCrystals { get; } }
@@ -44,9 +44,9 @@ namespace ROM.UI.Sprint01
         public ICurrencyExchangeService Exchange;
         public IRewardService Rewards;
         public IPartyService Party;
-        public static SprintServices CreateMock()
+        public static SprintServices CreateMock(FrontEndCatalog catalog=null)
         {
-            var mock=new SprintMockServices();
+            var mock=new SprintMockServices(catalog);
             return new SprintServices { Profile=mock,Balances=mock,Inventory=mock,Missions=mock,Marketplace=mock,Auction=mock,Exchange=mock,Rewards=mock,Party=mock };
         }
     }

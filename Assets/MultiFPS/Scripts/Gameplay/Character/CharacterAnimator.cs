@@ -637,8 +637,6 @@ namespace MultiFPS
                 !_characterInstance.IsScoping && 
                 !_characterInstance.IsCrouching ? 2f : (_characterInstance.Input.Movement != Vector2.zero ? 1f : 0f));
 
-            if(_characterInstance.isOwned && _characterInstance.ReadActionKeyCode(ActionCodes.Trigger2) && _speed == 2)
-
             //animate character
             if (!_animator.runtimeAnimatorController) return;
 
@@ -690,7 +688,7 @@ namespace MultiFPS
 
             if (_adjustingRotation)
                 _currentBodyRotation = ClampRotation(
-                    Mathf.Lerp(_currentBodyRotation, _characterInstance.Input.LookY, _adjustingRotationLerpSpeed * Time.deltaTime),
+                    Mathf.MoveTowardsAngle(_currentBodyRotation, _characterInstance.Input.LookY, _adjustingRotationLerpSpeed * timestep),
                     _characterInstance.Input.LookY, _rotationAngleThreshold);
 
 
@@ -746,8 +744,7 @@ namespace MultiFPS
 
             if (difference > threshold || difference < -threshold)
             {
-                float angle = Mathf.Clamp(currentRot, targetRot - threshold, targetRot + threshold);
-                return angle;
+                return targetRot - Mathf.Clamp(difference,-threshold,threshold);
             }
             else
                 return currentRot;
