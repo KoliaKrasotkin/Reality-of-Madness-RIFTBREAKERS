@@ -3,6 +3,7 @@ using UnityEngine;
 using MultiFPS;
 using MultiFPS.Gameplay;
 using MultiFPS.Gameplay.Gamemodes;
+using ROM.Difficulty;
 
 namespace ROM.Gameplay
 {
@@ -30,8 +31,19 @@ namespace ROM.Gameplay
         /// </summary>
         public const int SquadTeam = 0;
 
-        [Tooltip("Loguea en consola las entradas a la incursión y los pedidos de reaparición denegados. Sirve para verificar el comportamiento; se puede apagar cuando el sistema esté estable.")]
+        [Tooltip("Cada cuántos segundos se revisa si la escuadra todavía puede continuar. No hace falta que sea frecuente: medio segundo de demora en declarar el fallo no se percibe.")]
+        [Min(0.1f)]
+        [SerializeField] float _squadCheckInterval = 0.5f;
+
+        [Tooltip("Loguea en consola las entradas a la incursión, los pedidos de reaparición denegados y la evaluación de la escuadra. Sirve para verificar el comportamiento; se puede apagar cuando el sistema esté estable.")]
         [SerializeField] bool _logChanges = true;
+
+        float _nextSquadCheck;
+
+        //an incursion that nobody entered yet must not be declared failed
+        bool _squadEverEntered;
+
+        bool _failed;
 
         protected override void Awake()
         {
@@ -119,9 +131,108 @@ namespace ROM.Gameplay
 
             player.Server_SpawnCharacter(defaultSpawnPoints.GetNextSpawnPoint());
 
+            _squadEverEntered = true;
+
             if (_logChanges)
                 Debug.Log($"[ROM] {player.PlayerInfo.Username} entró a la incursión.", this);
         }
+
+        #region failure
+        void Update()
+        {
+            if (!isServer || _failed || !_squadEverEntered) return;
+
+            if (Time.time < _nextSquadCheck) return;
+
+            _nextSquadCheck = Time.time + _squadCheckInterval;
+
+            Server_EvaluateSquad();
+        }
+
+        /// <summary>
+        /// Checks whether the squad can still continue.
+        ///
+        /// Polled on an interval instead of reacting to each downed state changing.
+        /// That would mean subscribing to every character as it spawns, and a
+        /// subscription missed because of initialisation order would leave the
+        /// incursion unable to ever fail — a silent failure of the thing whose job is
+        /// to detect failure. Walking the registry answers the question from the state
+        /// itself, and half a second of delay in declaring a failure is not perceived.
+        /// </summary>
+        [Server]
+        void Server_EvaluateSquad()
+        {
+            if (GameSync.Singleton == null) return;
+
+            ThreatLevelDefinition threat = ThreatLevelController.Instance != null
+                ? ThreatLevelController.Instance.Active
+                : null;
+
+            //a difficulty can turn the rule off, for a mode meant to be practised in
+            if (threat != null && !threat.FailWhenSquadCannotContinue) return;
+
+            CharacterInstance[] characters = GameSync.Singleton.Characters.Obj;
+
+            int squad = 0;
+            int standing = 0;
+
+            for (int i = 0; i < characters.Length; i++)
+            {
+                CharacterInstance character = characters[i];
+
+                if (character == null) continue;
+
+                DownedState downed = character.GetComponent<DownedState>();
+
+                //only squadmates count: enemies are not part of this question
+                if (downed == null || !downed.Managed) continue;
+
+                Health health = character.GetComponent<Health>();
+
+                if (health == null || health.Team != SquadTeam) continue;
+
+                squad++;
+
+                if (!downed.IsDowned && !downed.IsOut)
+                    standing++;
+            }
+
+            //nobody left in the registry is an empty room, not a failed incursion
+            if (squad == 0) return;
+
+            if (standing > 0) return;
+
+            Server_FailIncursion(squad);
+        }
+
+        /// <summary>
+        /// Ends the incursion as failed. The GDD states it: an incursion fails when
+        /// the squad can no longer continue.
+        /// </summary>
+        [Server]
+        void Server_FailIncursion(int squadSize)
+        {
+            _failed = true;
+
+            Debug.Log($"[ROM] Incursión fallida: los {squadSize} Redheads de la escuadra " +
+                      $"están caídos o fuera.", this);
+
+            GamemodeMessage("Incursión fallida", 10f);
+
+            SwitchGamemodeState(GamemodeState.Finish);
+        }
+
+        protected override void MatchEvent_EndMatch()
+        {
+            base.MatchEvent_EndMatch();
+
+            //same shape as the gamemodes of the kit do it
+            StopTimer();
+            BlockAllPlayers(true);
+
+            DenyRespawn();
+        }
+        #endregion
 
         void DenyRespawn()
         {
