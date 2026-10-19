@@ -57,6 +57,8 @@ namespace MultiFPS
         [SerializeField] float _rotationAngleThreshold = 80;
         [SerializeField] float _rotationAngleThresholdLeftSide = 20;
         [SerializeField] float _adjustingRotationLerpSpeed = 180;
+        [Tooltip("Segundos de suavizado de la dirección de movimiento en el blend tree de locomoción.")]
+        [SerializeField] float _movementBlendDamping = 0.12f;
         bool _adjustingRotation = false;
         #endregion
 
@@ -651,8 +653,10 @@ namespace MultiFPS
             if (!_characterInstance.FPP) 
             {
                 _animator.SetFloat(AnimationNames.CHARACTER_LOOK, -_characterInstance.Input.LookX);
-                _animator.SetFloat(AnimationNames.CHARACTER_MOVEMENT_HORIZONTAL, movementAnim.x);
-                _animator.SetFloat(AnimationNames.CHARACTER_MOVEMENT_VERTICAL, movementAnim.y);
+                //suavizado: el input de remotos llega cuantizado y el de los bots salta en cada
+                //esquina del camino; sin damping el blend tree cambia de clip de golpe y las piernas tiemblan
+                _animator.SetFloat(AnimationNames.CHARACTER_MOVEMENT_HORIZONTAL, movementAnim.x, _movementBlendDamping, Time.fixedDeltaTime);
+                _animator.SetFloat(AnimationNames.CHARACTER_MOVEMENT_VERTICAL, movementAnim.y, _movementBlendDamping, Time.fixedDeltaTime);
                 _animator.SetBool(AnimationNames.CHARACTER_ISGROUNDED, animIsGrounded);
                 _animator.SetBool(AnimationNames.CHARACTER_ISCROUCHING, _characterInstance.IsCrouching);
                 _animator.SetFloat(AnimationNames.CHARACTER_ISCROUCHING_FLOAT, _characterInstance.IsCrouching ? 1f : 0f);
