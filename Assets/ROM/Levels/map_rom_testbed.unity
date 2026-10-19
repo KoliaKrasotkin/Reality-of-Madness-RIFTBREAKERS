@@ -3366,6 +3366,7 @@ GameObject:
   - component: {fileID: 1201303698}
   - component: {fileID: 1201303699}
   - component: {fileID: 1201303700}
+  - component: {fileID: 1201303701}
   m_Layer: 0
   m_Name: ROOMMANAGER
   m_TagString: Untagged
@@ -3558,7 +3559,32 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   _catalog: {fileID: 11400000, guid: dc18653a44e90d31e14451dfed5efd54, type: 2}
+  _logChanges: 1
   _startingLevel: 2
+--- !u!114 &1201303701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201303691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e05ebffb7a1c9b4b97d3801f763b1fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Gameplay.IncursionGameMode
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  FFA: 0
+  PeacefulBots: 0
+  GameDuration: 60
+  WarmupTime: 10
+  _teams:
+  - PlayerInstances: []
+  - PlayerInstances: []
+  defaultSpawnPoints: {fileID: 21167313}
+  _logChanges: 1
 --- !u!1001 &1201428278
 PrefabInstance:
   m_ObjectHideFlags: 0
