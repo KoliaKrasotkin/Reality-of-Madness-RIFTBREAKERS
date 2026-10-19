@@ -192,7 +192,20 @@ namespace ROM.Gameplay
             //the client asked, the server decides
             if (!ServerCanRevive(target))
             {
-                Server_Cancel("el pedido no pasó la validación");
+                //logged here and not through Server_Cancel, which returns early when
+                //there is no revive in progress — exactly the case of a request that
+                //was refused on arrival, and the one worth seeing
+                if (_logChanges)
+                {
+                    Debug.Log($"[ROM] Pedido de revive rechazado: objetivo " +
+                              $"{(target == null ? "inexistente" : target.name)}, " +
+                              $"caído={(target != null && target.IsDowned)}, " +
+                              $"mismo equipo={(target != null && target.GetComponent<Health>() != null && target.GetComponent<Health>().Team == _health.Team)}, " +
+                              $"distancia={(target == null ? -1f : Vector3.Distance(transform.position, target.transform.position)):0.##}m " +
+                              $"(alcance {_range * _rangeTolerance:0.##}m)", this);
+                }
+
+                Server_Cancel(null);
                 return;
             }
 
