@@ -77,6 +77,42 @@ namespace ROM.Gameplay
             get { return ReviveDuration > 0f ? Mathf.Clamp01(ReviveElapsed / ReviveDuration) : 0f; }
         }
 
+        //resolved the first time it is needed: the ragdoll does not exist until the
+        //character goes down, and it is destroyed again when it gets back up
+        Transform _bodyTransform;
+
+        /// <summary>
+        /// Where the body actually is.
+        ///
+        /// Once a character is down the ragdoll takes over, and its bones move under
+        /// physics. The character transform stays where it died while the visible
+        /// body can end up metres away — an explosion throws it across the room.
+        /// Measured in a test: a player standing on top of a body was reported 7.4
+        /// metres from it.
+        ///
+        /// Anything that measures a distance to a downed character has to use this
+        /// and not transform.position.
+        /// </summary>
+        public Vector3 BodyPosition
+        {
+            get
+            {
+                if (!IsDowned) return transform.position;
+
+                if (_bodyTransform == null)
+                {
+                    //the ragdoll is instantiated as a child of the character, so it
+                    //can be found without touching the kit
+                    RagDoll ragdoll = GetComponentInChildren<RagDoll>();
+
+                    if (ragdoll != null && ragdoll._hips != null)
+                        _bodyTransform = ragdoll._hips.transform;
+                }
+
+                return _bodyTransform != null ? _bodyTransform.position : transform.position;
+            }
+        }
+
         public delegate void DownedStateChanged(DownedState state);
 
         /// <summary>Raised on server and clients when the character goes down.</summary>
@@ -347,6 +383,9 @@ namespace ROM.Gameplay
             IsBeingRevived = false;
             ReviveDuration = 0f;
             ReviveElapsed = 0f;
+
+            //the ragdoll of this downed state is gone; the next one will be another
+            _bodyTransform = null;
         }
 
         static ThreatLevelDefinition ActiveThreatLevel()

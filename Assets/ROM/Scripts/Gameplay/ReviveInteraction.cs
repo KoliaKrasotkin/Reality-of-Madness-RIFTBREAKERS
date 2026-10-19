@@ -198,10 +198,12 @@ namespace ROM.Gameplay
                 DownedState downed = other.GetComponent<DownedState>();
                 Health otherHealth = other.GetComponent<Health>();
 
-                Vector3 toTarget = other.transform.position - transform.position;
+                Vector3 bodyPosition = downed != null ? downed.BodyPosition : other.transform.position;
+
+                Vector3 toTarget = bodyPosition - transform.position;
                 toTarget.y = 0f;
 
-                float distance = Vector3.Distance(transform.position, other.transform.position);
+                float distance = Vector3.Distance(transform.position, bodyPosition);
                 float dot = toTarget.sqrMagnitude < 0.0001f ? 1f : Vector3.Dot(transform.forward, toTarget.normalized);
 
                 Debug.Log($"[ROM] Candidato descartado: {other.name} | " +
@@ -253,15 +255,15 @@ namespace ROM.Gameplay
 
                 if (other == null || other == _character) continue;
 
-                //distance first: it is a subtraction, and it keeps the component
-                //lookup to the handful of characters actually nearby
-                float sqrDistance = (other.transform.position - transform.position).sqrMagnitude;
-
-                if (sqrDistance > rangeSqr || sqrDistance >= bestSqrDistance) continue;
-
                 DownedState downed = other.GetComponent<DownedState>();
 
                 if (!IsRevivable(downed)) continue;
+
+                //against the body and not the transform: a thrown ragdoll leaves the
+                //character transform far from where the body actually lies
+                float sqrDistance = (downed.BodyPosition - transform.position).sqrMagnitude;
+
+                if (sqrDistance > rangeSqr || sqrDistance >= bestSqrDistance) continue;
 
                 bestSqrDistance = sqrDistance;
                 best = downed;
@@ -291,7 +293,7 @@ namespace ROM.Gameplay
                               $"{(target == null ? "inexistente" : target.name)}, " +
                               $"caído={(target != null && target.IsDowned)}, " +
                               $"mismo equipo={(target != null && target.GetComponent<Health>() != null && target.GetComponent<Health>().Team == _health.Team)}, " +
-                              $"distancia={(target == null ? -1f : Vector3.Distance(transform.position, target.transform.position)):0.##}m " +
+                              $"distancia={(target == null ? -1f : Vector3.Distance(transform.position, target.BodyPosition)):0.##}m " +
                               $"(alcance {_range * _rangeTolerance:0.##}m)", this);
                 }
 
@@ -396,7 +398,7 @@ namespace ROM.Gameplay
             //cancel a hold the player is doing right
             float range = _range * _rangeTolerance;
 
-            return Vector3.Distance(transform.position, target.transform.position) <= range;
+            return Vector3.Distance(transform.position, target.BodyPosition) <= range;
         }
 
         /// <summary>
@@ -416,7 +418,7 @@ namespace ROM.Gameplay
             //only squadmates, and never a character with no team assigned yet
             if (targetHealth.Team < 0 || targetHealth.Team != _health.Team) return false;
 
-            Vector3 toTarget = target.transform.position - transform.position;
+            Vector3 toTarget = target.BodyPosition - transform.position;
             toTarget.y = 0f;
 
             if (toTarget.sqrMagnitude < 0.0001f) return true; //on top of each other
