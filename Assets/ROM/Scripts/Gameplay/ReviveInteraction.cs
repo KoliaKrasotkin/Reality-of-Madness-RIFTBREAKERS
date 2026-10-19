@@ -358,11 +358,45 @@ namespace ROM.Gameplay
             _target = null;
             _elapsed = 0f;
 
+            //the atomic moment of the budget: taken here and not when the hold
+            //started, so a cancelled revive costs nothing and two players reviving at
+            //the same time cannot both spend the last remaining one
+            if (!Server_TakeFromBudget())
+            {
+                Log($"no pudo revivir a {target.name}: la escuadra se quedó sin revividas");
+                target.Server_SetBeingRevived(false, 0f);
+                return;
+            }
+
             Log($"terminó de revivir a {target.name}");
 
             //Server_Revive clears the downed state, and with it the being-revived
             //state, so there is nothing to undo here
             target.Server_Revive();
+        }
+
+        /// <summary>
+        /// Takes one revive from the squad budget.
+        ///
+        /// A missing budget component logs and lets the revive through instead of
+        /// blocking it: without a Threat Level there is no hold time and the
+        /// interaction cannot work at all, but without a budget it still can, and
+        /// refusing every revive because a component was forgotten is worse than a
+        /// loud message.
+        /// </summary>
+        [Server]
+        bool Server_TakeFromBudget()
+        {
+            ReviveBudget budget = ReviveBudget.Instance;
+
+            if (budget == null)
+            {
+                Debug.LogError($"[ROM] No hay {nameof(ReviveBudget)} en la escena, así que las " +
+                               $"revividas son ilimitadas y el Threat Level no se está respetando.", this);
+                return true;
+            }
+
+            return budget.Server_TryConsume();
         }
 
         [Server]
@@ -393,6 +427,14 @@ namespace ROM.Gameplay
             //whoever revives has to be on their feet
             if (_downed.IsDowned || _downed.IsOut) return false;
             if (_health.CurrentHealth <= 0) return false;
+
+            //checked here too, and not only when the revive completes, so nobody
+            //holds the key for nothing: a revive in progress is cancelled the moment
+            //another teammate spends the last one. A missing budget is reported where
+            //it is consumed, so this does not log per frame.
+            ReviveBudget budget = ReviveBudget.Instance;
+
+            if (budget != null && !budget.HasAny) return false;
 
             //a little extra room on the server so a step or some latency does not
             //cancel a hold the player is doing right
