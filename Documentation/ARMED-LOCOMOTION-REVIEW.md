@@ -1,3 +1,5 @@
+> Actualización: la locomoción aprobada se extendió a los cinco personajes y se combinó con las armas antiguas. El estado actual está en SHARED-CHARACTER-ANIMATIONS.md. Lo que sigue documenta la etapa anterior.
+
 # Locomoción armada erguida
 
 ## Resultado actual

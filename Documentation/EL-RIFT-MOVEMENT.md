@@ -1,3 +1,5 @@
+> Actualización: la locomoción aprobada se extendió a los cinco personajes y se combinó con las armas antiguas. El estado actual está en SHARED-CHARACTER-ANIMATIONS.md. Lo que sigue documenta la etapa anterior.
+
 > Actualización: el puente manual de HumanPose y el ajuste manual de piernas fueron sustituidos. Consultar ARMED-LOCOMOTION-REVIEW.md para la implementación y las pruebas actuales de caminar/correr con pistola.
 
 # El Rift: movimiento, rigs IDS y acceso a Sun Temple

@@ -33,7 +33,7 @@ string player="Assets/MultiFPS/Levels/Prefabs/Gameplay/MultiFPS_Character.prefab
 AssetDatabase.SaveAssets();
 File.WriteAllText("Documentation/lizardman-integration.txt","Slot 1: Lizardman Berserker replaces Dinork. Native humanoid avatar and URP materials. Per-character animation bindings prepared. Vendor FBX and downloaded unitypackage contain NO animation clips; awaiting separate animation package. Existing locomotion is temporary.\n");
 if(AssetDatabase.IsValidFolder("Assets/Mobility_Starter")){
-ROM.EditorTools.LizardmanAnimationBuilder.Build();
+ROM.EditorTools.SharedCharacterAnimationBuilder.Build();
 File.WriteAllText("Documentation/lizardman-integration.txt","Slot 1: Lizardman Berserker replaces Dinork. Native humanoid avatar, URP materials and exclusive imported animation set. See lizardman-animation-bindings.txt.\n");
 }
 }

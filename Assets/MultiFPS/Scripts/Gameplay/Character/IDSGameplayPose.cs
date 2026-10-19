@@ -17,6 +17,10 @@ namespace MultiFPS.Gameplay
         RuntimeAnimatorController controller;
         CharacterAnimationSet animationSet;
         CharacterMotor motor;
+        readonly System.Collections.Generic.Dictionary<int,bool> triggers = new System.Collections.Generic.Dictionary<int,bool>();
+        readonly System.Collections.Generic.List<int> states = new System.Collections.Generic.List<int>();
+        public void SetVisualTrigger(int hash, bool value) { triggers[hash] = value; }
+        public void PlayVisualState(int hash) { states.Add(hash); }
         void Initialize()
         {
             if(initialized)return;
@@ -55,9 +59,13 @@ namespace MultiFPS.Gameplay
                     case AnimatorControllerParameterType.Float:Target.SetFloat(p.nameHash,Source.GetFloat(p.nameHash));break;
                     case AnimatorControllerParameterType.Int:Target.SetInteger(p.nameHash,Source.GetInteger(p.nameHash));break;
                     case AnimatorControllerParameterType.Bool:Target.SetBool(p.nameHash,Source.GetBool(p.nameHash));break;
-                    case AnimatorControllerParameterType.Trigger:if(Source.GetBool(p.nameHash))Target.SetTrigger(p.nameHash);else Target.ResetTrigger(p.nameHash);break;
+                    case AnimatorControllerParameterType.Trigger:break;
                 }
             }
+            foreach(var trigger in triggers){if(trigger.Value)Target.SetTrigger(trigger.Key);else Target.ResetTrigger(trigger.Key);}
+            triggers.Clear();
+            foreach(var state in states)Target.Play(state);
+            states.Clear();
             for(int layer=1;layer<Source.layerCount;layer++)Target.SetLayerWeight(layer,Source.GetLayerWeight(layer));
             if(animationSet&&animationSet.HasOwnLocomotion&&motor){
                 // Motus jog loops cover both 4.2 m/s movement and sprint. Match cadence

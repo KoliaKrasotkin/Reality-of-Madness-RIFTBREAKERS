@@ -352,6 +352,7 @@ namespace MultiFPS.Gameplay
 
         protected void CancelReloading() 
         {
+            if (MyOwner) MyOwner.IsReloading = false;
             if (_c_reload != null)
             {
                 StopCoroutine(_c_reload);

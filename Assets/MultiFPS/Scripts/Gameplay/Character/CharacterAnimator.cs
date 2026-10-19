@@ -830,6 +830,7 @@ namespace MultiFPS
                 _animator.isActiveAndEnabled)
             {
                 _animator.Play(name);
+                ForwardVisualState(Animator.StringToHash(name));
             }
         }
 
@@ -839,18 +840,29 @@ namespace MultiFPS
                 _animator.isActiveAndEnabled)
             {
                 _animator.Play(hash);
+                ForwardVisualState(hash);
             }
         }
 
         public void SetTrigger(string triggerName)
         {
             if (_animator.gameObject.activeInHierarchy) 
-                _animator.SetTrigger(triggerName);
+                SetTrigger(Animator.StringToHash(triggerName));
         }
 
-        public void ResetTrigger(string triggerName) => _animator.ResetTrigger(triggerName);
-        public void SetTrigger(int triggerHash) => _animator.SetTrigger(triggerHash);
-        public void ResetTrigger(int triggerHash) => _animator.ResetTrigger(triggerHash);
+        public void ResetTrigger(string triggerName) => ResetTrigger(Animator.StringToHash(triggerName));
+        public void SetTrigger(int triggerHash) { _animator.SetTrigger(triggerHash); ForwardVisualTrigger(triggerHash, true); }
+        public void ResetTrigger(int triggerHash) { _animator.ResetTrigger(triggerHash); ForwardVisualTrigger(triggerHash, false); }
+        void ForwardVisualTrigger(int hash, bool value)
+        {
+            if (_animator == _tppModelAnimator && _nativeIDSVisual)
+                _nativeIDSVisual.GetComponent<IDSGameplayPose>()?.SetVisualTrigger(hash, value);
+        }
+        void ForwardVisualState(int hash)
+        {
+            if (_animator == _tppModelAnimator && _nativeIDSVisual)
+                _nativeIDSVisual.GetComponent<IDSGameplayPose>()?.PlayVisualState(hash);
+        }
 
         public void ResetAnimator() 
         {
