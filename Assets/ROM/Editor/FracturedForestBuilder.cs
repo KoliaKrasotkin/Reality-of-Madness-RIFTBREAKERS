@@ -898,9 +898,9 @@ namespace ROM.Horde.EditorTools
             if(!result) { result=new Material(Shader.Find("Universal Render Pipeline/Lit")); AssetDatabase.CreateAsset(result,file); }
             // Vendor Shader Graphs retain their URP maps as saved properties even
             // when an older graph no longer exposes the property to HasProperty.
-            CopySavedTexture(source,result,"_BaseMap",new[]{"_BaseMap","_BaseColorMap","_MainTex"});
+            CopySavedTexture(source,result,"_BaseMap",new[]{"_BaseMap","_BaseColorMap","_MainTex","_Albedo_Map","_Base"});
             result.SetColor("_BaseColor",source.HasProperty("_BaseColor")?source.GetColor("_BaseColor"):source.HasProperty("_Color")?source.GetColor("_Color"):Color.white);
-            CopySavedTexture(source,result,"_BumpMap",new[]{"_BumpMap","_NormalMap"});
+            CopySavedTexture(source,result,"_BumpMap",new[]{"_BumpMap","_NormalMap","_Normal_Map","_Normal"});
             if(result.GetTexture("_BumpMap")) result.EnableKeyword("_NORMALMAP");
             bool cutout=source.shader.name.IndexOf("cutout",StringComparison.OrdinalIgnoreCase)>=0 || (source.HasProperty("_Mode") && source.GetFloat("_Mode")==1) || source.IsKeywordEnabled("_ALPHATEST_ON") || source.shader.name.Contains("Tree") || source.shader.name.Contains("Nature");
             if(cutout) { result.SetFloat("_AlphaClip",1); result.SetFloat("_Cutoff",.4f); result.EnableKeyword("_ALPHATEST_ON"); result.renderQueue=2450; }

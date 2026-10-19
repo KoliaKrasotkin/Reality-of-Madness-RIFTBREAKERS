@@ -150,3 +150,6 @@ Packages/packages-lock.json linguist-generated
 LightingData.asset     binary
 "Assets/Standard Assets/Sun_Temple/Scenes/DemoScene_Terrain.asset" binary
 Assets/ROM/Levels/SunTempleURP/RecoveredTerrain.asset binary
+# Unity NavMeshData is serialized as binary even with Force Text enabled.
+Assets/ROM/Levels/FracturedForest/NavMesh*.asset binary
+Assets/ROM/Levels/SunTempleURP/NavMesh*.asset binary
