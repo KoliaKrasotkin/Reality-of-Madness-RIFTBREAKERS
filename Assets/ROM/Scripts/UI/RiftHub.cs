@@ -15,6 +15,7 @@ namespace ROM.UI.Sprint01
         public Sprite Background,Logo;
         public ROMUITheme Theme;
         public Font InterfaceFont;
+        public Font ButtonFont;
         public FrontEndCatalog Catalog;
         public GameObject LegacyMenu;
         public RoomCreator Creator;
@@ -42,6 +43,7 @@ namespace ROM.UI.Sprint01
             // The condensed display font is restricted to headings. Body and navigation
             // use the existing Inter font to keep the new UI readable.
             W.Title=W.Body;
+            W.ButtonFont=ButtonFont?ButtonFont:W.Body;
             if(Services==null)Services=SprintServices.CreateMock(Catalog);
             if(Social==null){Social=new LocalSocialService();Social.Changed+=SocialChanged;}
         }
@@ -107,7 +109,7 @@ namespace ROM.UI.Sprint01
             if(page==HubPage.Missions||page==HubPage.Lobby)page=HubPage.Home;
             Page=page;Clear(content);productView=null;
             int active=page==HubPage.Home?0:page==HubPage.Loadout?1:page==HubPage.Progression?2:page==HubPage.Marketplace||page==HubPage.Auction||page==HubPage.Exchange?3:page==HubPage.Settings?4:-1;
-            for(int i=0;i<nav.Count;i++)nav[i].targetGraphic.color=i==active?new Color(.3f,.035f,.065f,.98f):W.Ink;
+            for(int i=0;i<nav.Count;i++){var frame=nav[i].targetGraphic as RiftButtonGraphic;if(frame){frame.Active=i==active;frame.SetVerticesDirty();}}
             if(page==HubPage.Home)Home();
             else{
                 var panel=W.Panel(content,"PagePanel",0,0,1848,810);

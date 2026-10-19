@@ -1,0 +1,57 @@
+RIG soldierV2_fpp avatar=soldierAvatar (UnityEngine.Avatar) scale=(1.00, 1.00, 1.00)
+RIG soldier2 avatar=soldier2Avatar (UnityEngine.Avatar) scale=(1.00, 1.00, 1.00)
+SKIN Black Panther Assets/IDS ASSETS/JP/BlackPanther/Black_Panther.fbx scale=(0.01, 0.01, 0.01) bounds=Center: (0.33, 102.49, 0.45), Extents: (110.37, 103.07, 19.74)
+SKIN Dinork Assets/IDS ASSETS/JP/Dinork/Dinork.fbx scale=(0.01, 0.01, 0.01) bounds=Center: (0.00, 43.63, 123.61), Extents: (148.87, 104.50, 126.17)
+SKIN Purplehead Assets/IDS ASSETS/JP/PurpleHead/Purplehead.fbx scale=(0.01, 0.01, 0.01) bounds=Center: (-0.48, 102.85, 3.39), Extents: (103.25, 103.05, 27.35)
+SKIN Redhead Assets/IDS ASSETS/JP/RedHead/RedHeadFixed.fbx scale=(0.01, 0.01, 0.01) bounds=Center: (0.00, 0.87, 0.04), Extents: (0.83, 0.88, 0.19)
+SKIN White Knight Assets/IDS ASSETS/JP/WhiteKnight/WhiteKnight.fbx scale=(0.01, 0.01, 0.01) bounds=Center: (0.00, 0.89, 0.04), Extents: (0.84, 0.89, 0.20)
+CONTROLLER Assets/MultiFPS/Art/Animations/Player/Soldier_EmptyHanded.controller
+  body/walk rate=1,5 motion=walk (UnityEngine.BlendTree)
+  body/run rate=1,25 motion=run (UnityEngine.BlendTree)
+  body/notGrounded rate=1 motion=rig_soldier|emptyHanded_inAir (UnityEngine.AnimationClip)
+  body/crouch rate=1 motion=crouch (UnityEngine.BlendTree)
+  body/idle rate=1 motion=rig_soldier|emptyHanded (UnityEngine.AnimationClip)
+  body/turn rate=1 motion=Blend Tree (UnityEngine.BlendTree)
+  upperBody/look rate=1 motion=look (UnityEngine.BlendTree)
+  upperBody/take rate=1 motion=rig_soldier|emptyHanded_equip (UnityEngine.AnimationClip)
+  upperBody/reload rate=1 motion=rig_player_fpp@rifle_reload (UnityEngine.AnimationClip)
+  upperBody/melee rate=1 motion=rig_soldier@rifle_melee (UnityEngine.AnimationClip)
+  upperBody/onDamaged rate=1 motion=
+  upperBody/recoil rate=1 motion=rig_soldier@knife_melee_finisher (UnityEngine.AnimationClip)
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx rig_soldier@armed_walk_forward length=1 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx rig_soldier@armed_walk_backward length=1 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx rig_soldier@armed_walk_right length=1 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx rig_soldier@armed_walk_left length=1 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx rig_soldier@armed_walk_FL length=1 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx rig_soldier@armed_walk_FR length=1 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx rig_soldier@armed_walk_BL length=1 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx rig_soldier@armed_walk_BR length=1 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx __preview__rig_soldier|armed_walk_backward length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx __preview__rig_soldier|armed_walk_BL length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx __preview__rig_soldier|armed_walk_BR length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx __preview__rig_soldier|armed_walk_FL length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx __preview__rig_soldier|armed_walk_forward length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx __preview__rig_soldier|armed_walk_FR length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx __preview__rig_soldier|armed_walk_left length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx __preview__rig_soldier|armed_walk_right length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx __preview__rig_soldier|tpose length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx rig_soldier|emptyHanded_M90 length=0,01666667 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx rig_soldier|emptyHanded length=0,01666667 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx rig_soldier|emptyHanded_equip length=0,3333333 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx rig_soldier|emptyHanded_90 length=0,01666667 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx rig_soldier|emptyHanded_run_forward length=0,6666667 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx rig_soldier|emptyHanded_run_FL length=0,6666667 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx rig_soldier|emptyHanded_run_FR length=0,6666667 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx rig_soldier|emptyHanded_inAir length=2 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx rig_soldier|emptyHanded_turnLeft length=0,5 human=True vel=(0.00, 0.00, 0.00) loop=True
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx __preview__rig_soldier|1BASE length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx __preview__rig_soldier|emptyHanded length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx __preview__rig_soldier|emptyHanded_90 length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx __preview__rig_soldier|emptyHanded_equip length=1 human=True vel=(0.00, 0.01, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx __preview__rig_soldier|emptyHanded_inAir length=2 human=True vel=(0.00, -0.01, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx __preview__rig_soldier|emptyHanded_M90 length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx __preview__rig_soldier|emptyHanded_run_FL length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx __preview__rig_soldier|emptyHanded_run_forward length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx __preview__rig_soldier|emptyHanded_run_FR length=1 human=True vel=(0.00, 0.00, 0.01) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx __preview__rig_soldier|emptyHanded_turnLeft length=1 human=True vel=(0.00, 0.00, 0.00) loop=False
+CLIP Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx __preview__rig_soldier|PoseLib length=1 human=True vel=(0.00, 0.00, 0.00) loop=False

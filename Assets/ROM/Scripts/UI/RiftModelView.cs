@@ -34,16 +34,16 @@ namespace ROM.UI.Sprint01
             view.cullingMask=1<<PreviewLayer;view.clearFlags=CameraClearFlags.SolidColor;view.backgroundColor=new Color(.035f,.045f,.07f);view.nearClipPlane=.03f;view.farClipPlane=100;view.allowHDR=true;view.fieldOfView=38;
             var data=view.GetUniversalAdditionalCameraData();data.renderPostProcessing=true;data.antialiasing=AntialiasingMode.SubpixelMorphologicalAntiAliasing;data.volumeLayerMask=(1<<PreviewLayer)|1;
             texture=new RenderTexture(Mathf.Clamp(width,320,1920),Mathf.Clamp(height,320,1080),24,RenderTextureFormat.ARGBHalf);texture.Create();view.targetTexture=texture;image.texture=texture;
-            AddLight("Key",new Vector3(-3,5,-4),new Color(.78f,.84f,1),80,LightType.Spot);
-            AddLight("Rim",new Vector3(3,4,3),new Color(.63f,.22f,1),120,LightType.Spot);
-            AddLight("Warm fill",new Vector3(3,3,-4),new Color(1,.62f,.4f),60,LightType.Spot);
-            AddLight("Studio daylight",new Vector3(-3,5,-4),new Color(.72f,.79f,1),1.1f,LightType.Directional);
+            AddLight("Key",new Vector3(-3,5,-4),new Color(1,.92f,.83f),40,LightType.Spot);
+            AddLight("Rim",new Vector3(3,4,3),new Color(.55f,.63f,1),28,LightType.Spot);
+            AddLight("Warm fill",new Vector3(3,3,-4),new Color(.72f,.81f,1),15,LightType.Spot);
+            AddLight("Studio daylight",new Vector3(-3,5,-4),new Color(.78f,.84f,1),.6f,LightType.Directional);
             SetLayer(world);
         }
         void AddLight(string name,Vector3 position,Color color,float intensity,LightType type)
         {
             var go=new GameObject(name);go.transform.SetParent(world.transform,false);go.transform.localPosition=position;go.transform.LookAt(world.transform.position+Vector3.up);
-            var light=go.AddComponent<Light>();light.type=type;light.color=color;light.intensity=intensity;light.range=25;light.spotAngle=85;light.cullingMask=1<<PreviewLayer;light.shadows=LightShadows.Soft;
+            var light=go.AddComponent<Light>();light.type=type;light.color=color;light.intensity=intensity;light.range=25;light.spotAngle=65;light.shadowBias=.015f;light.shadowNormalBias=.15f;light.cullingMask=1<<PreviewLayer;light.shadows=LightShadows.Soft;
         }
         public void Show(PreviewModel model)
         {

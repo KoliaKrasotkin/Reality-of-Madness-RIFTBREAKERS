@@ -205,7 +205,7 @@ MonoBehaviour:
   m_Weight: 1
   m_Data:
     m_ConstrainedObject: {fileID: 4265667612159835747}
-    m_OverrideSource: {fileID: 7010787812084002768}
+    m_OverrideSource: {fileID: 0}
     m_OverridePosition: {x: 0, y: 0, z: 0}
     m_OverrideRotation: {x: 0, y: 0, z: 0}
     m_PositionWeight: 0
@@ -356,9 +356,9 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.53
-  m_SkinWidth: 0.0001
-  m_MinMoveDistance: 0.001
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.04
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &2382563002283882904
 MonoBehaviour:
@@ -462,12 +462,16 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  WalkSpeed: 5
-  RunSpeed: 9.5
-  CrouchSpeed: 3
-  JumpHeight: 0.9
-  Gravity: 10
-  maxAcceleration: 80
+  WalkSpeed: 4.2
+  RunSpeed: 7.5
+  CrouchSpeed: 2.2
+  JumpHeight: 1.2
+  Gravity: 20
+  maxAcceleration: 28
+  brakingAcceleration: 40
+  airControl: 0.3
+  coyoteTime: 0.1
+  jumpBuffer: 0.12
   CameraLerpSpeed: 4
   noclipSpeed: 10
   noclipRunSpeed: 30
@@ -553,6 +557,12 @@ MonoBehaviour:
   _tppRootBone: {fileID: 8848986837049688835}
   _fppRigRoot: {fileID: 4249333053470419309}
   _fppRootBone: {fileID: 4749533711937986546}
+  _idsNativeModels:
+  - {fileID: 1776869511958445196, guid: 501e390ae85e7a947869506014cc1d22, type: 3}
+  - {fileID: 5554541000137178739, guid: ad2c0dba78dd8e04bbdf92f19b76cadb, type: 3}
+  - {fileID: 7097988499761441884, guid: 57b613d5cc03a6e479d68eb482a17b17, type: 3}
+  - {fileID: 5469072177902730799, guid: 5d0fd9a88b8c32f44b06ba82f7686e7c, type: 3}
+  - {fileID: 4401162153400207740, guid: 32cc702e7dd50874785c74b5674c5438, type: 3}
   _rotationAngleThreshold: 70
   _rotationAngleThresholdLeftSide: 20
   _adjustingRotationLerpSpeed: 8
@@ -815,7 +825,7 @@ MonoBehaviour:
   m_Weight: 0
   m_Data:
     m_ConstrainedObject: {fileID: 1945584684678431179}
-    m_OverrideSource: {fileID: 9136363324602403525}
+    m_OverrideSource: {fileID: 0}
     m_OverridePosition: {x: 0, y: 0, z: 0}
     m_OverrideRotation: {x: 0, y: 0, z: 0}
     m_PositionWeight: 0
@@ -874,22 +884,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8987498478785149855}
     m_Modifications:
-    - target: {fileID: -745073389387746162, guid: 07504123bc274f34b9338e37e238f6db,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 3262789661189265836, guid: 0162432a07add3648a67c1c3f9c6781f,
-        type: 3}
-    - target: {fileID: -745073389387746162, guid: 07504123bc274f34b9338e37e238f6db,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 30ad30f774018b34a9483a010bbf9cd7, type: 2}
-    - target: {fileID: -360765115648521289, guid: 07504123bc274f34b9338e37e238f6db,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0162432a07add3648a67c1c3f9c6781f,
         type: 3}
       propertyPath: m_RootOrder
@@ -979,6 +973,22 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -745073389387746162, guid: 07504123bc274f34b9338e37e238f6db,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 3262789661189265836, guid: 0162432a07add3648a67c1c3f9c6781f,
+        type: 3}
+    - target: {fileID: -745073389387746162, guid: 07504123bc274f34b9338e37e238f6db,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 30ad30f774018b34a9483a010bbf9cd7, type: 2}
+    - target: {fileID: -360765115648521289, guid: 07504123bc274f34b9338e37e238f6db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -29,6 +29,15 @@ namespace MultiFPS.Gameplay
         /// item model, we need access to that so we can hide it when its aquired by player and not in use
         /// </summary>
         [SerializeField] protected GameObject ItemModel;
+        public Transform PresentationModel => ItemModel ? ItemModel.transform : null;
+        Vector3 presentationPosition;
+        Quaternion presentationRotation;
+        public void ResetPresentationPose()
+        {
+            if(!ItemModel)return;
+            ItemModel.transform.localPosition=presentationPosition;
+            ItemModel.transform.localRotation=presentationRotation;
+        }
         [SerializeField] SkinnedMeshRenderer _itemMesh;
         [SerializeField] Mesh _lowPolyMesh;
         [SerializeField] bool _placeInHandInFPP;
@@ -212,6 +221,8 @@ namespace MultiFPS.Gameplay
 
         protected virtual void Awake()
         {
+            presentationPosition=ItemModel.transform.localPosition;
+            presentationRotation=ItemModel.transform.localRotation;
             _rg = GetComponent<Rigidbody>();
             _rg.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 

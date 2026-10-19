@@ -50,6 +50,8 @@ namespace MultiFPS
         [SerializeField] private Transform _fppRootBone;
 
 
+        [SerializeField] GameObject[] _idsNativeModels;
+        GameObject _nativeIDSVisual;
         public SkinContainer MySkin { private set; get; }
 
         #region step animation variables
@@ -62,6 +64,9 @@ namespace MultiFPS
         bool _adjustingRotation = false;
         #endregion
 
+        CharacterMotor _motor;
+        Vector3 _lastMotionPosition;
+        Vector3 _animationVelocity;
         float _currentBodyRotation;
         float _upperBodyAnimateFactor;
         float _speed;
@@ -103,6 +108,8 @@ namespace MultiFPS
             
 
             _characterInstance = GetComponent<CharacterInstance>();
+            _motor = GetComponent<CharacterMotor>();
+            _lastMotionPosition = transform.position;
             _characterItemManager = GetComponent<CharacterItemManager>();
 
             _characterInstance.Client_OnPerspectiveSet += OnPerspectiveChanged;
@@ -118,14 +125,19 @@ namespace MultiFPS
             _characterInstance.Health.Client_OnHealthDepleted += OnDeath;
 
             _animator.cullingMode = AnimatorCullingMode.CullCompletely;
-        }
-        private void FixedUpdate()
-        {
-            if (_characterInstance.Health.CurrentHealth > 0)
-                UpdateAnimationProperties();
+            // The invisible gameplay skeleton must continue driving native IDS visuals.
+            _tppModelAnimator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
         }
         private void Update()
         {
+            float dt = Mathf.Max(.001f, Time.deltaTime);
+            var delta = transform.position - _lastMotionPosition;
+            _lastMotionPosition = transform.position;
+            var measured = _characterInstance.IsClientOrBot() && _motor
+                ? _motor.PlanarVelocity : (delta.sqrMagnitude < 4f ? delta / dt : Vector3.zero);
+            measured.y = 0;
+            _animationVelocity = Vector3.Lerp(_animationVelocity, measured, 1f - Mathf.Exp(-16f * dt));
+            if (_characterInstance.Health.CurrentHealth > 0) UpdateAnimationProperties();
             if (!_characterInstance.FPP)
                 UpdateRotationAnimation(Time.deltaTime);
 
@@ -197,6 +209,13 @@ namespace MultiFPS
             if (!MySkin)
             {
                 Debug.LogError($"ApplySkin: La skin del ID {skinID} es null.");
+                return;
+            }
+
+            if (_idsNativeModels != null && skinID < _idsNativeModels.Length && _idsNativeModels[skinID])
+            {
+                InstallNativeIDSVisual(skinID);
+                ApplyFirstPersonSkin();
                 return;
             }
 
@@ -304,6 +323,7 @@ namespace MultiFPS
             tppRenderer.updateWhenOffscreen = true;
 
             _characterMeshes = new SkinnedMeshRenderer[] { tppRenderer };
+            InstallNativeIDSVisual(skinID);
 
             if (applyFPP)
             {
@@ -315,6 +335,49 @@ namespace MultiFPS
         }
 
                 
+        void ApplyFirstPersonSkin()
+        {
+            if (!_fppCharacterMesh || !MySkin.FPP_Mesh || !MySkin.fppRenderer) return;
+            if (!ValidateSkinMaterials("FPP", MySkin.FPP_Mesh, MySkin.FPP_Materials)) return;
+            if (!TryBuildBoneMap("FPP", MySkin.fppRenderer, MySkin.FPP_Mesh, _fppRigRoot, out var bones)) return;
+            _fppCharacterMesh.sharedMesh = MySkin.FPP_Mesh;
+            _fppCharacterMesh.sharedMaterials = MySkin.FPP_Materials;
+            _fppCharacterMesh.bones = bones;
+            _fppCharacterMesh.rootBone = _fppRootBone;
+        }
+
+        void InstallNativeIDSVisual(int skinID)
+        {
+            if (_nativeIDSVisual) Destroy(_nativeIDSVisual);
+            if (_idsNativeModels == null || skinID < 0 || skinID >= _idsNativeModels.Length || !_idsNativeModels[skinID]) return;
+            _nativeIDSVisual = Instantiate(_idsNativeModels[skinID], _tppModelAnimator.transform.parent);
+            _nativeIDSVisual.name = "IDS gameplay visual - " + MySkin.SkinName;
+            GameManager.SetLayerRecursively(_nativeIDSVisual, 8);
+            var pivot = _nativeIDSVisual.transform;
+            pivot.localPosition = _tppModelAnimator.transform.localPosition;
+            pivot.localRotation = _tppModelAnimator.transform.localRotation;
+            var native = _nativeIDSVisual.GetComponent<Animator>();
+            native.runtimeAnimatorController = null;
+            native.applyRootMotion = false;
+            native.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+            foreach (var script in _nativeIDSVisual.GetComponents<MonoBehaviour>())
+                if (script.GetType().Name == "NaturalLegStance") script.enabled = false;
+            var meshes = _nativeIDSVisual.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+            // Preserve native proportions while fitting the two-metre gameplay capsule.
+            if (meshes.Length > 0)
+            {
+                var bounds = meshes[0].bounds;
+                foreach (var mesh in meshes) bounds.Encapsulate(mesh.bounds);
+                pivot.localScale *= 2f / Mathf.Max(.1f, bounds.size.y);
+            }
+            var retarget = _nativeIDSVisual.AddComponent<IDSGameplayPose>();
+            retarget.Source = _tppModelAnimator; retarget.Target = native; retarget.Character = _characterInstance;
+            _tppModelAnimator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+            tppRenderer.enabled = false;
+            _characterMeshes = meshes;
+            foreach (var mesh in meshes) { mesh.updateWhenOffscreen = true; mesh.enabled = !_characterInstance.FPP; }
+        }
+
         private bool TryBuildBoneMap(
             string label,
             SkinnedMeshRenderer sourceRenderer,
@@ -418,7 +481,7 @@ namespace MultiFPS
                     continue;
                 }
 
-                string boneName = sourceBone.name;
+                string boneName = sourceBone.name.Replace("Reg.", "Leg.");
 
                 if (ambiguousNames.Contains(boneName))
                 {
@@ -625,27 +688,36 @@ namespace MultiFPS
 
             bool animIsGrounded = _characterInstance.isGrounded;
 
-            _characterInstance.IsRunning = _characterInstance.ReadActionKeyCode(ActionCodes.Sprint) && !_characterInstance.ReadActionKeyCode(ActionCodes.Crouch) && _characterInstance.Input.Movement.y > 0 && _characterInstance.isGrounded && !_characterInstance.IsUsingItem && !_characterInstance.IsScoping;
+            _characterInstance.IsRunning = _motor && _motor.WantsToSprint && animIsGrounded;
 
             if (_characterInstance.IsRunning)
                 _characterInstance.IsAbleToUseItem = false;
 
-            _speed = (_characterInstance.IsRunning &&
+            _speed = _animationVelocity.sqrMagnitude <= .0225f ? 0f : (_characterInstance.IsRunning &&
                 !_characterInstance.ReadActionKeyCode(ActionCodes.Trigger1) &&
                 !_characterInstance.ReadActionKeyCode(ActionCodes.Trigger2) && 
                 !_characterInstance.IsUsingItem && 
                 !_characterInstance.IsScoping && 
-                !_characterInstance.IsCrouching ? 2f : (_characterInstance.Input.Movement != Vector2.zero ? 1f : 0f));
+                !_characterInstance.IsCrouching ? 2f : (_animationVelocity.sqrMagnitude > .0225f ? 1f : 0f));
+
+            if (!_characterInstance.FPP)
+            {
+                float strideReference = _characterInstance.IsCrouching ? 2.2f : (_characterInstance.IsRunning ? 6f : 3.4f);
+                _animator.SetFloat("locomotionRate", Mathf.Clamp(_animationVelocity.magnitude / strideReference, .35f, 1.5f), .1f, Time.deltaTime);
+            }
 
             //animate character
             if (!_animator.runtimeAnimatorController) return;
 
             _animator.SetFloat(AnimationNames.ITEM_SPEED, _characterInstance.Block ? 0f : _speed); //universal parameter for fpp and tpp models
 
-            _upperBodyAnimateFactor = Convert.ToInt32(!_characterInstance.IsRunning
-                    || _characterInstance.IsReloading ||  _characterInstance.IsScoping);
+            _upperBodyAnimateFactor = !_characterInstance.IsRunning || _characterInstance.IsReloading || _characterInstance.IsScoping
+                ? 1f : (_characterItemManager.CurrentlyUsedItem ? .8f : 0f);
 
-            Vector2 movementAnim = _characterInstance.Block ? Vector2.zero : _characterInstance.Input.Movement;
+            Vector3 localVelocity = Quaternion.Inverse(Quaternion.Euler(0, _currentBodyRotation, 0)) * _animationVelocity;
+            float referenceSpeed = _motor ? (_characterInstance.IsCrouching ? _motor.CrouchSpeed : (_characterInstance.IsRunning ? _motor.RunSpeed : _motor.WalkSpeed)) : 5f;
+            Vector2 movementAnim = Vector2.ClampMagnitude(new Vector2(localVelocity.x, localVelocity.z) / Mathf.Max(.1f, referenceSpeed), 1f);
+            if (_characterInstance.Block) movementAnim = Vector2.zero;
 
             //parameter for tpp character model only
             if (!_characterInstance.FPP) 
@@ -653,8 +725,8 @@ namespace MultiFPS
                 _animator.SetFloat(AnimationNames.CHARACTER_LOOK, -_characterInstance.Input.LookX);
                 //suavizado: el input de remotos llega cuantizado y el de los bots salta en cada
                 //esquina del camino; sin damping el blend tree cambia de clip de golpe y las piernas tiemblan
-                _animator.SetFloat(AnimationNames.CHARACTER_MOVEMENT_HORIZONTAL, movementAnim.x, _movementBlendDamping, Time.fixedDeltaTime);
-                _animator.SetFloat(AnimationNames.CHARACTER_MOVEMENT_VERTICAL, movementAnim.y, _movementBlendDamping, Time.fixedDeltaTime);
+                _animator.SetFloat(AnimationNames.CHARACTER_MOVEMENT_HORIZONTAL, movementAnim.x, _movementBlendDamping, Time.deltaTime);
+                _animator.SetFloat(AnimationNames.CHARACTER_MOVEMENT_VERTICAL, movementAnim.y, _movementBlendDamping, Time.deltaTime);
                 _animator.SetBool(AnimationNames.CHARACTER_ISGROUNDED, animIsGrounded);
                 _animator.SetBool(AnimationNames.CHARACTER_ISCROUCHING, _characterInstance.IsCrouching);
                 _animator.SetFloat(AnimationNames.CHARACTER_ISCROUCHING_FLOAT, _characterInstance.IsCrouching ? 1f : 0f);
@@ -684,7 +756,7 @@ namespace MultiFPS
                 _adjustingRotation = false;
 
             if (_characterInstance.Input.Movement != Vector2.zero || !_characterInstance.isGrounded)
-                _currentBodyRotation = _characterInstance.Input.LookY;
+                _currentBodyRotation = Mathf.MoveTowardsAngle(_currentBodyRotation, _characterInstance.Input.LookY, 540f * timestep);
 
             if (_adjustingRotation)
                 _currentBodyRotation = ClampRotation(
@@ -697,15 +769,15 @@ namespace MultiFPS
             _takingDamge_IKSpine = Vector3.Lerp(_takingDamge_IKSpine, Vector3.zero, _stabilizationAfterTakingDamageSpeed * timestep);
             _takingDamge_IKHead = Vector3.Lerp(_takingDamge_IKHead, Vector3.zero, _stabilizationAfterTakingDamageSpeed * 0.7f * timestep);
 
+            // Apply the body rotation before assigning world-space aim targets.
+            _animator.transform.eulerAngles = new Vector3(0, _currentBodyRotation, 0);
             _chestIK.weight = _upperBodyAnimateFactor;
             Vector3 chestRot = new Vector3(-_recoilX + _characterInstance.Input.LookX * 0.15f + _takingDamge_IKSpine.z, _characterInstance.Input.LookY, -_takingDamge_IKSpine.x);
-            _chestIK.transform.localEulerAngles = chestRot;
+            var chestData = _chestIK.data; chestData.rotation = chestRot; _chestIK.data = chestData;
 
             _headIK.weight = _upperBodyAnimateFactor;
             Vector3 headRot = new Vector3(_characterInstance.Input.LookX * 0.8f + _takingDamge_IKHead.z, _characterInstance.Input.LookY, -_takingDamge_IKHead.x);
-            _headIK.transform.localEulerAngles = headRot;
-
-            _animator.transform.eulerAngles = new Vector3(0, _currentBodyRotation, 0);
+            var headData = _headIK.data; headData.rotation = headRot; _headIK.data = headData;
         }
 
         private void OnDamaged(int currentHealth, CharacterPart hittedPartID, AttackType attackType, byte attackerID)
@@ -790,6 +862,7 @@ namespace MultiFPS
         {
             _rigBuilder.enabled = render;
             _tppModelAnimator.gameObject.SetActive(render);
+            if (_nativeIDSVisual) _nativeIDSVisual.SetActive(render);
         }
         #endregion
 

@@ -21,11 +21,22 @@ namespace ROM.UI.Sprint01
         {
             if(!Animator||!Animator.isHuman||!Animator.avatar||!Animator.isActiveAndEnabled)return;
             if(Character&&(Character.FPP||Character.IsCrouching||!Character.isGrounded))return;
+            // The idle correction must not clamp the leg swing of authored locomotion.
+            if(Character && (Character.Input.Movement.sqrMagnitude > .01f || Character.GetComponent<CharacterMotor>().PlanarVelocity.sqrMagnitude > .01f))return;
             if(handler==null){handler=new HumanPoseHandler(Animator.avatar,Animator.transform);left=Array.IndexOf(HumanTrait.MuscleName,"Left Upper Leg In-Out");right=Array.IndexOf(HumanTrait.MuscleName,"Right Upper Leg In-Out");}
+            var leftFoot=Animator.GetBoneTransform(HumanBodyBones.LeftFoot);
+            var rightFoot=Animator.GetBoneTransform(HumanBodyBones.RightFoot);
+            float footLevel=Mathf.Min(leftFoot.position.y,rightFoot.position.y);
             handler.GetHumanPose(ref pose);
-            if(left>=0)pose.muscles[left]=Mathf.Clamp(pose.muscles[left],-MaximumAbduction,MaximumAbduction);
-            if(right>=0)pose.muscles[right]=Mathf.Clamp(pose.muscles[right],-MaximumAbduction,MaximumAbduction);
+            if(left>=0)pose.muscles[left]=Mathf.Clamp(pose.muscles[left],-(RelaxedPreviewIdle?.08f:MaximumAbduction),RelaxedPreviewIdle?.08f:MaximumAbduction);
+            if(right>=0)pose.muscles[right]=Mathf.Clamp(pose.muscles[right],-(RelaxedPreviewIdle?.08f:MaximumAbduction),RelaxedPreviewIdle?.08f:MaximumAbduction);
             handler.SetHumanPose(ref pose);
+            if(RelaxedPreviewIdle){
+                var hips=Animator.GetBoneTransform(HumanBodyBones.Hips);
+                hips.position+=Vector3.up*(footLevel-Mathf.Min(leftFoot.position.y,rightFoot.position.y));
+                var chest=Animator.GetBoneTransform(HumanBodyBones.Chest);
+                if(chest)chest.localRotation*=Quaternion.Euler(Mathf.Sin(Time.time*1.5f)*.6f,0,Mathf.Sin(Time.time*.7f)*.35f);
+            }
             if(RelaxedPreviewIdle){RelaxArm(HumanBodyBones.LeftUpperArm,HumanBodyBones.LeftLowerArm,HumanBodyBones.LeftHand,-1);RelaxArm(HumanBodyBones.RightUpperArm,HumanBodyBones.RightLowerArm,HumanBodyBones.RightHand,1);}
         }
         void RelaxArm(HumanBodyBones upperBone,HumanBodyBones lowerBone,HumanBodyBones handBone,float side)

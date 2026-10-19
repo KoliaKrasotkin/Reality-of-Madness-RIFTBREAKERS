@@ -8,7 +8,7 @@ namespace ROM.UI.Sprint01
     public static class RiftWidgets
     {
         public static readonly Color Ink = new Color(.025f,.024f,.034f,.94f), Red = new Color(.87f,.08f,.22f), Gold = new Color(.58f,.45f,.31f), Muted = new Color(.68f,.66f,.68f), White = new Color(.94f,.91f,.87f);
-        public static Font Body, Title;
+        public static Font Body, Title, ButtonFont;
         public static RectTransform Rect(Transform parent,string name,float x,float y,float w,float h)
         {
             var r=new GameObject(name,typeof(RectTransform)).GetComponent<RectTransform>();
@@ -38,11 +38,14 @@ namespace ROM.UI.Sprint01
         }
         public static Button Button(Transform p,string value,float x,float y,float w,float h,Action action,bool active=false)
         {
-            var r=Rect(p,value,x,y,w,h); var i=r.gameObject.AddComponent<RiftButtonGraphic>();i.Ornament=h>=60&&w>=280;i.raycastTarget=true; i.color=active?new Color(.28f,.025f,.06f,.95f):Ink;
-            var b=r.gameObject.AddComponent<Button>(); b.targetGraphic=i;
+            var r=Rect(p,value,x,y,w,h); var i=r.gameObject.AddComponent<RiftButtonGraphic>();i.Ornament=h>=60&&w>=280;i.Active=active;i.raycastTarget=true;i.color=Color.white;
+            var b=r.gameObject.AddComponent<RiftStyledButton>(); b.targetGraphic=i;
             var colors=b.colors; colors.highlightedColor=new Color(1,.55f,.62f); colors.pressedColor=new Color(.6f,.2f,.3f); colors.selectedColor=new Color(1,.65f,.7f); b.colors=colors;
-            float labelX=i.Ornament?70:22;
-            Label(r,value,labelX,0,w-labelX-22,h,22,null,true); b.onClick.AddListener(()=>action?.Invoke()); return b;
+            float labelX=i.Ornament?h*1.1f:18;
+            var label=Label(r,value,labelX,0,w-labelX-27,h,22,null,true);
+            if(ButtonFont){label.font=ButtonFont;label.fontStyle=FontStyle.Normal;}
+            var shadow=label.gameObject.AddComponent<Shadow>();shadow.effectColor=new Color(0,0,0,.9f);shadow.effectDistance=new Vector2(0,-1);
+            b.onClick.AddListener(()=>action?.Invoke()); return b;
         }
         public static InputField Input(Transform p,string placeholder,float x,float y,float w,Action<string> changed)
         {

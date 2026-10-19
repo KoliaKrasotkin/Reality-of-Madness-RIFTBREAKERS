@@ -1,0 +1,67 @@
+idle phase=0 hips=0,9257822 ankle=0,1267162 knee=140,8727 bodyPos=(-0.07, 0.92, -0.07)
+Left Upper Leg Front-Back=0,27143 min=-90 max=50
+Left Lower Leg Stretch=0,5481864 min=-80 max=80
+Spine Front-Back=-0,2365101 min=-40 max=40
+idle phase=1 hips=0,9230927 ankle=0,1268518 knee=140,1291 bodyPos=(-0.07, 0.92, -0.07)
+idle phase=2 hips=0,9193671 ankle=0,1273566 knee=138,803 bodyPos=(-0.07, 0.92, -0.07)
+idle phase=3 hips=0,9156163 ankle=0,1273197 knee=137,5198 bodyPos=(-0.07, 0.92, -0.07)
+idle phase=4 hips=0,9140369 ankle=0,1257844 knee=137,0145 bodyPos=(-0.07, 0.92, -0.07)
+idle phase=5 hips=0,9159085 ankle=0,1263883 knee=137,6274 bodyPos=(-0.07, 0.92, -0.07)
+idle phase=6 hips=0,9197517 ankle=0,1270981 knee=138,8774 bodyPos=(-0.07, 0.92, -0.07)
+idle phase=7 hips=0,9237068 ankle=0,1267135 knee=140,2091 bodyPos=(-0.07, 0.92, -0.07)
+walk phase=0 hips=0,858394 ankle=0,1152216 knee=129,3257 bodyPos=(-0.01, 0.87, 0.02)
+Left Upper Leg Front-Back=0,8750522 min=-90 max=50
+Left Lower Leg Stretch=0,4036189 min=-80 max=80
+Spine Front-Back=-0,2243717 min=-40 max=40
+walk phase=1 hips=0,8537822 ankle=0,1704962 knee=102,9296 bodyPos=(-0.01, 0.87, 0.02)
+walk phase=2 hips=0,8429933 ankle=0,2316097 knee=88,26551 bodyPos=(-0.01, 0.87, 0.02)
+walk phase=3 hips=0,8455028 ankle=0,1815238 knee=110,2008 bodyPos=(-0.01, 0.87, 0.02)
+walk phase=4 hips=0,8516886 ankle=0,1248588 knee=131,7336 bodyPos=(-0.01, 0.87, 0.02)
+walk phase=5 hips=0,8492423 ankle=0,1079541 knee=122,837 bodyPos=(-0.01, 0.87, 0.02)
+walk phase=6 hips=0,847136 ankle=0,08794056 knee=117,2212 bodyPos=(-0.01, 0.87, 0.02)
+walk phase=7 hips=0,8531945 ankle=0,09967136 knee=123,7172 bodyPos=(-0.01, 0.87, 0.02)
+run phase=0 hips=0,915511 ankle=0,1550434 knee=177,6103 bodyPos=(0.00, 0.91, 0.12)
+Left Upper Leg Front-Back=-0,02895095 min=-90 max=50
+Left Lower Leg Stretch=1,038515 min=-80 max=80
+Spine Front-Back=-0,2062832 min=-40 max=40
+run phase=1 hips=0,9197143 ankle=0,1306437 knee=126,1574 bodyPos=(0.00, 0.91, 0.14)
+run phase=2 hips=0,9700271 ankle=0,1305749 knee=156,3458 bodyPos=(-0.01, 0.96, 0.15)
+run phase=3 hips=1,000643 ankle=0,2191934 knee=163,7239 bodyPos=(-0.02, 1.00, 0.14)
+run phase=4 hips=0,9199229 ankle=0,519531 knee=114,9964 bodyPos=(-0.01, 0.91, 0.12)
+run phase=5 hips=0,9180991 ankle=0,6754925 knee=44,43217 bodyPos=(0.00, 0.91, 0.14)
+run phase=6 hips=0,9706001 ankle=0,7325332 knee=31,90736 bodyPos=(0.01, 0.96, 0.15)
+run phase=7 hips=0,9990142 ankle=0,4091042 knee=95,2683 bodyPos=(0.01, 0.99, 0.14)
+CLIP rig_soldier@armed_walk_forward Assets/MultiFPS/Art/Animations/Player/soldier_animations_armedWalking.fbx
+RootT.x min=-0,05026559 max=-0,03552042
+RootT.y min=0,8604733 max=0,8813411
+RootT.z min=-0,03764524 max=0,009008408
+Spine Front-Back min=-0,2365102 max=-0,2243714
+Spine Left-Right min=0,04321012 max=0,06150889
+Spine Twist Left-Right min=-0,9530517 max=-0,7329957
+Left Upper Leg Front-Back min=-0,119118 max=0,8753255
+Left Upper Leg In-Out min=0,2731573 max=0,6802456
+Left Upper Leg Twist In-Out min=0,3053658 max=0,50335
+Left Lower Leg Stretch min=-0,1100699 max=0,4337927
+Left Lower Leg Twist In-Out min=-0,1202877 max=-0,07404634
+Right Upper Leg Front-Back min=-0,1957005 max=0,532371
+Right Upper Leg In-Out min=-0,07341454 max=0,4194712
+Right Upper Leg Twist In-Out min=-0,2983065 max=0,1975963
+Right Lower Leg Stretch min=0,0785474 max=0,569239
+Right Lower Leg Twist In-Out min=-0,1528625 max=-0,07908117
+CLIP rig_soldier|emptyHanded_run_forward Assets/MultiFPS/Art/Animations/Player/soldier_animations_emptyHanded.fbx
+RootT.x min=-0,01059416 max=0,01307893
+RootT.y min=0,9036686 max=0,9791027
+RootT.z min=0,09940432 max=0,1326408
+Spine Front-Back min=-0,2817151 max=-0,2062834
+Spine Left-Right min=-0,4352474 max=0,4294785
+Spine Twist Left-Right min=-0,4953574 max=0,4685159
+Left Upper Leg Front-Back min=-0,4996252 max=1,186805
+Left Upper Leg In-Out min=-0,09759301 max=0,5628424
+Left Upper Leg Twist In-Out min=-0,4785152 max=0,4752871
+Left Lower Leg Stretch min=-0,8351799 max=1,045847
+Left Lower Leg Twist In-Out min=-0,04885512 max=0,04341051
+Right Upper Leg Front-Back min=-0,6270733 max=1,086029
+Right Upper Leg In-Out min=-0,1006407 max=0,5716099
+Right Upper Leg Twist In-Out min=-0,4753135 max=0,4752872
+Right Lower Leg Stretch min=-0,7848642 max=1,045848
+Right Lower Leg Twist In-Out min=-0,04747484 max=0,04138537

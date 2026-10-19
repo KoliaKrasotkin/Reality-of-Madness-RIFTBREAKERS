@@ -54,7 +54,7 @@ namespace ROM.UI.EditorTools
             RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.4f,.48f,.62f);RenderSettings.ambientEquatorColor=new Color(.22f,.24f,.3f);RenderSettings.ambientGroundColor=new Color(.08f,.08f,.12f);
             EditorSceneManager.SaveScene(scene);
             EditorBuildSettings.scenes=EditorBuildSettings.scenes.Select(s=>new EditorBuildSettingsScene(s.path,s.path=="Assets/MultiFPS/Levels/hub.unity"||s.path=="Assets/ROM/Levels/map_rom_horde.unity")).ToArray();
-            InstallStance();AssetDatabase.SaveAssets();File.WriteAllText("Documentation/frontend-ids-models.txt",report);
+            InstallStance();CharacterPresentationUpgrade.Build();LizardmanIntegration.Build();AssetDatabase.SaveAssets();File.WriteAllText("Documentation/frontend-ids-models.txt",report);
             Debug.Log("[FrontEnd] IDS catalog, lobby and single destination saved.");
         }
         static void RepairDinork()
@@ -167,6 +167,7 @@ namespace ROM.UI.EditorTools
             string path="Assets/MultiFPS/Levels/Prefabs/Gameplay/MultiFPS_Character.prefab";var root=PrefabUtility.LoadPrefabContents(path);
             var character=root.GetComponent<CharacterInstance>();var animator=root.GetComponentsInChildren<Animator>(true).FirstOrDefault(a=>a.avatar&&a.avatar.isHuman);
             if(animator){var stance=animator.GetComponent<NaturalLegStance>()??animator.gameObject.AddComponent<NaturalLegStance>();stance.Animator=animator;stance.Character=character;stance.MaximumAbduction=.18f;}
+            var ca=root.GetComponent<CharacterAnimator>();var setup=new SerializedObject(ca);var models=setup.FindProperty("_idsNativeModels");var catalog=AssetDatabase.LoadAssetAtPath<FrontEndCatalog>(Root+"/FrontEndCatalog.asset");models.arraySize=5;foreach(var model in catalog.Characters)models.GetArrayElementAtIndex(model.SkinIndex).objectReferenceValue=model.Prefab;setup.ApplyModifiedPropertiesWithoutUndo();
             PrefabUtility.SaveAsPrefabAsset(root,path);PrefabUtility.UnloadPrefabContents(root);
         }
         public static void FromCommandLine(){try{Build();EditorApplication.Exit(0);}catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}

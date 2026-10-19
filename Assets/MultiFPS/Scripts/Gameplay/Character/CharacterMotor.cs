@@ -22,12 +22,25 @@ namespace MultiFPS.Gameplay
         public float JumpHeight;
         public float Gravity = 10f;
         [SerializeField, Range(0f, 500f)]
-        float maxAcceleration = 10f;
+        float maxAcceleration = 28f;
+        [SerializeField] float brakingAcceleration = 40f;
+        [SerializeField, Range(0f, 1f)] float airControl = .3f;
+        [SerializeField] float coyoteTime = .1f;
+        [SerializeField] float jumpBuffer = .12f;
+        float lastGroundedTime = float.NegativeInfinity;
+        float jumpRequestedTime = float.NegativeInfinity;
+        public Vector3 PlanarVelocity { get; private set; }
+        public bool WantsToSprint => _charInstance.ReadActionKeyCode(ActionCodes.Sprint)
+            && !_charInstance.IsCrouching && !_charInstance.IsScoping
+            && !_charInstance.IsUsingItem && !_charInstance.Block
+            && !_charInstance.ReadActionKeyCode(ActionCodes.Trigger1)
+            && !_charInstance.ReadActionKeyCode(ActionCodes.Trigger2)
+            && _charInstance.Input.Movement.y > .1f;
         public float CameraLerpSpeed = 2f;
         float _speed;
 
         Vector3 force;
-        bool _jumped;
+
 
         Vector3 defaultAttackPos;
         Vector3 crouchAttackPos = new (0,0.7f,0);
@@ -44,8 +57,8 @@ namespace MultiFPS.Gameplay
 
         bool isGrounded;
 
-        Collider[] _isGroundedCheckResult = new Collider[1];
-        Collider[] _isAbleToStandStraightCheckResults = new Collider[1];
+
+
 
         #region for falldamage
         float lastYPos;
@@ -75,7 +88,7 @@ namespace MultiFPS.Gameplay
         void Update()
         {
             #if UNITY_EDITOR
-            if (Input.GetKeyDown(KeyCode.C))
+            if (isOwned && Input.GetKeyDown(KeyCode.F8))
                 _noclip = !_noclip;
             #endif
 
@@ -88,7 +101,7 @@ namespace MultiFPS.Gameplay
 
             if (!_charInstance.IsCrouching)
             {
-                if (_charInstance.ReadActionKeyCode(ActionCodes.Crouch) && _charInstance.isGrounded && !CheckSphere())
+                if (_charInstance.ReadActionKeyCode(ActionCodes.Crouch) && _charInstance.isGrounded  )
                 {
                     Crouch();
                     _charInstance.IsCrouching = true;
@@ -106,7 +119,9 @@ namespace MultiFPS.Gameplay
             if(isOwned || (isServer && _charInstance.BOT))
                 MovementTick();
 
-            _charInstance.isGrounded = Physics.OverlapSphereNonAlloc(_myTransform.position + new Vector3(0, 0.3f, 0), 0.5f, _isGroundedCheckResult, GameManager.environmentLayer) > 0;
+            if (!(isOwned || (isServer && _charInstance.BOT)))
+                isGrounded = GroundProbe();
+            _charInstance.isGrounded = isGrounded;
 
             if (!isServer) return;
 
@@ -171,53 +186,36 @@ namespace MultiFPS.Gameplay
 
             _charInstance.PrepareCharacterToLerp();
 
-            //decide character speed
-            if (isGrounded)
+            float dt = Time.fixedDeltaTime;
+            isGrounded = force.y <= 0f && GroundProbe();
+            if (isGrounded) lastGroundedTime = Time.time;
+            _charInstance.IsRunning = WantsToSprint && isGrounded;
+            _speed = _charInstance.IsCrouching ? CrouchSpeed : (_charInstance.IsRunning ? RunSpeed : WalkSpeed);
+            Vector2 input = _charInstance.Block ? Vector2.zero : Vector2.ClampMagnitude(_charInstance.Input.Movement, 1f);
+            Vector3 desired = Quaternion.Euler(0, _charInstance.Input.LookY, 0)
+                * new Vector3(input.x, 0, input.y) * _speed;
+            float acceleration = input.sqrMagnitude < .001f ? brakingAcceleration : maxAcceleration;
+            _velocity = Vector3.MoveTowards(_velocity, desired, acceleration * (isGrounded ? 1f : airControl) * dt);
+            if (Time.time - jumpRequestedTime <= jumpBuffer
+                && Time.time - lastGroundedTime <= coyoteTime && !_charInstance.IsCrouching && !CheckSphere())
             {
-                //sprint/walk speed
-                bool isRunning = (_charInstance.ReadActionKeyCode(ActionCodes.Sprint) && isGrounded && !_charInstance.IsScoping && !_charInstance.IsUsingItem && _charInstance.Input.Movement.y > 0);
-                _speed = _charInstance.IsCrouching ?
-                    CrouchSpeed: 
-                    (isRunning ? RunSpeed : WalkSpeed);
+                force.y = Mathf.Sqrt(2f * Gravity * JumpHeight);
+                jumpRequestedTime = lastGroundedTime = float.NegativeInfinity;
+                isGrounded = false;
             }
-            else
-            {
-                //dont let character be as fast when falling, as if it was running
-                _speed = Mathf.Clamp(_speed, 0f, RunSpeed * 0.8f);
-            }
-
-            //get input and, make vector from that and, multiply it by speed and give it appropriate direction based on character rotation
-            Vector3 playerInput = _charInstance.Block ? 
-                Vector3.zero : 
-                new Vector3(_charInstance.Input.Movement.x, 0, _charInstance.Input.Movement.y);
-            
-            playerInput = _speed * playerInput;
-            playerInput = Quaternion.Euler(0, _charInstance.Input.LookY, 0) * playerInput; //set movement direction  player rotation
-
-            if (isGrounded)
-            {
-                //if character jumped dont treat it as if it was grounded
-                if (!_jumped)
-                    force.y = -0.7f;
-            }
-            else
-            {
-                //when not grounded make player fall
-                force.y -= Gravity * Time.fixedDeltaTime;
-            }
-
-             float maxSpeedChange = maxAcceleration * Time.deltaTime;
-
-             _velocity.x = Mathf.MoveTowards(_velocity.x, playerInput.x, maxSpeedChange);
-             _velocity.z = Mathf.MoveTowards(_velocity.z, playerInput.z, maxSpeedChange);
-
-
-            //finally move character
-            //this additional isGrounded check is for avoiding character controller to think that it is not grounded while player is going down stairs fast
-            _controller.Move(Time.fixedDeltaTime * (_velocity + force) + (isGrounded ? new Vector3(0,-0.25f,0) : Vector3.zero));
-            _jumped = false;
-
-            isGrounded = _controller.isGrounded;
+            else if (isGrounded) force.y = -2f;
+            else force.y = Mathf.Max(force.y - Gravity * dt, -55f);
+            Vector3 before = _myTransform.position;
+            CollisionFlags flags = _controller.Move((_velocity + force) * dt);
+            if ((flags & CollisionFlags.Above) != 0 && force.y > 0) force.y = 0;
+            isGrounded = force.y <= 0 && ((flags & CollisionFlags.Below) != 0 || GroundProbe());
+            Vector3 moved = (_myTransform.position - before) / dt;
+            // Read controller motion rather than a Transform delta that can include
+            // deferred physics/network corrections; those are not extra footsteps.
+            Vector3 actual = Application.isPlaying ? _controller.velocity : moved;
+            PlanarVelocity = Vector3.ClampMagnitude(new Vector3(actual.x, 0, actual.z), _velocity.magnitude);
+            // Drop accumulated push into walls so reversing direction does not feel sticky.
+            if ((flags & CollisionFlags.Sides) != 0) _velocity = PlanarVelocity;
 
             _charInstance.SetCurrentPositionTargetToLerp(_myTransform.position);
         }
@@ -246,19 +244,30 @@ namespace MultiFPS.Gameplay
             cameraTargetPosition = new Vector3(0, cameraHeight, 0);
         }
 
-        public void Jump() 
+        public void Jump()
         {
-            if (isGrounded && !CheckSphere())
-            {
-                isGrounded = false;
-                force.y = Mathf.Sqrt(JumpHeight *2f*Gravity);
-                _jumped = true;
-            }
+            jumpRequestedTime = Time.time;
         }
 
-        bool CheckSphere() 
+        bool GroundProbe()
         {
-            return 0 > Physics.OverlapSphereNonAlloc(_myTransform.position + new Vector3(0, 1.5f, 0), 0.4f, _isAbleToStandStraightCheckResults, GameManager.environmentLayer);
+            if (!_controller.enabled) return false;
+            float radius = Mathf.Max(.05f, _controller.radius * .85f);
+            Vector3 bottom = _myTransform.position + _controller.center
+                - Vector3.up * (_controller.height * .5f - _controller.radius);
+            return Physics.SphereCast(bottom + Vector3.up * .08f, radius, Vector3.down,
+                out var hit, _controller.radius - radius + _controller.skinWidth + .2f,
+                GameManager.environmentLayer, QueryTriggerInteraction.Ignore)
+                && Vector3.Angle(hit.normal, Vector3.up) <= _controller.slopeLimit;
+        }
+
+        bool CheckSphere()
+        {
+            // Check only the extra headroom needed above the crouching capsule.
+            float radius = Mathf.Max(.05f, _controller.radius - _controller.skinWidth);
+            return Physics.CheckCapsule(_myTransform.position + Vector3.up * (1f + radius),
+                _myTransform.position + Vector3.up * (2f - radius), radius,
+                GameManager.environmentLayer, QueryTriggerInteraction.Ignore);
         }
     }
 }

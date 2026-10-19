@@ -319,9 +319,10 @@ namespace ROM.Horde.EditorTools
                 var horizontal=new Vector3(span.x,0,span.z); var p=new Vector3(x,0,z);
                 float t=Mathf.Clamp01(Vector3.Dot(p-new Vector3(start.x,0,start.z),horizontal)/horizontal.sqrMagnitude);
                 Vector3 along=start+span*t;
-                if(Vector2.Distance(new Vector2(x,z),new Vector2(along.x,along.z))<20)
-                    y=Mathf.Min(y,along.y-.3f);
-                vertices.Add(new Vector3(x,y+.02f,z)); uv.Add(new Vector2(sourceX,sourceZ)*.025f);
+                float distance=Vector2.Distance(new Vector2(x,z),new Vector2(along.x,along.z));
+                float cutting=1f-Mathf.SmoothStep(0,1,Mathf.InverseLerp(9f,48f,distance));
+                y=Mathf.Lerp(y,Mathf.Min(y,along.y-.55f),cutting);
+                vertices.Add(new Vector3(x,Mathf.Max(.04f,y+.02f),z)); uv.Add(new Vector2(sourceX,sourceZ)*.025f);
             }
             for(int r=0;r<rings;r++) for(int s=0;s<segments;s++)
             {
