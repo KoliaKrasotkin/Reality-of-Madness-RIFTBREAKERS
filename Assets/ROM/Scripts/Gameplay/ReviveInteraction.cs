@@ -114,7 +114,13 @@ namespace ROM.Gameplay
 
             Candidate = FindCandidate();
 
-            bool holding = _input.Player.Interaction.ReadValue<float>() > 0f;
+            //IsPressed and not ReadValue<float>(): Interaction is declared as a
+            //Button action, and a Button completes its interaction when pressed, so
+            //reading its value does not reliably report that it is still held. The
+            //actions the kit does read by value — Sprint, Crouch, Fire1Hold — are all
+            //declared as Value for exactly that reason. IsPressed asks the control
+            //itself, so it works whatever the action type is.
+            bool holding = _input.Player.Interaction.IsPressed();
 
             if (!holding || Candidate == null)
             {
