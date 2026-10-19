@@ -312,6 +312,7 @@ GameObject:
   - component: {fileID: 657671019429238111}
   - component: {fileID: -9103784586693039298}
   - component: {fileID: 7255403548460884853}
+  - component: {fileID: -1810693023913998125}
   m_Layer: 0
   m_Name: MultiFPS_Character
   m_TagString: Untagged
@@ -751,6 +752,25 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  _logChanges: 1
+--- !u!114 &-1810693023913998125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382563002283882899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b146ada5ece8d40bcbf5bb28f4655a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Gameplay.ReviveInteraction
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  _range: 4
+  _facingDot: 0
+  _rangeTolerance: 1.25
   _logChanges: 1
 --- !u!1 &4997286635398803933
 GameObject:

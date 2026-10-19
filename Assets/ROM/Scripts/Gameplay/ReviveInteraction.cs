@@ -26,12 +26,12 @@ namespace ROM.Gameplay
     public class ReviveInteraction : DNNetworkBehaviour
     {
         [Header("Alcance")]
-        [Tooltip("Distancia máxima para revivir a un compañero caído, en metros.")]
-        [SerializeField] float _range = 2.5f;
+        [Tooltip("Distancia máxima para revivir a un compañero caído, en metros. Conviene que sea generosa: el ragdoll es hijo del personaje y puede deslizarse lejos del punto que se mide, así que el cuerpo que se ve no está exactamente donde el sistema cree.")]
+        [SerializeField] float _range = 4f;
 
-        [Tooltip("Qué tan de frente hay que estar mirando al caído. 1 es exactamente de frente, 0 es cualquier dirección dentro de 90 grados. 0.35 equivale a un cono de unos 70 grados.")]
+        [Tooltip("Qué tan de frente hay que estar mirando al caído. 1 es exactamente de frente, 0 es cualquier dirección dentro de 90 grados, -1 desactiva el requisito. Se mide con la rotación de la raíz del personaje, que no necesariamente sigue a la cámara, así que valores exigentes vuelven el revive impredecible.")]
         [Range(-1f, 1f)]
-        [SerializeField] float _facingDot = 0.35f;
+        [SerializeField] float _facingDot = 0f;
 
         [Tooltip("Margen que se le suma al alcance al validar en el servidor, para que un paso o la latencia no cancelen un revive en curso.")]
         [SerializeField] float _rangeTolerance = 1.25f;
