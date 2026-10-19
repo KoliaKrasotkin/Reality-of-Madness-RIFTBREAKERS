@@ -282,20 +282,15 @@ namespace ROM.Gameplay
             DownedState target = targetIdentity.GetComponent<DownedState>();
 
             //the client asked, the server decides
-            if (!ServerCanRevive(target))
+            string refusal = ServerRefusalReason(target);
+
+            if (refusal != null)
             {
                 //logged here and not through Server_Cancel, which returns early when
                 //there is no revive in progress — exactly the case of a request that
                 //was refused on arrival, and the one worth seeing
                 if (_logChanges)
-                {
-                    Debug.Log($"[ROM] Pedido de revive rechazado: objetivo " +
-                              $"{(target == null ? "inexistente" : target.name)}, " +
-                              $"caído={(target != null && target.IsDowned)}, " +
-                              $"mismo equipo={(target != null && target.GetComponent<Health>() != null && target.GetComponent<Health>().Team == _health.Team)}, " +
-                              $"distancia={(target == null ? -1f : Vector3.Distance(transform.position, target.BodyPosition)):0.##}m " +
-                              $"(alcance {_range * _rangeTolerance:0.##}m)", this);
-                }
+                    Debug.Log($"[ROM] Pedido de revive rechazado: {refusal}.", this);
 
                 Server_Cancel(null);
                 return;
@@ -335,9 +330,11 @@ namespace ROM.Gameplay
 
             //re-validated every frame: the target can bleed out, get revived by
             //someone else, or either of the two can walk away mid-hold
-            if (!ServerCanRevive(_target))
+            string refusal = ServerRefusalReason(_target);
+
+            if (refusal != null)
             {
-                Server_Cancel("se dejaron de cumplir las condiciones");
+                Server_Cancel(refusal);
                 return;
             }
 
@@ -415,37 +412,70 @@ namespace ROM.Gameplay
                 Log($"dejó de revivir a {target.name}: {reason}");
         }
 
-        /// <summary>
-        /// Every condition a revive needs, checked on the server. Also used by the
-        /// client to decide what to offer, so the prompt and the rule cannot drift
-        /// apart: the difference is that here it is authoritative.
-        /// </summary>
         bool ServerCanRevive(DownedState target)
         {
-            if (!IsRevivable(target)) return false;
+            return ServerRefusalReason(target) == null;
+        }
+
+        /// <summary>
+        /// Why this revive is not allowed, or null when it is.
+        ///
+        /// The rule and its explanation are the same code on purpose. Having a
+        /// separate log listing the conditions meant the two could disagree, and they
+        /// did: a refusal printed four conditions that all passed, because the one
+        /// that failed was not among them. A refusal that cannot be explained is a
+        /// refusal that cannot be debugged.
+        /// </summary>
+        string ServerRefusalReason(DownedState target)
+        {
+            if (target == null) return "el objetivo no existe";
+            if (target == _downed) return "el objetivo es uno mismo";
+            if (!target.IsDowned) return "el objetivo no está caído";
+            if (target.IsOut) return "el objetivo ya se desangró";
+
+            Health targetHealth = target.GetComponent<Health>();
+
+            if (targetHealth == null) return "el objetivo no tiene Health";
+
+            //only squadmates, and never a character with no team assigned yet
+            if (targetHealth.Team < 0) return "el objetivo todavía no tiene equipo asignado";
+
+            if (targetHealth.Team != _health.Team)
+                return $"el objetivo es del equipo {targetHealth.Team} y yo del {_health.Team}";
 
             //whoever revives has to be on their feet
-            if (_downed.IsDowned || _downed.IsOut) return false;
-            if (_health.CurrentHealth <= 0) return false;
-
-            //checked here too, and not only when the revive completes, so nobody
-            //holds the key for nothing: a revive in progress is cancelled the moment
-            //another teammate spends the last one. A missing budget is reported where
-            //it is consumed, so this does not log per frame.
-            ReviveBudget budget = ReviveBudget.Instance;
-
-            if (budget != null && !budget.HasAny) return false;
+            if (_downed.IsDowned) return "quien revive está caído";
+            if (_downed.IsOut) return "quien revive ya se desangró";
+            if (_health.CurrentHealth <= 0) return "quien revive no tiene vida";
 
             //a little extra room on the server so a step or some latency does not
             //cancel a hold the player is doing right
             float range = _range * _rangeTolerance;
+            float distance = Vector3.Distance(transform.position, target.BodyPosition);
 
-            return Vector3.Distance(transform.position, target.BodyPosition) <= range;
+            if (distance > range)
+                return $"está a {distance:0.##}m y el alcance es {range:0.##}m";
+
+            float facing = FacingDot(target);
+
+            if (facing < _facingDot)
+                return $"no lo está mirando: {facing:0.##}, hace falta {_facingDot:0.##}";
+
+            //checked here and not only when the revive completes, so nobody holds the
+            //key for nothing: a revive in progress is cancelled the moment another
+            //teammate spends the last one. A missing budget is reported where it is
+            //consumed, so this does not log per frame.
+            ReviveBudget budget = ReviveBudget.Instance;
+
+            if (budget != null && !budget.HasAny) return "la escuadra se quedó sin revividas";
+
+            return null;
         }
 
         /// <summary>
-        /// Whether this target is something worth offering a revive on at all:
-        /// a downed teammate that is not this character and has not bled out.
+        /// Whether this target is something worth offering a revive on at all. Used by
+        /// the owning client to drive the prompt; the server decides with
+        /// <see cref="ServerRefusalReason"/>.
         /// </summary>
         bool IsRevivable(DownedState target)
         {
@@ -457,15 +487,24 @@ namespace ROM.Gameplay
 
             if (targetHealth == null) return false;
 
-            //only squadmates, and never a character with no team assigned yet
             if (targetHealth.Team < 0 || targetHealth.Team != _health.Team) return false;
 
+            return FacingDot(target) >= _facingDot;
+        }
+
+        /// <summary>
+        /// How much this character is facing the body, ignoring height. Returns 1 when
+        /// standing on top of it: there the horizontal direction is noise, and
+        /// refusing a revive because of it would be absurd.
+        /// </summary>
+        float FacingDot(DownedState target)
+        {
             Vector3 toTarget = target.BodyPosition - transform.position;
             toTarget.y = 0f;
 
-            if (toTarget.sqrMagnitude < 0.0001f) return true; //on top of each other
+            if (toTarget.sqrMagnitude < 0.25f) return 1f;
 
-            return Vector3.Dot(transform.forward, toTarget.normalized) >= _facingDot;
+            return Vector3.Dot(transform.forward, toTarget.normalized);
         }
         #endregion
 
