@@ -41,6 +41,8 @@ namespace ROM.UI.Sprint01
         Text videoTimer;
         int profileTestIndex;
         int emotePage;
+        string homePanel="";
+        float toastUntil;
         Text emoteStatus;
         public void Initialize()
         {
@@ -74,29 +76,24 @@ namespace ROM.UI.Sprint01
             W.Image(Design,"Brand",28,16,210,72,Color.white,Logo).preserveAspect=true;
             if(InGame){
                 fallback.sprite=null;fallback.color=new Color(.015f,.012f,.02f,.94f);
-                W.Label(Design,"EL RIFT / PAUSA",285,20,280,65,26);
-                W.Button(Design,"ARSENAL",580,24,200,58,ShowArsenal);
-                W.Button(Design,"AJUSTES",800,24,210,58,ShowGameSettings);
+                W.Label(Design,"EL RIFT / PAUSA",285,20,180,65,22);
+                W.Button(Design,"CLASE",470,24,160,58,ShowClasses);
+                W.Button(Design,"ARSENAL",650,24,180,58,ShowArsenal);
+                W.Button(Design,"AJUSTES",850,24,180,58,ShowGameSettings);
                 W.Button(Design,"CONTINUAR",1040,24,250,58,()=>ResumeRequested?.Invoke());
                 W.Button(Design,"VOLVER AL MENÚ",1320,24,440,58,()=>Dialog("Volver al menú","Vas a salir de esta partida.",()=>LeaveRequested?.Invoke()));
                 content=W.Rect(Design,"Screen",36,150,1848,810);toast=W.Label(Design,"",460,970,1200,36,20,W.Gold);Navigate(HubPage.Settings);Fit();return;
             }
-            string[] labels={"JUGAR","EQUIPAMIENTO","PROGRESO","TIENDA","AJUSTES"};
-            HubPage[] pages={HubPage.Home,HubPage.Loadout,HubPage.Progression,HubPage.Marketplace,HubPage.Settings};
-            for(int i=0;i<labels.Length;i++){
-                var page=pages[i];nav.Add(W.Button(Design,labels[i],260+i*235,24,220,58,()=>Navigate(page)));
-            }
-            W.Button(Design,"AMIGOS",1500,24,180,58,()=>Navigate(HubPage.Social));
-            W.Label(Design,$"AG {Services.Balances.AncientGold:N0}  /  RC {Services.Balances.RiftCrystals:N0}",1500,112,390,38,20,W.Gold);
-            W.Image(Design,"FooterShade",0,1010,1920,70,new Color(.015f,.018f,.027f,.95f));
-            W.Label(Design,"ROM: RIFTBREAKERS   /   EL RIFT",35,1024,680,32,17,W.Muted);
-            W.Label(Design,"LOCAL · Sin conexión a servicios de amigos o comercio",1000,1024,880,32,16,W.Muted);
+            W.Button(Design,"MENÚ",1640,24,240,58,()=>ToggleHomePanel("Menu"));
+            W.Label(Design,"LOCAL",36,1030,180,25,15,W.Muted);
             content=W.Rect(Design,"Screen",36,168,1848,810);
             toast=W.Label(Design,"",460,970,1200,36,20,new Color(1,.78f,.48f));
             Navigate(HubPage.Home);Fit();
         }
         void Update()
         {
+            if(!InGame&&Input.GetKeyDown(KeyCode.Escape)&&!modal){if(Page!=HubPage.Home){homePanel="";Navigate(HubPage.Home);}else if(!string.IsNullOrEmpty(homePanel)){homePanel="";Navigate(HubPage.Home);}}
+            if(toast&&Time.unscaledTime>toastUntil)toast.text="";
             Fit();if(fallback&&Stage){fallback.enabled=!Stage.Ready;Stage.SetDisplay(Stage.Ready);}
             if(emoteStatus)emoteStatus.text=Stage&&!string.IsNullOrEmpty(Stage.CurrentEmoteName)?Stage.CurrentEmoteName:"Elegí un emote para tu personaje";
             if(videoDialog&&RiftVideoSettings.Instance){
@@ -111,7 +108,7 @@ namespace ROM.UI.Sprint01
             Design.anchorMin=Design.anchorMax=Design.pivot=new Vector2(.5f,.5f);Design.localScale=Vector3.one*scale;
             Design.anchoredPosition=new Vector2((safe.center.x/Screen.width-.5f)*parent.rect.width,(safe.center.y/Screen.height-.5f)*parent.rect.height);
         }
-        public void SetHint(string message){if(toast)toast.text=message;}
+        public void SetHint(string message){if(toast)toast.text=message;toastUntil=Time.unscaledTime+4;}
         public void ShowGameSettings(){if(ArsenalPanel)ArsenalPanel.gameObject.SetActive(false);if(content)content.gameObject.SetActive(true);Navigate(HubPage.Settings);}
         public void ShowArsenal(){if(!ArsenalPanel)return;content.gameObject.SetActive(false);ArsenalPanel.SetParent(Design,false);ArsenalPanel.anchorMin=ArsenalPanel.anchorMax=ArsenalPanel.pivot=new Vector2(.5f,.5f);ArsenalPanel.anchoredPosition=new Vector2(0,-35);ArsenalPanel.localScale=Vector3.one*1.2f;ArsenalPanel.gameObject.SetActive(true);}
         public void Notify(string message){SetHint(message??"Listo.");}
@@ -126,13 +123,16 @@ namespace ROM.UI.Sprint01
             if(!content)return;
             if(page!=HubPage.Home&&Stage)Stage.StopEmote();emoteStatus=null;
             if(page==HubPage.Missions||page==HubPage.Lobby)page=HubPage.Home;
+            if(page!=HubPage.Home)homePanel="";
             Page=page;Clear(content);productView=null;
             int active=page==HubPage.Home?0:page==HubPage.Loadout?1:page==HubPage.Progression?2:page==HubPage.Marketplace||page==HubPage.Auction||page==HubPage.Exchange?3:page==HubPage.Settings?4:-1;
             for(int i=0;i<nav.Count;i++){var frame=nav[i].targetGraphic as RiftButtonGraphic;if(frame){frame.Active=i==active;frame.SetVerticesDirty();}}
             if(page==HubPage.Home)Home();
             else{
                 var panel=W.Panel(content,"PagePanel",0,0,1848,810);
-                W.Label(panel,PageTitle(page),28,14,1700,60,32);
+                W.Label(panel,PageTitle(page),28,14,1200,60,32);
+                if(!InGame)W.Button(panel,"VOLVER",1560,18,260,50,()=>Navigate(HubPage.Home));
+                if(page==HubPage.Marketplace||page==HubPage.Progression)W.Label(panel,$"AG {Services.Balances.AncientGold:N0} / RC {Services.Balances.RiftCrystals:N0}",1050,20,490,48,19,W.Gold);
                 var body=W.Rect(panel,"Body",28,95,1792,690);
                 switch(page){
                     case HubPage.Loadout:Equipment(body);break;
@@ -147,37 +147,50 @@ namespace ROM.UI.Sprint01
             var first=content.GetComponentInChildren<Button>();if(first&&EventSystem.current)EventSystem.current.SetSelectedGameObject(first.gameObject);
         }
         static string PageTitle(HubPage page)=>page switch {HubPage.Loadout=>"EQUIPAMIENTO",HubPage.Progression=>"PROGRESO",HubPage.Settings=>"AJUSTES",HubPage.Social=>"AMIGOS Y MENSAJES",HubPage.Exchange=>"INTERCAMBIO",_=>"TIENDA"};
+        public void ToggleHomePanel(string panel){homePanel=Page==HubPage.Home&&homePanel==panel?"":panel;Navigate(HubPage.Home);}
+        void CloseHomePanel(){homePanel="";Navigate(HubPage.Home);}
+        RectTransform Drawer(string name,string title,float x,float width,float height){var r=W.Panel(content,name,x,0,width,height);W.Label(r,title,22,12,width-175,42,26,W.Gold);W.Button(r,"CERRAR",width-150,17,128,38,CloseHomePanel).GetComponentInChildren<Text>().fontSize=18;return r;}
         void Home()
         {
-            var destination=W.Panel(content,"Destination",0,0,425,210);
-            W.Label(destination,"EL RIFT",22,12,380,65,46);
-            W.Label(destination,"Exploración cooperativa · 1–4 jugadores\nRefugio seguro, cristales y encuentros. Explorá las islas.",22,86,380,100,22,W.Muted);
-            if(Catalog&&Catalog.Emotes.Length>0){
-                var emotes=W.Panel(content,"Emotes",0,245,425,335);W.Label(emotes,"EMOTES",22,12,380,40,26);
+            W.Label(content,Social.Self.Name,0,620,650,45,30);
+            var rules=MultiFPS.Gameplay.RiftClassRules.Load();
+            W.Label(content,(rules?.Find(CurrentClassId)?.Name??"Clase")+" · "+(CurrentCharacter()?.Name??"Personaje"),0,670,800,32,20,W.Muted);
+            W.Button(content,"CLASE",0,744,170,52,()=>ToggleHomePanel("Class"));
+            W.Button(content,"PERSONAJE",185,744,205,52,()=>Navigate(HubPage.Loadout));
+            W.Button(content,"EMOTES",405,744,180,52,()=>ToggleHomePanel("Emotes"));
+            W.Button(content,"PARTY · "+Social.Party.Count+"/4",600,744,220,52,()=>ToggleHomePanel("Party"));
+            W.Label(content,"EL RIFT · EXPLORACIÓN COOPERATIVA",1398,645,450,38,21,W.Muted);
+            W.Button(content,"JUGAR",1398,702,450,94,Deploy,true);
+            if(homePanel=="Menu"){
+                var menu=Drawer("MenuDrawer","MENÚ",0,450,560);
+                string[] names={"EQUIPAMIENTO","PROGRESO","TIENDA","AMIGOS","AJUSTES"};HubPage[] pages={HubPage.Loadout,HubPage.Progression,HubPage.Marketplace,HubPage.Social,HubPage.Settings};
+                for(int i=0;i<names.Length;i++){var page=pages[i];W.Button(menu,names[i],22,78+i*68,406,56,()=>Navigate(page));}
+                W.Button(menu,"UNIRSE POR DIRECCIÓN",22,432,406,56,Connection);
+                W.Label(menu,"Esc para volver",22,505,406,30,18,W.Muted);
+            }
+            else if(homePanel=="Class"&&rules){
+                var classes=Drawer("ChooseClass","CLASE",0,500,410);
+                for(int id=0;id<rules.Classes.Length;id++){int choice=id;var def=rules.Classes[id];W.Button(classes,def.Name,22,75+id*66,456,54,()=>{PlayerPrefs.SetInt(MultiFPS.Gameplay.PlayerInstance.ClassPreference,choice);PlayerPrefs.Save();Navigate(HubPage.Home);Notify("Clase: "+def.Name);},id==CurrentClassId);}
+                W.Label(classes,"Tu skin se conserva.",22,352,456,34,19,W.Muted);
+            }
+            else if(homePanel=="Emotes"&&Catalog&&Catalog.Emotes.Length>0){
+                var emotes=Drawer("Emotes","EMOTES",0,450,355);
                 int pages=Mathf.CeilToInt(Catalog.Emotes.Length/4f);emotePage%=pages;
-                for(int i=0;i<4;i++){int index=emotePage*4+i;if(index>=Catalog.Emotes.Length)break;var emote=Catalog.Emotes[index];var button=W.Button(emotes,emote.Name,22+(i%2)*195,65+(i/2)*68,185,56,()=>{if(!Stage||!Stage.PlayEmote(emote))Notify("Esperá a que cargue el personaje.");});button.GetComponentInChildren<Text>().fontSize=18;}
-                emoteStatus=W.Label(emotes,"Elegí un emote para tu personaje",22,205,380,42,18,W.Muted);
-                W.Button(emotes,"DETENER",22,270,185,45,()=>{if(Stage)Stage.StopEmote();});
-                W.Button(emotes,"MÁS  "+(emotePage+1)+"/"+pages,217,270,185,45,()=>{emotePage=(emotePage+1)%pages;Navigate(HubPage.Home);});
+                for(int i=0;i<4;i++){int index=emotePage*4+i;if(index>=Catalog.Emotes.Length)break;var emote=Catalog.Emotes[index];var button=W.Button(emotes,emote.Name,22+(i%2)*205,75+(i/2)*68,195,56,()=>{if(!Stage||!Stage.PlayEmote(emote))Notify("Esperá a que cargue el personaje.");});button.GetComponentInChildren<Text>().fontSize=18;}
+                emoteStatus=W.Label(emotes,"Elegí un emote",22,218,406,42,18,W.Muted);
+                W.Button(emotes,"DETENER",22,285,195,45,()=>{if(Stage)Stage.StopEmote();});W.Button(emotes,"MÁS "+(emotePage+1)+"/"+pages,227,285,195,45,()=>{emotePage=(emotePage+1)%pages;Navigate(HubPage.Home);});
             }
-            var profile=W.Panel(content,"Profile",0,625,425,185);
-            W.Label(profile,Social.Self.Name,22,10,380,44,28);
-            var appearance=CurrentCharacter();W.Label(profile,appearance?.Name??"Cargando personaje…",22,59,380,33,20,W.Muted);
-            W.Button(profile,"PERSONALIZAR",22,112,380,50,()=>Navigate(HubPage.Loadout));
-            var party=W.Panel(content,"Party",1398,38,450,520);
-            W.Label(party,"TU PARTY  /  "+Social.Party.Count+" DE 4",24,17,400,42,26);
-            for(int i=0;i<4;i++){
-                if(i<Social.Party.Count){var member=Social.Party[i];var friend=Social.Find(member.ProfileId);bool self=member.ProfileId==Social.Self.Id;
-                    W.Label(party,(self?"TÚ · ":"")+(friend?.Name??"Jugador"),24,83+i*82,330,34,23);
-                    W.Label(party,(member.ProfileId==Social.LeaderId?"Líder · ":"")+(member.Ready?"Listo":"Preparando"),24,120+i*82,350,25,17,member.Ready?new Color(.5f,.9f,.68f):W.Muted);
-                    if(!self&&Social.Self.Id==Social.LeaderId){string id=member.ProfileId;W.Button(party,"×",350,83+i*82,75,35,()=>Notify(Social.RemoveMember(id)));}
-                }else W.Button(party,"+ INVITAR",24,87+i*82,400,62,()=>Navigate(HubPage.Social));
+            else if(homePanel=="Party"){
+                var party=Drawer("Party","PARTY · "+Social.Party.Count+"/4",1398,450,540);
+                for(int i=0;i<4;i++){
+                    if(i<Social.Party.Count){var member=Social.Party[i];var friend=Social.Find(member.ProfileId);bool self=member.ProfileId==Social.Self.Id;
+                        W.Label(party,(self?"TÚ · ":"")+(friend?.Name??"Jugador"),24,80+i*82,330,34,23);
+                        W.Label(party,(member.ProfileId==Social.LeaderId?"Líder · ":"")+(member.Ready?"Listo":"Preparando"),24,115+i*82,350,25,17,W.Muted);
+                        if(!self&&Social.Self.Id==Social.LeaderId){string id=member.ProfileId;W.Button(party,"×",350,80+i*82,75,35,()=>Notify(Social.RemoveMember(id)));}
+                    }else W.Button(party,"+ INVITAR",24,80+i*82,400,62,()=>Navigate(HubPage.Social));
+                }
+                bool ready=Social.Party.Any(p=>p.ProfileId==Social.Self.Id&&p.Ready);W.Button(party,ready?"LISTO ✓":"MARCAR COMO LISTO",24,442,400,60,()=>Notify(Social.SetReady(!ready)));
             }
-            bool ready=Social.Party.Any(p=>p.ProfileId==Social.Self.Id&&p.Ready);
-            W.Button(party,ready?"LISTO ✓":"MARCAR COMO LISTO",24,433,400,60,()=>Notify(Social.SetReady(!ready)));
-            W.Button(content,"JUGAR EL RIFT",1398,620,450,88,Deploy,true);
-            W.Button(content,"UNIRSE POR DIRECCIÓN",1398,730,450,60,Connection);
-            if(Social.Party.Count>1)W.Label(content,"Party local de prueba · los perfiles no se conectan automáticamente a la partida.",465,745,880,56,17,W.Muted);
         }
         PreviewModel CurrentCharacter()
         {
@@ -185,7 +198,7 @@ namespace ROM.UI.Sprint01
         }
         public void Deploy()
         {
-            if(!Creator){Notify("Abrí la escena hub para iniciar una partida.");return;}
+            if(!Creator){Notify("Abrí MainMenu para iniciar una partida.");return;}
             if(Social.Self.Id!=Social.LeaderId){Notify("Solo el líder puede iniciar la partida.");return;}
             int map=Array.FindIndex(Creator.Maps,m=>m&&m.Scene.Contains("map_rom_horde"));if(map<0){Notify("El Rift no está configurado.");return;}
             Creator.MapselectionDropdown.value=map;Creator.MapselectionDropdown.onValueChanged.Invoke(map);
@@ -199,20 +212,31 @@ namespace ROM.UI.Sprint01
             var character=CurrentCharacter();if(character==null)return;UserSettings.CharacterSkinID=character.SkinIndex;PlayerPrefs.SetInt("_playerPrefs_CharacterSkinID",character.SkinIndex);
             UserSettings.UserNickname=Social.Self.Name;PlayerPrefs.SetString("_playerPrefs_Username",Social.Self.Name);
         }
+        int CurrentClassId=>InGame&&MultiFPS.UI.ClientFrontend.ClientPlayerInstance?MultiFPS.UI.ClientFrontend.ClientPlayerInstance.ClassId:PlayerPrefs.GetInt(MultiFPS.Gameplay.PlayerInstance.ClassPreference,0);
+        void ChooseClass(int id){
+            if(InGame){var player=MultiFPS.UI.ClientFrontend.ClientPlayerInstance;if(!player||!player.MyCharacter||!GameManager.Gamemode.IsProtectedPosition(player.MyCharacter.transform.position)){Notify("Cambiá de clase en un refugio o junto a un cristal.");return;}player.CmdChooseClass(id);StartCoroutine(RefreshClassSelection());}
+            else{PlayerPrefs.SetInt(MultiFPS.Gameplay.PlayerInstance.ClassPreference,id);PlayerPrefs.Save();Navigate(HubPage.Loadout);Notify("Clase seleccionada. Tu skin se conserva.");}
+        }
+        System.Collections.IEnumerator RefreshClassSelection(){yield return new WaitForSecondsRealtime(.3f);if(Page==HubPage.Loadout)Navigate(HubPage.Loadout);}
+        public void ShowClasses(){if(!content)Build();if(ArsenalPanel)ArsenalPanel.gameObject.SetActive(false);content.gameObject.SetActive(true);Navigate(HubPage.Loadout);}
         void Equipment(Transform body)
         {
-            var character=CurrentCharacter();W.Label(body,"PERSONAJE",0,0,600,36,22,W.Gold);
-            W.Label(body,character?.Name??"Sin personaje",0,45,600,50,30);
-            W.Button(body,"ANTERIOR",0,112,250,50,()=>ChangeCharacter(-1));W.Button(body,"SIGUIENTE",270,112,250,50,()=>ChangeCharacter(1));
-            W.Label(body,"Tu apariencia se aplica en la partida.",0,174,620,28,18,W.Muted);
-            W.Button(body,"VER PERSONAJE",0,200,650,45,()=>{selectedModel="";Navigate(HubPage.Loadout);});
-            int row=0;foreach(var item in Services.Inventory.Items){var entry=Catalog?Catalog.Find(item.CosmeticReference):null;var captured=item;
-                W.Button(body,item.Name,0,250+row++*72,650,58,()=>{selectedModel=captured.CosmeticReference;Navigate(HubPage.Loadout);});
+            var character=CurrentCharacter();var rules=MultiFPS.Gameplay.RiftClassRules.Load();
+            if(rules&&rules.Classes.Length==4){
+                var def=rules.Find(Mathf.Clamp(CurrentClassId,0,3));
+                W.Label(body,"CLASE · "+def.Role,0,0,650,30,22,W.Gold);
+                W.Dropdown(body,"Clase",0,40,650,rules.Classes.Select(c=>c.Name).ToArray(),CurrentClassId,ChooseClass);
+                W.Label(body,def.Description,0,105,650,66,21);
+                W.Label(body,"[F] "+def.FirstAbility+" · "+def.FirstCooldown+" s\n"+def.FirstDescription,0,180,650,68,19);
+                W.Label(body,"[Z] "+def.SecondAbility+" · "+def.SecondCooldown+" s\n"+def.SecondDescription,0,252,650,68,19);
+                W.Label(body,def.Health+" vida · Todas las armas convencionales\n"+def.Passive,0,328,650,58,18,W.Muted);
             }
+            W.Label(body,"SKIN: "+(character?.Name??"Sin personaje"),0,405,650,35,24,W.Gold);
+            W.Button(body,"ANTERIOR",0,449,250,45,()=>ChangeCharacter(-1));W.Button(body,"SIGUIENTE",270,449,250,45,()=>ChangeCharacter(1));
+            int row=0;foreach(var item in Services.Inventory.Items){var captured=item;W.Button(body,item.Name,0,510+row++*44,650,40,()=>{selectedModel=captured.CosmeticReference;Navigate(HubPage.Loadout);});}
             string key=string.IsNullOrEmpty(selectedModel)?character?.Key:selectedModel;
             ShowModel(body,Catalog?Catalog.Find(key):null,750,0,1020,550);
-            var record=Services.Inventory.Items.FirstOrDefault(i=>i.CosmeticReference==key);
-            W.Label(body,record==null?"Personaje IDS · Arrastrá para girar. Rueda para acercar.":record.Name+"\n"+record.Stats+"\nVista del modelo · El equipamiento de combate sigue a cargo del kit.",770,575,980,95,21,W.Muted);
+            W.Label(body,InGame?"Clases: solo se cambian en zonas seguras.\nLas habilidades usan F y Z; las armas conservan sus controles.":"Clase y skin son independientes.\nTodas las clases pueden usar armas convencionales y jugar solas.",770,575,980,90,21,W.Muted);
         }
         void ChangeCharacter(int step)
         {

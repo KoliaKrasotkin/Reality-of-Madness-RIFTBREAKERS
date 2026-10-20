@@ -13,11 +13,12 @@ namespace MultiFPS.Gameplay
     {
         public string Username;
         public int CharacterSkinID;
+        public int ClassId;
         public int[] SelectedItemSkins;
         public int[] Lodout;
     }
 
-    public class PlayerInstance : NetworkBehaviour {
+    public partial class PlayerInstance : NetworkBehaviour {
         //this is all player data that is player preference, that he will himself send to us
         //or we would retrieve this data about him from his account if we had such system
         
@@ -72,6 +73,7 @@ namespace MultiFPS.Gameplay
                 SendClientData(new ClientData
                 {
                     Username = UserSettings.UserNickname,
+                    ClassId = Mathf.Clamp(PlayerPrefs.GetInt(ClassPreference,0),0,3),
                     CharacterSkinID = UserSettings.CharacterSkinID,
                     SelectedItemSkins = UserSettings.SelectedItemSkins,
                     Lodout = UserSettings.PlayerLodout,
@@ -91,6 +93,7 @@ namespace MultiFPS.Gameplay
 
         private void Update()
         {
+            if(isServer)ServerTickClass();
             //if this playerinstance belongs to client then get latency value for him
             if (isOwned)
                 Latency = (short)Math.Round(NetworkTime.rtt * 1000);
@@ -281,6 +284,7 @@ namespace MultiFPS.Gameplay
             }
 
             MyCharacter.Health.Team = Team;
+            ServerConfigureClass();
 
             if (BOT)
                 MyCharacter.SetAsBOT(BOT);
@@ -405,7 +409,10 @@ namespace MultiFPS.Gameplay
         [Command]
         void CmdReceivePlayerData(ClientData clientData)
         {
+            if(_receivedPlayerInfo)return;
             PlayerInfo = clientData;
+            ClassId = Mathf.Clamp(clientData.ClassId,0,3);
+            PlayerInfo.ClassId=ClassId;
 
             //is player did not set his nickmane, then set his nickname with some random number
             if (string.IsNullOrEmpty(PlayerInfo.Username))

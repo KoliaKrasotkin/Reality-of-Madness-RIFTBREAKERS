@@ -46,6 +46,7 @@ namespace MultiFPS.Gameplay
             //apply user input
             if (UICursorManager.GamePlayInput())
             {
+                if(ClientFrontend.ClientPlayerInstance){if(Input.GetKeyDown(KeyCode.F))ClientFrontend.ClientPlayerInstance.CmdUseClassAbility(0);if(Input.GetKeyDown(KeyCode.Z))ClientFrontend.ClientPlayerInstance.CmdUseClassAbility(1);}
                 //read old unity system input system if it's selected to be used
                 if (_inputSystem == InputSystem.Legacy)
                 {

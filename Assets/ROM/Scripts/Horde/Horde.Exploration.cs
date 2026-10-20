@@ -22,6 +22,8 @@ namespace ROM.Horde {
         public bool BlockExplorationDamage(Health victim,Health attacker) {
             // Falling remains lethal, including a fall from a protected checkpoint.
             if(!ExplorationMode||!victim||!attacker||attacker==victim)return false;
+            if(attacker.TrainingTarget)return true;
+            if(victim.TrainingTarget&&attacker.Team==PlayerTeam&&TrainingSpot&&Vector3.Distance(attacker.transform.position,TrainingSpot.position)<30)return false;
             return (victim.Team==PlayerTeam && (IsSafe(victim.transform.position)||_protectedUntil.ContainsKey(victim)))
                 || (attacker.Team==PlayerTeam && IsSafe(attacker.transform.position));
         }
@@ -34,6 +36,7 @@ namespace ROM.Horde {
         }
         void TickExploration() {
             TickSpawnProtection();
+            TickTrainingTarget();
             if(Time.time<_nextExplorationTick)return;_nextExplorationTick=Time.time+.4f;
             _plan=new HordeWavePlan{HealthMultiplier=1,MaxAlive=30,BotFireTime=.65f,BotWaitForFireTime=1.3f};
             foreach(var player in GameManager.Players.ToArray()) {
@@ -50,14 +53,16 @@ namespace ROM.Horde {
                 }
             }
             if(Encounters==null)return;
+            RefreshEncounterScaling();
             // Retire remote patrols without rewarding them so unvisited islands never
             // become blocked by the active enemy budget. Cleared pockets stay cleared.
             foreach(var entry in _encounterByEnemy.ToArray()){
                 if(!entry.Key)continue;
                 bool nearby=GameManager.Players.Any(p=>p&&!p.BOT&&p.MyCharacter&&Vector3.Distance(p.MyCharacter.transform.position,entry.Value.transform.position)<300);
                 if(nearby)continue;
-                entry.Value.Spawned--;_encounterByEnemy.Remove(entry.Key);_aliveEnemies.Remove(entry.Key);_botByHealth.Remove(entry.Key);
+                entry.Value.Spawned--;_encounterByEnemy.Remove(entry.Key);_aliveEnemies.Remove(entry.Key);_botByHealth.Remove(entry.Key);_classEnemyBase.Remove(entry.Key);
                 NetworkServer.Destroy(entry.Key.gameObject);
+                if(!_encounterByEnemy.Values.Contains(entry.Value))entry.Value.Participants.Clear();
             }
             foreach(var encounter in Encounters) {
                 if(!encounter||encounter.Cleared||encounter.Spawned>=encounter.Count)continue;
@@ -70,6 +75,7 @@ namespace ROM.Horde {
                 if(SpawnEnemy(kind,point)){
                     var health=_aliveEnemies.Keys.First(h=>!before.Contains(h));
                     _encounterByEnemy[health]=encounter;
+                    ScaleEncounterEnemy(health,encounter);
                     var territory=health.gameObject.AddComponent<RiftEnemyTerritory>();territory.Home=encounter.transform.position;
                     if(kind==EnemyKind.Boss)health.CharacterName="GUARDIÁN · "+encounter.Title;
                     encounter.Spawned++;
@@ -79,7 +85,7 @@ namespace ROM.Horde {
         }
         void ExplorationEnemyKilled(Health victim,Health killer,EnemyKind kind) {
             if(!_encounterByEnemy.TryGetValue(victim,out var encounter))return;
-            _encounterByEnemy.Remove(victim);
+            _encounterByEnemy.Remove(victim);_classEnemyBase.Remove(victim);
             if(!killer || killer==victim || killer.Team!=PlayerTeam){encounter.Spawned--;return;}
             encounter.Defeated++;
             var player=GameManager.Players.FirstOrDefault(p=>p&&!p.BOT&&p.MyCharacter&&p.MyCharacter.Health==killer);
