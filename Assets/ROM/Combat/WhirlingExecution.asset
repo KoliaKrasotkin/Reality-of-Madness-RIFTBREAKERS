@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1775dcc59f7c8459cb90170d5c9b36, type: 3}
+  m_Name: WhirlingExecution
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.AbilityDefinition
+  Id: whirling-execution
+  DisplayName: "Ejecuci\xF3n giratoria"
+  Description: 
+  Icon: {fileID: 0}
+  Shape: 0
+  DamageKind: 0
+  Damage: 25
+  Range: 3
+  Radius: 3
+  Arc: 120
+  Cooldown: 1
+  Cost: 0
+  ResourceGain: 0
+  CastDuration: 0.6
+  HitTime: 0.28
+  Recovery: 0.15
+  Stagger: 0
+  ThreatMultiplier: 1
+  Implemented: 0
+  Interruptible: 1
+  AllowsMovement: 1
+  Animation: {fileID: 0}
+  CastVfx: {fileID: 0}
+  ImpactVfx: {fileID: 0}
+  Audio: {fileID: 0}
+  Color: {r: 0.7, g: 0.2, b: 1, a: 1}
+  BuffDuration: 0
+  DamageReduction: 0
+  OffensiveBonus: 0
+  AllowedSpecializations: []

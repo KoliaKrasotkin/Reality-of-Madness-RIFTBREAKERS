@@ -175,8 +175,8 @@ namespace MultiFPS.Gameplay {
 
             if (isServer)
             {
-                CharacterItemManager.SpawnStarterEquipment();
-                CharacterItemManager.ServerCommandTakeItem(0);
+                if(!GetComponent<RiftCombat.WarriorAvatar>()){CharacterItemManager.SpawnStarterEquipment();
+                CharacterItemManager.ServerCommandTakeItem(0);}
                 GameSync.Singleton.Characters.ServerRegisterDNSyncObj(this);
                 _spawned = true;
             }
@@ -270,8 +270,8 @@ namespace MultiFPS.Gameplay {
 
             if (_spawned)
             {
-                CharacterItemManager.SpawnStarterEquipment();
-                CharacterItemManager.ServerCommandTakeItem(0);
+                if(!GetComponent<RiftCombat.WarriorAvatar>()){CharacterItemManager.SpawnStarterEquipment();
+                CharacterItemManager.ServerCommandTakeItem(0);}
             }
         }
         private void OnClientResurrect(int health)
@@ -355,7 +355,7 @@ namespace MultiFPS.Gameplay {
         //for ui to read this and display message in hud
         void OnClientHealthAdded(int currentHealth, int addedHealth, byte healerID)
         {
-            Client_OnPickedupObject?.Invoke($"Health +{addedHealth}");
+            if(addedHealth>0)Client_OnPickedupObject?.Invoke($"Vida +{addedHealth}");
         }
 
         public void ServerTeleport(Vector3 pos, float rotationY) 

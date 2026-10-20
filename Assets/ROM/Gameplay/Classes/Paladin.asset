@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5307bc9c14d20ce41b679ab74d70515e, type: 3}
+  m_Name: Paladin
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftClassDefinition
+  Id: 0
+  Name: "Palad\xEDn del Alba"
+  Role: APOYO OFENSIVO
+  Description: Sostiene al grupo con luz sagrada y combate con magia y armas de fuego.
+  Passive: "Recuperaci\xF3n fuera de combate. Curas +25 % al Basti\xF3n."
+  FirstDescription: "Cura 35 % en 16 m y da\xF1a enemigos cercanos."
+  SecondDescription: Golpea y debilita al objetivo; cura aliados cercanos.
+  FirstAbility: Luz radiante
+  SecondAbility: Juicio del Alba
+  Health: 130
+  WeaponDamage: 1.15
+  Armor: 0.1
+  FirstCooldown: 12
+  SecondCooldown: 18
+  FirstPower: 65
+  SecondPower: 100
+  Color: {r: 1, g: 0.8, b: 0.3, a: 1}

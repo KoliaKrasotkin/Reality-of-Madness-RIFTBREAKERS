@@ -8,8 +8,10 @@ namespace MultiFPS.Gameplay.Gamemodes
     [RequireComponent(typeof(RoomManager))]
     public class Gamemode : DNNetworkBehaviour
     {
+        public virtual RiftClassRules ClassRules => null;
         public virtual bool UseLocalPatrol => false;
         public virtual bool IsProtectedPosition(Vector3 position) => false;
+        public virtual bool CanUseClassAbilities(Vector3 point) => !IsProtectedPosition(point);
         public virtual bool BlockDamage(Health victim, Health attacker) => false;
 
         protected GamemodeState State = GamemodeState.None;

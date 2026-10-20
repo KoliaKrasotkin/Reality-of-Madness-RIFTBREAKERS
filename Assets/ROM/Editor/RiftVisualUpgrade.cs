@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using Unity.AI.Navigation;
@@ -39,12 +39,11 @@ namespace ROM.Horde.EditorTools
             var profile=EnsureCinematicProfile();var volume=root.gameObject.AddComponent<Volume>();volume.isGlobal=true;volume.priority=10;volume.sharedProfile=profile;
             RenderSettings.fog=true;RenderSettings.fogMode=FogMode.ExponentialSquared;RenderSettings.fogColor=new Color(.28f,.35f,.43f);RenderSettings.fogDensity=.00165f;
             RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.4f,.49f,.61f);RenderSettings.ambientEquatorColor=new Color(.22f,.27f,.3f);RenderSettings.ambientGroundColor=new Color(.085f,.09f,.11f);RenderSettings.reflectionIntensity=.6f;
-            string skyPath=VisualRoot+"/RiftSky.mat";var sky=AssetDatabase.LoadAssetAtPath<Material>(skyPath);if(!sky){sky=new Material(Shader.Find("Skybox/Procedural"));AssetDatabase.CreateAsset(sky,skyPath);}
-            sky.SetColor("_SkyTint",new Color(.42f,.48f,.58f));sky.SetColor("_GroundColor",new Color(.07f,.08f,.12f));sky.SetFloat("_AtmosphereThickness",1.25f);sky.SetFloat("_Exposure",.85f);RenderSettings.skybox=sky;EditorUtility.SetDirty(sky);
             var lights=UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None).Where(l=>l.type==LightType.Directional).ToArray();
             var sun=lights.FirstOrDefault();if(!sun)sun=new GameObject("Rift Sun").AddComponent<Light>();
             foreach(var light in lights)light.enabled=light==sun;
             sun.type=LightType.Directional;sun.transform.rotation=Quaternion.Euler(38,-32,0);sun.color=new Color(1,.89f,.73f);sun.intensity=1.8f;sun.shadows=LightShadows.Soft;sun.shadowBias=.035f;sun.shadowNormalBias=.25f;RenderSettings.sun=sun;
+            ROM.EditorTools.RiftSkyboxBuilder.ApplyToCurrentScene();
             int count=ReplacePrimitiveCliffs();
             Physics.SyncTransforms();ClearBridgeRockIntersections();
             var surface=UnityEngine.Object.FindFirstObjectByType<NavMeshSurface>();surface.BuildNavMesh();

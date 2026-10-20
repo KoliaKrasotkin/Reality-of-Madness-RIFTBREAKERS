@@ -310,6 +310,8 @@ GameObject:
   - component: {fileID: -1024173836351892984}
   - component: {fileID: 657671019429238111}
   - component: {fileID: -9103784586693039298}
+  - component: {fileID: 3452471553596967866}
+  - component: {fileID: 9077832317948941143}
   - component: {fileID: 7255403548460884853}
   - component: {fileID: -1810693023913998125}
   m_Layer: 0
@@ -396,6 +398,14 @@ MonoBehaviour:
   CharacterName: DEFAULT
   CurrentHealth: 100
   MaxHealth: 100
+  TrainingTarget: 0
+  TrainingLastDamage: 0
+  TrainingTotalDamage: 0
+  TrainingLastHit: 0
+  CombatDamageMultiplier: 1
+  CombatTransfer: 0
+  VulnerableUntil: 0
+  WeakenedUntil: 0
   Team: -1
   damageMultipliers:
   - 1
@@ -738,6 +748,45 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3452471553596967866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382563002283882899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f0c9f52d04303c458d2704bce808d70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.RiftEnemyCombat
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  Archetypes:
+  - {fileID: 11400000, guid: 49000a5752105824699709c9ab0091f5, type: 2}
+  - {fileID: 11400000, guid: 9191da224c553b34685314561e5bbb21, type: 2}
+  - {fileID: 11400000, guid: 3e886d1e8583bfd46ba8be091465e791, type: 2}
+  - {fileID: 11400000, guid: 454c936ed62405b4fb235a69409139b7, type: 2}
+  - {fileID: 11400000, guid: 6f4755b14b235a945a08ee5c666e1617, type: 2}
+  MeleeWeapon: {fileID: 11400000, guid: 14615dd7bbd30e34baf1faace88f645a, type: 2}
+  ActiveCombat: 0
+  ArchetypeIndex: 0
+  CastEnds: 0
+  TargetId: 0
+  Target: {fileID: 0}
+--- !u!114 &9077832317948941143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382563002283882899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d785f1b4842aefb47b473f5feaffa750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.CombatEquipment
 --- !u!114 &7255403548460884853
 MonoBehaviour:
   m_ObjectHideFlags: 0

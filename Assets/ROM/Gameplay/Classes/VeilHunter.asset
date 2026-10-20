@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5307bc9c14d20ce41b679ab74d70515e, type: 3}
+  m_Name: VeilHunter
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftClassDefinition
+  Id: 3
+  Name: Acechador del Velo
+  Role: CAZADOR FURTIVO
+  Description: Marca presas para el grupo y rompe el contacto con el velo.
+  Passive: "Recuperaci\xF3n fuera de combate. El grupo aprovecha tu marca."
+  FirstDescription: "Disparo a 65 m. La presa recibe +20 % de da\xF1o, 10 s."
+  SecondDescription: "Oculto 6 s y cura 20 %. Pr\xF3ximo impacto: +60 %."
+  FirstAbility: Marca de presa
+  SecondAbility: Velo de sombras
+  Health: 120
+  WeaponDamage: 1.15
+  Armor: 0.08
+  FirstCooldown: 14
+  SecondCooldown: 18
+  FirstPower: 80
+  SecondPower: 0
+  Color: {r: 0.3, g: 0.95, b: 0.7, a: 1}

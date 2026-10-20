@@ -16,7 +16,13 @@ namespace MultiFPS.Gameplay
         /// </summary>
         public string CharacterName = "DEFAULT";
         public int CurrentHealth = 100;
-        public int MaxHealth = 100;
+        [SyncVar] public int MaxHealth = 100;
+        [SyncVar(hook=nameof(TrainingChanged))] public bool TrainingTarget;
+        [SyncVar] public int TrainingLastDamage,TrainingTotalDamage;
+        [SyncVar] public double TrainingLastHit;
+        public float CombatDamageMultiplier=1;
+        public bool CombatTransfer;
+        public double VulnerableUntil,WeakenedUntil;
 
         public int Team = -1;
 
@@ -110,8 +116,10 @@ namespace MultiFPS.Gameplay
         public void Server_ChangeHealthState(int damage, CharacterPart damagedPart, AttackType attackType, Health attacker, int attackForce)
         {
             if (GameManager.Gamemode && GameManager.Gamemode.BlockDamage(this, attacker)) return;
-            int finalDamage = Mathf.FloorToInt(damage * damageMultipliers[(int)damagedPart]);
+            int finalDamage = RiftClassCombat.Resolve(this,attacker,Mathf.FloorToInt(damage * damageMultipliers[(int)damagedPart]));
 
+            finalDamage = RiftCombat.CombatController.Resolve(this,attacker,finalDamage);
+            if(TrainingTarget){RecordTrainingHit(finalDamage,damagedPart,attackType,attacker,attackForce);return;}
             if (!(!GameManager.Gamemode.FriendyFire && attacker != this && attacker.Team == Team)) //avoid friendly fire
                 CurrentHealth -= finalDamage;
 
@@ -134,6 +142,9 @@ namespace MultiFPS.Gameplay
         public void Server_ChangeHealthStateRaw(int damage, CharacterPart damagedPart, AttackType attackType, Health attacker, int attackForce)
         {
             if (GameManager.Gamemode && GameManager.Gamemode.BlockDamage(this, attacker)) return;
+            damage = RiftClassCombat.Resolve(this,attacker,damage);
+            damage = RiftCombat.CombatController.Resolve(this,attacker,damage);
+            if(TrainingTarget){RecordTrainingHit(damage,damagedPart,attackType,attacker,attackForce);return;}
             if (!(!GameManager.Gamemode.FriendyFire && attacker != this && attacker.Team == Team)) //avoid friendly fir
                 CurrentHealth -= damage;
 
@@ -265,6 +276,18 @@ namespace MultiFPS.Gameplay
         {
             return _targetPositionTracker.position;
         }
+
+        [Server] public void ServerMakeTrainingTarget(){TrainingTarget=true;ServerSetVitals(100000,100000);TrainingChanged(false,true);}
+        void TrainingChanged(bool before,bool after){if(after&&!GetComponent<TrainingTargetDisplay>())gameObject.AddComponent<TrainingTargetDisplay>();}
+        void RecordTrainingHit(int damage,CharacterPart part,AttackType type,Health attacker,int force){
+            if(!attacker||attacker==this||attacker.Team==Team||damage<=0)return;
+            if(NetworkTime.time-TrainingLastHit>10)TrainingTotalDamage=0;
+            TrainingLastDamage=damage;TrainingTotalDamage=Mathf.Min(100000000,TrainingTotalDamage+damage);TrainingLastHit=NetworkTime.time;
+            RpcHealthStateChanged(CurrentHealth,damage,part,type,attacker.DNID);
+        }
+
+        [Server] public void ServerSetVitals(int max,int current){MaxHealth=Mathf.Max(1,max);CurrentHealth=Mathf.Clamp(current,1,MaxHealth);RpcSetVitals(MaxHealth,CurrentHealth);}
+        [ClientRpc] void RpcSetVitals(int max,int current){MaxHealth=max;CurrentHealth=current;Client_OnHealthAdded?.Invoke(current,0,DNID);}
 
         //execute only on server, then server will update health state for every client
         public int ServerHeal(int healthToAdd, byte healerID) 

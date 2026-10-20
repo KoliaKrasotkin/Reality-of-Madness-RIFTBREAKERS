@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5307bc9c14d20ce41b679ab74d70515e, type: 3}
+  m_Name: Bastion
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftClassDefinition
+  Id: 1
+  Name: "Basti\xF3n"
+  Role: GUERRERO TANQUE
+  Description: "Protege a sus aliados, atrae enemigos y resiste en primera l\xEDnea."
+  Passive: "Con palad\xEDn cercano, Guardia absorbe 25 % del da\xF1o aliado."
+  FirstDescription: 'Guardia 6 s y mayor amenaza. Sin apoyo: cura 25 %.'
+  SecondDescription: "Golpe en 10 m; debilita el da\xF1o enemigo durante 4 s."
+  FirstAbility: Guardia desafiante
+  SecondAbility: "Golpe s\xEDsmico"
+  Health: 180
+  WeaponDamage: 1.05
+  Armor: 0.22
+  FirstCooldown: 12
+  SecondCooldown: 10
+  FirstPower: 0
+  SecondPower: 95
+  Color: {r: 0.5, g: 0.75, b: 1, a: 1}

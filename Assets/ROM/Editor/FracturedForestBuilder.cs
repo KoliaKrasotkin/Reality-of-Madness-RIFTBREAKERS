@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -897,7 +897,9 @@ namespace ROM.Horde.EditorTools
             result.SetColor("_BaseColor",source.HasProperty("_BaseColor")?source.GetColor("_BaseColor"):source.HasProperty("_Color")?source.GetColor("_Color"):Color.white);
             CopySavedTexture(source,result,"_BumpMap",new[]{"_BumpMap","_NormalMap","_Normal_Map","_Normal"});
             if(result.GetTexture("_BumpMap")) result.EnableKeyword("_NORMALMAP");
-            bool cutout=source.shader.name.IndexOf("cutout",StringComparison.OrdinalIgnoreCase)>=0 || (source.HasProperty("_Mode") && source.GetFloat("_Mode")==1) || source.IsKeywordEnabled("_ALPHATEST_ON") || source.shader.name.Contains("Tree") || source.shader.name.Contains("Nature");
+            bool solidTown=AssetDatabase.GetAssetPath(source).Contains("PostApocalypticTown") && !System.Text.RegularExpressions.Regex.IsMatch(source.name,"(?i)leaf|leaves|foliage|grass|fence|grate|chain|wiremesh|decal|glass");
+            bool cutout=!solidTown && (source.shader.name.IndexOf("cutout",StringComparison.OrdinalIgnoreCase)>=0 || (source.HasProperty("_Mode") && source.GetFloat("_Mode")==1) || source.IsKeywordEnabled("_ALPHATEST_ON") || source.shader.name.Contains("Tree") || source.shader.name.Contains("Nature"));
+            result.SetFloat("_AlphaClip",cutout?1:0); result.DisableKeyword("_ALPHATEST_ON"); result.renderQueue=cutout?2450:2000;
             if(cutout) { result.SetFloat("_AlphaClip",1); result.SetFloat("_Cutoff",.4f); result.EnableKeyword("_ALPHATEST_ON"); result.renderQueue=2450; }
             result.SetFloat("_Cull",0); result.SetFloat("_Smoothness",.12f);
             EditorUtility.SetDirty(result); Converted[source]=result; return result;

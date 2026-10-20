@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d013899c5a3bd234eb017d04a50b1005, type: 3}
+  m_Name: GuardianSword
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.WeaponDefinition
+  Id: GuardianSword
+  DisplayName: GuardianSword
+  WeaponType: OneHandSword
+  DamageMultiplier: 1
+  AttackSpeed: 1
+  Reach: 3.5
+  Model: {fileID: 4508159891964749697, guid: 781494a967a45554aa90d0b67eb00d31, type: 3}
+  Socket: 18
+  Position: {x: 0, y: 0, z: 0}
+  Rotation: {x: 0, y: 0, z: 90}
+  Scale: {x: 0.9464501, y: 0.9464501, z: 0.9464501}
+  AllowedClasses:
+  - warrior
+  AllowedSpecializations:
+  - guardian
+  Attack: {fileID: 1827226128182048838, guid: 813376a7edaaa534587c7bad06730273, type: 3}
+  ImpactVfx: {fileID: 0}

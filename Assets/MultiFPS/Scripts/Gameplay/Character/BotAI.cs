@@ -208,7 +208,7 @@ namespace MultiFPS.Gameplay
                 targetedEnemy=null;_pushTrigger=false;_characterInstance.Input.ActionCodes=0;
                 SetTravelDestinationByNavMesh(territory.Home,true,true);UpdatePath();return;
             }
-            if (targetedEnemy && territory && !territory.CanTarget(targetedEnemy)) targetedEnemy=null;
+            if (targetedEnemy && (!RiftClassCombat.CanTarget(targetedEnemy,transform.position)||(territory && !territory.CanTarget(targetedEnemy)))) targetedEnemy=null;
             UpdatePath();
 
             _enemyInSight = EnemyInSight();
@@ -249,7 +249,7 @@ namespace MultiFPS.Gameplay
                 _focusEnemyTimer = 0;
 
             // AI LOGIC
-            if (!_enemyInSight ||
+            if (_gamemode.ClassRules || !_enemyInSight ||
                 (targetedEnemy && targetedEnemy.CurrentHealth <= 0))
             {
                 targetedEnemy = GetClosestEnemy();
@@ -773,6 +773,8 @@ namespace MultiFPS.Gameplay
                     if (raidMode && distance > raidDetectionRange)
                         continue;
 
+                    if (!RiftClassCombat.CanTarget(_potentialEnemy,we))continue;
+                    distance*=RiftClassCombat.TargetPriority(_potentialEnemy);
                     if (distance < lastDistance)
                     {
                         _potentialNearestEnemy = _potentialEnemy;

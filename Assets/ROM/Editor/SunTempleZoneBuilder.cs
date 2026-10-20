@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -107,6 +107,9 @@ namespace ROM.Horde.EditorTools
                 CopySavedTexture(original,converted,"_BaseMap",new[]{"_BaseMap","_BaseColorMap","_MainTex","_layer1Tex","_Diffuse","_Albedo"});
                 CopySavedTexture(original,converted,"_BumpMap",new[]{"_BumpMap","_NormalMap","_layer1Norm"});
                 if(converted.GetTexture("_BumpMap")) converted.EnableKeyword("_NORMALMAP");
+                // Legacy bark shaders store no standard albedo slot after migration.
+                if(!converted.GetTexture("_BaseMap") && name.StartsWith("Fol_Bark"))
+                    converted.SetTexture("_BaseMap",AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Standard Assets/Sun_Temple/Content/Textures/"+name.ToLowerInvariant()+".tif"));
                 converted.SetColor("_BaseColor",glass?new Color(.8f,.92f,1,.3f):Color.white);
                 converted.SetFloat("_Metallic",0); converted.SetFloat("_Smoothness",glass?.65f:.2f);
                 converted.SetFloat("_Cull",0);
@@ -215,7 +218,7 @@ namespace ROM.Horde.EditorTools
                 foreach(var renderer in clone.GetComponentsInChildren<Renderer>(true)) { renderer.lightmapIndex=-1; renderer.lightmapScaleOffset=new Vector4(1,1,0,0); }
                 foreach(var filter in clone.GetComponentsInChildren<MeshFilter>(true))
                 {
-                    if(filter.name.IndexOf("CollisionBox",StringComparison.OrdinalIgnoreCase)>=0 || filter.name.IndexOf("ExposureArea",StringComparison.OrdinalIgnoreCase)>=0)
+                    if(filter.name.IndexOf("CollisionBox",StringComparison.OrdinalIgnoreCase)>=0 || filter.name.IndexOf("ExposureArea",StringComparison.OrdinalIgnoreCase)>=0 || filter.name.StartsWith("Dec_Ornament"))
                     { var renderer=filter.GetComponent<Renderer>(); if(renderer) renderer.enabled=false; }
                     // Preserve the supplied colliders; add missing collision only on
                     // structural LOD0 meshes, rather than duplicating every LOD collider.

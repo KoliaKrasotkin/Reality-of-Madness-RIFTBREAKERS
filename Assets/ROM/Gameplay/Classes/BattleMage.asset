@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5307bc9c14d20ce41b679ab74d70515e, type: 3}
+  m_Name: BattleMage
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftClassDefinition
+  Id: 2
+  Name: Tejedor de Guerra
+  Role: MAGO DE BATALLA
+  Description: "Combina r\xE1fagas arcanas con armas convencionales potenciadas."
+  Passive: "Recuperaci\xF3n fuera de combate. Magia y armas sin bloqueo."
+  FirstDescription: "Explosi\xF3n de 7 m sobre un objetivo visible a 45 m."
+  SecondDescription: "8 s de da\xF1o +35 %, protecci\xF3n adicional y cura 15 %."
+  FirstAbility: Estallido arcano
+  SecondAbility: "Infusi\xF3n de guerra"
+  Health: 110
+  WeaponDamage: 1.2
+  Armor: 0.04
+  FirstCooldown: 12
+  SecondCooldown: 18
+  FirstPower: 110
+  SecondPower: 0
+  Color: {r: 0.65, g: 0.4, b: 1, a: 1}
