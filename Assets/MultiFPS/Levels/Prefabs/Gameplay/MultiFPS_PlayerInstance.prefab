@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 960631725457747856}
   - component: {fileID: 7440632562546903676}
   - component: {fileID: 1253385228156914474}
+  - component: {fileID: 1791136284784208347}
   m_Layer: 0
   m_Name: MultiFPS_PlayerInstance
   m_TagString: Untagged
@@ -26,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4898308515290633002}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &960631725457747856
 MonoBehaviour:
@@ -47,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 0
-  _assetId: 2797737406
+  _assetId: 0
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
@@ -66,9 +67,16 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+  ClassId: 0
+  FirstReadyAt: 0
+  SecondReadyAt: 0
+  EmpoweredUntil: 0
+  HiddenUntil: 0
+  LastCombatAt: 0
   PlayerInfo:
     Username: 
     CharacterSkinID: 0
+    ClassId: 0
     SelectedItemSkins: 
     Lodout: 
   Kills: 0
@@ -94,3 +102,19 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+--- !u!114 &1791136284784208347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4898308515290633002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7bf26203063c9141a5b36706714fcf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Horde.RiftVillagePlayer
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  PotionReadyAt: 0
