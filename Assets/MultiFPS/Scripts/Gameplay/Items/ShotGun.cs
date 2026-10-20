@@ -155,6 +155,12 @@ namespace MultiFPS.Gameplay
             {
                 if (MyOwner.FPP)
                    MyOwner.CharacterAnimator.SetTrigger(AnimationNames.ITEM_RELOAD);
+                else
+                {
+                    MyOwner.IsReloading = true;
+                    MyOwner.CharacterAnimator.ResetTrigger(AnimationNames.ITEM_ENDRELOAD);
+                    MyOwner.CharacterAnimator.PlayAnimation(AnimationNames.ITEM_RELOAD);
+                }
                 _myAnimator.SetTrigger(AnimationNames.ITEM_RELOAD);
 
                 yield return new WaitForSeconds(_reloadTime_start);

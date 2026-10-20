@@ -33,15 +33,17 @@ namespace MultiFPS.UI.HUD
                 _instantiatedPresenters.Clear();
 
                 List<PlayerInstance> players = GameManager.Players;
+                if(GameManager.Gamemode.Indicator==MultiFPS.Gameplay.Gamemodes.Gamemodes.Raid)
+                    players=players.Where(p=>!p.BOT).ToList();
                 players = players.OrderByDescending(x => x.Kills).ToList();
 
                 for (int i = 0; i < players.Count; i++)
                 {
                     PlayerInstance player = players[i];
 
-                    GameObject presenter = Instantiate(_playerPresenter, _grid.position, _grid.rotation);
+                    GameObject presenter = Instantiate(_playerPresenter, _grid, false);
                     presenter.SetActive(true);
-                    presenter.transform.SetParent(_grid);
+                    presenter.transform.localScale = Vector3.one;
                     presenter.GetComponent<UIScoreBoardPlayerElement>().WriteData(player);
 
                     _instantiatedPresenters.Add(presenter);

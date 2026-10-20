@@ -19,6 +19,7 @@ namespace MultiFPS {
         private void Awake()
         {
             _instance = this;
+            if (!GetComponent<MultiFPS.Gameplay.RiftThirdPersonCamera>()) gameObject.AddComponent<MultiFPS.Gameplay.RiftThirdPersonCamera>();
 
             if (!target)
             {

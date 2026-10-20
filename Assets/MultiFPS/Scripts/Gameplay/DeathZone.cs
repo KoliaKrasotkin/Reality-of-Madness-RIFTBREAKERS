@@ -16,14 +16,14 @@ namespace MultiFPS.Gameplay
         private void OnTriggerStay(Collider other)
         {
             if (!isServer) return;
-            Health h = other.GetComponent<Health>();
+            Health h = other.GetComponentInParent<Health>();
 
-            if (h)
-                h.Server_ChangeHealthState(9999, 0,AttackType.falldamage, h, 500);
+            if (h && h.CurrentHealth > 0)
+                h.Server_ChangeHealthStateRaw(h.CurrentHealth, 0,AttackType.falldamage, h, 500);
 
             if (!DespawnItems) return;
                 
-            Item i = other.GetComponent<Item>();
+            Item i = other.GetComponentInParent<Item>();
             if (i)
             {
                 NetworkServer.Destroy(i.gameObject);

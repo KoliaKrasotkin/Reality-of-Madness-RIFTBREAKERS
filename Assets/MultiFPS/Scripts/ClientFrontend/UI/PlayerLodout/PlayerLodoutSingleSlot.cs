@@ -20,6 +20,8 @@ namespace MultiFPS.UI
         public void Draw(Slot slot, int playerSlotID) 
         {
             _playerSlotID = playerSlotID;
+            var label=transform.Find("SlotName");
+            if(label)label.GetComponent<UnityEngine.UI.Text>().text="RANURA "+(playerSlotID+1);
 
             _dropdown.ClearOptions();
             List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();

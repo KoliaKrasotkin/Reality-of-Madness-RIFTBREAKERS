@@ -109,6 +109,7 @@ namespace MultiFPS.Gameplay
         //process taking damage server side
         public void Server_ChangeHealthState(int damage, CharacterPart damagedPart, AttackType attackType, Health attacker, int attackForce)
         {
+            if (GameManager.Gamemode && GameManager.Gamemode.BlockDamage(this, attacker)) return;
             int finalDamage = Mathf.FloorToInt(damage * damageMultipliers[(int)damagedPart]);
 
             if (!(!GameManager.Gamemode.FriendyFire && attacker != this && attacker.Team == Team)) //avoid friendly fire
@@ -132,6 +133,7 @@ namespace MultiFPS.Gameplay
         //process taking damage server side
         public void Server_ChangeHealthStateRaw(int damage, CharacterPart damagedPart, AttackType attackType, Health attacker, int attackForce)
         {
+            if (GameManager.Gamemode && GameManager.Gamemode.BlockDamage(this, attacker)) return;
             if (!(!GameManager.Gamemode.FriendyFire && attacker != this && attacker.Team == Team)) //avoid friendly fir
                 CurrentHealth -= damage;
 
