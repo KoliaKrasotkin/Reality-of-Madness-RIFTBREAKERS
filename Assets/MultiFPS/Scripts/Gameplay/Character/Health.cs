@@ -308,34 +308,20 @@ namespace MultiFPS.Gameplay
 
         public void ServerResurrect()
         {
-            ServerResurrect(MaxHealth);
-        }
-
-        /// <summary>
-        /// Resurrects with a specific amount of health instead of a full bar.
-        /// Needed for reviving a downed character with partial health, where the
-        /// amount is a difficulty setting rather than a fixed value.
-        /// Clamped to at least 1, so a resurrect can never leave the character at
-        /// zero and immediately dying again.
-        /// </summary>
-        public void ServerResurrect(int health)
-        {
-            int resurrectHealth = Mathf.Clamp(health, 1, MaxHealth);
-
             //prepare client for resurrection
-            RpcClientResurrect(resurrectHealth);
+            RpcClientResurrect();
 
             //resurrect
             _dead = false;
-            CurrentHealth = resurrectHealth;
-            Server_Resurrect?.Invoke(resurrectHealth);
+            CurrentHealth = MaxHealth;
+            Server_Resurrect?.Invoke(MaxHealth);
         }
 
         [ClientRpc]
-        public void RpcClientResurrect(int health)
+        public void RpcClientResurrect()
         {
             _clientDead = false;
-            CurrentHealth = health;
+            CurrentHealth = MaxHealth;
             Client_Resurrect?.Invoke(CurrentHealth);
         }
     }
