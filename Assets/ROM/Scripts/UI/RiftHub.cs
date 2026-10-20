@@ -9,7 +9,7 @@ using W = ROM.UI.Sprint01.RiftWidgets;
 
 namespace ROM.UI.Sprint01
 {
-    public enum HubPage { Home, Missions, Loadout, Lobby, Progression, Auction, Exchange, Marketplace, Settings, Social, Codex, Results }
+    public enum HubPage { Home, Missions, Loadout, Lobby, Progression, Auction, Exchange, Marketplace, Settings, Social, Codex, Results, Inventory, Character, Abilities }
     public sealed partial class RiftHub : MonoBehaviour
     {
         public Sprite Background,Logo;
@@ -61,7 +61,7 @@ namespace ROM.UI.Sprint01
         }
         public void UseSocialService(ISocialService service){if(Social!=null)Social.Changed-=SocialChanged;Social=service??throw new ArgumentNullException(nameof(service));Social.Changed+=SocialChanged;}
         public void UseServices(SprintServices services){Services=services??throw new ArgumentNullException(nameof(services));}
-        void Start(){Initialize();RiftVideoSettings.Ensure();Build();}
+        void Start(){Initialize();RiftVideoSettings.Ensure();Build();if(InGame&&requestedGameplayPage.HasValue)Navigate(requestedGameplayPage.Value);}
         [ContextMenu("Reconstruir vista previa del menú")]
         public void Build()
         {
@@ -136,6 +136,7 @@ namespace ROM.UI.Sprint01
                 if(page==HubPage.Marketplace||page==HubPage.Progression)W.Label(panel,$"AG {Services.Balances.AncientGold:N0} / RC {Services.Balances.RiftCrystals:N0}",1050,20,490,48,19,W.Gold);
                 var body=W.Rect(panel,"Body",28,95,1792,690);
                 switch(page){
+                    case HubPage.Inventory:case HubPage.Character:case HubPage.Abilities:GameplayPage(body,page);break;
                     case HubPage.Loadout:Equipment(body);break;
                     case HubPage.Marketplace:case HubPage.Auction:Shop(body);break;
                     case HubPage.Exchange:Exchange(body);break;
@@ -147,7 +148,7 @@ namespace ROM.UI.Sprint01
             }
             var first=content.GetComponentInChildren<Button>();if(first&&EventSystem.current)EventSystem.current.SetSelectedGameObject(first.gameObject);
         }
-        static string PageTitle(HubPage page)=>page switch {HubPage.Loadout=>"EQUIPAMIENTO",HubPage.Progression=>"PROGRESO",HubPage.Settings=>"AJUSTES",HubPage.Social=>"AMIGOS Y MENSAJES",HubPage.Exchange=>"INTERCAMBIO",_=>"TIENDA"};
+        static string PageTitle(HubPage page)=>page switch {HubPage.Inventory=>"INVENTARIO",HubPage.Character=>"PERSONAJE",HubPage.Abilities=>"HABILIDADES",HubPage.Loadout=>"EQUIPAMIENTO",HubPage.Progression=>"PROGRESO",HubPage.Settings=>"AJUSTES",HubPage.Social=>"AMIGOS Y MENSAJES",HubPage.Exchange=>"INTERCAMBIO",_=>"TIENDA"};
         public void ToggleHomePanel(string panel){homePanel=Page==HubPage.Home&&homePanel==panel?"":panel;Navigate(HubPage.Home);}
         void CloseHomePanel(){homePanel="";Navigate(HubPage.Home);}
         RectTransform Drawer(string name,string title,float x,float width,float height){var r=W.Panel(content,name,x,0,width,height);W.Label(r,title,22,12,width-175,42,26,W.Gold);W.Button(r,"CERRAR",width-150,17,128,38,CloseHomePanel).GetComponentInChildren<Text>().fontSize=18;return r;}

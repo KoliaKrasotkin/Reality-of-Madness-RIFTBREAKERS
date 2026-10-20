@@ -9,7 +9,7 @@ namespace ROM.UI.Sprint01 {
 public sealed class RiftClassHUD : MonoBehaviour {
     static RiftClassHUD instance;Text title,first,second,help;RectTransform panel;
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    static void Install(){if(instance)return;var go=new GameObject("ROM - Habilidades de clase",typeof(Canvas),typeof(CanvasScaler));DontDestroyOnLoad(go);go.AddComponent<RiftClassHUD>();}
+    static void Install(){if(Resources.Load<GameObject>("RiftGameplayHUD"))return;if(instance)return;var go=new GameObject("ROM - Habilidades de clase",typeof(Canvas),typeof(CanvasScaler));DontDestroyOnLoad(go);go.AddComponent<RiftClassHUD>();}
     void Awake(){if(instance&&instance!=this){Destroy(gameObject);return;}instance=this;var canvas=GetComponent<Canvas>();canvas.renderMode=RenderMode.ScreenSpaceOverlay;canvas.sortingOrder=120;var scaler=GetComponent<CanvasScaler>();scaler.uiScaleMode=CanvasScaler.ScaleMode.ScaleWithScreenSize;scaler.referenceResolution=new Vector2(1920,1080);scaler.matchWidthOrHeight=.5f;}
     void Start(){
         if(!W.Body)W.Body=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
