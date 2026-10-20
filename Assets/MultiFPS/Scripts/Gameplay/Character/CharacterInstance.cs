@@ -175,8 +175,8 @@ namespace MultiFPS.Gameplay {
 
             if (isServer)
             {
-                CharacterItemManager.SpawnStarterEquipment();
-                CharacterItemManager.ServerCommandTakeItem(0);
+                if(!GetComponent<RiftCombat.WarriorAvatar>()){CharacterItemManager.SpawnStarterEquipment();
+                CharacterItemManager.ServerCommandTakeItem(0);}
                 GameSync.Singleton.Characters.ServerRegisterDNSyncObj(this);
                 _spawned = true;
             }
@@ -270,8 +270,8 @@ namespace MultiFPS.Gameplay {
 
             if (_spawned)
             {
-                CharacterItemManager.SpawnStarterEquipment();
-                CharacterItemManager.ServerCommandTakeItem(0);
+                if(!GetComponent<RiftCombat.WarriorAvatar>()){CharacterItemManager.SpawnStarterEquipment();
+                CharacterItemManager.ServerCommandTakeItem(0);}
             }
         }
         private void OnClientResurrect(int health)

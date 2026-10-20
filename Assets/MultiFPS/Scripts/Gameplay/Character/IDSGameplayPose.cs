@@ -46,8 +46,12 @@ namespace MultiFPS.Gameplay
             if(!Source||!Target||!Source.isHuman||!Target.isHuman||!Source.runtimeAnimatorController)return;
             Initialize();
             Target.transform.SetPositionAndRotation(Source.transform.position,Source.transform.rotation);
-            if(controller!=Source.runtimeAnimatorController){
-                controller=Source.runtimeAnimatorController;Target.runtimeAnimatorController=animationSet?animationSet.Resolve(controller):controller;
+            var warrior=Character?RiftCombat.AbilityController.For(Character.Health):null;
+            var enemy=Character?Character.GetComponent<RiftCombat.RiftEnemyCombat>():null;
+            bool meleeMode=(warrior&&warrior.Prototype)||(enemy&&enemy.ActiveCombat);
+            var effective=meleeMode&&animationSet&&animationSet.LocomotionController?animationSet.LocomotionController:Source.runtimeAnimatorController;
+            if(controller!=effective){
+                controller=effective;Target.runtimeAnimatorController=meleeMode?effective:animationSet?animationSet.Resolve(controller):controller;
                 parameters=Source.parameters;
                 for(int layer=0;layer<Source.layerCount;layer++){
                     var state=Source.GetCurrentAnimatorStateInfo(layer);
@@ -66,7 +70,7 @@ namespace MultiFPS.Gameplay
             triggers.Clear();
             foreach(var state in states)Target.Play(state);
             states.Clear();
-            for(int layer=1;layer<Source.layerCount;layer++)Target.SetLayerWeight(layer,Source.GetLayerWeight(layer));
+            for(int layer=1;layer<Source.layerCount;layer++)Target.SetLayerWeight(layer,meleeMode?0:Source.GetLayerWeight(layer));
             if(animationSet&&animationSet.HasOwnLocomotion&&motor){
                 // Motus jog loops cover both 4.2 m/s movement and sprint. Match cadence
                 // to displacement instead of reusing the old kit's six-metre stride.

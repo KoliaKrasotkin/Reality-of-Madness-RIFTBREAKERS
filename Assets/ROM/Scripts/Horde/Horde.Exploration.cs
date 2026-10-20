@@ -14,6 +14,7 @@ namespace ROM.Horde {
         public override bool BlockDamage(Health victim, Health attacker) => BlockExplorationDamage(victim,attacker);
         public RiftCheckpoint[] Checkpoints;
         public RiftEncounter[] Encounters;
+        [Range(0,1)] public float MeleeEncounterFraction=.75f;
         readonly Dictionary<PlayerInstance,RiftCheckpoint> _checkpoints=new Dictionary<PlayerInstance,RiftCheckpoint>();
         readonly Dictionary<Health,RiftEncounter> _encounterByEnemy=new Dictionary<Health,RiftEncounter>();
         float _nextExplorationTick;
@@ -77,6 +78,7 @@ namespace ROM.Horde {
                     _encounterByEnemy[health]=encounter;
                     ScaleEncounterEnemy(health,encounter);
                     var territory=health.gameObject.AddComponent<RiftEnemyTerritory>();territory.Home=encounter.transform.position;
+                    var combat=health.GetComponent<MultiFPS.Gameplay.RiftCombat.RiftEnemyCombat>();if(combat)combat.Configure(kind==EnemyKind.Boss?2:((encounter.Spawned*.618034f)%1>=MeleeEncounterFraction?3:0));
                     if(kind==EnemyKind.Boss)health.CharacterName="GUARDIÁN · "+encounter.Title;
                     encounter.Spawned++;
                 }

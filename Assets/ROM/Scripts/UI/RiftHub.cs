@@ -10,13 +10,14 @@ using W = ROM.UI.Sprint01.RiftWidgets;
 namespace ROM.UI.Sprint01
 {
     public enum HubPage { Home, Missions, Loadout, Lobby, Progression, Auction, Exchange, Marketplace, Settings, Social, Codex, Results }
-    public sealed class RiftHub : MonoBehaviour
+    public sealed partial class RiftHub : MonoBehaviour
     {
         public Sprite Background,Logo;
         public ROMUITheme Theme;
         public Font InterfaceFont;
         public Font ButtonFont;
         public FrontEndCatalog Catalog;
+        public MultiFPS.Gameplay.RiftCombat.SpeciesDefinition CombatSpecies;
         public bool InGame;
         public Action ResumeRequested,LeaveRequested;
         public RectTransform ArsenalPanel;
@@ -152,11 +153,11 @@ namespace ROM.UI.Sprint01
         RectTransform Drawer(string name,string title,float x,float width,float height){var r=W.Panel(content,name,x,0,width,height);W.Label(r,title,22,12,width-175,42,26,W.Gold);W.Button(r,"CERRAR",width-150,17,128,38,CloseHomePanel).GetComponentInChildren<Text>().fontSize=18;return r;}
         void Home()
         {
-            W.Label(content,Social.Self.Name,0,620,650,45,30);
+            W.Label(content,Roster.Active.Name,0,620,650,45,30);
             var rules=MultiFPS.Gameplay.RiftClassRules.Load();
-            W.Label(content,(rules?.Find(CurrentClassId)?.Name??"Clase")+" · "+(CurrentCharacter()?.Name??"Personaje"),0,670,800,32,20,W.Muted);
+            W.Label(content,CombatClassLabel(rules)+" · "+(CurrentCharacter()?.Name??"Personaje"),0,670,800,32,20,W.Muted);
             W.Button(content,"CLASE",0,744,170,52,()=>ToggleHomePanel("Class"));
-            W.Button(content,"PERSONAJE",185,744,205,52,()=>Navigate(HubPage.Loadout));
+            W.Button(content,"PERSONAJES",185,744,205,52,()=>ToggleHomePanel("Characters"));
             W.Button(content,"EMOTES",405,744,180,52,()=>ToggleHomePanel("Emotes"));
             W.Button(content,"PARTY · "+Social.Party.Count+"/4",600,744,220,52,()=>ToggleHomePanel("Party"));
             W.Label(content,"EL RIFT · EXPLORACIÓN COOPERATIVA",1398,645,450,38,21,W.Muted);
@@ -168,11 +169,9 @@ namespace ROM.UI.Sprint01
                 W.Button(menu,"UNIRSE POR DIRECCIÓN",22,432,406,56,Connection);
                 W.Label(menu,"Esc para volver",22,505,406,30,18,W.Muted);
             }
-            else if(homePanel=="Class"&&rules){
-                var classes=Drawer("ChooseClass","CLASE",0,500,410);
-                for(int id=0;id<rules.Classes.Length;id++){int choice=id;var def=rules.Classes[id];W.Button(classes,def.Name,22,75+id*66,456,54,()=>{PlayerPrefs.SetInt(MultiFPS.Gameplay.PlayerInstance.ClassPreference,choice);PlayerPrefs.Save();Navigate(HubPage.Home);Notify("Clase: "+def.Name);},id==CurrentClassId);}
-                W.Label(classes,"Tu skin se conserva.",22,352,456,34,19,W.Muted);
-            }
+            else if(homePanel=="Class")DrawClassSelection();
+            else if(homePanel=="Characters")DrawCharacters();
+            else if(homePanel=="CreateCharacter")DrawCharacterCreation();
             else if(homePanel=="Emotes"&&Catalog&&Catalog.Emotes.Length>0){
                 var emotes=Drawer("Emotes","EMOTES",0,450,355);
                 int pages=Mathf.CeilToInt(Catalog.Emotes.Length/4f);emotePage%=pages;
@@ -192,13 +191,15 @@ namespace ROM.UI.Sprint01
                 bool ready=Social.Party.Any(p=>p.ProfileId==Social.Self.Id&&p.Ready);W.Button(party,ready?"LISTO ✓":"MARCAR COMO LISTO",24,442,400,60,()=>Notify(Social.SetReady(!ready)));
             }
         }
+        string CombatClassLabel(MultiFPS.Gameplay.RiftClassRules rules)=>ClassName(Roster.Active.ClassKey);
         PreviewModel CurrentCharacter()
         {
-            if(!Catalog)return null;var list=Catalog.Characters;return list.Length==0?null:list[Mathf.Clamp(Social.Self.Skin,0,list.Length-1)];
+            if(!Catalog)return null;var list=Catalog.Characters;return list.Length==0?null:list[Mathf.Clamp(Roster.Active.Skin,0,list.Length-1)];
         }
         public void Deploy()
         {
             if(!Creator){Notify("Abrí MainMenu para iniciar una partida.");return;}
+            ApplyActiveCharacter();
             if(Social.Self.Id!=Social.LeaderId){Notify("Solo el líder puede iniciar la partida.");return;}
             int map=Array.FindIndex(Creator.Maps,m=>m&&m.Scene.Contains("map_rom_horde"));if(map<0){Notify("El Rift no está configurado.");return;}
             Creator.MapselectionDropdown.value=map;Creator.MapselectionDropdown.onValueChanged.Invoke(map);
@@ -210,10 +211,12 @@ namespace ROM.UI.Sprint01
         void ApplyAppearance()
         {
             var character=CurrentCharacter();if(character==null)return;UserSettings.CharacterSkinID=character.SkinIndex;PlayerPrefs.SetInt("_playerPrefs_CharacterSkinID",character.SkinIndex);
-            UserSettings.UserNickname=Social.Self.Name;PlayerPrefs.SetString("_playerPrefs_Username",Social.Self.Name);
+            UserSettings.UserNickname=Roster.Active.Name;PlayerPrefs.SetString("_playerPrefs_Username",Roster.Active.Name);
         }
         int CurrentClassId=>InGame&&MultiFPS.UI.ClientFrontend.ClientPlayerInstance?MultiFPS.UI.ClientFrontend.ClientPlayerInstance.ClassId:PlayerPrefs.GetInt(MultiFPS.Gameplay.PlayerInstance.ClassPreference,0);
         void ChooseClass(int id){
+            PlayerPrefs.SetInt(MultiFPS.Gameplay.RiftCombat.AbilityController.Preference,0);if(InGame&&MultiFPS.UI.ClientFrontend.ClientPlayerInstance)MultiFPS.UI.ClientFrontend.ClientPlayerInstance.GetComponent<MultiFPS.Gameplay.RiftCombat.AbilityController>()?.CmdSelect(-1);
+            if(!InGame)Roster.SetClass("legacy:"+id,Roster.Active.Skin);
             if(InGame){var player=MultiFPS.UI.ClientFrontend.ClientPlayerInstance;if(!player||!player.MyCharacter||!GameManager.Gamemode.IsProtectedPosition(player.MyCharacter.transform.position)){Notify("Cambiá de clase en un refugio o junto a un cristal.");return;}player.CmdChooseClass(id);StartCoroutine(RefreshClassSelection());}
             else{PlayerPrefs.SetInt(MultiFPS.Gameplay.PlayerInstance.ClassPreference,id);PlayerPrefs.Save();Navigate(HubPage.Loadout);Notify("Clase seleccionada. Tu skin se conserva.");}
         }
@@ -222,6 +225,7 @@ namespace ROM.UI.Sprint01
         void Equipment(Transform body)
         {
             var character=CurrentCharacter();var rules=MultiFPS.Gameplay.RiftClassRules.Load();
+            if(Roster.Active.ClassKey=="warrior"){DrawWarriorEquipment(body);return;}
             if(rules&&rules.Classes.Length==4){
                 var def=rules.Find(Mathf.Clamp(CurrentClassId,0,3));
                 W.Label(body,"CLASE · "+def.Role,0,0,650,30,22,W.Gold);
@@ -240,7 +244,7 @@ namespace ROM.UI.Sprint01
         }
         void ChangeCharacter(int step)
         {
-            if(!Catalog||Catalog.Characters.Length==0)return;selectedModel="";int count=Catalog.Characters.Length;Social.SetAppearance((Social.Self.Skin+step+count)%count);ApplyAppearance();
+            if(!Catalog||Catalog.Characters.Length==0)return;selectedModel="";int count=Catalog.Characters.Length;int skin=(Roster.Active.Skin+step+count)%count;Roster.SetSkin(skin);Social.SetAppearance(skin);ApplyAppearance();
         }
         void ShowModel(Transform parent,PreviewModel model,float x,float y,float w,float h)
         {

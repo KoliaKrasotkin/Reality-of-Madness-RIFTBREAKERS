@@ -15,7 +15,7 @@ namespace MultiFPS.Gameplay {
         public static int Resolve(Health victim,Health attacker,int damage){
             if(!Active||!attacker||!victim||attacker==victim||attacker.Team==victim.Team||damage<=0)return damage;
             float amount=damage*(victim.CombatTransfer?1:attacker.CombatDamageMultiplier);
-            var dealer=victim.CombatTransfer?null:Owner(attacker);var receiver=Owner(victim);double now=NetworkTime.time;
+            var dealer=victim.CombatTransfer||RiftCombat.AbilityController.For(attacker)?.Prototype==true?null:Owner(attacker);var receiver=RiftCombat.AbilityController.For(victim)?.Prototype==true?null:Owner(victim);double now=NetworkTime.time;
             if(dealer){
                 var def=GameManager.Gamemode.ClassRules.Find(dealer.ClassId);if(def)amount*=def.WeaponDamage;
                 if(dealer.ClassId==2&&dealer.EmpoweredUntil>now)amount*=1.35f;

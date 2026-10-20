@@ -14,6 +14,7 @@ namespace MultiFPS.Gameplay
         public string Username;
         public int CharacterSkinID;
         public int ClassId;
+        public bool Warrior;
         public int[] SelectedItemSkins;
         public int[] Lodout;
     }
@@ -25,6 +26,7 @@ namespace MultiFPS.Gameplay
 
         //all info that we receive from client himself, his nickname, selected cosmetics etc
         public ClientData PlayerInfo;
+        public GameObject WarriorCharacterPrefab;
         public int Team { private set; get; } = -1; //-1 for no team
 
         //stats, scoreboard reads them
@@ -74,6 +76,7 @@ namespace MultiFPS.Gameplay
                 {
                     Username = UserSettings.UserNickname,
                     ClassId = Mathf.Clamp(PlayerPrefs.GetInt(ClassPreference,0),0,3),
+                    Warrior = PlayerPrefs.GetInt(RiftCombat.AbilityController.Preference,0)>0,
                     CharacterSkinID = UserSettings.CharacterSkinID,
                     SelectedItemSkins = UserSettings.SelectedItemSkins,
                     Lodout = UserSettings.PlayerLodout,
@@ -221,7 +224,8 @@ namespace MultiFPS.Gameplay
             {
                 //despawn previous character if it exist
                 DespawnCharacterIfExist();
-                MyCharacter = Instantiate(NetworkManager.singleton.spawnPrefabs[0], spawnPoint.position, Quaternion.identity).GetComponent<CharacterInstance>();
+                var characterPrefab=!BOT&&PlayerInfo.Warrior&&WarriorCharacterPrefab?WarriorCharacterPrefab:NetworkManager.singleton.spawnPrefabs[0];
+                MyCharacter = Instantiate(characterPrefab, spawnPoint.position, Quaternion.identity).GetComponent<CharacterInstance>();
 
                 MyCharacter.Health.Server_OnHealthDepleted += OnCharacterHealthDepleted;
                 MyCharacter.Server_KilledCharacter += OnPlayerKilled;
@@ -237,7 +241,7 @@ namespace MultiFPS.Gameplay
                 if (_eqUpdateRequired)
                 {
                     MyCharacter.CharacterItemManager.DespawnOwnedItems();
-                    AssignPlayerPrefferedItemsToSpawn();
+                    if(!MyCharacter.GetComponent<RiftCombat.WarriorAvatar>())AssignPlayerPrefferedItemsToSpawn();
                     MyCharacter.CharacterItemManager.SpawnStarterEquipment();
 
                     _eqUpdateRequired = false;
@@ -411,6 +415,7 @@ namespace MultiFPS.Gameplay
         {
             if(_receivedPlayerInfo)return;
             PlayerInfo = clientData;
+            var combat=GetComponent<RiftCombat.AbilityController>();PlayerInfo.Warrior=clientData.Warrior&&combat&&combat.Species&&combat.Species.AllowsSkin(clientData.CharacterSkinID);
             ClassId = Mathf.Clamp(clientData.ClassId,0,3);
             PlayerInfo.ClassId=ClassId;
 
@@ -482,7 +487,8 @@ namespace MultiFPS.Gameplay
                 MyCharacter.Health.Team = team;
 
                 MyCharacter.gameObject.name = "Character: " + PlayerInfo.Username;
-                MyCharacter.CharacterAnimator.ApplySkin(PlayerInfo.CharacterSkinID);
+                var native=MyCharacter.GetComponent<RiftCombat.WarriorAvatar>();
+                if(native)native.SetSkin(PlayerInfo.CharacterSkinID);else MyCharacter.CharacterAnimator.ApplySkin(PlayerInfo.CharacterSkinID);
 
                 MyCharacter._skinsForItems = PlayerInfo.SelectedItemSkins;
 

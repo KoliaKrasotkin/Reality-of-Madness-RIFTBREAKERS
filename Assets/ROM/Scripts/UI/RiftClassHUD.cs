@@ -17,7 +17,7 @@ public sealed class RiftClassHUD : MonoBehaviour {
         title=W.Label(panel,"CLASE",15,4,580,32,22,W.Gold);first=W.Label(panel,"F",15,44,580,30,22);second=W.Label(panel,"Z",15,79,580,30,22);help=W.Label(panel,"",15,119,580,27,16,W.Muted);
     }
     void Update(){
-        if(!panel)return;var p=ClientFrontend.ClientPlayerInstance;var def=p?p.ClassDefinition:null;bool visible=def&&p.MyCharacter&&p.MyCharacter.Health.CurrentHealth>0&&!ClientFrontend.Pause&&!ClientFrontend.Hub;
+        if(!panel)return;var p=ClientFrontend.ClientPlayerInstance;var def=p?p.ClassDefinition:null;bool visible=!(p&&p.GetComponent<MultiFPS.Gameplay.RiftCombat.AbilityController>()?.Prototype==true)&&def&&p.MyCharacter&&p.MyCharacter.Health.CurrentHealth>0&&!ClientFrontend.Pause&&!ClientFrontend.Hub;
         panel.gameObject.SetActive(visible);if(!visible)return;
         double now=NetworkTime.time;string state=p.HiddenUntil>now?" · OCULTO":p.EmpoweredUntil>now?" · POTENCIADO":"";
         title.text=def.Name.ToUpperInvariant()+state;title.color=def.Color;

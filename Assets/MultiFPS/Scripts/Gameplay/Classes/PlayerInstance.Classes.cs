@@ -29,6 +29,7 @@ namespace MultiFPS.Gameplay {
         }
         [Command] public void CmdUseClassAbility(byte slot){ServerUseClassAbility(slot);}
         [Server] public bool ServerUseClassAbility(byte slot){
+            var combat=GetComponent<RiftCombat.AbilityController>();if(combat&&combat.Prototype)return false;
             var def=ClassDefinition;double now=NetworkTime.time;
             if(BOT||!MyCharacter||!def||MyCharacter.Health.CurrentHealth<=0||slot>1||!GameManager.Gamemode.CanUseClassAbilities(MyCharacter.transform.position))return false;
             if((slot==0?FirstReadyAt:SecondReadyAt)>now)return false;

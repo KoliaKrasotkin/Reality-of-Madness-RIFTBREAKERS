@@ -1,0 +1,34 @@
+PASS Class menu shows Warrior, no specialization choices
+PASS Real creation UI creates and selects Warrior
+PASS Character roster persists identities separately
+PASS Multiple characters may share Warrior class
+PASS Duplicate character names rejected
+PASS Menu uses new native animation controller
+PASS Mirror spawns and owns fresh Warrior prefab
+PASS No template motor, animator or retarget bridge
+PASS Native humanoid avatar valid
+PASS Axe is actually attached and rendered
+PASS Axe belongs to native hand, including detached presentation root
+PASS No hidden starter pistol or template equipment
+PASS Warrior ability authority initialized
+Movement diagnostics distance=3,208799 input=(0.00, 1.00) velocity=(0.00, 0.00, 2.80) keyboard=False current=True gameplay=True blocked=False position=(0.00, 0.38, 3.21)
+PASS New motor walks from shared Input System
+PASS Native locomotion consumes actual movement
+PASS Visible skeleton stays aligned with gameplay capsule
+PASS Sprint speed differs from walk
+PASS Independent motor brakes to idle
+PASS Warrior is not automatically crouching
+PASS Mirror attack event reaches new Animator state
+PASS Attack animates actual native weapon hand
+PASS Native axe attack deals server damage and generates Rage
+PASS Attack returns to native locomotion
+PASS Cleave remains functional with new player
+PASS Ground slam damage and Rage cost preserved
+PASS Death uses native body state and hides equipped axe
+PASS Resurrection restores native player and axe
+PASS Native Animator exits death after resurrection
+PASS Third person remains active
+PASS Independent motor jumps
+PASS Jump lands on terrain
+PASS Long falls apply server-authoritative fall damage
+PASS Native capsule lands after long fall

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d013899c5a3bd234eb017d04a50b1005, type: 3}
+  m_Name: WarriorAxe
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.WeaponDefinition
+  Id: warrior-axe
+  DisplayName: Hacha de Warrior
+  WeaponType: HeavyAxe
+  DamageMultiplier: 1
+  AttackSpeed: 1
+  Reach: 3.4
+  Model: {fileID: 3482970760907855653, guid: a803e2814ac677f4dbe3ebfc620cda0a, type: 3}
+  Socket: 18
+  Position: {x: 0.0000003800229, y: -0.000000029322113, z: -0.000000069111714}
+  Rotation: {x: 297.7445, y: 328.6543, z: 120.03874}
+  Scale: {x: 0.88563037, y: 0.88563037, z: 0.88563037}
+  AllowedClasses:
+  - warrior
+  AllowedSpecializations: []
+  Attack: {fileID: 0}
+  ImpactVfx: {fileID: 0}

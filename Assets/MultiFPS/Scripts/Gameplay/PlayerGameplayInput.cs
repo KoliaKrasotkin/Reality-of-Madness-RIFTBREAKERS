@@ -42,11 +42,15 @@ namespace MultiFPS.Gameplay
         void Update()
         {
             if (!_myCharIntance) return;
+            var native=_myCharIntance.GetComponent<RiftCombat.WarriorAvatar>();if(native){native.ReadInput();return;}
 
             //apply user input
             if (UICursorManager.GamePlayInput())
             {
-                if(ClientFrontend.ClientPlayerInstance){if(Input.GetKeyDown(KeyCode.F))ClientFrontend.ClientPlayerInstance.CmdUseClassAbility(0);if(Input.GetKeyDown(KeyCode.Z))ClientFrontend.ClientPlayerInstance.CmdUseClassAbility(1);}
+                var combat=ClientFrontend.ClientPlayerInstance?ClientFrontend.ClientPlayerInstance.GetComponent<RiftCombat.AbilityController>():null;
+                bool nertor=combat&&combat.Prototype;
+                if(nertor){if(Input.GetMouseButton(0))combat.Request(0);if(Input.GetKeyDown(KeyCode.F))combat.Request(1);if(Input.GetKeyDown(KeyCode.Z))combat.Request(2);if(Input.GetKeyDown(KeyCode.T))combat.Request(3);}
+                if(!nertor&&ClientFrontend.ClientPlayerInstance){if(Input.GetKeyDown(KeyCode.F))ClientFrontend.ClientPlayerInstance.CmdUseClassAbility(0);if(Input.GetKeyDown(KeyCode.Z))ClientFrontend.ClientPlayerInstance.CmdUseClassAbility(1);}
                 //read old unity system input system if it's selected to be used
                 if (_inputSystem == InputSystem.Legacy)
                 {
@@ -110,6 +114,7 @@ namespace MultiFPS.Gameplay
                     _myCharIntance.SetActionKeyCode(ActionCodes.Trigger1, _input.Player.Fire1Hold.ReadValue<float>() > 0);
                 }
 
+                if(nertor){_myCharIntance.SetActionKeyCode(ActionCodes.Trigger1,false);_myCharIntance.SetActionKeyCode(ActionCodes.Trigger2,false);}
                 _myCharIntance.Input.Movement = _movementInput;
 
                 _myCharIntance.Input.LookY += _lookInput.y * UserSettings.MouseSensitivity * _myCharIntance.SensitivityItemFactorMultiplier;

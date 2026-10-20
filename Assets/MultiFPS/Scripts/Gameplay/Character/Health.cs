@@ -118,6 +118,7 @@ namespace MultiFPS.Gameplay
             if (GameManager.Gamemode && GameManager.Gamemode.BlockDamage(this, attacker)) return;
             int finalDamage = RiftClassCombat.Resolve(this,attacker,Mathf.FloorToInt(damage * damageMultipliers[(int)damagedPart]));
 
+            finalDamage = RiftCombat.CombatController.Resolve(this,attacker,finalDamage);
             if(TrainingTarget){RecordTrainingHit(finalDamage,damagedPart,attackType,attacker,attackForce);return;}
             if (!(!GameManager.Gamemode.FriendyFire && attacker != this && attacker.Team == Team)) //avoid friendly fire
                 CurrentHealth -= finalDamage;
@@ -142,6 +143,7 @@ namespace MultiFPS.Gameplay
         {
             if (GameManager.Gamemode && GameManager.Gamemode.BlockDamage(this, attacker)) return;
             damage = RiftClassCombat.Resolve(this,attacker,damage);
+            damage = RiftCombat.CombatController.Resolve(this,attacker,damage);
             if(TrainingTarget){RecordTrainingHit(damage,damagedPart,attackType,attacker,attackForce);return;}
             if (!(!GameManager.Gamemode.FriendyFire && attacker != this && attacker.Team == Team)) //avoid friendly fir
                 CurrentHealth -= damage;
