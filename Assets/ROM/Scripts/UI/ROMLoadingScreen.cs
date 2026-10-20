@@ -83,6 +83,15 @@ namespace ROM.UI
             }
 
             Instance = this;
+            var theme = ROMUITheme.Load();
+            foreach(var text in GetComponentsInChildren<Text>(true))
+            {text.font=theme.BodyFont;text.color=theme.Text;}
+            if(_title){_title.font=theme.TitleFont;_title.fontSize=Mathf.Min(_title.fontSize,48);}
+            foreach(var image in GetComponentsInChildren<Image>(true))
+            {
+                if(image.name=="Logo"&&theme.Logo)image.sprite=theme.Logo;
+                if(image.name=="Bar"||image.name.Contains("Accent"))image.color=theme.Accent;
+            }
             DontDestroyOnLoad(gameObject);
 
             _barWidth = _bar ? _bar.sizeDelta.x : 0f;

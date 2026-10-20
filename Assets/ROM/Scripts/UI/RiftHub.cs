@@ -17,6 +17,9 @@ namespace ROM.UI.Sprint01
         public Font InterfaceFont;
         public Font ButtonFont;
         public FrontEndCatalog Catalog;
+        public bool InGame;
+        public Action ResumeRequested,LeaveRequested;
+        public RectTransform ArsenalPanel;
         public GameObject LegacyMenu;
         public RoomCreator Creator;
         public RoomConnector Connector;
@@ -37,6 +40,8 @@ namespace ROM.UI.Sprint01
         bool videoDialog;
         Text videoTimer;
         int profileTestIndex;
+        int emotePage;
+        Text emoteStatus;
         public void Initialize()
         {
             W.Body=InterfaceFont?InterfaceFont:Theme?Theme.Body:Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
@@ -59,13 +64,22 @@ namespace ROM.UI.Sprint01
             Initialize();if(Design)DestroyImmediate(Design.gameObject);nav.Clear();productView=null;
             Design=W.Rect(transform,"SafeAreaDesign",0,0,1920,1080);
             fallback=W.Image(Design,"LoadingFallback",0,0,1920,1080,Color.white,Background);
-            if(Catalog&&Catalog.StagePrefab&&Application.isPlaying){
+            if(!InGame&&Catalog&&Catalog.StagePrefab&&Application.isPlaying){
                 try{Stage=RiftModelView.Create(Design,0,0,1920,1080,Catalog,true);Stage.ShowParty(Catalog,Social);fallback.enabled=!Stage.Ready;}
                 catch(Exception e){Debug.LogError("Lobby stage failed: "+e.Message);if(Stage)Stage.gameObject.SetActive(false);fallback.enabled=true;}
             }
             W.Image(Design,"HeaderShade",0,0,1920,110,new Color(.015f,.018f,.027f,.96f));
             W.Image(Design,"HeaderLine",0,108,1920,2,W.Gold);
             W.Image(Design,"Brand",28,16,210,72,Color.white,Logo).preserveAspect=true;
+            if(InGame){
+                fallback.sprite=null;fallback.color=new Color(.015f,.012f,.02f,.94f);
+                W.Label(Design,"EL RIFT / PAUSA",285,20,280,65,26);
+                W.Button(Design,"ARSENAL",580,24,200,58,ShowArsenal);
+                W.Button(Design,"AJUSTES",800,24,210,58,ShowGameSettings);
+                W.Button(Design,"CONTINUAR",1040,24,250,58,()=>ResumeRequested?.Invoke());
+                W.Button(Design,"VOLVER AL MENÚ",1320,24,440,58,()=>Dialog("Volver al menú","Vas a salir de esta partida.",()=>LeaveRequested?.Invoke()));
+                content=W.Rect(Design,"Screen",36,150,1848,810);toast=W.Label(Design,"",460,970,1200,36,20,W.Gold);Navigate(HubPage.Settings);Fit();return;
+            }
             string[] labels={"JUGAR","EQUIPAMIENTO","PROGRESO","TIENDA","AJUSTES"};
             HubPage[] pages={HubPage.Home,HubPage.Loadout,HubPage.Progression,HubPage.Marketplace,HubPage.Settings};
             for(int i=0;i<labels.Length;i++){
@@ -83,6 +97,7 @@ namespace ROM.UI.Sprint01
         void Update()
         {
             Fit();if(fallback&&Stage){fallback.enabled=!Stage.Ready;Stage.SetDisplay(Stage.Ready);}
+            if(emoteStatus)emoteStatus.text=Stage&&!string.IsNullOrEmpty(Stage.CurrentEmoteName)?Stage.CurrentEmoteName:"Elegí un emote para tu personaje";
             if(videoDialog&&RiftVideoSettings.Instance){
                 if(videoTimer)videoTimer.text="Restaurar en "+Mathf.CeilToInt(RiftVideoSettings.Instance.SecondsRemaining)+" s";
                 if(!RiftVideoSettings.Instance.AwaitingConfirmation){videoDialog=false;if(modal)DestroyImmediate(modal.gameObject);draft=RiftVideoSettings.Instance.Current.Copy();Navigate(Page);Notify("Se restauraron los ajustes anteriores.");}
@@ -96,6 +111,8 @@ namespace ROM.UI.Sprint01
             Design.anchoredPosition=new Vector2((safe.center.x/Screen.width-.5f)*parent.rect.width,(safe.center.y/Screen.height-.5f)*parent.rect.height);
         }
         public void SetHint(string message){if(toast)toast.text=message;}
+        public void ShowGameSettings(){if(ArsenalPanel)ArsenalPanel.gameObject.SetActive(false);if(content)content.gameObject.SetActive(true);Navigate(HubPage.Settings);}
+        public void ShowArsenal(){if(!ArsenalPanel)return;content.gameObject.SetActive(false);ArsenalPanel.SetParent(Design,false);ArsenalPanel.anchorMin=ArsenalPanel.anchorMax=ArsenalPanel.pivot=new Vector2(.5f,.5f);ArsenalPanel.anchoredPosition=new Vector2(0,-35);ArsenalPanel.localScale=Vector3.one*1.2f;ArsenalPanel.gameObject.SetActive(true);}
         public void Notify(string message){SetHint(message??"Listo.");}
         void SocialChanged()
         {
@@ -106,6 +123,7 @@ namespace ROM.UI.Sprint01
         public void Navigate(HubPage page)
         {
             if(!content)return;
+            if(page!=HubPage.Home&&Stage)Stage.StopEmote();emoteStatus=null;
             if(page==HubPage.Missions||page==HubPage.Lobby)page=HubPage.Home;
             Page=page;Clear(content);productView=null;
             int active=page==HubPage.Home?0:page==HubPage.Loadout?1:page==HubPage.Progression?2:page==HubPage.Marketplace||page==HubPage.Auction||page==HubPage.Exchange?3:page==HubPage.Settings?4:-1;
@@ -133,6 +151,14 @@ namespace ROM.UI.Sprint01
             var destination=W.Panel(content,"Destination",0,0,425,210);
             W.Label(destination,"EL RIFT",22,12,380,65,46);
             W.Label(destination,"Horda cooperativa · 1–4 jugadores\nUn destino. Todas sus islas conectadas.",22,86,380,100,22,W.Muted);
+            if(Catalog&&Catalog.Emotes.Length>0){
+                var emotes=W.Panel(content,"Emotes",0,245,425,335);W.Label(emotes,"EMOTES",22,12,380,40,26);
+                int pages=Mathf.CeilToInt(Catalog.Emotes.Length/4f);emotePage%=pages;
+                for(int i=0;i<4;i++){int index=emotePage*4+i;if(index>=Catalog.Emotes.Length)break;var emote=Catalog.Emotes[index];var button=W.Button(emotes,emote.Name,22+(i%2)*195,65+(i/2)*68,185,56,()=>{if(!Stage||!Stage.PlayEmote(emote))Notify("Esperá a que cargue el personaje.");});button.GetComponentInChildren<Text>().fontSize=18;}
+                emoteStatus=W.Label(emotes,"Elegí un emote para tu personaje",22,205,380,42,18,W.Muted);
+                W.Button(emotes,"DETENER",22,270,185,45,()=>{if(Stage)Stage.StopEmote();});
+                W.Button(emotes,"MÁS  "+(emotePage+1)+"/"+pages,217,270,185,45,()=>{emotePage=(emotePage+1)%pages;Navigate(HubPage.Home);});
+            }
             var profile=W.Panel(content,"Profile",0,625,425,185);
             W.Label(profile,Social.Self.Name,22,10,380,44,28);
             var appearance=CurrentCharacter();W.Label(profile,appearance?.Name??"Cargando personaje…",22,59,380,33,20,W.Muted);
@@ -251,7 +277,7 @@ namespace ROM.UI.Sprint01
         }
         void Settings(Transform body)
         {
-            string[] tabs={"Video","Sonido","Controles","Perfil"};for(int i=0;i<tabs.Length;i++){string tab=tabs[i];W.Button(body,tab.ToUpperInvariant(),i*350,0,330,50,()=>{settingsTab=tab;Navigate(HubPage.Settings);},settingsTab==tab);}
+            string[] tabs=InGame?new[]{"Video","Sonido","Controles"}:new[]{"Video","Sonido","Controles","Perfil"};for(int i=0;i<tabs.Length;i++){string tab=tabs[i];W.Button(body,tab.ToUpperInvariant(),i*350,0,330,50,()=>{settingsTab=tab;Navigate(HubPage.Settings);},settingsTab==tab);}
             var video=Application.isPlaying?RiftVideoSettings.Ensure():null;if(draft==null)draft=video?video.Current.Copy():new VideoPreferences();
             var panel=W.Rect(body,"Options",0,85,1750,590);
             if(settingsTab=="Video")Video(panel,video);

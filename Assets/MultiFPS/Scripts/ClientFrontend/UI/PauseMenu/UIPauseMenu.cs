@@ -39,6 +39,7 @@ namespace MultiFPS.UI
 
         private void OnDestroy()
         {
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
             ClientFrontend.ClientEvent_OnAccessCodeReceived -= OnAccessCodeReceived;
         }
         //if this is a private game than it will have secret code that is needed to acces it, display it in pause menu for those

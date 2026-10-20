@@ -75,12 +75,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -126,9 +126,24 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1526016537218673461, guid: 7e3ffce7eb636794fb24db24dc70fd6a,
         type: 3}
+      propertyPath: m_Color.b
+      value: 0.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526016537218673461, guid: 7e3ffce7eb636794fb24db24dc70fd6a,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526016537218673461, guid: 7e3ffce7eb636794fb24db24dc70fd6a,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526016537218673461, guid: 7e3ffce7eb636794fb24db24dc70fd6a,
+        type: 3}
       propertyPath: m_FontData.m_Font
       value: 
-      objectReference: {fileID: 12800000, guid: a77de47948880fb43b353e8aeaf44bdb,
+      objectReference: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75,
         type: 3}
     - target: {fileID: 4640782355464837506, guid: 7e3ffce7eb636794fb24db24dc70fd6a,
         type: 3}
@@ -240,7 +255,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1452378361101465485, guid: 7e3ffce7eb636794fb24db24dc70fd6a, type: 3}
+    - {fileID: 5131948250285537268, guid: 7e3ffce7eb636794fb24db24dc70fd6a, type: 3}
+    - {fileID: 4559390184381530400, guid: 7e3ffce7eb636794fb24db24dc70fd6a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

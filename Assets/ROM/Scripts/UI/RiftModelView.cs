@@ -19,6 +19,13 @@ namespace ROM.UI.Sprint01
         static int nextWorld;
         float yaw=0,zoom=1;
         Bounds bounds;
+        FrontEndCatalog catalog;
+        Animator emoteAnimator;
+        RuntimeAnimatorController idleController;
+        AnimatorOverrideController emoteController;
+        float emoteUntil,restoreAt;
+        public string CurrentEmoteName {get;private set;}
+        public Animator PreviewAnimator=>subject?subject.GetComponentInChildren<Animator>():null;
         public bool Ready=>view&&subject&&texture&&texture.IsCreated();
         public void SetDisplay(bool visible){if(image)image.enabled=visible;}
         public static RiftModelView Create(Transform parent,float x,float y,float w,float h,FrontEndCatalog catalog,bool isLobby)
@@ -28,6 +35,7 @@ namespace ROM.UI.Sprint01
         }
         void Setup(FrontEndCatalog catalog,int width,int height)
         {
+            this.catalog=catalog;
             world=new GameObject("ROM Isolated Preview");world.transform.position=new Vector3(nextWorld++*250,-5000,0);
             if(lobby&&catalog&&catalog.StagePrefab){var stage=Instantiate(catalog.StagePrefab,world.transform);stage.transform.localPosition=Vector3.zero;}
             var cameraObject=new GameObject("Preview Camera");cameraObject.transform.SetParent(world.transform,false);view=cameraObject.AddComponent<Camera>();
@@ -47,6 +55,7 @@ namespace ROM.UI.Sprint01
         }
         public void Show(PreviewModel model)
         {
+            ResetEmote();
             if(subject)DestroyImmediate(subject);if(model==null||!model.Prefab){image.enabled=false;return;}
             image.enabled=true;subject=new GameObject(model.Name);subject.transform.SetParent(world.transform,false);Instantiate(model.Prefab,subject.transform);subject.transform.localPosition=Vector3.zero;subject.transform.localRotation=Quaternion.identity;
             bounds=WorldBounds(subject);float target=model.Category=="Personaje"?2.15f:2.1f;
@@ -78,12 +87,28 @@ namespace ROM.UI.Sprint01
         public void OnDrag(PointerEventData e){if(lobby)return;yaw-=e.delta.x*.4f;UpdateCamera();}
         public void OnScroll(PointerEventData e){if(lobby)return;zoom=Mathf.Clamp(zoom-e.scrollDelta.y*.08f,.65f,1.5f);UpdateCamera();}
         public void Turn(float degrees){yaw+=degrees;UpdateCamera();}
+        public bool PlayEmote(LobbyEmote emote)
+        {
+            if(!lobby||!subject||!catalog||!catalog.EmoteController||emote==null||!emote.Clip)return false;
+            if(emoteAnimator)RestoreIdle();
+            emoteAnimator=subject.GetComponentInChildren<Animator>();if(!emoteAnimator)return false;
+            idleController=emoteAnimator.runtimeAnimatorController;
+            emoteController=new AnimatorOverrideController(catalog.EmoteController);
+            emoteController[catalog.EmotePlaceholder.name]=emote.Clip;
+            emoteAnimator.runtimeAnimatorController=emoteController;emoteAnimator.applyRootMotion=false;
+            emoteAnimator.Update(0);emoteAnimator.SetTrigger("playEmote");
+            CurrentEmoteName=emote.Name;emoteUntil=Time.unscaledTime+Mathf.Max(.5f,emote.Seconds);restoreAt=0;return true;
+        }
+        public void StopEmote(){if(!emoteAnimator)return;emoteAnimator.SetTrigger("stopEmote");CurrentEmoteName=null;emoteUntil=0;restoreAt=Time.unscaledTime+.25f;}
+        void Update(){if(emoteUntil>0&&Time.unscaledTime>=emoteUntil)StopEmote();if(restoreAt>0&&Time.unscaledTime>=restoreAt)RestoreIdle();}
+        void RestoreIdle(){if(emoteAnimator)emoteAnimator.runtimeAnimatorController=idleController;ResetEmote();}
+        void ResetEmote(){if(emoteController)Destroy(emoteController);emoteController=null;emoteAnimator=null;idleController=null;CurrentEmoteName=null;emoteUntil=restoreAt=0;}
         static Bounds WorldBounds(GameObject go)
         {
             var renderers=go.GetComponentsInChildren<Renderer>(true);var b=new Bounds(go.transform.position,Vector3.zero);bool first=true;
             foreach(var r in renderers){if(!r.enabled)continue;if(first){b=r.bounds;first=false;}else b.Encapsulate(r.bounds);}return b;
         }
         static void SetLayer(GameObject go){foreach(var t in go.GetComponentsInChildren<Transform>(true))t.gameObject.layer=PreviewLayer;}
-        void OnDestroy(){if(view)view.targetTexture=null;if(texture){texture.Release();Destroy(texture);}if(world)Destroy(world);}
+        void OnDestroy(){ResetEmote();if(view)view.targetTexture=null;if(texture){texture.Release();Destroy(texture);}if(world)Destroy(world);}
     }
 }

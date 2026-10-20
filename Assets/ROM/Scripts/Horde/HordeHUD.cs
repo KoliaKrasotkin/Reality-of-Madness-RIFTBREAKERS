@@ -88,6 +88,29 @@ namespace ROM.Horde
 
         void Awake()
         {
+            // Some maps contain an unpacked HUD, so use the shared theme at runtime too.
+            if (_theme)
+            {
+                foreach (var text in GetComponentsInChildren<Text>(true))
+                {
+                    text.font = _theme.BodyFont;
+                    text.material = null;
+                    text.fontSize = Mathf.Clamp(text.fontSize,16,28);
+                    text.color = _theme.Text;
+                }
+                foreach (var title in new[]{_introMapName,_bannerTitle,_waveNumber,_introCountdown,_statusValue})
+                    if(title){title.font=_theme.TitleFont;title.fontSize=title==_introCountdown?48:36;}
+                foreach(var image in GetComponentsInChildren<Image>(true))
+                {
+                    string name=image.name.ToLowerInvariant();
+                    if(name=="logo"&&_theme.Logo)image.sprite=_theme.Logo;
+                    if(name.Contains("accent")||name.Contains("badge")||name=="bar"||name=="modeicon")image.color=_theme.Accent;
+                    if(name=="frame")image.color=ROM.UI.Sprint01.RiftWidgets.Gold;
+                }
+                foreach(var shadow in GetComponentsInChildren<Shadow>(true))Destroy(shadow);
+                if(_status&&!_status.transform.Find("RiftStatusPanel"))
+                    ROM.UI.Sprint01.RiftWidgets.Panel(_status.transform,"RiftStatusPanel",0,0,420,150).SetAsFirstSibling();
+            }
             _introBarWidth = _introBar ? _introBar.sizeDelta.x : 0f;
             _statusBarWidth = _statusBar ? _statusBar.sizeDelta.x : 0f;
             _protectionBarWidth = _protectionBar ? _protectionBar.sizeDelta.x : 0f;

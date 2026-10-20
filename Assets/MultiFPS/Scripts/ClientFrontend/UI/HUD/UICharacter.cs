@@ -125,8 +125,8 @@ namespace MultiFPS.UI.HUD
 
         public void OnAmmoStateChanged(string ammo, string supply) 
         {
-            _ammo.text = $" {ammo}|";
-            _ammoSupply.text = $"{supply} ";
+            _ammo.text = ammo;
+            _ammoSupply.text = $"/ {supply}";
         }
 
         void OnHealthStateChanged(int currentHealth, CharacterPart damagedPart, AttackType attackType, byte attackerID)
