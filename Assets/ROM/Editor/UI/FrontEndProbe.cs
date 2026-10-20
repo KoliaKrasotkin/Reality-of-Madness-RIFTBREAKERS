@@ -19,9 +19,9 @@ namespace ROM.UI.EditorTools
         static FrontEndProbe(){EditorApplication.playModeStateChanged+=Changed;}
         public static void FromCommandLine()
         {
-            FrontEndBuilder.Build();SessionState.SetInt(Key,1);EditorSceneManager.OpenScene("Assets/MultiFPS/Levels/hub.unity");EditorApplication.isPlaying=true;
+            FrontEndBuilder.Build();SessionState.SetInt(Key,1);EditorSceneManager.OpenScene("Assets/ROM/Scenes/MainMenu.unity");EditorApplication.isPlaying=true;
         }
-        public static void CheckFromCommandLine(){SessionState.SetInt(Key,1);EditorSceneManager.OpenScene("Assets/MultiFPS/Levels/hub.unity");EditorApplication.isPlaying=true;}
+        public static void CheckFromCommandLine(){SessionState.SetInt(Key,1);EditorSceneManager.OpenScene("Assets/ROM/Scenes/MainMenu.unity");EditorApplication.isPlaying=true;}
         public static void ReleaseFromCommandLine(){FrontEndBuilder.Build();ROM.Horde.EditorTools.FracturedForestBuilder.CaptureRiftReview();CheckFromCommandLine();}
         static void Changed(PlayModeStateChange state)
         {

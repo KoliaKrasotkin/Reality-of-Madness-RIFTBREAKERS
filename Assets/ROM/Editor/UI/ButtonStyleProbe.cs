@@ -19,7 +19,7 @@ namespace ROM.UI.EditorTools
             if(!font)throw new Exception("Missing button font");
             string prefab="Assets/ROM/UI/Sprint01/ROM_RiftHub.prefab";
             var root=PrefabUtility.LoadPrefabContents(prefab);root.GetComponent<RiftHub>().ButtonFont=font;PrefabUtility.SaveAsPrefabAsset(root,prefab);PrefabUtility.UnloadPrefabContents(root);
-            foreach(var path in new[]{"Assets/ROM/UI/Sprint01/ROM_UI_Sprint01.unity","Assets/MultiFPS/Levels/hub.unity"}){
+            foreach(var path in new[]{"Assets/ROM/Scenes/MainMenu.unity"}){
                 if(!File.Exists(path))continue;var scene=EditorSceneManager.OpenScene(path);var hub=UnityEngine.Object.FindFirstObjectByType<RiftHub>();if(hub){hub.ButtonFont=font;EditorUtility.SetDirty(hub);EditorSceneManager.SaveScene(scene);}}
             AssetDatabase.SaveAssets();SessionState.SetInt(Key,1);EditorApplication.isPlaying=true;
         }

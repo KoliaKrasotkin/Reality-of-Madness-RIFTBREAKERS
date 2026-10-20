@@ -194,14 +194,7 @@ namespace MultiFPS.Gameplay {
             if (Block)
                 Input.Movement = Vector2.zero;
 
-#if UNITY_EDITOR 
-            //rough 3rd person camera for debuging 3rd person animations
-            if (UnityEngine.Input.GetKeyDown(KeyCode.I) && isOwned)
-            {
-                SetFppPerspective(!FPP);
-                GetComponent<CharacterMotor>().cameraTargetPosition = new Vector3(0.55f, 2.1f, -3f);
-            }
-#endif
+
 
             if (Health.CurrentHealth <= 0) 
                 return;
@@ -309,7 +302,8 @@ namespace MultiFPS.Gameplay {
 
         public void SetFppPerspective(bool fpp) 
         {
-            FPP = fpp;
+            fpp = false; // El Rift always shows the equipped third-person skin.
+            FPP = false;
 
             Client_OnPerspectiveSet?.Invoke(fpp);
 

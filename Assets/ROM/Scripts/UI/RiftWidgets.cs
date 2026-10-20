@@ -53,6 +53,25 @@ namespace ROM.UI.Sprint01
             var field=r.gameObject.AddComponent<InputField>(); var text=Label(r,"",12,0,w-24,48,20); field.textComponent=text; field.targetGraphic=r.GetComponent<Image>();
             var hint=Label(r,placeholder,12,0,w-24,48,20,Muted); field.placeholder=hint; field.onValueChanged.AddListener(v=>changed(v)); return field;
         }
+        public static Dropdown Dropdown(Transform p,string label,float x,float y,float width,string[] options,int selected,Action<int> changed)
+        {
+            var root=Panel(p,label,x,y,width,52);root.GetComponent<Image>().raycastTarget=true;
+            var dropdown=root.gameObject.AddComponent<Dropdown>();dropdown.targetGraphic=root.GetComponent<Image>();
+            dropdown.captionText=Label(root,"",16,0,width-60,52,22);
+            Label(root,"▾",width-40,0,32,52,22,Gold);
+            var template=Panel(root,"Template",0,54,width,Mathf.Min(6,options.Length)*44+8);
+            template.pivot=new Vector2(0,1);template.GetComponent<Image>().raycastTarget=true;template.GetComponent<Image>().color=new Color(.025f,.024f,.034f,1);
+            var scroll=template.gameObject.AddComponent<ScrollRect>();scroll.horizontal=false;scroll.movementType=ScrollRect.MovementType.Clamped;
+            var viewport=Rect(template,"Viewport",4,4,width-8,template.sizeDelta.y-8);viewport.gameObject.AddComponent<RectMask2D>();
+            var content=Rect(viewport,"Content",0,0,width-8,44);scroll.viewport=viewport;scroll.content=content;
+            var item=Rect(content,"Item",0,0,width-8,44);var bg=item.gameObject.AddComponent<Image>();bg.color=new Color(.025f,.024f,.034f,1);
+            var toggle=item.gameObject.AddComponent<Toggle>();toggle.targetGraphic=bg;
+            var colors=toggle.colors;colors.highlightedColor=new Color(.6f,.12f,.2f);colors.selectedColor=colors.highlightedColor;toggle.colors=colors;
+            var check=Image(item,"Check",4,12,3,20,Red);toggle.graphic=check;
+            dropdown.itemText=Label(item,"Option",14,0,width-35,44,21);dropdown.template=template;
+            dropdown.AddOptions(new System.Collections.Generic.List<string>(options));dropdown.SetValueWithoutNotify(Mathf.Clamp(selected,0,options.Length-1));dropdown.RefreshShownValue();
+            dropdown.onValueChanged.AddListener(v=>changed(v));template.gameObject.SetActive(false);return dropdown;
+        }
         public static Slider Slider(Transform p,string name,float x,float y,float w,float min,float max,float value,Action<float> changed)
         {
             var r=Rect(p,name,x,y,w,44); var s=r.gameObject.AddComponent<Slider>(); s.minValue=min;s.maxValue=max;

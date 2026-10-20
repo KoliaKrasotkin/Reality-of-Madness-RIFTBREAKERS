@@ -82,7 +82,7 @@ namespace ROM.Horde
     /// late-join por OnNewPlayerConnected, igual que ThreatLevelController.
     /// </summary>
     [AddComponentMenu("ROM/Gamemodes/Horde")]
-    public class Horde : Gamemode
+    public partial class Horde : Gamemode
     {
         public const int PlayerTeam = 0;
         public const int EnemyTeam = 1;
@@ -257,6 +257,8 @@ namespace ROM.Horde
             if (!isServer)
                 return;
 
+            if (ExplorationMode) { TickExploration(); return; }
+
             switch (_state)
             {
                 case HordeState.Intermission:
@@ -401,6 +403,8 @@ namespace ROM.Horde
             if (!isServer)
                 return;
 
+            if (ExplorationMode) return;
+
             int humans = CountHumans();
 
             if (humans > 0 && _state == HordeState.WaitingForPlayers)
@@ -465,7 +469,7 @@ namespace ROM.Horde
             if (player.MyCharacter && player.MyCharacter.Health.CurrentHealth > 0)
                 return;
 
-            bool costsLife = !free && _state == HordeState.Wave && _humansSpawned.Contains(player);
+            bool costsLife = !ExplorationMode && !free && _state == HordeState.Wave && _humansSpawned.Contains(player);
 
             if (costsLife)
             {
@@ -484,6 +488,7 @@ namespace ROM.Horde
             Transform spawnPoint = !defaultSpawnPoints ? null
                 : _aliveEnemies.Count > 0 ? defaultSpawnPoints.GetBestSpawnPoint(PlayerTeam)
                 : defaultSpawnPoints.GetNextSpawnPoint();
+            if (ExplorationMode) spawnPoint = ExplorationSpawn(player, spawnPoint);
             player.Server_SpawnCharacter(spawnPoint ? spawnPoint : transform);
 
             _humansSpawned.Add(player);
@@ -505,7 +510,7 @@ namespace ROM.Horde
             if (_spawnProtectionSeconds <= 0f)
                 return;
 
-            character.Health.Team = EnemyTeam;
+            if (!ExplorationMode) character.Health.Team = EnemyTeam;
             _protectedUntil[character.Health] = Time.time + _spawnProtectionSeconds;
 
             RpcSpawnProtection(character.netIdentity, _spawnProtectionSeconds);
@@ -620,6 +625,7 @@ namespace ROM.Horde
 
                 if (_aliveEnemies.TryGetValue(victim, out EnemyKind kind))
                 {
+                    if (ExplorationMode) ExplorationEnemyKilled(victim, killer, kind);
                     _aliveEnemies.Remove(victim);
 
                     //murió solo (trabado, caída al vacío): no cuenta como baja, vuelve a la cola
@@ -639,7 +645,7 @@ namespace ROM.Horde
             if (_protectedUntil.Remove(victim))
                 victim.Team = PlayerTeam;
 
-            CheckGameOver();
+            if (!ExplorationMode) CheckGameOver();
         }
 
         EnemyKind RollEnemyKind()
@@ -653,14 +659,14 @@ namespace ROM.Horde
             return EnemyKind.Normal;
         }
 
-        bool SpawnEnemy(EnemyKind kind)
+        bool SpawnEnemy(EnemyKind kind, Transform encounterSpawn = null)
         {
             PlayerInstance bot = GetIdleBot();
             if (!bot)
                 return false;
 
-            int portalIndex = PickPortal();
-            Transform spawnPoint = portalIndex >= 0 ? _portals[portalIndex].GetRandomSpawnPoint() : transform;
+            int portalIndex = encounterSpawn ? -1 : PickPortal();
+            Transform spawnPoint = encounterSpawn ? encounterSpawn : portalIndex >= 0 ? _portals[portalIndex].GetRandomSpawnPoint() : transform;
 
             bot.PlayerInfo.Username = EnemyName(kind);
             bot.PlayerInfo.CharacterSkinID = PickSkin(kind);

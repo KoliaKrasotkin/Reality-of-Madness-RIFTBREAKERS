@@ -26,8 +26,8 @@ namespace ROM.UI.EditorTools
             var hub=Create();new GameObject("EventSystem",typeof(EventSystem),typeof(StandaloneInputModule));
             var cam=new GameObject("PreviewCamera",typeof(Camera)).GetComponent<Camera>();cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=Color.black;
             PrefabUtility.SaveAsPrefabAsset(hub.gameObject,Root+"/ROM_RiftHub.prefab");
-            EditorSceneManager.SaveScene(preview,Root+"/ROM_UI_Sprint01.unity");
-            var scene=EditorSceneManager.OpenScene("Assets/MultiFPS/Levels/hub.unity");
+            // The prefab is the reusable preview; MainMenu is the only menu scene.
+            var scene=EditorSceneManager.OpenScene("Assets/ROM/Scenes/MainMenu.unity");
             foreach(var old in scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<RiftHub>(true)).ToArray())UnityEngine.Object.DestroyImmediate(old.gameObject);
             hub=Create();hub.Creator=UnityEngine.Object.FindFirstObjectByType<RoomCreator>(FindObjectsInactive.Include);hub.Connector=UnityEngine.Object.FindFirstObjectByType<RoomConnector>(FindObjectsInactive.Include);
             var legacy=UnityEngine.Object.FindFirstObjectByType<ROMMainMenu>(FindObjectsInactive.Include);

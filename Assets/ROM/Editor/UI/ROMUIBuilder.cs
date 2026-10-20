@@ -32,7 +32,7 @@ namespace ROM.UI.EditorTools
         const string LoadingPrefabPath = UIRoot + "/ROM_LoadingScreen.prefab";
         const string HordeHUDPrefabPath = UIRoot + "/HordeHUD.prefab";
         const string HordeThemePath = "Assets/ROM/Levels/Horde/HordeHUDTheme.asset";
-        const string HubScenePath = "Assets/MultiFPS/Levels/hub.unity";
+        const string HubScenePath = "Assets/ROM/Scenes/MainMenu.unity";
         const string HordeScenePath = "Assets/ROM/Levels/map_rom_horde.unity";
         const string KitUIPrefabs = "Assets/MultiFPS/Levels/Prefabs/UI";
 

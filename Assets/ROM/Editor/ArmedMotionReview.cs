@@ -15,7 +15,7 @@ static double began,phaseTime,nextFrame;static int phase=-1,frame;static Charact
 static ArmedMotionReview(){EditorApplication.playModeStateChanged+=Changed;}
 public static void Before(){Start("before");}public static void After(){Start("after");}
 public static void Lizardman(){Start("lizardman-after");}
-static void Start(string suffix){SessionState.SetString(Key+"Folder","Documentation/armed-motion-"+suffix);SessionState.SetBool(Key,true);EditorSceneManager.OpenScene("Assets/MultiFPS/Levels/hub.unity");EditorApplication.isPlaying=true;}
+static void Start(string suffix){SessionState.SetString(Key+"Folder","Documentation/armed-motion-"+suffix);SessionState.SetBool(Key,true);EditorSceneManager.OpenScene("Assets/ROM/Scenes/MainMenu.unity");EditorApplication.isPlaying=true;}
 static void Changed(PlayModeStateChange state){if(!SessionState.GetBool(Key,false))return;if(state==PlayModeStateChange.EnteredPlayMode){began=EditorApplication.timeSinceStartup;phase=-1;starting=false;actor=null;camera=null;folder=SessionState.GetString(Key+"Folder","");Directory.CreateDirectory(folder);report=new List<string>();EditorApplication.update+=Tick;}if(state==PlayModeStateChange.EnteredEditMode){SessionState.SetBool(Key,false);EditorApplication.Exit(SessionState.GetInt(Key+"Result",1));}}
 static void Tick(){try{
 if(EditorApplication.timeSinceStartup-began>120)throw new Exception("Timeout stage="+phase);

@@ -11,7 +11,7 @@ namespace ROM.EditorTools {
 [InitializeOnLoad] public static class LocomotionPlayProbe {
 const string Key="ROM.LocomotionPlayProbe";static double began,next;static int step;static string report;
 static LocomotionPlayProbe(){EditorApplication.playModeStateChanged+=Changed;}
-public static void FromCommandLine(){LocomotionUpgrade.Build();SessionState.SetBool(Key,true);EditorSceneManager.OpenScene("Assets/MultiFPS/Levels/hub.unity");EditorApplication.isPlaying=true;}
+public static void FromCommandLine(){LocomotionUpgrade.Build();SessionState.SetBool(Key,true);EditorSceneManager.OpenScene("Assets/ROM/Scenes/MainMenu.unity");EditorApplication.isPlaying=true;}
 static void Changed(PlayModeStateChange s){if(!SessionState.GetBool(Key,false))return;if(s==PlayModeStateChange.EnteredPlayMode){began=EditorApplication.timeSinceStartup;next=began+3;step=0;report="REAL HOST / GAMEPLAY SMOKE CHECK\n";EditorApplication.update+=Tick;}if(s==PlayModeStateChange.EnteredEditMode){SessionState.SetBool(Key,false);EditorApplication.Exit(SessionState.GetInt(Key+"Result",1));}}
 static void Tick(){try{
 if(EditorApplication.timeSinceStartup-began>100)throw new Exception("Timed out waiting for gameplay character; step="+step);

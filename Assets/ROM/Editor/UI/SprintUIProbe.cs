@@ -18,15 +18,15 @@ namespace ROM.UI.EditorTools
         static SprintUIProbe(){EditorApplication.playModeStateChanged+=Changed;}
         public static void FromCommandLine()
         {
-            SessionState.SetInt(Key,1);EditorSceneManager.OpenScene("Assets/ROM/UI/Sprint01/ROM_UI_Sprint01.unity");EditorApplication.isPlaying=true;
+            SessionState.SetInt(Key,1);EditorSceneManager.OpenScene("Assets/ROM/Scenes/MainMenu.unity");EditorApplication.isPlaying=true;
         }
         public static void BuildAndCheckFromCommandLine(){SprintUIBuilder.Build();FromCommandLine();}
-        public static void StartupFromCommandLine(){SessionState.SetInt(Key,2);EditorSceneManager.OpenScene("Assets/MultiFPS/Levels/hub.unity");EditorApplication.isPlaying=true;}
+        public static void StartupFromCommandLine(){SessionState.SetInt(Key,2);EditorSceneManager.OpenScene("Assets/ROM/Scenes/MainMenu.unity");EditorApplication.isPlaying=true;}
         static void Changed(PlayModeStateChange state)
         {
             if(SessionState.GetInt(Key,0)==0)return;
             if(state==PlayModeStateChange.EnteredPlayMode){started=EditorApplication.timeSinceStartup;ran=false;EditorApplication.update+=Tick;}
-            if(state==PlayModeStateChange.EnteredEditMode){EditorSceneManager.OpenScene("Assets/MultiFPS/Levels/hub.unity");EditorApplication.Exit(SessionState.GetInt(Key+"Result",1));}
+            if(state==PlayModeStateChange.EnteredEditMode){EditorSceneManager.OpenScene("Assets/ROM/Scenes/MainMenu.unity");EditorApplication.Exit(SessionState.GetInt(Key+"Result",1));}
         }
         static void Tick()
         {

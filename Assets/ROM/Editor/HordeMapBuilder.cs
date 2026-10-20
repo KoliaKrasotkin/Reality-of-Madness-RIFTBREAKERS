@@ -32,7 +32,7 @@ namespace ROM.Horde.EditorTools
         const string Root = "Assets/ROM/Levels/Horde";
         const string ScenePath = "Assets/ROM/Levels/map_rom_horde.unity";
         const string RepresenterPath = "Assets/ROM/Levels/representer_map_rom_horde.asset";
-        const string HubScenePath = "Assets/MultiFPS/Levels/hub.unity";
+        const string HubScenePath = "Assets/ROM/Scenes/MainMenu.unity";
         const string KitPrefabs = "Assets/MultiFPS/Levels/Prefabs";
 
         const string MapName = "Horda: Plataforma de la Grieta";

@@ -151,8 +151,7 @@ namespace ROM.Horde.EditorTools
         static void BuildSunZone()
         {
             RepairSunMaterials();
-            const string demoBackup=SunRoot+"/DemoScene_BeforeURP.unity";
-            if(!File.Exists(demoBackup)) AssetDatabase.CopyAsset(SunDemo,demoBackup);
+
             var source=EditorSceneManager.OpenScene(SunDemo);
             var sourceTerrain=source.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Terrain>()).FirstOrDefault();
             if(sourceTerrain)
@@ -177,8 +176,7 @@ namespace ROM.Horde.EditorTools
             var copyRoots=source.GetRootGameObjects().Where(CopySunRoot).ToArray();
             var destination=EditorSceneManager.OpenScene(ScenePath,OpenSceneMode.Additive);
             SceneManager.SetActiveScene(destination);
-            const string backup="Assets/ROM/Levels/map_rom_horde_before_suntemple.unity";
-            if(!File.Exists(backup)) AssetDatabase.CopyAsset(ScenePath,backup);
+
             const string group="Bosque Fracturado - Ciudad del Sol";
             foreach(var old in destination.GetRootGameObjects().Where(g=>g.name==group)) UnityEngine.Object.DestroyImmediate(old);
             root=new GameObject(group).transform;

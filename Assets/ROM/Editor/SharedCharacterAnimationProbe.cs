@@ -13,7 +13,7 @@ const string Key="ROM.SharedCharacterAnimationProbe",Folder="Documentation/share
 static readonly string[] Weapons={"pistol","rifle","rifleV2","shotgun","lightMachineGun","rocketLauncher","sniperRifle","grenade","knife","bomb","pistol"};
 static CharacterInstance actor;static Camera camera;static int phase,step;static bool starting;static double began,next;static List<string> report;
 static SharedCharacterAnimationProbe(){EditorApplication.playModeStateChanged+=Changed;}
-public static void Run(){Directory.CreateDirectory(Folder);File.WriteAllText(Folder+"/validation.txt","RUNNING");SessionState.SetBool(Key,true);EditorSceneManager.OpenScene("Assets/MultiFPS/Levels/hub.unity");EditorApplication.isPlaying=true;}
+public static void Run(){Directory.CreateDirectory(Folder);File.WriteAllText(Folder+"/validation.txt","RUNNING");SessionState.SetBool(Key,true);EditorSceneManager.OpenScene("Assets/ROM/Scenes/MainMenu.unity");EditorApplication.isPlaying=true;}
 static void Changed(PlayModeStateChange state){if(!SessionState.GetBool(Key,false))return;if(state==PlayModeStateChange.EnteredPlayMode){phase=-1;actor=null;starting=false;began=EditorApplication.timeSinceStartup;report=new List<string>();EditorApplication.update+=Tick;}if(state==PlayModeStateChange.EnteredEditMode){SessionState.SetBool(Key,false);EditorApplication.Exit(SessionState.GetInt(Key+"Result",1));}}
 static void Tick(){try{
 if(EditorApplication.timeSinceStartup-began>300)throw new Exception("Timeout phase="+phase);

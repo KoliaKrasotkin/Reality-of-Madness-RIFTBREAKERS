@@ -44,7 +44,7 @@ namespace ROM.UI.EditorTools
             }
             catalog.Models=models.ToArray();catalog.StagePrefab=BuildStage();EditorUtility.SetDirty(catalog);AssetDatabase.SaveAssets();
             SprintUIBuilder.Build();
-            var scene=EditorSceneManager.OpenScene("Assets/MultiFPS/Levels/hub.unity");
+            var scene=EditorSceneManager.OpenScene("Assets/ROM/Scenes/MainMenu.unity");
             var manager=UnityEngine.Object.FindFirstObjectByType<ClientInterfaceManager>(FindObjectsInactive.Include);if(manager){manager.characterSkins=skins;EditorUtility.SetDirty(manager);}
             var hub=UnityEngine.Object.FindFirstObjectByType<RiftHub>();hub.Catalog=catalog;hub.Connector=UnityEngine.Object.FindFirstObjectByType<RoomConnector>(FindObjectsInactive.Include);
             var map=AssetDatabase.LoadAssetAtPath<MapRepresenter>("Assets/ROM/Levels/representer_map_rom_horde.asset");map.Name="El Rift";map.MaxPlayersPresets=new[]{1,2,3,4};EditorUtility.SetDirty(map);
@@ -53,7 +53,7 @@ namespace ROM.UI.EditorTools
             if(account){var so=new SerializedObject(account);var dropdown=so.FindProperty("CharacterSkinSelector").objectReferenceValue as Dropdown;if(dropdown){dropdown.ClearOptions();dropdown.AddOptions(skins.Select(s=>s.SkinName).ToList());dropdown.value=0;EditorUtility.SetDirty(dropdown);}}
             RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.4f,.48f,.62f);RenderSettings.ambientEquatorColor=new Color(.22f,.24f,.3f);RenderSettings.ambientGroundColor=new Color(.08f,.08f,.12f);
             EditorSceneManager.SaveScene(scene);
-            EditorBuildSettings.scenes=EditorBuildSettings.scenes.Select(s=>new EditorBuildSettingsScene(s.path,s.path=="Assets/MultiFPS/Levels/hub.unity"||s.path=="Assets/ROM/Levels/map_rom_horde.unity")).ToArray();
+            EditorBuildSettings.scenes=EditorBuildSettings.scenes.Select(s=>new EditorBuildSettingsScene(s.path,s.path=="Assets/ROM/Scenes/MainMenu.unity"||s.path=="Assets/ROM/Levels/map_rom_horde.unity")).ToArray();
             InstallStance();CharacterPresentationUpgrade.Build();LizardmanIntegration.Build();AssetDatabase.SaveAssets();File.WriteAllText("Documentation/frontend-ids-models.txt",report);
             Debug.Log("[FrontEnd] IDS catalog, lobby and single destination saved.");
         }

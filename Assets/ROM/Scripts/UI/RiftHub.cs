@@ -59,6 +59,7 @@ namespace ROM.UI.Sprint01
         public void UseSocialService(ISocialService service){if(Social!=null)Social.Changed-=SocialChanged;Social=service??throw new ArgumentNullException(nameof(service));Social.Changed+=SocialChanged;}
         public void UseServices(SprintServices services){Services=services??throw new ArgumentNullException(nameof(services));}
         void Start(){Initialize();RiftVideoSettings.Ensure();Build();}
+        [ContextMenu("Reconstruir vista previa del menú")]
         public void Build()
         {
             Initialize();if(Design)DestroyImmediate(Design.gameObject);nav.Clear();productView=null;
@@ -150,7 +151,7 @@ namespace ROM.UI.Sprint01
         {
             var destination=W.Panel(content,"Destination",0,0,425,210);
             W.Label(destination,"EL RIFT",22,12,380,65,46);
-            W.Label(destination,"Horda cooperativa · 1–4 jugadores\nUn destino. Todas sus islas conectadas.",22,86,380,100,22,W.Muted);
+            W.Label(destination,"Exploración cooperativa · 1–4 jugadores\nRefugio seguro, cristales y encuentros. Explorá las islas.",22,86,380,100,22,W.Muted);
             if(Catalog&&Catalog.Emotes.Length>0){
                 var emotes=W.Panel(content,"Emotes",0,245,425,335);W.Label(emotes,"EMOTES",22,12,380,40,26);
                 int pages=Mathf.CeilToInt(Catalog.Emotes.Length/4f);emotePage%=pages;
@@ -272,7 +273,7 @@ namespace ROM.UI.Sprint01
         {
             W.Label(body,"NIVEL "+Services.Profile.Level,0,15,900,70,44);W.Label(body,"5.600 / 10.000 XP · Datos de prueba",0,100,1300,45,24,W.Muted);
             W.Image(body,"XPTrack",0,175,1720,12,W.Gold);W.Image(body,"XP",0,175,1720*Services.Profile.Experience,12,W.Red);
-            W.Label(body,"LOGROS\nExplorador de fisuras · Desbloqueado\nDefensor de El Rift · En progreso\n\nRECOMPENSAS\n"+Services.Rewards.State+" · Pendientes de validación",0,230,1600,285,27);
+            W.Label(body,"ORO DE EXPLORACIÓN LOCAL: "+RiftExplorationProgress.Gold+"\n\nLOGROS\nExplorador de fisuras · Desbloqueado\nDefensor de El Rift · En progreso\n\nRECOMPENSAS\n"+Services.Rewards.State+" · Pendientes de validación",0,230,1600,285,27);
             W.Button(body,"REVISAR RECOMPENSAS",0,560,620,60,()=>Notify(Services.Rewards.PreviewClaim().Message));
         }
         void Settings(Transform body)
@@ -292,17 +293,19 @@ namespace ROM.UI.Sprint01
         void Video(Transform p,RiftVideoSettings video)
         {
             string[] windows={"Pantalla completa","Sin bordes","Ventana"};string[] quality=QualitySettings.names;
-            Choice(p,"Calidad gráfica",quality[Mathf.Clamp(draft.Quality,0,quality.Length-1)],0,0,525,()=>{draft.Quality=(draft.Quality+1)%quality.Length;Navigate(HubPage.Settings);});
-            Choice(p,"Modo de pantalla",windows[draft.WindowMode],600,0,525,()=>{draft.WindowMode=(draft.WindowMode+1)%3;Navigate(HubPage.Settings);});
-            Choice(p,"Resolución",draft.Width+" × "+draft.Height,1200,0,525,()=>{
-                var resolutions=Screen.resolutions.Select(r=>new Vector2Int(r.width,r.height)).Distinct().ToList();if(resolutions.Count==0)resolutions.Add(new Vector2Int(Screen.width,Screen.height));int index=resolutions.FindIndex(r=>r.x==draft.Width&&r.y==draft.Height);var next=resolutions[(index+1)%resolutions.Count];draft.Width=next.x;draft.Height=next.y;Navigate(HubPage.Settings);
-            });
-            Choice(p,"VSync",draft.VSync?"Activado":"Desactivado",0,115,525,()=>{draft.VSync=!draft.VSync;Navigate(HubPage.Settings);});
-            Choice(p,"Límite de FPS",draft.FrameLimit.ToString(),600,115,525,()=>{int[] limits={30,60,90,120,144,240};draft.FrameLimit=limits[(Array.IndexOf(limits,draft.FrameLimit)+1)%limits.Length];Navigate(HubPage.Settings);});
-            Choice(p,"Antialiasing",new[]{"Ninguno","FXAA","SMAA"}[draft.AA],1200,115,525,()=>{draft.AA=(draft.AA+1)%3;Navigate(HubPage.Settings);});
-            Choice(p,"Bloom",draft.Bloom?"Activado":"Desactivado",0,230,525,()=>{draft.Bloom=!draft.Bloom;Navigate(HubPage.Settings);});
-            Choice(p,"Desenfoque de movimiento",draft.MotionBlur?"Activado":"Desactivado",600,230,525,()=>{draft.MotionBlur=!draft.MotionBlur;Navigate(HubPage.Settings);});
-            Choice(p,"Escala de render",Mathf.RoundToInt(draft.RenderScale*100)+" %",1200,230,525,()=>{draft.RenderScale=draft.RenderScale>=1.25f?.75f:draft.RenderScale+.25f;Navigate(HubPage.Settings);});
+            void Select(string name,string[] values,int index,float x,float y,Action<int> change){W.Label(p,name,x,y,525,30,20,W.Muted);W.Dropdown(p,name,x,y+37,525,values,index,change);}
+            Select("Calidad gráfica",quality,draft.Quality,0,0,v=>draft.Quality=v);
+            Select("Modo de pantalla",windows,draft.WindowMode,600,0,v=>draft.WindowMode=v);
+            var resolutions=Screen.resolutions.Select(r=>new Vector2Int(r.width,r.height)).Distinct().ToList();
+            var current=new Vector2Int(draft.Width,draft.Height);if(!resolutions.Contains(current))resolutions.Add(current);
+            Select("Resolución",resolutions.Select(r=>r.x+" × "+r.y).ToArray(),resolutions.IndexOf(current),1200,0,v=>{draft.Width=resolutions[v].x;draft.Height=resolutions[v].y;});
+            string[] switches={"Desactivado","Activado"};
+            Select("VSync",switches,draft.VSync?1:0,0,115,v=>draft.VSync=v==1);
+            int[] limits={30,60,90,120,144,240};Select("Límite de FPS",limits.Select(v=>v.ToString()).ToArray(),Array.IndexOf(limits,draft.FrameLimit),600,115,v=>draft.FrameLimit=limits[v]);
+            Select("Antialiasing",new[]{"Ninguno","FXAA","SMAA"},draft.AA,1200,115,v=>draft.AA=v);
+            Select("Bloom",switches,draft.Bloom?1:0,0,230,v=>draft.Bloom=v==1);
+            Select("Desenfoque de movimiento",switches,draft.MotionBlur?1:0,600,230,v=>draft.MotionBlur=v==1);
+            float[] scales={.75f,1f,1.25f};Select("Escala de render",scales.Select(v=>Mathf.RoundToInt(v*100)+" %").ToArray(),Array.IndexOf(scales,draft.RenderScale),1200,230,v=>draft.RenderScale=scales[v]);
             W.Label(p,"Brillo",0,355,500,30,20,W.Muted);W.Slider(p,"Brightness",0,395,1125,-1,1,draft.Exposure,v=>draft.Exposure=v);
             SaveSettings(p,video);
         }

@@ -59,10 +59,8 @@ namespace ROM.Horde.EditorTools
         static void AddIslands()
         {
             var scene=EditorSceneManager.OpenScene(ScenePath);
-            const string backup="Assets/ROM/Levels/map_rom_horde_before_islands.unity";
-            if(!File.Exists(backup)) AssetDatabase.CopyAsset(ScenePath,backup);
-            const string destinationBackup="Assets/ROM/Levels/map_rom_horde_before_destination.unity";
-            if(!File.Exists(destinationBackup)) AssetDatabase.CopyAsset(ScenePath,destinationBackup);
+
+
             const string group="Bosque Fracturado - Islas y puentes";
             foreach(var go in scene.GetRootGameObjects().Where(g=>g.name==group)) UnityEngine.Object.DestroyImmediate(go);
             root=new GameObject(group).transform;
@@ -319,8 +317,7 @@ namespace ROM.Horde.EditorTools
         static void UpgradeEnvironment()
         {
             var scene=EditorSceneManager.OpenScene(ScenePath);
-            const string backup="Assets/ROM/Levels/map_rom_horde_before_waterfalls.unity";
-            if(!File.Exists(backup)) AssetDatabase.CopyAsset(ScenePath,backup);
+
             UrbanIsland();
             Waterfalls();
             RepairRockCollisions();
@@ -585,9 +582,7 @@ namespace ROM.Horde.EditorTools
             Directory.CreateDirectory(Root + "/Meshes");
             AssetDatabase.Refresh();
             var scene = EditorSceneManager.OpenScene(ScenePath);
-            // Save the original once, including all its scene references.
-            const string backup = "Assets/ROM/Levels/map_rom_horde_before_forest.unity";
-            if (!File.Exists(backup)) AssetDatabase.CopyAsset(ScenePath, backup);
+
             foreach (var go in scene.GetRootGameObjects().Where(g => g.name == Group))
                 UnityEngine.Object.DestroyImmediate(go);
             Converted.Clear();
@@ -647,7 +642,7 @@ namespace ROM.Horde.EditorTools
             }
             EditorSceneManager.SaveScene(scene);
             AssetDatabase.SaveAssets();
-            Debug.Log("[Forest] Etapa 1 guardada: isla de 230 x 300 m, bosque, ruinas y NavMesh. Original: " + backup);
+            Debug.Log("[Forest] Etapa 1 guardada: isla de 230 x 300 m, bosque, ruinas y NavMesh.");
         }
 
         // Standalone visual QA: opens the saved scene without changing it.

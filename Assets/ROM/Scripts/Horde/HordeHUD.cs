@@ -168,6 +168,8 @@ namespace ROM.Horde
             if (!_horde)
                 return;
 
+            if (_horde.ExplorationMode) { UpdateExploration(); return; }
+
             HordeSnapshot s = _horde.Snapshot;
             float countdown = Mathf.Max(0f, (float)(s.CountdownEnd - NetworkTime.time));
 
@@ -183,6 +185,20 @@ namespace ROM.Horde
             UpdateStatus(s, countdown);
             UpdateBanner();
             UpdatePlayerNotices(s);
+        }
+
+        void UpdateExploration()
+        {
+            SetAlpha(_intro,0);SetAlpha(_status,1);SetAlpha(_protection,0);_outOfLives.text="";
+            var actor=ClientFrontend.ClientPlayerInstance ? ClientFrontend.ClientPlayerInstance.MyCharacter : null;
+            bool safe=actor&&_horde.IsSafe(actor.transform.position);
+            _waveNumber.text="R";_statusLabel.text=safe?"ZONA SEGURA":"EL RIFT · EXPLORACIÓN";
+            _statusLabel.color=safe?_theme.Good:_theme.Muted;
+            _statusValue.text=ROM.UI.Sprint01.RiftExplorationProgress.Gold+" ORO LOCAL";_statusValue.fontSize=22;
+            if(_statusIcon)_statusIcon.enabled=false;if(_statusBar)_statusBar.gameObject.SetActive(false);
+            _lives.text="CRISTAL: "+_horde.LocalCheckpoint;_lives.fontSize=17;_lives.color=_theme.Good;_modifier.text="";
+            bool notice=Time.unscaledTime<ROM.UI.Sprint01.RiftExplorationProgress.NoticeUntil;
+            SetAlpha(_banner,notice?1:0);if(notice){_bannerTitle.text=ROM.UI.Sprint01.RiftExplorationProgress.Notice;_bannerTitle.fontSize=30;_bannerSubtitle.text="EL RIFT";}
         }
 
         void UpdateIntro(HordeSnapshot s, float countdown)

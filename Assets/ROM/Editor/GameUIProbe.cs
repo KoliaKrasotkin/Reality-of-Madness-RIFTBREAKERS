@@ -17,7 +17,7 @@ const string Key="ROM.GameUIProbe",Folder="Documentation/game-ui";
 static int step,emote;static double began,next;static List<string> report;static RiftHub hub;static CharacterInstance actor;
 static GameUIProbe(){EditorApplication.playModeStateChanged+=Changed;}
 public static void Gameplay(){SessionState.SetBool(Key+"SkipEmotes",true);Run();}
-public static void Run(){Directory.CreateDirectory(Folder);SessionState.SetBool(Key,true);EditorSceneManager.OpenScene("Assets/MultiFPS/Levels/hub.unity");EditorApplication.isPlaying=true;}
+public static void Run(){Directory.CreateDirectory(Folder);SessionState.SetBool(Key,true);EditorSceneManager.OpenScene("Assets/ROM/Scenes/MainMenu.unity");EditorApplication.isPlaying=true;}
 static void Changed(PlayModeStateChange state){if(!SessionState.GetBool(Key,false))return;if(state==PlayModeStateChange.EnteredPlayMode){step=emote=0;began=EditorApplication.timeSinceStartup;next=began+3;report=new List<string>();EditorApplication.update+=Tick;}if(state==PlayModeStateChange.EnteredEditMode){SessionState.SetBool(Key,false);EditorApplication.Exit(SessionState.GetInt(Key+"Result",1));}}
 static void Tick(){try{
 if(EditorApplication.timeSinceStartup-began>240)throw new Exception("UI test timeout step="+step);
