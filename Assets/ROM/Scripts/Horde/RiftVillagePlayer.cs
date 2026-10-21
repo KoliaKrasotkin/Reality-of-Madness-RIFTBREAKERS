@@ -36,20 +36,23 @@ namespace ROM.Horde
             nextVillageTrade = NetworkTime.time + .15;
             bool result=RiftVillageSupplies.Trade(product, sell, out message);if(result&&!sell)ROM.Progression.RiftJournalPlayer.Record(Player,RiftProgressEvent.PotionBought,product.ToString());return result;
         }
+        [Command] public void CmdDrinkPotion(int product){ServerDrinkPotion(product,out var message);TargetVillageNotice(connectionToClient,message);}
         [Command] public void CmdDrinkVillagePotion()
         {
             ServerDrinkVillagePotion(out var message);
             TargetVillageNotice(connectionToClient, message);
         }
         [Server] public bool ServerDrinkVillagePotion(out string message)
+        {return ServerDrinkPotion(RiftVillageSupplies.Count(0)>0?0:1,out message);}
+        [Server] public bool ServerDrinkPotion(int id,out string message)
         {
+            message="Poción desconocida.";if(!RiftVillageSupplies.Valid(id))return false;
             message = "Las pociones de esta cartera local no están habilitadas para clientes remotos.";
             if (!LocalVillageWallet) return false;
             message = "No podés beber una poción ahora.";
             if (BOT || !MyCharacter || MyCharacter.Health.CurrentHealth <= 0) return false;
             if (MyCharacter.Health.CurrentHealth >= MyCharacter.Health.MaxHealth) { message = "Ya tenés la vida completa."; return false; }
             if (NetworkTime.time < PotionReadyAt) { message = "La poción todavía está en recarga."; return false; }
-            int id = RiftVillageSupplies.Count(0) > 0 ? 0 : 1;
             if (!RiftVillageSupplies.Consume(id)) { message = "No tenés pociones. Visitá a la boticaria."; return false; }
             int heal = Mathf.CeilToInt(MyCharacter.Health.MaxHealth * RiftVillageSupplies.Healing(id));
             MyCharacter.Health.ServerHeal(heal, MyCharacter.DNID);

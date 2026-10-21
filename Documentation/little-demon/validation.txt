@@ -1,0 +1,41 @@
+PASS Main menu exposes correctly labelled journal, achievements and settings
+PASS Four typed quest definitions and seven achievement definitions load
+PASS Journal uses stable selected character identity
+PASS Target frame is outside center, below top-left world info
+PASS All village NPCs are friendly targets without fake combat health
+PASS Initial quest is discoverable on Iria
+PASS Native prefab population exists in real map
+PASS Regular encounters use native population; original miniboss zones are preserved
+PASS No native enemy is inside any safe checkpoint
+PASS Two own enemy prefabs spawn through the independent population API
+PASS NPC has no template player, motor, bot AI or animation components
+PASS Native skeleton uses dedicated package animation controller
+PASS Dedicated set contains idle, walk, three attacks, hit and death
+PASS All runtime mesh materials have supported shaders
+PASS Own Mirror prefab is registered and network-spawned
+PASS New NPC is not registered as a template player
+PASS Common combat target registry includes standalone NPC
+PASS Mouse picking resolves standalone enemy collider
+PASS Player dedicated autoattack damages independent NPC
+PASS NPC replicated health mirrors authoritative combat health
+PASS Existing target HUD displays native NPC
+PASS Tab targeting includes native enemies without fake PlayerInstance
+PASS Warrior cleave can execute against the new target registry
+PASS One cleave hits both native targets exactly through shared damage flow
+PASS Native NPC supports class stagger
+PASS Native threat/taunt selects the real player
+PASS Own NavMesh AI approaches the player
+PASS Own telegraphed melee attack damages player on server
+PASS Death stops native navigation and collision
+PASS Death plays imported death animation on native skeleton
+PASS Native enemy grants configurable XP
+PASS Native enemy grants local gold
+PASS Native enemy kill advances existing quests and achievements
+PASS Clearing native pack credits encounter and schedules configured respawn
+PASS Dead NPCs do not consume live population budget
+PASS Corpse despawns through Mirror after its configured lifetime
+PASS Cleared native pack respawns using its own spawner
+PASS Native population respects global live budget
+PASS Spawner rejects additions beyond zone/population budget
+PASS Remote native packs retire without template recycling
+PASS Distance retirement grants no kill XP or currency

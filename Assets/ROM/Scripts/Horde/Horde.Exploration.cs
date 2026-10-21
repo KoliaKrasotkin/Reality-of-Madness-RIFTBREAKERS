@@ -67,7 +67,7 @@ namespace ROM.Horde {
                 if(!_encounterByEnemy.Values.Contains(entry.Value))entry.Value.Participants.Clear();
             }
             foreach(var encounter in Encounters) {
-                if(!encounter||encounter.Cleared||encounter.Spawned>=encounter.Count)continue;
+                if(!encounter||encounter.NativeSpawn||encounter.Cleared||encounter.Spawned>=encounter.Count)continue;
                 bool near=GameManager.Players.Any(p=>p&&!p.BOT&&p.MyCharacter&&p.MyCharacter.Health.CurrentHealth>0&&Vector3.Distance(p.MyCharacter.transform.position,encounter.transform.position)<encounter.ActivationRadius);
                 if(!near||_aliveEnemies.Count>=30)continue;
                 var point=encounter.SpawnPoints[encounter.Spawned];

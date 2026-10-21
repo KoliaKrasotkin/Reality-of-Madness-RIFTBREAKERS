@@ -54,14 +54,14 @@ namespace ROM.UI.Sprint01
             RiftVillageNpc nearest=null;float nearestDistance=float.PositiveInfinity;
             if(free)foreach(var npc in RiftVillageNpc.Active){if(!npc)continue;float distance=(npc.transform.position-player.MyCharacter.transform.position).sqrMagnitude;if(distance<=npc.InteractionRadius*npc.InteractionRadius&&distance<nearestDistance){nearest=npc;nearestDistance=distance;}}
             var selected=MultiFPS.Gameplay.RiftMMOController.Instance?MultiFPS.Gameplay.RiftMMOController.Instance.SelectedWorld:null;var selectedNpc=selected?selected.GetComponent<RiftVillageNpc>():null;if(selectedNpc&&Vector3.Distance(selectedNpc.transform.position,player.MyCharacter.transform.position)<=selectedNpc.InteractionRadius)nearest=selectedNpc;
-            int total = RiftVillageSupplies.Count(0) + RiftVillageSupplies.Count(1);
+            
             bool message = NetworkTime.time < noticeUntil;
-            hint.gameObject.SetActive(free && !MultiFPS.Gameplay.RiftMMOController.PointerOnUI && (message || !selectedNpc && (nearest || total > 0)));
+            hint.gameObject.SetActive(free && !MultiFPS.Gameplay.RiftMMOController.PointerOnUI && (message || !selectedNpc && nearest));
             prompt.text = message ? lastNotice : nearest ? "["+MultiFPS.RiftControls.Label("Interact")+"] Hablar con " + nearest.DisplayName + " · " + nearest.Role : "["+MultiFPS.RiftControls.Label("Potion")+"] Beber poción de vida";
             supplies.text = "Pociones: " + RiftVillageSupplies.Count(0) + " / mayores: " + RiftVillageSupplies.Count(1) +
                 (player.GetComponent<RiftVillagePlayer>().PotionReadyAt > NetworkTime.time ? " · Recarga " + Mathf.CeilToInt((float)(player.GetComponent<RiftVillagePlayer>().PotionReadyAt - NetworkTime.time)) + " s" : " · "+MultiFPS.RiftControls.Label("Potion")+" para usar");
             if (free && nearest && MultiFPS.RiftControls.Pressed("Interact")) Open(nearest);
-            if (free && MultiFPS.RiftControls.Pressed("Potion")) player.GetComponent<RiftVillagePlayer>().CmdDrinkVillagePotion();
+            // Potion shortcuts are handled by the compact gameplay consumable bar.
         }
         public void Open(RiftVillageNpc npc)
         {

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace ROM.UI.Gameplay
 {
     // Small native UI meshes: only the four painted ability icons and portrait are raster assets.
-    public enum HUDShape { Panel,Slot,Bar,Hex,Portrait,Diamond,Disc,Ring,Line,Ornament,Crystal,Arrow,Helmet,Bag,Skill,Gear,Lock,Target }
+    public enum HUDShape { Panel,Slot,Bar,Hex,Portrait,Diamond,Disc,Ring,Line,Ornament,Crystal,Arrow,Helmet,Bag,Skill,Gear,Lock,Target,Potion }
     [RequireComponent(typeof(CanvasRenderer))]
     public sealed class RiftHUDGraphic:MaskableGraphic
     {
@@ -30,6 +30,7 @@ namespace ROM.UI.Gameplay
         {
             vh.Clear();var r=rectTransform.rect;float w=r.width,h=r.height;if(w<=0||h<=0)return;
             var gold=Border*color;var ink=Bottom*color;
+            if(Shape==HUDShape.Potion){var bottle=new[]{P(.37f,.9f),P(.63f,.9f),P(.63f,.65f),P(.84f,.34f),P(.76f,.09f),P(.24f,.09f),P(.16f,.34f),P(.37f,.65f)};Polygon(vh,bottle,color,color*.6f);Loop(vh,bottle,Thickness,Border);Stroke(vh,P(.32f,.92f),P(.68f,.92f),h*.09f,Border);return;}
             if(Shape==HUDShape.Line){Stroke(vh,P(0,.5f),P(1,.5f),Thickness,color);return;}
             if(Shape==HUDShape.Disc){Polygon(vh,Circle(),color,color);return;}
             if(Shape==HUDShape.Ring){Loop(vh,Circle(),Thickness,color);return;}

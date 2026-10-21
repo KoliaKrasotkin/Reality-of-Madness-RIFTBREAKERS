@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f833ff2d66a28d4ca2321c942d0834d, type: 3}
+  m_Name: broken-ember-oracle
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftEnemies.RiftEnemyDefinition
+  Id: broken-ember-oracle
+  DisplayName: "Or\xE1culo de la Brasa Rota"
+  Role: "Legi\xF3n del Coraz\xF3n Roto"
+  Prefab: {fileID: 103050010740042061, guid: 4b6845076847eb344acab7ebbde7fca3, type: 3}
+  Health: 150
+  Damage: 7
+  Experience: 35
+  Gold: 12
+  MoveSpeed: 2.4
+  Detection: 22
+  AttackRange: 12
+  Windup: 0.55
+  Cooldown: 1.8
+  Leash: 36
+  CorpseSeconds: 5
+  WalkAnimationSpeed: 1.15
+  Team: 1
+  IsWildlife: 0
+  IsBoss: 0
+  Ranged: 1
+  Disposition: 0
+  WanderRadius: 12
+  Skill: 1
+  SkillName: Brasa fracturada
+  SkillRange: 16
+  SkillRadius: 3.5
+  SkillWindup: 1
+  SkillCooldown: 5
+  SkillMultiplier: 1.8
+  SkillColor: {r: 1, g: 0.25, b: 0.05, a: 1}

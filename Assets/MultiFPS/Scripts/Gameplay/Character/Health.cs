@@ -10,6 +10,9 @@ namespace MultiFPS.Gameplay
 {
     public sealed class Health : DNNetworkBehaviour
     {
+        public static readonly System.Collections.Generic.List<Health> All=new System.Collections.Generic.List<Health>();
+        protected override void OnEnable(){base.OnEnable();All.Add(this);}
+        protected override void OnDisable(){All.Remove(this);base.OnDisable();}
         [Header("Health")]
         /// <summary>
         /// character name, used for example for killfeed
@@ -105,7 +108,7 @@ namespace MultiFPS.Gameplay
         }
         void OnDestroy()
         {
-            GameSync.Singleton.Healths.ServerDeregisterDNSyncObj(this);
+            if(GameSync.Singleton)GameSync.Singleton.Healths.ServerDeregisterDNSyncObj(this);
 
             //update 1.1: moved here from CharacterInstance
             //CustomSceneManager.DeRegisterCharacter(this);

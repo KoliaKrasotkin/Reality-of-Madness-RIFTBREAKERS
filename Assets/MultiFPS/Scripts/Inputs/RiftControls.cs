@@ -35,7 +35,7 @@ namespace MultiFPS
             Add("Select","Seleccionar por clic","Objetivos","<Mouse>/leftButton");Add("NextTarget","Siguiente enemigo","Objetivos","<Keyboard>/tab");Add("PreviousTarget","Enemigo anterior","Objetivos","<Keyboard>/tab","",false,Modifiers.Shift);Add("ClearTarget","Limpiar objetivo","Objetivos","<Keyboard>/escape");Add("SelfTarget","Seleccionarme","Objetivos","<Keyboard>/f6");
             for(int i=0;i<7;i++)Add("Ability"+i,"Barra de habilidades · ranura "+(i+1),"Combate","<Keyboard>/"+(i+1));
             Add("AutoAttack","Activar/cancelar autoataque","Combate","<Keyboard>/t");
-            Add("Interact","Interactuar / hablar / portal","Mundo","<Keyboard>/f");Add("Potion","Beber poción","Mundo","<Keyboard>/h");
+            Add("Interact","Interactuar / hablar / portal","Mundo","<Keyboard>/f");Add("Potion","Poción de vida","Mundo","<Keyboard>/h");Add("PotionMajor","Poción de vida mayor","Mundo","<Keyboard>/h","",false,Modifiers.Shift);Add("WorldMap","Mapa completo","Interfaz","<Keyboard>/m");
             Add("WeaponFire","Disparar arma convencional","Armas","<Mouse>/middleButton","",true);
             Add("Reload","Recargar arma","Armas","<Keyboard>/r");Add("Aim","Apuntar arma","Armas","<Keyboard>/z","",true);Add("Melee","Golpe con arma","Armas","<Keyboard>/v");Add("Drop","Soltar arma","Armas","<Keyboard>/y");Add("PreviousWeapon","Arma anterior","Armas","<Keyboard>/x");for(int i=0;i<5;i++)Add("Weapon"+i,"Equipar arma "+(i+1),"Armas","<Keyboard>/f"+(i+1));
             Add("Talents","Talentos","Interfaz","<Keyboard>/p");Add("Friends","Amigos y mensajes","Interfaz","<Keyboard>/n");Add("Party","Chat de grupo","Interfaz","<Keyboard>/l");Add("Equipment","Arsenal / equipo","Interfaz","<Keyboard>/b","",false,Modifiers.Shift);

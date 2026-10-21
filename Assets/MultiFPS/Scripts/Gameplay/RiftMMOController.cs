@@ -83,7 +83,7 @@ namespace MultiFPS.Gameplay
         public void Cycle(int direction)
         {
             if(!Actor)return;candidates.Clear();var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():null;
-            foreach(var p in GameManager.Players){var h=p&&p.MyCharacter?p.MyCharacter.Health:null;if(!Valid(h,true)||!CombatController.Visible(Actor,h))continue;if(camera){var screen=camera.WorldToViewportPoint(h.transform.position+Vector3.up);if(screen.z<=0||screen.x<-.1f||screen.x>1.1f||screen.y<-.1f||screen.y>1.1f)continue;}candidates.Add(h);}
+            foreach(var h in Health.All){if(!Valid(h,true)||!CombatController.Visible(Actor,h))continue;if(camera){var screen=camera.WorldToViewportPoint(h.transform.position+Vector3.up);if(screen.z<=0||screen.x<-.1f||screen.x>1.1f||screen.y<-.1f||screen.y>1.1f)continue;}candidates.Add(h);}
             candidates.Sort((a,b)=>{float da=(a.transform.position-Actor.transform.position).sqrMagnitude,db=(b.transform.position-Actor.transform.position).sqrMagnitude;int order=da.CompareTo(db);return order!=0?order:a.netId.CompareTo(b.netId);});
             if(candidates.Count==0)return;int index=candidates.IndexOf(Selected);index=index<0?(direction>0?0:candidates.Count-1):(index+direction+candidates.Count)%candidates.Count;Select(candidates[index]);
         }

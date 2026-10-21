@@ -66,7 +66,7 @@ namespace MultiFPS.Gameplay {
             var forward=Quaternion.Euler(0,MyCharacter.Input.LookY,0)*Vector3.forward;
             return delta.magnitude<=range&&Vector3.Angle(forward,delta)<=90?target:null;
         }
-        Health[] Enemies(Vector3 center,float radius)=>GameManager.Players.Where(p=>p&&p.BOT&&p.MyCharacter&&p.MyCharacter.Health.CurrentHealth>0&&Vector3.Distance(p.MyCharacter.transform.position,center)<radius&&Visible(p.MyCharacter.Health)).Select(p=>p.MyCharacter.Health).ToArray();
+        Health[] Enemies(Vector3 center,float radius)=>Health.All.Where(h=>h&&h.Team!=MyCharacter.Health.Team&&h.CurrentHealth>0&&Vector3.Distance(h.transform.position,center)<radius&&Visible(h)).ToArray();
         bool Visible(Health target){Vector3 origin=MyCharacter.transform.position+Vector3.up*1.3f;Vector3 delta=target.transform.position+Vector3.up-origin;return !MyCharacter.gameObject.scene.GetPhysicsScene().Raycast(origin,delta.normalized,out _,delta.magnitude,GameManager.environmentLayer,QueryTriggerInteraction.Ignore);}
         void Hurt(Health target,float amount){if(target&&target.CurrentHealth>0)target.Server_ChangeHealthStateRaw(Mathf.RoundToInt(amount),0,AttackType.explosion,MyCharacter.Health,0);}
         void HurtArea(Vector3 center,float radius,float amount){foreach(var enemy in Enemies(center,radius))Hurt(enemy,amount);}

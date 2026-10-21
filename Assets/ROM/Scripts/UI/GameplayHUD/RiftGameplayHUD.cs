@@ -93,7 +93,7 @@ namespace ROM.UI.Gameplay
             marker.SetTarget(selected,selected&&selected.Team==actor.Health.Team);if(!selected)return;marker.gameObject.SetActive(true);marker.Follow(GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main);TargetName.color=Theme.Text;
             TargetName.text=selected.CharacterName.ToUpperInvariant();TargetLife.text=$"{selected.CurrentHealth:N0} / {selected.MaxHealth:N0}";SetFill(TargetFill,(float)selected.CurrentHealth/Mathf.Max(1,selected.MaxHealth));
             if(selected.TrainingTarget){TargetStats.text=$"DAÑO: {selected.TrainingLastDamage:N0}  ·  TOTAL: {selected.TrainingTotalDamage:N0}";TargetCaption.text="No ataca  ·  No da recompensas";}
-            else{var enemy=selected.GetComponent<RiftEnemyCombat>();TargetStats.text=enemy&&enemy.Definition?enemy.Definition.name.Replace("_"," "):"";TargetCaption.text=enemy&&enemy.CastEnds>NetworkTime.time?"PREPARANDO ATAQUE  "+(enemy.CastEnds-NetworkTime.time).ToString("0.0")+" s":"";}
+            else{var enemy=selected.GetComponent<RiftEnemyCombat>();var native=selected.GetComponent<MultiFPS.Gameplay.RiftEnemies.RiftEnemyAgent>();TargetStats.text=native&&native.Definition?native.Definition.Role:enemy&&enemy.Definition?enemy.Definition.name.Replace("_"," "):"";TargetCaption.text=native&&native.SkillEnds>NetworkTime.time?native.Definition.SkillName+"  "+(native.SkillEnds-NetworkTime.time).ToString("0.0")+" s":enemy&&enemy.CastEnds>NetworkTime.time?"PREPARANDO ATAQUE  "+(enemy.CastEnds-NetworkTime.time).ToString("0.0")+" s":"";}
         }
         void RefreshHover(CharacterInstance actor)
         {

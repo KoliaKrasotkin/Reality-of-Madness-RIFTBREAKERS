@@ -66,15 +66,16 @@ public sealed partial class AbilityController:NetworkBehaviour {
   if(ability.Shape==AbilityShape.Self){
    BuffUntil=NetworkTime.time+ability.BuffDuration;BuffReduction=Specialization.Id=="guardian"?ability.DamageReduction:ability.DamageReduction*.5f;OffensiveBonus=Specialization.Id=="ravager"?ability.OffensiveBonus:0;
    foreach(var enemy in RiftEnemyCombat.Active)if(enemy&&Vector3.Distance(enemy.transform.position,origin)<=ability.Radius)enemy.Taunt(Actor.Health,ability.BuffDuration,Specialization.Id=="guardian");
+   foreach(var enemy in RiftEnemies.RiftEnemyAgent.All)if(enemy&&(enemy.transform.position-origin).sqrMagnitude<=ability.Radius*ability.Radius)enemy.Taunt(Actor.Health,ability.BuffDuration,Specialization.Id=="guardian");
   }else{
    // Registry contains each Health once: one damage event per target per strike.
-   foreach(var p in GameManager.Players){if(!p||!p.MyCharacter)continue;var victim=p.MyCharacter.Health;
+   foreach(var victim in Health.All){if(!victim)continue;
     if(victim==Actor.Health||victim.Team==Actor.Health.Team||victim.CurrentHealth<=0||(Casting==0&&victim.netId!=attackTarget))continue;
     Vector3 delta=victim.transform.position-origin;delta.y=0;
     if(delta.magnitude>AbilityRadius(Casting,ability)||(ability.Shape==AbilityShape.Arc&&Vector3.Angle(facing,delta)>AbilityArc(Casting,ability)*.5f)||!CombatController.Visible(Actor,victim))continue;
     float buff=BuffUntil>NetworkTime.time?1+OffensiveBonus:1;
     int damage=Mathf.RoundToInt(ability.Damage*Specialization.DamageMultiplier*WeaponMultiplier*buff*(Casting==2?1+Rank(7)*.08f:Casting==7?1+Rank(2)*.05f:1));
-    if(CombatController.Hit(Actor.Health,victim,damage)){hits++;var enemy=victim.GetComponent<RiftEnemyCombat>();if(enemy){if(ability.ThreatMultiplier>1)enemy.AddThreat(Actor.Health,damage*Specialization.ThreatMultiplier*(ability.ThreatMultiplier-1));enemy.Stagger(ability.Stagger+(Casting==2?Rank(7)*.1f:0));}}
+    if(CombatController.Hit(Actor.Health,victim,damage)){hits++;var enemy=victim.GetComponent<RiftEnemyCombat>();if(enemy){if(ability.ThreatMultiplier>1)enemy.AddThreat(Actor.Health,damage*Specialization.ThreatMultiplier*(ability.ThreatMultiplier-1));enemy.Stagger(ability.Stagger+(Casting==2?Rank(7)*.1f:0));}var npc=victim.GetComponent<RiftEnemies.RiftEnemyAgent>();if(npc){if(ability.ThreatMultiplier>1)npc.AddThreat(Actor.Health,damage*Specialization.ThreatMultiplier*(ability.ThreatMultiplier-1));npc.Stagger(ability.Stagger+(Casting==2?Rank(7)*.1f:0));}}
    }
   }
   if(hits>0)Resource=Mathf.Min(Class.MaximumResource,Resource+Gain(ability.ResourceGain));
