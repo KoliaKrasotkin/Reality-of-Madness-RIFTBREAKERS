@@ -228,6 +228,7 @@ namespace MultiFPS.Gameplay
         /// </summary>
         void Take(int slotID)
         {
+            if(Slots.Count==0)return;
             slotID = Mathf.Clamp(slotID, 0, Slots.Count - 1);
 
             if (CurrentlyUsedItem == Slots[slotID].Item && Slots[slotID].Item)

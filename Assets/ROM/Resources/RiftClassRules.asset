@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef6f69c369307ca408c699a253ca7e1c, type: 3}
+  m_Name: RiftClassRules
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftClassRules
+  Classes:
+  - {fileID: 11400000, guid: 3bdc231b6c868d341a4d05ca5d0e60af, type: 2}
+  - {fileID: 11400000, guid: 34769f56a7ee8204b852416bdc5227a8, type: 2}
+  - {fileID: 11400000, guid: a1a1ce27279a1694abb6680673b7f064, type: 2}
+  - {fileID: 11400000, guid: 73a12e11811f7c945b357cbdb7c3212d, type: 2}
+  EffectMaterial: {fileID: 2100000, guid: 3874d27390b800248b0915c6b06fd7ea, type: 2}
+  ExtraPlayerHealth: 0.65
+  ExtraPlayerDamage: 0.12
+  ParticipantRadius: 175
+  RecoveryDelay: 7
+  RecoveryPerSecond: 0.08
+  AllyRadius: 24

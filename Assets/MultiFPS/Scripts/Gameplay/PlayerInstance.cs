@@ -13,17 +13,20 @@ namespace MultiFPS.Gameplay
     {
         public string Username;
         public int CharacterSkinID;
+        public int ClassId;
+        public bool Warrior;
         public int[] SelectedItemSkins;
         public int[] Lodout;
     }
 
-    public class PlayerInstance : NetworkBehaviour {
+    public partial class PlayerInstance : NetworkBehaviour {
         //this is all player data that is player preference, that he will himself send to us
         //or we would retrieve this data about him from his account if we had such system
         
 
         //all info that we receive from client himself, his nickname, selected cosmetics etc
         public ClientData PlayerInfo;
+        public GameObject WarriorCharacterPrefab;
         public int Team { private set; get; } = -1; //-1 for no team
 
         //stats, scoreboard reads them
@@ -72,6 +75,8 @@ namespace MultiFPS.Gameplay
                 SendClientData(new ClientData
                 {
                     Username = UserSettings.UserNickname,
+                    ClassId = Mathf.Clamp(PlayerPrefs.GetInt(ClassPreference,0),0,3),
+                    Warrior = PlayerPrefs.GetInt(RiftCombat.AbilityController.Preference,0)>0,
                     CharacterSkinID = UserSettings.CharacterSkinID,
                     SelectedItemSkins = UserSettings.SelectedItemSkins,
                     Lodout = UserSettings.PlayerLodout,
@@ -91,6 +96,7 @@ namespace MultiFPS.Gameplay
 
         private void Update()
         {
+            if(isServer)ServerTickClass();
             //if this playerinstance belongs to client then get latency value for him
             if (isOwned)
                 Latency = (short)Math.Round(NetworkTime.rtt * 1000);
@@ -218,7 +224,8 @@ namespace MultiFPS.Gameplay
             {
                 //despawn previous character if it exist
                 DespawnCharacterIfExist();
-                MyCharacter = Instantiate(NetworkManager.singleton.spawnPrefabs[0], spawnPoint.position, Quaternion.identity).GetComponent<CharacterInstance>();
+                var characterPrefab=!BOT&&PlayerInfo.Warrior&&WarriorCharacterPrefab?WarriorCharacterPrefab:NetworkManager.singleton.spawnPrefabs[0];
+                MyCharacter = Instantiate(characterPrefab, spawnPoint.position, Quaternion.identity).GetComponent<CharacterInstance>();
 
                 MyCharacter.Health.Server_OnHealthDepleted += OnCharacterHealthDepleted;
                 MyCharacter.Server_KilledCharacter += OnPlayerKilled;
@@ -234,7 +241,7 @@ namespace MultiFPS.Gameplay
                 if (_eqUpdateRequired)
                 {
                     MyCharacter.CharacterItemManager.DespawnOwnedItems();
-                    AssignPlayerPrefferedItemsToSpawn();
+                    if(!MyCharacter.GetComponent<RiftCombat.WarriorAvatar>())AssignPlayerPrefferedItemsToSpawn();
                     MyCharacter.CharacterItemManager.SpawnStarterEquipment();
 
                     _eqUpdateRequired = false;
@@ -281,6 +288,7 @@ namespace MultiFPS.Gameplay
             }
 
             MyCharacter.Health.Team = Team;
+            ServerConfigureClass();
 
             if (BOT)
                 MyCharacter.SetAsBOT(BOT);
@@ -405,7 +413,11 @@ namespace MultiFPS.Gameplay
         [Command]
         void CmdReceivePlayerData(ClientData clientData)
         {
+            if(_receivedPlayerInfo)return;
             PlayerInfo = clientData;
+            var combat=GetComponent<RiftCombat.AbilityController>();PlayerInfo.Warrior=clientData.Warrior&&combat&&combat.Species&&combat.Species.AllowsSkin(clientData.CharacterSkinID);
+            ClassId = Mathf.Clamp(clientData.ClassId,0,3);
+            PlayerInfo.ClassId=ClassId;
 
             //is player did not set his nickmane, then set his nickname with some random number
             if (string.IsNullOrEmpty(PlayerInfo.Username))
@@ -475,7 +487,8 @@ namespace MultiFPS.Gameplay
                 MyCharacter.Health.Team = team;
 
                 MyCharacter.gameObject.name = "Character: " + PlayerInfo.Username;
-                MyCharacter.CharacterAnimator.ApplySkin(PlayerInfo.CharacterSkinID);
+                var native=MyCharacter.GetComponent<RiftCombat.WarriorAvatar>();
+                if(native)native.SetSkin(PlayerInfo.CharacterSkinID);else MyCharacter.CharacterAnimator.ApplySkin(PlayerInfo.CharacterSkinID);
 
                 MyCharacter._skinsForItems = PlayerInfo.SelectedItemSkins;
 

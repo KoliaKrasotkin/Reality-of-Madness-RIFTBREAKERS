@@ -1,0 +1,51 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.UI;
+using Mirror;
+using MultiFPS;
+using MultiFPS.Gameplay;
+using MultiFPS.Gameplay.RiftCombat;
+using MultiFPS.UI;
+using ROM.UI.Sprint01;
+using ROM.UI.Gameplay;
+namespace ROM.EditorTools {
+[InitializeOnLoad] public static class RiftGameplayHUDProbe {
+const string Key="ROM.HUDProbe",Folder="Documentation/gameplay-hud";
+static int step,oldPreference;static double start,next;static List<string> report;
+static RiftGameplayHUDProbe(){EditorApplication.playModeStateChanged+=Changed;}
+public static void Run(){Directory.CreateDirectory(Folder);RiftGameplayHUDBuilder.Build();SessionState.SetInt(Key+"Preference",PlayerPrefs.GetInt(AbilityController.Preference,0));SessionState.SetString(Key+"Name",UserSettings.UserNickname);PlayerPrefs.SetInt(AbilityController.Preference,2);SessionState.SetBool(Key,true);EditorSceneManager.OpenScene(ProjectSceneCleanup.Menu);EditorApplication.isPlaying=true;}
+static void Changed(PlayModeStateChange state){if(!SessionState.GetBool(Key,false))return;if(state==PlayModeStateChange.EnteredPlayMode){step=0;report=new List<string>();start=EditorApplication.timeSinceStartup;next=start+4;EditorApplication.update+=Tick;}if(state==PlayModeStateChange.EnteredEditMode){SessionState.SetBool(Key,false);PlayerPrefs.SetInt(AbilityController.Preference,SessionState.GetInt(Key+"Preference",0));UserSettings.UserNickname=SessionState.GetString(Key+"Name","");PlayerPrefs.Save();EditorApplication.Exit(SessionState.GetInt(Key+"Result",1));}}
+static void Check(bool ok,string text){if(!ok)throw new Exception(text);report.Add("PASS "+text);}
+static void Advance(double delay){step++;next=EditorApplication.timeSinceStartup+delay;}
+static void Tick(){try{if(EditorApplication.timeSinceStartup-start>150)throw new Exception("Timeout HUD step "+step);if(EditorApplication.timeSinceStartup<next)return;
+if(step==0){var hub=UnityEngine.Object.FindFirstObjectByType<RiftHub>();if(!hub||!hub.Stage||!hub.Stage.Ready)return;hub.ApplyActiveCharacter();PlayerPrefs.SetInt(AbilityController.Preference,2);hub.Creator.BotsToggle.isOn=false;hub.Creator.HostGameButton.onClick.Invoke();Advance(16);return;}
+var actor=ClientFrontend.OwnedCharacterInstance;var hud=UnityEngine.Object.FindFirstObjectByType<RiftGameplayHUD>();if(!actor||!hud)return;var c=ClientFrontend.ClientPlayerInstance.GetComponent<AbilityController>();
+switch(step){case 1:Check(c.Prototype,"Warrior host retains Mirror ability authority");Check(UnityEngine.Object.FindObjectsByType<RiftGameplayHUD>(FindObjectsSortMode.None).Length==1,"Exactly one real HUD instance");Check(hud.GetComponentsInChildren<Button>().Length==11,"Seven ability slots and four shortcuts");Check(hud.Life.text.Contains(actor.Health.CurrentHealth.ToString()),"Health reads actual player");Check(hud.ClassName.text=="Warrior"&&hud.CharacterName.text==actor.Health.CharacterName,"Fixed class and character identity kept separate");Check(hud.Zone.text=="ZONA SEGURA","Safe area comes from actual world");Check(ChatUI.Instance.GetComponentsInChildren<RectTransform>(true).Where(t=>t.name=="RiftChatFrame").All(t=>!t.gameObject.activeSelf),"Chat frame stays hidden when closed");Check(hud.Abilities.All(b=>b.targetGraphic.raycastTarget),"Native UI hotbar buttons receive pointer/touch input");Check(hud.Minimap.Texture&&hud.Minimap.Texture.IsCreated(),"Live circular minimap renders");var dummy=GameManager.Players.Where(p=>p&&p.MyCharacter&&p.MyCharacter.Health.TrainingTarget).Select(p=>p.MyCharacter.Health).First();actor.ServerTeleport(dummy.transform.position-Vector3.forward*5,0);Advance(1);break;
+case 2:Check(hud.SelectedTarget&&hud.SelectedTarget.TrainingTarget,"Aim selects actual dummy");Check(hud.TargetPanel.gameObject.activeSelf,"Target panel only visible with target");Check(!GameObject.Find("Training circle").GetComponent<LineRenderer>().enabled,"Large orange training circle hidden");Check(UnityEngine.Object.FindFirstObjectByType<RiftHUDTargetMarker>().Circle.positionCount==64,"Small ground ring and floating diamond created");CaptureGame(Folder+"/hud-1448x1086.png",1448,1086);CaptureGame(Folder+"/hud-1920x1080.png",1920,1080);actor.ServerTeleport(hud.SelectedTarget.transform.position-Vector3.forward*2.4f,0);c.CmdUse(1);Advance(.6);break;
+case 3:Check(hud.SelectedTarget.TrainingTotalDamage>0&&hud.TargetStats.text.Contains(hud.SelectedTarget.TrainingTotalDamage.ToString()),"Training damage bound to server statistics");Check(c.Resource>0&&hud.ResourceFill.Fill>0,"Rage reflects actual combat resource");Check(hud.Cooldowns[1].fillAmount>0&&!hud.Abilities[1].interactable,"Cooldown displays authoritative ready time");hud.transform.Find("Gameplay shortcuts/Shortcut I").GetComponent<Button>().onClick.Invoke();Advance(.6);break;
+case 4:var pause=UIPauseMenu._instance;Check(pause.pauseMenuShowing,"Inventory shortcut opens existing pause flow");var ph=pause.pauseMenuOverlay.GetComponentInChildren<RiftHub>();Check(ph.Page==HubPage.Inventory,"Inventory page accessible");hud.OpenCharacter();Check(ph.Page==HubPage.Character,"Character shortcut opens character page");hud.OpenAbilities();Check(ph.Page==HubPage.Abilities,"Abilities shortcut opens actual definitions");hud.OpenSettings();Check(ph.Page==HubPage.Settings,"Settings shortcut opens video/sound/controls");pause.ShowPauseMenu(false);actor.ServerTeleport(actor.transform.position,180);Advance(.8);break;
+case 5:Check(!hud.TargetPanel.gameObject.activeSelf,"Target panel disappears without target");Check(actor.GetComponent<WarriorAvatar>()&&!actor.FPP,"Native character and third person preserved");Finish(true);break;
+}
+}catch(Exception e){Debug.LogException(e);report.Add(e.ToString());Finish(false);}}
+static void Finish(bool ok){File.WriteAllLines(Folder+"/validation.txt",report);SessionState.SetInt(Key+"Result",ok?0:1);EditorApplication.update-=Tick;EditorApplication.isPlaying=false;}
+static void CaptureGame(string file,int width,int height){
+var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main;if(!camera)throw new Exception("No gameplay camera");
+var visible=UnityEngine.Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None).Where(c=>c.enabled&&c.isRootCanvas).ToArray();foreach(var c in visible)c.enabled=false;var rt=new RenderTexture(width,height,24);var original=camera.targetTexture;camera.targetTexture=rt;camera.Render();var world=Read(rt);camera.targetTexture=original;foreach(var c in visible)c.enabled=true;
+var canvases=UnityEngine.Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None).Where(c=>c.isRootCanvas&&c.renderMode==RenderMode.ScreenSpaceOverlay).ToArray();
+var snapshots=canvases.Select(c=>(canvas:c,rect:(RectTransform)c.transform,position:c.transform.position,rotation:c.transform.rotation,scale:c.transform.localScale,size:((RectTransform)c.transform).sizeDelta,pivot:((RectTransform)c.transform).pivot,factor:c.scaleFactor,scaler:c.GetComponent<CanvasScaler>())).ToArray();
+var layers=new Dictionary<GameObject,int>();
+foreach(var snapshot in snapshots){var c=snapshot.canvas;Vector2 reference=snapshot.scaler?snapshot.scaler.referenceResolution:new Vector2(1920,1080);float factor=snapshot.scaler&&snapshot.scaler.matchWidthOrHeight==1?height/reference.y:Mathf.Min(width/reference.x,height/reference.y);reference.x=width/factor;reference.y=height/factor;c.renderMode=RenderMode.WorldSpace;c.scaleFactor=1;if(snapshot.scaler)snapshot.scaler.enabled=false;snapshot.rect.pivot=new Vector2(.5f,.5f);snapshot.rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,reference.x);snapshot.rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,reference.y);snapshot.rect.position=Vector3.zero;snapshot.rect.rotation=Quaternion.identity;snapshot.rect.localScale=Vector3.one*factor;
+foreach(var t in c.GetComponentsInChildren<Transform>(true)){if(!layers.ContainsKey(t.gameObject))layers.Add(t.gameObject,t.gameObject.layer);t.gameObject.layer=31;}
+foreach(var view in c.GetComponentsInChildren<RiftHub>())view.SendMessage("Fit");}
+var go=new GameObject("UI capture camera");var ui=go.AddComponent<Camera>();ui.orthographic=true;ui.orthographicSize=height*.5f;ui.transform.position=new Vector3(0,0,-1000);ui.farClipPlane=2000;ui.cullingMask=1<<31;ui.clearFlags=CameraClearFlags.SolidColor;ui.backgroundColor=Color.clear;ui.targetTexture=rt;foreach(var snapshot in snapshots)foreach(var text in snapshot.canvas.GetComponentsInChildren<Text>()){if(text.font)text.font.RequestCharactersInTexture(text.text,text.fontSize,text.fontStyle);text.SetAllDirty();}Canvas.ForceUpdateCanvases();ui.Render();var overlay=Read(rt);var foreground=overlay.GetPixels32();var pixels=world.GetPixels32();for(int i=0;i<pixels.Length;i++){float alpha=foreground[i].a/255f;pixels[i]=new Color32((byte)Mathf.Min(255,foreground[i].r+pixels[i].r*(1-alpha)),(byte)Mathf.Min(255,foreground[i].g+pixels[i].g*(1-alpha)),(byte)Mathf.Min(255,foreground[i].b+pixels[i].b*(1-alpha)),255);}world.SetPixels32(pixels);world.Apply();File.WriteAllBytes(file,world.EncodeToPNG());
+foreach(var pair in layers)if(pair.Key)pair.Key.layer=pair.Value;
+foreach(var snapshot in snapshots){snapshot.canvas.renderMode=RenderMode.ScreenSpaceOverlay;snapshot.canvas.scaleFactor=snapshot.factor;snapshot.rect.pivot=snapshot.pivot;snapshot.rect.position=snapshot.position;snapshot.rect.rotation=snapshot.rotation;snapshot.rect.localScale=snapshot.scale;snapshot.rect.sizeDelta=snapshot.size;if(snapshot.scaler)snapshot.scaler.enabled=true;foreach(var view in snapshot.canvas.GetComponentsInChildren<RiftHub>())view.SendMessage("Fit");}
+ui.targetTexture=null;rt.Release();UnityEngine.Object.DestroyImmediate(go);UnityEngine.Object.DestroyImmediate(rt);UnityEngine.Object.DestroyImmediate(world);UnityEngine.Object.DestroyImmediate(overlay);
+}
+static Texture2D Read(RenderTexture rt){var previous=RenderTexture.active;RenderTexture.active=rt;var tex=new Texture2D(rt.width,rt.height,TextureFormat.RGBA32,false);tex.ReadPixels(new Rect(0,0,rt.width,rt.height),0,0);tex.Apply();RenderTexture.active=previous;return tex;}
+}}

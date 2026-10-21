@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6907a56e59e1c3c4786b10b54b1c154c, type: 3}
+  m_Name: Portal0
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.PortalDefinition
+  Id: 0
+  DisplayName: Viajar a las ruinas
+  InteractRange: 4
+  Cooldown: 4
+  Effect: {fileID: 929046750302402429, guid: 98b2a111d52e74c48bfe4c3284c280f4, type: 3}

@@ -691,8 +691,7 @@ namespace ROM.Horde
             //la vida es autoridad del servidor; los clientes reciben el valor real con el primer daño
             Health health = character.Health;
             int hp = Mathf.Max(1, Mathf.RoundToInt(health.MaxHealth * healthMultiplier));
-            health.MaxHealth = hp;
-            health.CurrentHealth = hp;
+            health.ServerSetVitals(hp,hp);
 
             BotAI ai = character.GetComponent<BotAI>();
             if (ai)

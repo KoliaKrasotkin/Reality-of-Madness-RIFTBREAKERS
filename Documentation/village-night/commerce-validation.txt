@@ -1,0 +1,10 @@
+PASS Three IDS NPCs and player trade component
+PASS Dialogue opens and blocks gameplay input
+PASS UI purchase debits 25 earned gold and persists potion
+PASS Full health does not consume potion
+PASS Potion heals on server, consumes once and starts cooldown
+PASS Greater potion costs 60 earned gold
+PASS Insufficient balance rejects purchase without losing items or gold
+PASS Resale returns 30 gold and removes potion
+PASS Closing dialogue restores gameplay input
+PASS Remote purchase from outside interaction range rejected

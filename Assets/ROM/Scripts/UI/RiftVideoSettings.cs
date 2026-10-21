@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using MultiFPS;
 using UnityEngine;
@@ -80,7 +80,7 @@ namespace ROM.UI.Sprint01
             var profile=userVolume.profile;
             if(!profile.TryGet<Bloom>(out var bloom))bloom=profile.Add<Bloom>();bloom.intensity.Override(Current.Bloom?.22f:0);bloom.threshold.Override(1.2f);
             if(!profile.TryGet<MotionBlur>(out var motion))motion=profile.Add<MotionBlur>();motion.intensity.Override(Current.MotionBlur?.12f:0);
-            if(!profile.TryGet<ColorAdjustments>(out var color))color=profile.Add<ColorAdjustments>();color.postExposure.Override(Current.Exposure);
+            if(!profile.TryGet<ColorAdjustments>(out var color))color=profile.Add<ColorAdjustments>();var night=UnityEngine.Object.FindFirstObjectByType<ROM.Horde.RiftNightAtmosphere>();color.postExposure.Override(Current.Exposure+(night?night.BaseExposure:0));
         }
         void OnDestroy()
         {
