@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using Mirror;
 
@@ -6,24 +5,33 @@ namespace MultiFPS.Gameplay.Gamemodes
 {
     public class EnemySpawner : MonoBehaviour
     {
-        [Header("Configuración")]
+        [Header("Configuracion")]
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private GameObject enemyPrefab;
 
+        [Header("Skin")]
+        [Tooltip("Indice dentro de ClientInterfaceManager.characterSkins (el array de SkinContainer). -1 = no cambiar la skin")]
+        [SerializeField] private int skinID = -1;
+
         public void SpawnEnemy()
         {
-            Debug.Log("EnemySpawner: se solicitó generar el enemigo.");
-            SpawnEnemy(enemyPrefab);
+            Debug.Log("EnemySpawner: se solicito generar el enemigo.");
+            SpawnEnemy(enemyPrefab, skinID);
         }
 
         public void SpawnEnemy(GameObject prefab)
+        {
+            SpawnEnemy(prefab, skinID);
+        }
+
+        public void SpawnEnemy(GameObject prefab, int skin)
         {
             if (!NetworkServer.active)
                 return;
 
             if (spawnPoint == null)
             {
-                Debug.LogError("EnemySpawner: falta asignar el punto de aparición.", this);
+                Debug.LogError("EnemySpawner: falta asignar el punto de aparicion.", this);
                 return;
             }
 
@@ -36,7 +44,7 @@ namespace MultiFPS.Gameplay.Gamemodes
             if (prefab.GetComponent<NetworkIdentity>() == null)
             {
                 Debug.LogError(
-                    $"EnemySpawner: {prefab.name} necesita NetworkIdentity en la raíz.",
+                    $"EnemySpawner: {prefab.name} necesita NetworkIdentity en la raiz.",
                     this
                 );
                 return;
@@ -47,6 +55,20 @@ namespace MultiFPS.Gameplay.Gamemodes
                 spawnPoint.position,
                 spawnPoint.rotation
             );
+
+            // La skin se fija ANTES del Spawn para que viaje en el estado inicial a todos los clientes
+            if (skin >= 0)
+            {
+                CharacterInstance character = enemy.GetComponentInChildren<CharacterInstance>();
+
+                if (character != null)
+                    character.Server_SetForcedSkin(skin);
+                else
+                    Debug.LogWarning(
+                        $"EnemySpawner: {prefab.name} no tiene CharacterInstance, no se pudo aplicar la skin {skin}.",
+                        this
+                    );
+            }
 
             NetworkServer.Spawn(enemy);
         }
