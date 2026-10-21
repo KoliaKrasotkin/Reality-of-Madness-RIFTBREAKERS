@@ -60,12 +60,11 @@ namespace MultiFPS.Gameplay {
             RpcClassEffect(center+Vector3.up, effect+Vector3.up*.2f,radius,ClassId);return true;
         }
         Health AimEnemy(float range){
-            Vector3 origin=MyCharacter.transform.position+Vector3.up*1.4f;
-            Vector3 forward=Quaternion.Euler(MyCharacter.Input.LookX,MyCharacter.Input.LookY,0)*Vector3.forward;
-            return Enemies(origin,range).Where(h=>{
-                Vector3 delta=h.transform.position+Vector3.up-origin;
-                return Vector3.Dot(forward,delta.normalized)>.94f;
-            }).OrderByDescending(h=>Vector3.Dot(forward,(h.transform.position+Vector3.up-origin).normalized)).FirstOrDefault();
+            var combat=GetComponent<RiftCombat.AbilityController>();var target=combat?combat.CombatTarget:null;
+            if(!target||target.CurrentHealth<=0||target.Team==MyCharacter.Health.Team||!Visible(target))return null;
+            var delta=target.transform.position-MyCharacter.transform.position;delta.y=0;
+            var forward=Quaternion.Euler(0,MyCharacter.Input.LookY,0)*Vector3.forward;
+            return delta.magnitude<=range&&Vector3.Angle(forward,delta)<=90?target:null;
         }
         Health[] Enemies(Vector3 center,float radius)=>GameManager.Players.Where(p=>p&&p.BOT&&p.MyCharacter&&p.MyCharacter.Health.CurrentHealth>0&&Vector3.Distance(p.MyCharacter.transform.position,center)<radius&&Visible(p.MyCharacter.Health)).Select(p=>p.MyCharacter.Health).ToArray();
         bool Visible(Health target){Vector3 origin=MyCharacter.transform.position+Vector3.up*1.3f;Vector3 delta=target.transform.position+Vector3.up-origin;return !MyCharacter.gameObject.scene.GetPhysicsScene().Raycast(origin,delta.normalized,out _,delta.magnitude,GameManager.environmentLayer,QueryTriggerInteraction.Ignore);}

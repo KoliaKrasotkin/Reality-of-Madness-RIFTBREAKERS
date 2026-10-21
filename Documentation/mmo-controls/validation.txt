@@ -1,0 +1,42 @@
+PASS Mirror host uses native Warrior and shared MMO controls
+PASS Cursor is free without holding mouse buttons
+PASS A turns in place without strafing
+PASS Q strafes left without turning
+PASS Left drag orbits camera without changing facing
+PASS Right drag steers both camera and character
+PASS D becomes strafe while right mouse is held
+PASS Both mouse buttons move forward
+PASS Facing a target does not select it
+Hover diagnostics pointer=(318.22, 256.40) picked=Muñeco de entrenamiento ui=False UI hits=img,img,img,img
+PASS Mouseover shows independent tooltip without selecting
+PASS Left click selects and synchronizes target identity
+PASS Tooltip disappears while selection persists
+PASS Moving camera does not change selected target
+PASS Tab cycles to another visible nearby enemy
+PASS Shift+Tab cycles backwards without double cycling
+PASS Server rejects invalid target identity
+PASS Legacy targeted abilities resolve the explicit selection
+PASS Server accepts selected target within reach and facing
+PASS Selected-target attack deals authoritative damage
+PASS Basic attack cannot hit arbitrary enemies with no selection
+PASS Server rejects target outside melee reach
+PASS Escape clears selection before opening menu
+PASS Escape opens menu when no target remains
+PASS Settings exposes primary/secondary bindings
+PASS Real settings capture persists a secondary binding
+PASS Binding survives preference reload
+PASS Conflicting strafe assignment is detected
+Rebind movement diagnostics moved=2,399401 held=True available=True movement=(0.00, 1.00) blocked=False paused=False cursor=True
+PASS Rebound movement drives actual character
+PASS Ctrl-modified rebound ability executes on server
+PASS Dead targets are cleared
+PASS Enter opens chat without immediately closing
+PASS Chat input blocks character movement
+PASS Mouse wheel zooms camera
+Autorun diagnostics active=True moved=2,0579 input=(0.00, 1.00) available=True
+PASS Autorun moves without holding forward
+PASS Manual backward movement cancels autorun
+UI click diagnostics module=InputSystemUIInputModule point=(546.13, 45.69) pointerBlocked=False paused=True
+PASS Mouse can click inventory shortcut with cursor already free
+PASS Clicking UI does not select the world behind it
+PASS Escape cancels key capture without closing settings

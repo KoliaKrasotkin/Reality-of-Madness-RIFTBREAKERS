@@ -30,7 +30,7 @@ namespace MultiFPS.UI
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Y) && !ClientFrontend.Pause && UICursorManager.GamePlayInput() && !ChatWriting) ShowChatInput(ChatWriting = !ChatWriting);
+            if (RiftControls.Pressed("Chat") && !ClientFrontend.Pause && UICursorManager.GamePlayInput() && !ChatWriting) {ShowChatInput(true);return;}
 
 
             if (Input.GetKeyDown(KeyCode.Escape) && ChatWriting) ShowChatInput(false);

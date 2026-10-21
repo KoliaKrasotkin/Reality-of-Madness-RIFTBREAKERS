@@ -105,7 +105,7 @@ namespace MultiFPS.Gameplay
             {
                 if (isOwned)
                 {
-                    if (Input.GetKeyDown(KeyCode.Space))
+                    if (RiftControls.Pressed("Jump"))
                     {
                         CmdProcessSpawnRequest();
                     }
