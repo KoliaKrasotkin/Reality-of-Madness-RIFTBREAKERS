@@ -53,7 +53,7 @@ namespace ROM.EditorTools
             foreach(var behaviour in body.GetComponentsInChildren<MonoBehaviour>(true))UnityEngine.Object.DestroyImmediate(behaviour);
             foreach(var collider in body.GetComponentsInChildren<Collider>(true))UnityEngine.Object.DestroyImmediate(collider);
             var animator=body.GetComponent<Animator>();if(!animator||!animator.avatar||!animator.avatar.isHuman||!animator.avatar.isValid)throw new Exception("Native Lizardman avatar invalid");
-            animator.runtimeAnimatorController=controller;animator.applyRootMotion=false;animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
+            if(!animator.GetComponent<RiftFootstepEvents>())animator.gameObject.AddComponent<RiftFootstepEvents>();animator.runtimeAnimatorController=controller;animator.applyRootMotion=false;animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
             var renderers=body.GetComponentsInChildren<SkinnedMeshRenderer>();var bounds=renderers[0].bounds;foreach(var r in renderers){bounds.Encapsulate(r.bounds);r.updateWhenOffscreen=false;}
             body.transform.localScale*=2f/bounds.size.y;
             animator.Rebind();animator.SetBool("Grounded",true);animator.Update(0);

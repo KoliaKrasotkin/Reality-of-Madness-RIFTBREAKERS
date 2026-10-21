@@ -3855,6 +3855,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4959511118433250534}
   - component: {fileID: 1903046980568728015}
+  - component: {fileID: 4453112535691719945}
   m_Layer: 0
   m_Name: WarriorLobby
   m_TagString: Untagged
@@ -3914,6 +3915,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4453112535691719945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152280501822526754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e3160265aaedc4f948272c5ad14f7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.RiftFootstepEvents
 --- !u!1 &7244505544342567726
 GameObject:
   m_ObjectHideFlags: 0

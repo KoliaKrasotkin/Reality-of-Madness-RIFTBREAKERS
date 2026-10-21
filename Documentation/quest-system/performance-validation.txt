@@ -9,8 +9,8 @@ IncrementalGC=True timeSliceNs=3000000
 Training phase
 Minimap.Render: calls=0 totalMs=0,00 maxMs=0,00
 HUD.HideLegacy: calls=0 totalMs=0,00 maxMs=0,00
-Journal.Persist: calls=10 totalMs=5,15 maxMs=0,70
-Journal.Snapshot: calls=10 totalMs=1,00 maxMs=0,20
+Journal.Persist: calls=10 totalMs=5,33 maxMs=0,73
+Journal.Snapshot: calls=10 totalMs=1,03 maxMs=0,21
 Village.Update: calls=0 totalMs=0,00 maxMs=0,00
 Exploration.Tick: calls=0 totalMs=0,00 maxMs=0,00
 Enemy.Spawn: calls=0 totalMs=0,00 maxMs=0,00
@@ -19,19 +19,19 @@ Corpse.Clone: calls=0 totalMs=0,00 maxMs=0,00
 
 PASS Training autoattack works
 PASS Exploration spawns real encounter enemies
-Gameplay frame intervals in Editor (includes editor overhead): count=5038 medianMs=8,34 p99Ms=9,69 maxMs=25,20 above100ms=0 GC0=5
+Gameplay frame intervals in Editor (includes editor overhead): count=5040 medianMs=8,34 p99Ms=9,51 maxMs=19,91 above100ms=0 GC0=3
 PASS No realtime minimap camera render during play
 PASS Legacy cleanup is bounded to startup, not periodic scene scans
 PASS Minimap crops baked atlas around live player
 Training + walking + encounter combat, real map/HUD/persistence
 Minimap.Render: calls=0 totalMs=0,00 maxMs=0,00
 HUD.HideLegacy: calls=0 totalMs=0,00 maxMs=0,00
-Journal.Persist: calls=11 totalMs=5,68 maxMs=0,70
-Journal.Snapshot: calls=11 totalMs=1,10 maxMs=0,20
+Journal.Persist: calls=11 totalMs=5,90 maxMs=0,73
+Journal.Snapshot: calls=11 totalMs=1,11 maxMs=0,21
 Village.Update: calls=0 totalMs=0,00 maxMs=0,00
 Exploration.Tick: calls=0 totalMs=0,00 maxMs=0,00
-Enemy.Spawn: calls=8 totalMs=18,57 maxMs=3,29
-IDS.Initialize: calls=8 totalMs=13,25 maxMs=4,32
-Corpse.Clone: calls=1 totalMs=1,43 maxMs=1,43
+Enemy.Spawn: calls=9 totalMs=6,76 maxMs=3,57
+IDS.Initialize: calls=0 totalMs=0,00 maxMs=0,00
+Corpse.Clone: calls=0 totalMs=0,00 maxMs=0,00
 
 PASS Walk and encounter combat capture completed

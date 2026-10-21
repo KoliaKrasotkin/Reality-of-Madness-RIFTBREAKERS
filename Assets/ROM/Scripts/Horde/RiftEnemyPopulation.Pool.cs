@@ -1,0 +1,10 @@
+using System.Collections.Generic;using UnityEngine;using Mirror;using MultiFPS.Gameplay.RiftEnemies;
+namespace ROM.Horde {public sealed partial class RiftEnemyPopulation {
+ readonly Dictionary<RiftEnemyDefinition,Stack<RiftEnemyAgent>> reserves=new Dictionary<RiftEnemyDefinition,Stack<RiftEnemyAgent>>();Transform reserveRoot;int pooled;
+ // Allocate at scene startup, after Mirror finishes processing scene identities.
+ void Start(){if(!NetworkServer.active||Zones==null)return;reserveRoot=new GameObject("Enemy reserve - inactive").transform;reserveRoot.SetParent(transform,false);foreach(var zone in Zones){if(!zone||zone.Enemies==null)continue;foreach(var choice in zone.Enemies){var d=choice.Enemy;if(!d||!d.Prefab||reserves.ContainsKey(d))continue;var stack=new Stack<RiftEnemyAgent>();reserves[d]=stack;int count=d.Id=="little-demon"?6:d.IsBoss?2:3;for(int i=0;i<count;i++){var enemy=Instantiate(d.Prefab,reserveRoot);enemy.gameObject.SetActive(false);enemy.ReleaseToPool=Return;stack.Push(enemy);pooled++;}}}}
+ RiftEnemyAgent Take(RiftEnemyDefinition d,Vector3 position,Quaternion rotation){RiftEnemyAgent enemy=null;if(reserves.TryGetValue(d,out var stack)){while(stack.Count>0&&!enemy){enemy=stack.Pop();pooled--;}}if(!enemy)enemy=Instantiate(d.Prefab,position,rotation);enemy.transform.SetParent(null,false);enemy.transform.SetPositionAndRotation(position,rotation);enemy.ReleaseToPool=Return;enemy.gameObject.SetActive(true);return enemy;}
+ void Return(RiftEnemyAgent enemy){if(!enemy)return;if(alive.TryGetValue(enemy,out var zone)){alive.Remove(enemy);zone.Spawned=Mathf.Max(zone.Defeated,zone.Spawned-1);if(zone.Encounter)zone.Encounter.Spawned=zone.Spawned;}enemy.Health.ReleaseNativeRegistration();NetworkServer.UnSpawn(enemy.gameObject);enemy.gameObject.SetActive(false);if(!reserveRoot||pooled>=48){Destroy(enemy.gameObject);return;}enemy.transform.SetParent(reserveRoot,false);if(!reserves.TryGetValue(enemy.Definition,out var stack)){stack=new Stack<RiftEnemyAgent>();reserves[enemy.Definition]=stack;}stack.Push(enemy);pooled++;}
+}}
+
+

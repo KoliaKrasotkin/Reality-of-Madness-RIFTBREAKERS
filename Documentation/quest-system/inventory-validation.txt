@@ -1,0 +1,20 @@
+PASS Main menu exposes correctly labelled journal, achievements and settings
+PASS Four typed quest definitions and seven achievement definitions load
+PASS Journal uses stable selected character identity
+PASS Target frame is outside center, below top-left world info
+PASS All village NPCs are friendly targets without fake combat health
+PASS Initial quest is discoverable on Iria
+PASS Native Animator receives both footstep events
+PASS I opens the gameplay inventory
+PASS Bag displays actual supplies plus clearly reserved cells
+PASS Inventory reads real supply quantity
+PASS Inventory use consumes one real potion
+PASS Shared cooldown disables inventory use
+PASS Inventory displays live shared cooldown
+PASS Selecting major potion shows its own healing value
+PASS Pool supplies a real native enemy
+PASS Retired enemy is reused and network-spawned again
+PASS Reused enemy resets health, death state and collider
+PASS Reused enemy can die normally
+PASS Dead enemy can be reset and reused
+PASS Reused enemy re-registers its new network identity in the damage registry

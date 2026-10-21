@@ -7,7 +7,7 @@ using MultiFPS.Gameplay;
 using MultiFPS.Gameplay.RiftEnemies;
 namespace ROM.Horde {
 // Own population budget and prefab selection; never creates a template bot/player.
-public sealed class RiftEnemyPopulation:MonoBehaviour {
+public sealed partial class RiftEnemyPopulation:MonoBehaviour {
  public RiftEnemySpawnZone[] Zones;[Range(1,64)]public int MaximumAlive=24;public float SpawnInterval=.5f;
  readonly Dictionary<RiftEnemyAgent,RiftEnemySpawnZone> alive=new Dictionary<RiftEnemyAgent,RiftEnemySpawnZone>();readonly List<RiftEnemyAgent> retired=new List<RiftEnemyAgent>();
  double nextTick;public int AliveCount=>alive.Count;
@@ -24,7 +24,7 @@ public sealed class RiftEnemyPopulation:MonoBehaviour {
  }
  public RiftEnemyAgent ServerSpawn(RiftEnemySpawnZone zone){
   if(!NetworkServer.active||!zone||zone.Cleared||zone.Spawned>=zone.Count||alive.Count>=MaximumAlive)return null;var definition=zone.Choose();if(!definition||!definition.Prefab)return null;var point=zone.SpawnPoints[zone.Spawned];if(!point||Horde.Instance.IsSafe(point.position)||!NavMesh.SamplePosition(point.position,out var nav,12,NavMesh.AllAreas)||Horde.Instance.IsSafe(nav.position))return null;
-  var enemy=Instantiate(definition.Prefab,nav.position,point.rotation);enemy.Definition=definition;enemy.ServerKilled+=Killed;alive.Add(enemy,zone);NetworkServer.Spawn(enemy.gameObject);zone.Spawned++;if(zone.Encounter)zone.Encounter.Spawned=zone.Spawned;return enemy;
+  using var spawnMeasurement=new RiftFrameDiagnostics.Sample(6);var enemy=Take(definition,nav.position,point.rotation);enemy.Definition=definition;enemy.ServerKilled+=Killed;alive.Add(enemy,zone);NetworkServer.Spawn(enemy.gameObject);enemy.Health.RegisterNativeSpawn();zone.Spawned++;if(zone.Encounter)zone.Encounter.Spawned=zone.Spawned;return enemy;
  }
  void Killed(RiftEnemyAgent enemy,Health killer){if(!alive.TryGetValue(enemy,out var zone))return;alive.Remove(enemy);enemy.ServerKilled-=Killed;
   if(!killer||killer==enemy.Health||killer.Team!=Horde.PlayerTeam){zone.Spawned=Mathf.Max(zone.Defeated,zone.Spawned-1);if(zone.Encounter)zone.Encounter.Spawned=zone.Spawned;return;}

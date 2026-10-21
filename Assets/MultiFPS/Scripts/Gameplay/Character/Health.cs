@@ -91,12 +91,16 @@ namespace MultiFPS.Gameplay
         public DamageMemory[] _damageMemories;
         int _lastDamageMemory = 0;
 
+        bool nativeRegistered;
+        public void ReleaseNativeRegistration(){if(nativeRegistered&&GameSync.Singleton){GameSync.Singleton.Healths.ServerDeregisterDNSyncObj(this);nativeRegistered=false;}}
+        public void RegisterNativeSpawn(){if(_targetPositionTracker&&isServer&&GameSync.Singleton&&!nativeRegistered){GameSync.Singleton.Healths.ServerRegisterDNSyncObj(this);nativeRegistered=true;}}
+        public void ResetNativeSpawn(){_dead=_clientDead=false;CombatDamageMultiplier=1;CombatTransfer=false;VulnerableUntil=WeakenedUntil=0;_lastDamageMemory=0;if(_damageMemories!=null)System.Array.Clear(_damageMemories,0,_damageMemories.Length);}
         void Start()
         {
             _damageMemories = new DamageMemory[6];
 
             gameObject.layer = (int)GameLayers.character;
-            GameSync.Singleton.Healths.ServerRegisterDNSyncObj(this);
+            GameSync.Singleton.Healths.ServerRegisterDNSyncObj(this);nativeRegistered=isServer;
 
             //update 1.1: moved here from CharacterInstance
             //CustomSceneManager.RegisterCharacter(this); //we have to register spawned characters in order to let bot "see" them, and select nearest enemies from that register
@@ -108,7 +112,7 @@ namespace MultiFPS.Gameplay
         }
         void OnDestroy()
         {
-            if(GameSync.Singleton)GameSync.Singleton.Healths.ServerDeregisterDNSyncObj(this);
+            if(GameSync.Singleton&&nativeRegistered)GameSync.Singleton.Healths.ServerDeregisterDNSyncObj(this);
 
             //update 1.1: moved here from CharacterInstance
             //CustomSceneManager.DeRegisterCharacter(this);

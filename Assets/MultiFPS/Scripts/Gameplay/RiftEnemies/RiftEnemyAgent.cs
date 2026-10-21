@@ -15,11 +15,13 @@ public sealed partial class RiftEnemyAgent:NetworkBehaviour {
  [SyncVar(hook=nameof(AnimationChanged))]int animationEvent;
  public static readonly List<RiftEnemyAgent> All=new List<RiftEnemyAgent>();
  public event Action<RiftEnemyAgent,Health> ServerKilled;
+ public Action<RiftEnemyAgent> ReleaseToPool;
  public Health Health {get;private set;}public Health Target {get;private set;}
  public Vector3 Home {get;private set;}public bool Attacking=>attacking;public double StaggerUntil=>staggerUntil;
  NavMeshAgent navigation;readonly Dictionary<Health,float> threat=new Dictionary<Health,float>();
  double nextPlan,nextPath,readyAt,hitAt,staggerUntil,forcedUntil;Health forced,castTarget;bool attacking,returning;Vector3 previous;int sequence;
  public override void OnStartServer(){
+  CancelInvoke();StopAllCoroutines();Dead=false;Body.enabled=true;Health.ResetNativeSpawn();threat.Clear();attacking=returning=skillCasting=false;Target=forced=castTarget=skillTarget=null;SkillEnds=SkillReady=readyAt=hitAt=staggerUntil=forcedUntil=nextPath=nextPlan=nextWander=fleeUntil=wildSense=0;previous=transform.position;if(Animator){Animator.Rebind();Animator.Play("Idle",0,0);}
   Home=transform.position;MaximumLife=Definition.Health;Life=MaximumLife;Health.MaxHealth=MaximumLife;Health.CurrentHealth=Life;Health.CharacterName=Definition.DisplayName;Health.Team=Definition.Team;
   navigation.enabled=true;navigation.speed=Definition.MoveSpeed;navigation.stoppingDistance=.35f;navigation.avoidancePriority=20+(int)(netId%60);
   nextPlan=NetworkTime.time+(netId%7)*.04;Health.Server_OnHealthDepleted+=Killed;
@@ -66,7 +68,7 @@ public sealed partial class RiftEnemyAgent:NetworkBehaviour {
  Health ChooseTarget(){if(Definition.Disposition==RiftEnemyDisposition.Timid)return null;if(forcedUntil>NetworkTime.time&&Valid(forced))return forced;Health best=null;float score=float.NegativeInfinity;foreach(var player in GameManager.Players){if(!player||player.BOT||!player.MyCharacter)continue;var h=player.MyCharacter.Health;if(!Valid(h))continue;float distance=(h.transform.position-transform.position).magnitude;threat.TryGetValue(h,out float value);if(value<=0&&(Definition.Disposition==RiftEnemyDisposition.Defensive||distance>Definition.Detection))continue;float candidate=value+10/(1+distance);if(candidate>score){score=candidate;best=h;}}return best;}
  void Move(Vector3 point,double now){navigation.isStopped=false;if(now<nextPath)return;nextPath=now+.4+(netId%5)*.02;if(NavMesh.SamplePosition(point,out var sample,3,NavMesh.AllAreas))navigation.SetDestination(sample.position);}
  void Killed(CharacterPart part,AttackType type,Health killer,int force){if(Dead)return;Dead=true;Life=0;attacking=false;skillCasting=false;SkillEnds=0;Target=null;Stop();navigation.enabled=false;if(Body)Body.enabled=false;ServerKilled?.Invoke(this,killer);Invoke(nameof(RemoveCorpse),Definition.CorpseSeconds);}
- void RemoveCorpse(){if(isServer)NetworkServer.Destroy(gameObject);}
- [Server]public void Despawn(){ServerKilled=null;NetworkServer.Destroy(gameObject);}
+ void RemoveCorpse(){if(isServer)Despawn();}
+ [Server]public void Despawn(){ServerKilled=null;CancelInvoke();StopAllCoroutines();if(ReleaseToPool!=null)ReleaseToPool(this);else NetworkServer.Destroy(gameObject);}
 }
 }

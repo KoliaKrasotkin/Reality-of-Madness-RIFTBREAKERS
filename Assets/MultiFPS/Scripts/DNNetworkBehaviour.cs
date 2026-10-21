@@ -32,6 +32,7 @@ namespace MultiFPS
         {
             if(_subscribedToNetworkManager)
                 DNNetworkManager.Instance.OnNewPlayerConnected -= OnNewPlayerConnected;
+            _subscribedToNetworkManager=false;
         }
 
         internal void SetDNID(byte id)

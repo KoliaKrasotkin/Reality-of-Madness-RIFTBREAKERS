@@ -20,7 +20,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         float vertical, jumpRequested=-100, lastGround=-100, presentationUntil;
         
         bool falling;float fallPeak;
-        void Awake(){actor=GetComponent<CharacterInstance>();capsule=GetComponent<CharacterController>();previous=transform.position;}
+        void Awake(){if(Animator&&!Animator.GetComponent<RiftFootstepEvents>())Animator.gameObject.AddComponent<RiftFootstepEvents>();actor=GetComponent<CharacterInstance>();capsule=GetComponent<CharacterController>();previous=transform.position;}
         void Start(){
             if(!GetComponent<RiftWarriorEquipment>())gameObject.AddComponent<RiftWarriorEquipment>();
             if(actor.PlayerRecoil)actor.PlayerRecoil.enabled=false;

@@ -2219,6 +2219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3814767826805513699}
   - component: {fileID: 1131495828200463829}
+  - component: {fileID: 5593279531795042538}
   m_Layer: 0
   m_Name: Warrior native Lizardman
   m_TagString: Untagged
@@ -2278,6 +2279,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5593279531795042538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4181185405426282710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e3160265aaedc4f948272c5ad14f7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.RiftFootstepEvents
 --- !u!1 &4189655079138894595
 GameObject:
   m_ObjectHideFlags: 0
@@ -3646,7 +3659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mirror::Mirror.NetworkIdentity
   sceneId: 0
-  _assetId: 2596278896
+  _assetId: 0
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
