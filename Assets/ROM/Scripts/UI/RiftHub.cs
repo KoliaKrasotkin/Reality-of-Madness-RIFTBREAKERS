@@ -47,6 +47,7 @@ namespace ROM.UI.Sprint01
         Text emoteStatus;
         public void Initialize()
         {
+            if(Application.isPlaying)RiftInputUI.Ensure();
             W.Body=InterfaceFont?InterfaceFont:Theme?Theme.Body:Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             // The condensed display font is restricted to headings. Body and navigation
             // use the existing Inter font to keep the new UI readable.
@@ -93,7 +94,8 @@ namespace ROM.UI.Sprint01
         }
         void Update()
         {
-            if(!InGame&&Input.GetKeyDown(KeyCode.Escape)&&!modal){if(Page!=HubPage.Home){homePanel="";Navigate(HubPage.Home);}else if(!string.IsNullOrEmpty(homePanel)){homePanel="";Navigate(HubPage.Home);}}
+            PollBinding();
+            if(!InGame&&!RiftControls.Rebinding&&RiftControls.EscapeConsumedFrame!=Time.frameCount&&Input.GetKeyDown(KeyCode.Escape)&&!modal){if(Page!=HubPage.Home){homePanel="";Navigate(HubPage.Home);}else if(!string.IsNullOrEmpty(homePanel)){homePanel="";Navigate(HubPage.Home);}}
             if(toast&&Time.unscaledTime>toastUntil)toast.text="";
             Fit();if(fallback&&Stage){fallback.enabled=!Stage.Ready;Stage.SetDisplay(Stage.Ready);}
             if(emoteStatus)emoteStatus.text=Stage&&!string.IsNullOrEmpty(Stage.CurrentEmoteName)?Stage.CurrentEmoteName:"Elegí un emote para tu personaje";
@@ -121,6 +123,7 @@ namespace ROM.UI.Sprint01
         static void Clear(Transform parent){foreach(var child in parent.Cast<Transform>().ToArray())DestroyImmediate(child.gameObject);}
         public void Navigate(HubPage page)
         {
+            CancelBinding();
             if(!content)return;
             if(page!=HubPage.Home&&Stage)Stage.StopEmote();emoteStatus=null;
             if(page==HubPage.Missions||page==HubPage.Lobby)page=HubPage.Home;
@@ -312,9 +315,7 @@ namespace ROM.UI.Sprint01
             var panel=W.Rect(body,"Options",0,85,1750,590);
             if(settingsTab=="Video")Video(panel,video);
             else if(settingsTab=="Sonido"){W.Label(panel,"Volumen general",0,10,700,40,25);W.Slider(panel,"MasterVolume",0,70,1100,0,1,draft.Volume,v=>draft.Volume=v);SaveSettings(panel,video);}
-            else if(settingsTab=="Controles"){
-                W.Label(panel,"Sensibilidad del mouse",0,0,800,40,25);W.Slider(panel,"MouseSensitivity",0,55,1100,.1f,5,draft.Sensitivity,v=>draft.Sensitivity=v);
-                W.Label(panel,"Campo de visión",0,155,800,40,25);W.Slider(panel,"Fov",0,210,1100,60,110,draft.Fov,v=>draft.Fov=v);SaveSettings(panel,video);
+            else if(settingsTab=="Controles"){ControlsSettings(panel,video);
             }else Profile(panel);
         }
         void Choice(Transform parent,string label,string value,float x,float y,float width,Action change)
@@ -396,6 +397,6 @@ namespace ROM.UI.Sprint01
             if(confirm!=null)W.Button(panel,"CONFIRMAR",490,500,418,64,()=>{DestroyImmediate(modal.gameObject);confirm();},true);
             if(EventSystem.current)EventSystem.current.SetSelectedGameObject(panel.GetComponentInChildren<Button>().gameObject);
         }
-        void OnDestroy(){if(Social!=null)Social.Changed-=SocialChanged;}
+        void OnDestroy(){CancelBinding();if(Social!=null)Social.Changed-=SocialChanged;}
     }
 }

@@ -9,7 +9,7 @@ namespace ROM.UI.Gameplay
         public LineRenderer Circle,Diamond;
         Health target;Transform head;
         public Health Target=>target;
-        public void SetTarget(Health health){if(target==health)return;target=health;head=null;if(target){var actor=target.GetComponent<CharacterInstance>();var native=target.GetComponent<WarriorAvatar>();Animator animator=native?native.Animator:null;if(!animator&&actor&&actor.CharacterParent){var pose=actor.CharacterParent.GetComponentInChildren<IDSGameplayPose>();if(pose)animator=pose.Target;}if(animator&&animator.isHuman)head=animator.GetBoneTransform(HumanBodyBones.Head);}gameObject.SetActive(target);}
+        public void SetTarget(Health health){if(!health){target=null;head=null;gameObject.SetActive(false);return;}if(target==health)return;target=health;head=null;if(target){var actor=target.GetComponent<CharacterInstance>();var native=target.GetComponent<WarriorAvatar>();Animator animator=native?native.Animator:null;if(!animator&&actor&&actor.CharacterParent){var pose=actor.CharacterParent.GetComponentInChildren<IDSGameplayPose>();if(pose)animator=pose.Target;}if(animator&&animator.isHuman)head=animator.GetBoneTransform(HumanBodyBones.Head);}gameObject.SetActive(target);}
         public void Follow(Camera camera)
         {
             if(!target||!camera)return;
