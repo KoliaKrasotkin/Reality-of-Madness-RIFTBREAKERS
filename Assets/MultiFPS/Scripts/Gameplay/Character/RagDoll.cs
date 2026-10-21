@@ -38,11 +38,6 @@ namespace MultiFPS.Gameplay
 
         public void ApplySkin(SkinContainer skin)
         {
-            
-            // --------------------------------------------------
-            // BUSCAR RIG SOLDIER DEL RAGDOLL
-            // --------------------------------------------------
-
             Transform rigSoldier = null;
 
             foreach (Transform t in GetComponentsInChildren<Transform>(true))
@@ -62,8 +57,6 @@ namespace MultiFPS.Gameplay
 
                 return;
             }
-
-
 
 
             if (!SkinBoneMapper.TryMapBones(

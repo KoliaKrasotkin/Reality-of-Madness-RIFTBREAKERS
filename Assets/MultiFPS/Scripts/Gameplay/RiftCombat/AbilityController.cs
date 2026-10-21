@@ -14,10 +14,14 @@ public sealed class AbilityController:NetworkBehaviour {
  public SpecializationDefinition Specialization=>Class&&Class.Specializations.Length>0?Class.Specializations[Mathf.Clamp(SpecIndex,0,Class.Specializations.Length-1)]:null;
  public static readonly List<AbilityController> Players=new List<AbilityController>();
  public static AbilityController For(Health h){foreach(var c in Players)if(c&&c.Actor&&c.Actor.Health==h)return c;return null;}
- AbilityDefinition pending;double hitAt;bool applied;Vector3 facing;CharacterInstance configured; double nextSelect;int queued=-1;float queueUntil;
+ uint attackTarget;AbilityDefinition pending;double hitAt;bool applied;Vector3 facing;CharacterInstance configured; double nextSelect;int queued=-1;float queueUntil;
  void Awake(){Player=GetComponent<PlayerInstance>();Players.Add(this);}
  void OnDestroy(){Players.Remove(this);}
  public override void OnStartServer(){for(int i=0;i<7;i++)Ready.Add(0);}
+ [SyncVar]public uint TargetNetId;
+ public Health CombatTarget{get{var registry=isServer?NetworkServer.spawned:NetworkClient.spawned;return TargetNetId!=0&&registry.TryGetValue(TargetNetId,out var identity)?identity.GetComponent<Health>():null;}}
+ [Command]public void CmdSetTarget(uint id){ServerSetTarget(id);}
+ [Server]public bool ServerSetTarget(uint id){if(id==0){TargetNetId=0;return true;}if(!Actor||!NetworkServer.spawned.TryGetValue(id,out var identity))return false;var health=identity.GetComponent<Health>();if(!health||health.CurrentHealth<=0||Vector3.Distance(Actor.transform.position,health.transform.position)>60)return false;TargetNetId=id;return true;}
  CharacterInstance localSelected;
  public override void OnStartLocalPlayer(){}
  [Command]public void CmdSelect(int specialization){ServerSelect(specialization);}
@@ -37,8 +41,9 @@ public sealed class AbilityController:NetworkBehaviour {
  [Server]public bool ServerUse(int slot){
   var ability=Definition(slot);double now=NetworkTime.time;
   if(!Prototype||!Actor||Actor.Health.CurrentHealth<=0||!ability||!ability.Implemented||!ability.Allows(Specialization.Id)||slot<0||slot>=Ready.Count||now<CastEnd||now<GlobalReady||now<Ready[slot]||Resource<ability.Cost||!GameManager.Gamemode.CanUseClassAbilities(Actor.transform.position))return false;
+  if(slot==0){var target=CombatTarget;if(!target||target==Actor.Health||target.Team==Actor.Health.Team||target.CurrentHealth<=0)return false;var delta=target.transform.position-Actor.transform.position;delta.y=0;var forward=Quaternion.Euler(0,Actor.Input.LookY,0)*Vector3.forward;if(delta.magnitude>ability.Radius||Vector3.Angle(forward,delta)>ability.Arc*.5f||!CombatController.Visible(Actor,target))return false;}
   Resource=Mathf.Max(0,Resource-ability.Cost);Ready[slot]=now+ability.Cooldown;GlobalReady=now+ability.Recovery;
-  Casting=slot;pending=ability;CastEnd=now+ability.CastDuration;hitAt=now+ability.HitTime;applied=false;
+  attackTarget=TargetNetId;Casting=slot;pending=ability;CastEnd=now+ability.CastDuration;hitAt=now+ability.HitTime;applied=false;
   facing=Quaternion.Euler(0,Actor.Input.LookY,0)*Vector3.forward;Player.LastCombatAt=now;
   RpcPresentation(slot,Actor.transform.position,facing);return true;
  }
@@ -47,7 +52,7 @@ public sealed class AbilityController:NetworkBehaviour {
   if(isLocalPlayer&&Actor&&localSelected!=Actor){localSelected=Actor;CmdSelect(PlayerPrefs.GetInt(Preference,0)-1);}
   if(isServer&&Prototype){
    if(!Species.AllowsSkin(Player.PlayerInfo.CharacterSkinID)){Prototype=false;Cancel();return;}
-   if(!Actor||Actor.Health.CurrentHealth<=0){Cancel();configured=null;return;}if(configured!=Actor)Configure();
+   if(!Actor||Actor.Health.CurrentHealth<=0){TargetNetId=0;Cancel();configured=null;return;}if(TargetNetId!=0&&(!CombatTarget||CombatTarget.CurrentHealth<=0||Vector3.Distance(Actor.transform.position,CombatTarget.transform.position)>60))TargetNetId=0;if(configured!=Actor)Configure();
    if(pending&&!applied&&NetworkTime.time>=hitAt){applied=true;Apply(pending);}if(pending&&NetworkTime.time>=CastEnd)Cancel();
   }
   if(isLocalPlayer&&Prototype){if(queued>=0){if(Time.unscaledTime>queueUntil)queued=-1;else if(NetworkTime.time>=CastEnd&&NetworkTime.time>=GlobalReady){CmdUse(queued);queued=-1;}}}
@@ -61,7 +66,7 @@ public sealed class AbilityController:NetworkBehaviour {
   }else{
    // Registry contains each Health once: one damage event per target per strike.
    foreach(var p in GameManager.Players){if(!p||!p.MyCharacter)continue;var victim=p.MyCharacter.Health;
-    if(victim==Actor.Health||victim.Team==Actor.Health.Team||victim.CurrentHealth<=0)continue;
+    if(victim==Actor.Health||victim.Team==Actor.Health.Team||victim.CurrentHealth<=0||(Casting==0&&victim.netId!=attackTarget))continue;
     Vector3 delta=victim.transform.position-origin;delta.y=0;
     if(delta.magnitude>ability.Radius||(ability.Shape==AbilityShape.Arc&&Vector3.Angle(facing,delta)>ability.Arc*.5f)||!CombatController.Visible(Actor,victim))continue;
     float buff=BuffUntil>NetworkTime.time?1+OffensiveBonus:1;

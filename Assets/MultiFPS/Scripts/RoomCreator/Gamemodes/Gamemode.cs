@@ -579,7 +579,7 @@ namespace MultiFPS.Gameplay.Gamemodes
             if (playerInstance == null)
             {
                 Debug.LogError(
-                    "Raid: el prefab necesita PlayerInstance en el objeto raíz."
+                    "Raid: el prefab necesita PlayerInstance en el objeto raï¿½z."
                 );
 
                 Destroy(botObject);
@@ -589,7 +589,7 @@ namespace MultiFPS.Gameplay.Gamemodes
             if (botObject.GetComponent<NetworkIdentity>() == null)
             {
                 Debug.LogError(
-                    "Raid: el prefab necesita NetworkIdentity en el objeto raíz."
+                    "Raid: el prefab necesita NetworkIdentity en el objeto raï¿½z."
                 );
 
                 Destroy(botObject);
