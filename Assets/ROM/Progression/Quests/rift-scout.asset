@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae601eb47e202149b5c8b932c3897a9, type: 3}
+  m_Name: rift-scout
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftQuestDefinition
+  Id: rift-scout
+  Title: "Un paso m\xE1s all\xE1"
+  Description: "Sal\xED del refugio, derrot\xE1 patrullas y activ\xE1 un cristal
+    de otra isla. Despu\xE9s regres\xE1 con Iria."
+  Giver: iria
+  TurnIn: iria
+  Prerequisite: refuge-training
+  Gold: 120
+  Objectives:
+  - Event: 2
+    Filter: 
+    Label: Enemigos derrotados
+    Required: 5
+    Unique: 0
+  - Event: 3
+    Filter: 
+    Label: Activar un cristal de otra isla
+    Required: 1
+    Unique: 1
