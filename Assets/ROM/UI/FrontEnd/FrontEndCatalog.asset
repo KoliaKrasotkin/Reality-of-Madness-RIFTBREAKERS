@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b130595a91a406418dc976f265f42f3, type: 3}
+  m_Name: FrontEndCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.UI.Sprint01.FrontEndCatalog
+  Models:
+  - Key: ids-character-0
+    Name: Black Panther
+    Category: Personaje
+    Prefab: {fileID: 1776869511958445196, guid: 501e390ae85e7a947869506014cc1d22,
+      type: 3}
+    SkinIndex: 0
+    ForSale: 1
+    GoldPrice: 800
+  - Key: ids-character-1
+    Name: Lizardman Berserker
+    Category: Personaje
+    Prefab: {fileID: 7152280501822526754, guid: 7c739340caaaafe43905eb55401306d5,
+      type: 3}
+    SkinIndex: 1
+    ForSale: 1
+    GoldPrice: 1000
+  - Key: ids-character-2
+    Name: Purplehead
+    Category: Personaje
+    Prefab: {fileID: 7097988499761441884, guid: 57b613d5cc03a6e479d68eb482a17b17,
+      type: 3}
+    SkinIndex: 2
+    ForSale: 1
+    GoldPrice: 1200
+  - Key: ids-character-3
+    Name: Redhead
+    Category: Personaje
+    Prefab: {fileID: 5469072177902730799, guid: 5d0fd9a88b8c32f44b06ba82f7686e7c,
+      type: 3}
+    SkinIndex: 3
+    ForSale: 1
+    GoldPrice: 1400
+  - Key: ids-character-4
+    Name: White Knight
+    Category: Personaje
+    Prefab: {fileID: 4401162153400207740, guid: 32cc702e7dd50874785c74b5674c5438,
+      type: 3}
+    SkinIndex: 4
+    ForSale: 1
+    GoldPrice: 1600
+  - Key: ids-weapon-0
+    Name: Fusil IDS
+    Category: Arma
+    Prefab: {fileID: 1668590742779361192, guid: f7d3707049eb6264689c1fac904c0b32,
+      type: 3}
+    SkinIndex: -1
+    ForSale: 1
+    GoldPrice: 400
+  - Key: ids-weapon-1
+    Name: Pistola IDS
+    Category: Arma
+    Prefab: {fileID: 7634412563224422343, guid: 84b928e3296ff764896b96d498c03ad5,
+      type: 3}
+    SkinIndex: -1
+    ForSale: 1
+    GoldPrice: 500
+  - Key: ids-weapon-2
+    Name: Escopeta IDS
+    Category: Arma
+    Prefab: {fileID: 3129810211288486342, guid: 81277c554f686424c9ac4902dd681311,
+      type: 3}
+    SkinIndex: -1
+    ForSale: 1
+    GoldPrice: 600
+  - Key: ids-weapon-3
+    Name: Francotirador IDS
+    Category: Arma
+    Prefab: {fileID: 2871591150799544638, guid: 57eac3c67f56dc04080de5ebebb7bbbf,
+      type: 3}
+    SkinIndex: -1
+    ForSale: 1
+    GoldPrice: 700
+  StagePrefab: {fileID: 1908155484932674888, guid: a5198739f5eb54f42a8c5e570f647585,
+    type: 3}
+  Emotes:
+  - Name: SALUDO
+    Clip: {fileID: -203655887218126122, guid: 0ab23c336f0d15f4b8957a1118d52b86, type: 3}
+    Seconds: 3.0333335
+  - Name: CELEBRAR
+    Clip: {fileID: -203655887218126122, guid: 3a1ced7ead774cc45a965c23026af277, type: 3}
+    Seconds: 4.866667
+  - Name: MANOS ARRIBA
+    Clip: {fileID: 7400000, guid: 16ff96d30b3812c4a858882ff81b37b8, type: 3}
+    Seconds: 8
+  - Name: ZOMBI
+    Clip: {fileID: 7400000, guid: 765df14d6804d3648901706eb6077345, type: 3}
+    Seconds: 7
+  - Name: "SAMUR\xC1I"
+    Clip: {fileID: 1827226128182048838, guid: 086ed340a1f85d747ab1f3091a5cbf1a, type: 3}
+    Seconds: 7
+  - Name: SUPLICAR
+    Clip: {fileID: 7400000, guid: 3a79ccf85e79f1c488774cf37b68a390, type: 3}
+    Seconds: 7
+  EmoteController: {fileID: 9100000, guid: 2fbc51d7bc34b494ebf5e4ee4f8eda71, type: 2}
+  EmotePlaceholder: {fileID: -203655887218126122, guid: 0ab23c336f0d15f4b8957a1118d52b86,
+    type: 3}

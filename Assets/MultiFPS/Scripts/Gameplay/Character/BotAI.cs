@@ -173,6 +173,8 @@ namespace MultiFPS.Gameplay
             enabled = _characterInstance.BOT;
         }
 
+        bool LocalPatrol => _gamemode is Raid || (_gamemode && _gamemode.UseLocalPatrol);
+
         void AIUpdate(float timestep)
         {
             if (_characterInstance.Health.CurrentHealth <= 0)
@@ -201,6 +203,12 @@ namespace MultiFPS.Gameplay
                 );
             }
 
+            var territory = GetComponent<RiftEnemyTerritory>();
+            if (territory && Vector3.Distance(transform.position, territory.Home) > territory.Leash) {
+                targetedEnemy=null;_pushTrigger=false;_characterInstance.Input.ActionCodes=0;
+                SetTravelDestinationByNavMesh(territory.Home,true,true);UpdatePath();return;
+            }
+            if (targetedEnemy && (!RiftClassCombat.CanTarget(targetedEnemy,transform.position)||(territory && !territory.CanTarget(targetedEnemy)))) targetedEnemy=null;
             UpdatePath();
 
             _enemyInSight = EnemyInSight();
@@ -241,13 +249,13 @@ namespace MultiFPS.Gameplay
                 _focusEnemyTimer = 0;
 
             // AI LOGIC
-            if (!_enemyInSight ||
+            if (_gamemode.ClassRules || !_enemyInSight ||
                 (targetedEnemy && targetedEnemy.CurrentHealth <= 0))
             {
                 targetedEnemy = GetClosestEnemy();
             }
             // En Asalto, abandonar objetivos que se alejan demasiado.
-            if (_gamemode is Raid && targetedEnemy != null)
+            if (LocalPatrol && targetedEnemy != null)
             {
                 float targetDistance = Vector3.Distance(
                     _transform.position,
@@ -391,7 +399,7 @@ namespace MultiFPS.Gameplay
                         );
                     }
                 }
-                else if (_gamemode is Raid)
+                else if (LocalPatrol)
                 {
                     PatrolRaid();
                 }
@@ -450,7 +458,7 @@ namespace MultiFPS.Gameplay
                 offset.y = 0f;
 
                 Vector3 candidatePosition =
-                    _transform.position + offset;
+                    (GetComponent<RiftEnemyTerritory>() is var home && home ? home.Home : _transform.position) + offset;
 
                 if (!NavMesh.SamplePosition(
                     candidatePosition,
@@ -758,11 +766,15 @@ namespace MultiFPS.Gameplay
                     _potentialEnemy.transform.position
                     );
 
-                    bool raidMode = _gamemode is Raid;
+                    var territory=GetComponent<RiftEnemyTerritory>();
+                    if(territory && !territory.CanTarget(_potentialEnemy)) continue;
+                    bool raidMode = LocalPatrol;
 
                     if (raidMode && distance > raidDetectionRange)
                         continue;
 
+                    if (!RiftClassCombat.CanTarget(_potentialEnemy,we))continue;
+                    distance*=RiftClassCombat.TargetPriority(_potentialEnemy);
                     if (distance < lastDistance)
                     {
                         _potentialNearestEnemy = _potentialEnemy;

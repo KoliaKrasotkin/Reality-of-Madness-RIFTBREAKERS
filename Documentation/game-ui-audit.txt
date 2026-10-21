@@ -1,0 +1,215 @@
+PauseMenuUI=Assets/MultiFPS/Levels/Prefabs/UI/UI_PauseMenu.prefab
+ChatUI=Assets/MultiFPS/Levels/Prefabs/UI/UI_Chat.prefab
+ScoreboardUI=Assets/MultiFPS/Levels/Prefabs/UI/UI_Scoreboard.prefab
+KillfeedUI=Assets/MultiFPS/Levels/Prefabs/UI/UI_KillfeedV2.prefab
+PlayerHudUI=Assets/MultiFPS/Levels/Prefabs/UI/HUD/HUD_PlayerHud.prefab
+_additionalUI.Array.data[0]=Assets/MultiFPS/Levels/Prefabs/UI/HUD/UI_HUD_DamageDealtPopup.prefab
+gamemodesUI.Array.data[0]=Assets/MultiFPS/Levels/Prefabs/UI/Gamemodes/UI_GM_Deathmatch.prefab
+gamemodesUI.Array.data[1]=Assets/MultiFPS/Levels/Prefabs/UI/Gamemodes/UI_GM_TeamBasedGamemode.prefab
+gamemodesUI.Array.data[2]=Assets/MultiFPS/Levels/Prefabs/UI/Gamemodes/UI_GM_TeamBasedGamemode.prefab
+gamemodesUI.Array.data[3]=Assets/MultiFPS/Levels/Prefabs/UI/Gamemodes/UI_GM_Defuse.prefab
+PREFAB Assets/MultiFPS/Levels/Prefabs/UI/UI_PauseMenu.prefab
+UI_PauseMenu rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,Canvas,CanvasScaler,GraphicRaycaster,UIPauseMenu,UIUserSettings,PlayerLodout,UIPauseMenuPanelsManager] 
+UI_PauseMenu/overlay/Image rect=(100.15, 0.00) size=(200.31, 1.00) [RectTransform,CanvasRenderer,Image,Outline] 
+UI_PauseMenu/overlay/btn_resume rect=(100.00, -150.00) size=(160.00, 30.00) [RectTransform,CanvasRenderer,Image,Button] 
+UI_PauseMenu/overlay/btn_resume/Text rect=(5.19, 0.00) size=(-10.39, 0.00) [RectTransform,CanvasRenderer,Text] Resume
+UI_PauseMenu/overlay/btn_lodout rect=(100.00, -190.00) size=(160.00, 30.00) [RectTransform,CanvasRenderer,Image,Button] 
+UI_PauseMenu/overlay/btn_lodout/Text rect=(5.19, 0.00) size=(-10.39, 0.00) [RectTransform,CanvasRenderer,Text] Lodout
+UI_PauseMenu/overlay/btn_options rect=(100.00, -230.00) size=(160.00, 30.00) [RectTransform,CanvasRenderer,Image,Button] 
+UI_PauseMenu/overlay/btn_options/Text rect=(5.19, 0.00) size=(-10.39, 0.00) [RectTransform,CanvasRenderer,Text] Options
+UI_PauseMenu/overlay/btn_disconnect rect=(100.00, -310.00) size=(160.00, 30.00) [RectTransform,CanvasRenderer,Image,Button] 
+UI_PauseMenu/overlay/btn_disconnect/Text rect=(5.19, 0.00) size=(-10.39, 0.00) [RectTransform,CanvasRenderer,Text] Disconnect
+UI_PauseMenu/overlay/Image rect=(-386.20, -31.50) size=(772.41, 63.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/Gamemode rect=(-364.35, -36.80) size=(697.29, 53.61) [RectTransform,CanvasRenderer,Text,Outline] Gamemode: NONE
+UI_PauseMenu/overlay/OptionsPanel rect=(570.60, 0.00) size=(700.00, 560.00) [RectTransform,CanvasRenderer,Image,Outline] 
+UI_PauseMenu/overlay/OptionsPanel/Apply rect=(110.00, -265.00) size=(160.00, 30.00) [RectTransform,CanvasRenderer,Image,Button] 
+UI_PauseMenu/overlay/OptionsPanel/Apply/Text rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text] Apply changes
+UI_PauseMenu/overlay/OptionsPanel/header rect=(0.00, 300.34) size=(320.00, 45.16) [RectTransform,CanvasRenderer,Text] Settings
+UI_PauseMenu/overlay/OptionsPanel/Cancel rect=(-80.00, 15.00) size=(160.00, 30.00) [RectTransform,CanvasRenderer,Image,Button] 
+UI_PauseMenu/overlay/OptionsPanel/Cancel/Text (Legacy) rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text] Cancel
+UI_PauseMenu/overlay/OptionsPanel/Sensitivity rect=(3.35, 136.53) size=(261.89, 70.86) [RectTransform,UISliderInputOption] 
+UI_PauseMenu/overlay/OptionsPanel/Sensitivity/AudioVolInputField (1) rect=(193.15, 0.00) size=(66.29, 30.00) [RectTransform,CanvasRenderer,Image,InputField] 
+UI_PauseMenu/overlay/OptionsPanel/Sensitivity/AudioVolInputField (1)/Placeholder rect=(0.00, -0.50) size=(-20.00, -13.00) [RectTransform,CanvasRenderer,Text] Enter text...
+UI_PauseMenu/overlay/OptionsPanel/Sensitivity/AudioVolInputField (1)/Text rect=(0.00, -0.50) size=(-20.00, -13.00) [RectTransform,CanvasRenderer,Text] 1
+UI_PauseMenu/overlay/OptionsPanel/Sensitivity/AudioVolSlider (1) rect=(0.00, 5.80) size=(187.25, 20.00) [RectTransform,Slider] 
+UI_PauseMenu/overlay/OptionsPanel/Sensitivity/AudioVolSlider (1)/Background rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/Sensitivity/AudioVolSlider (1)/Fill Area/Fill rect=(0.00, 0.00) size=(10.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/Sensitivity/AudioVolSlider (1)/Handle Slide Area/Handle rect=(0.00, 0.00) size=(20.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/Sensitivity/Text (Legacy) rect=(0.00, 35.43) size=(246.85, 30.00) [RectTransform,CanvasRenderer,Text] Camera sensitivity
+UI_PauseMenu/overlay/OptionsPanel/AudioVolume rect=(2.90, 57.00) size=(261.89, 70.86) [RectTransform,UISliderInputOption] 
+UI_PauseMenu/overlay/OptionsPanel/AudioVolume/AudioVolInputField (1) rect=(193.15, 0.00) size=(66.29, 30.00) [RectTransform,CanvasRenderer,Image,InputField] 
+UI_PauseMenu/overlay/OptionsPanel/AudioVolume/AudioVolInputField (1)/Placeholder rect=(0.00, -0.50) size=(-20.00, -13.00) [RectTransform,CanvasRenderer,Text] Enter text...
+UI_PauseMenu/overlay/OptionsPanel/AudioVolume/AudioVolInputField (1)/Text rect=(0.00, -0.50) size=(-20.00, -13.00) [RectTransform,CanvasRenderer,Text] 1
+UI_PauseMenu/overlay/OptionsPanel/AudioVolume/AudioVolSlider (1) rect=(0.00, 5.80) size=(187.25, 20.00) [RectTransform,Slider] 
+UI_PauseMenu/overlay/OptionsPanel/AudioVolume/AudioVolSlider (1)/Background rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/AudioVolume/AudioVolSlider (1)/Fill Area/Fill rect=(0.00, 0.00) size=(10.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/AudioVolume/AudioVolSlider (1)/Handle Slide Area/Handle rect=(0.00, 0.00) size=(20.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/AudioVolume/Text (Legacy) rect=(0.00, 35.43) size=(246.85, 30.00) [RectTransform,CanvasRenderer,Text] AudioVolume
+UI_PauseMenu/overlay/OptionsPanel/FOVSlider rect=(3.35, -32.90) size=(261.89, 70.86) [RectTransform,UISliderInputOption] 
+UI_PauseMenu/overlay/OptionsPanel/FOVSlider/AudioVolInputField (1) rect=(193.15, 0.00) size=(66.29, 30.00) [RectTransform,CanvasRenderer,Image,InputField] 
+UI_PauseMenu/overlay/OptionsPanel/FOVSlider/AudioVolInputField (1)/Placeholder rect=(0.00, -0.50) size=(-20.00, -13.00) [RectTransform,CanvasRenderer,Text] Enter text...
+UI_PauseMenu/overlay/OptionsPanel/FOVSlider/AudioVolInputField (1)/Text rect=(0.00, -0.50) size=(-20.00, -13.00) [RectTransform,CanvasRenderer,Text] 1
+UI_PauseMenu/overlay/OptionsPanel/FOVSlider/AudioVolSlider (1) rect=(0.00, 5.80) size=(187.25, 20.00) [RectTransform,Slider] 
+UI_PauseMenu/overlay/OptionsPanel/FOVSlider/AudioVolSlider (1)/Background rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/FOVSlider/AudioVolSlider (1)/Fill Area/Fill rect=(0.00, 0.00) size=(10.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/FOVSlider/AudioVolSlider (1)/Handle Slide Area/Handle rect=(0.00, 0.00) size=(20.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/FOVSlider/Text (Legacy) rect=(0.00, 35.43) size=(246.85, 30.00) [RectTransform,CanvasRenderer,Text] Field of view
+UI_PauseMenu/overlay/OptionsPanel/FPPFOVSlider rect=(2.90, -112.43) size=(261.89, 70.86) [RectTransform,UISliderInputOption] 
+UI_PauseMenu/overlay/OptionsPanel/FPPFOVSlider/AudioVolInputField (1) rect=(193.15, 0.00) size=(66.29, 30.00) [RectTransform,CanvasRenderer,Image,InputField] 
+UI_PauseMenu/overlay/OptionsPanel/FPPFOVSlider/AudioVolInputField (1)/Placeholder rect=(0.00, -0.50) size=(-20.00, -13.00) [RectTransform,CanvasRenderer,Text] Enter text...
+UI_PauseMenu/overlay/OptionsPanel/FPPFOVSlider/AudioVolInputField (1)/Text rect=(0.00, -0.50) size=(-20.00, -13.00) [RectTransform,CanvasRenderer,Text] 1
+UI_PauseMenu/overlay/OptionsPanel/FPPFOVSlider/AudioVolSlider (1) rect=(0.00, 5.80) size=(187.25, 20.00) [RectTransform,Slider] 
+UI_PauseMenu/overlay/OptionsPanel/FPPFOVSlider/AudioVolSlider (1)/Background rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/FPPFOVSlider/AudioVolSlider (1)/Fill Area/Fill rect=(0.00, 0.00) size=(10.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/FPPFOVSlider/AudioVolSlider (1)/Handle Slide Area/Handle rect=(0.00, 0.00) size=(20.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/OptionsPanel/FPPFOVSlider/Text (Legacy) rect=(0.00, 35.43) size=(246.85, 30.00) [RectTransform,CanvasRenderer,Text] Field of view (FPP)
+UI_PauseMenu/overlay/LodoutPanel rect=(570.60, 0.00) size=(700.00, 560.00) [RectTransform,CanvasRenderer,Image,Outline] 
+UI_PauseMenu/overlay/LodoutPanel/header rect=(0.00, 300.34) size=(320.00, 45.16) [RectTransform,CanvasRenderer,Text] Lodout
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy) rect=(106.52, -15.00) size=(213.05, 30.00) [RectTransform,CanvasRenderer,Image,Dropdown,PlayerLodoutSingleSlot] 
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Label rect=(-7.50, -0.50) size=(-35.00, -13.00) [RectTransform,CanvasRenderer,Text] Option A
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Arrow rect=(-15.00, 0.00) size=(20.00, 20.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Selected Item Image rect=(0.00, 93.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image,ContentSizeFitter] 
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Template rect=(0.00, 2.00) size=(0.00, 331.32) [RectTransform,CanvasRenderer,Image,ScrollRect] 
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Template/Viewport rect=(0.00, 0.00) size=(-17.00, 0.00) [RectTransform,CanvasRenderer,Image,Mask] 
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Template/Viewport/Content/Item rect=(0.00, 0.00) size=(0.00, 90.00) [RectTransform,Toggle] 
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Template/Viewport/Content/Item/Item Background rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Template/Viewport/Content/Item/Item Checkmark rect=(9.98, 9.47) size=(20.00, 20.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Template/Viewport/Content/Item/Item Label rect=(80.38, 8.94) size=(120.86, 18.94) [RectTransform,CanvasRenderer,Text,Outline] Option A
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Template/Viewport/Content/Item/Item Image rect=(0.00, 0.00) size=(768.00, 256.00) [RectTransform,CanvasRenderer,Image,ContentSizeFitter] 
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Template/Scrollbar rect=(0.00, 0.00) size=(20.00, 0.00) [RectTransform,CanvasRenderer,Image,Scrollbar] 
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/Template/Scrollbar/Sliding Area/Handle rect=(0.00, 0.00) size=(20.00, 20.00) [RectTransform,CanvasRenderer,Image] 
+UI_PauseMenu/overlay/LodoutPanel/Slots/Dropdown (Legacy)/SlotName rect=(-28.79, 108.00) size=(155.46, 30.00) [RectTransform,CanvasRenderer,Text] Slot 1
+UI_PauseMenu/overlay/LodoutPanel/Cancel rect=(-80.00, 15.00) size=(160.00, 30.00) [RectTransform,CanvasRenderer,Image,Button] 
+UI_PauseMenu/overlay/LodoutPanel/Cancel/Text (Legacy) rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text] Cancel
+UI_PauseMenu/overlay/PrivateCode rect=(-364.35, -89.80) size=(697.29, 53.61) [RectTransform,CanvasRenderer,Text,Outline] Private Code: XXXXX
+PREFAB Assets/MultiFPS/Levels/Prefabs/UI/UI_Chat.prefab
+UI_Chat rect=(0.00, 0.00) size=(100.00, 100.00) [RectTransform,Canvas,CanvasScaler,GraphicRaycaster,ChatUI] 
+UI_Chat/chatOverlay/messageContent rect=(72.97, -73.29) size=(576.06, 216.21) [RectTransform,CanvasRenderer,TextMeshProUGUI] 
+UI_Chat/chatOverlay/messageInputField rect=(72.98, -132.90) size=(576.05, 51.81) [RectTransform,CanvasRenderer,FocusedInputField,Image] 
+UI_Chat/chatOverlay/messageInputField/Text rect=(0.00, -0.50) size=(-20.00, -13.00) [RectTransform,CanvasRenderer,Text] ty
+UI_Chat/chatOverlay/messageInputField/Placeholder rect=(0.00, -0.50) size=(-20.00, -13.00) [RectTransform,CanvasRenderer,Text] ......
+PREFAB Assets/MultiFPS/Levels/Prefabs/UI/UI_Scoreboard.prefab
+UI_Scoreboard rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,Canvas,CanvasScaler,GraphicRaycaster,ScoreBoard] 
+UI_Scoreboard/Overlay rect=(0.00, -36.00) size=(640.00, 414.00) [RectTransform,CanvasRenderer,Image,GridLayoutGroup] 
+UI_Scoreboard/Overlay/Legend rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_Scoreboard/Overlay/Legend/kills rect=(-125.00, -15.00) size=(50.00, 30.00) [RectTransform,CanvasRenderer,Text,Outline] K
+UI_Scoreboard/Overlay/Legend/deaths_background rect=(-75.00, -15.00) size=(50.00, 30.00) [RectTransform,CanvasRenderer,Image] 
+UI_Scoreboard/Overlay/Legend/deaths rect=(-75.00, -15.30) size=(50.00, 30.00) [RectTransform,CanvasRenderer,Text,Outline] D
+UI_Scoreboard/Overlay/Legend/assists rect=(-25.00, -15.25) size=(50.00, 29.90) [RectTransform,CanvasRenderer,Text,Outline] A
+UI_Scoreboard/Overlay/Legend/latency rect=(25.00, -0.10) size=(30.00, 30.00) [RectTransform,CanvasRenderer,Outline,Image] 
+UI_Scoreboard/Overlay/Scoreboard Presenter rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,UIScoreBoardPlayerElement] 
+UI_Scoreboard/Overlay/Scoreboard Presenter/background rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+UI_Scoreboard/Overlay/Scoreboard Presenter/deaths_background_1 rect=(-75.00, -15.00) size=(50.00, 30.00) [RectTransform,CanvasRenderer,Image] 
+UI_Scoreboard/Overlay/Scoreboard Presenter/latency rect=(25.00, 0.00) size=(50.00, 30.00) [RectTransform,CanvasRenderer,Text] 999
+UI_Scoreboard/Overlay/Scoreboard Presenter/username rect=(162.21, 0.00) size=(216.66, 30.00) [RectTransform,CanvasRenderer,Text] username
+UI_Scoreboard/Overlay/Scoreboard Presenter/kills rect=(-123.33, 0.00) size=(46.66, 30.00) [RectTransform,CanvasRenderer,Text] 999
+UI_Scoreboard/Overlay/Scoreboard Presenter/deaths rect=(-75.00, 0.00) size=(50.00, 30.00) [RectTransform,CanvasRenderer,Text] 999
+UI_Scoreboard/Overlay/Scoreboard Presenter/assists rect=(-25.00, 0.00) size=(50.00, 30.00) [RectTransform,CanvasRenderer,Text] 999
+PREFAB Assets/MultiFPS/Levels/Prefabs/UI/UI_KillfeedV2.prefab
+UI_KillfeedV2 rect=(50.00, 50.00) size=(100.00, 100.00) [RectTransform,Canvas,CanvasScaler,GraphicRaycaster,UIKillFeedV2] 
+UI_KillfeedV2/Scaler/KillfeedContainer/KillfeedElement rect=(0.00, 0.00) size=(465.60, 46.00) [RectTransform,CanvasRenderer,Outline,UIKillFeedElementV2] 
+UI_KillfeedV2/Scaler/KillfeedContainer/KillfeedElement/backgroud rect=(0.00, 0.00) size=(100.00, 54.00) [RectTransform,CanvasRenderer,Image] 
+UI_KillfeedV2/Scaler/KillfeedContainer/KillfeedElement/killer rect=(54.00, -23.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text,Outline,ContentSizeFitter,UILayoutElement] player
+UI_KillfeedV2/Scaler/KillfeedContainer/KillfeedElement/weapon rect=(157.92, -23.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Outline,ContentSizeFitter,Image,UILayoutElement] 
+UI_KillfeedV2/Scaler/KillfeedContainer/KillfeedElement/penetrationIndicator rect=(282.72, -23.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Outline,ContentSizeFitter,Image,UILayoutElement] 
+UI_KillfeedV2/Scaler/KillfeedContainer/KillfeedElement/headShotIndicator rect=(332.64, -23.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image,ContentSizeFitter,UILayoutElement] 
+UI_KillfeedV2/Scaler/KillfeedContainer/KillfeedElement/victim rect=(411.60, -23.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text,Outline,ContentSizeFitter,UILayoutElement] player
+PREFAB Assets/MultiFPS/Levels/Prefabs/UI/HUD/HUD_PlayerHud.prefab
+HUD_PlayerHud rect=(0.00, 0.00) size=(1280.00, 720.00) [RectTransform,Canvas,CanvasScaler,GraphicRaycaster,AudioSource,UICharacter,HUDTakeDamageMarker,HudInventory,Crosshair,UISpectator] 
+HUD_PlayerHud/GameplayHUD/TakenDamageIndicator rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image] 
+HUD_PlayerHud/GameplayHUD/Crosshair_CenterDot rect=(0.00, 0.00) size=(4.00, 4.00) [RectTransform,CanvasRenderer,Image,Outline,Outline] 
+HUD_PlayerHud/GameplayHUD/Crosshair_Horizontal rect=(0.00, 0.00) size=(64.00, 64.00) [RectTransform,CanvasRenderer,Image,Outline,Outline] 
+HUD_PlayerHud/GameplayHUD/Crosshair_Vertical rect=(0.00, 0.00) size=(64.00, 64.00) [RectTransform,CanvasRenderer,Image,Outline,Outline] 
+HUD_PlayerHud/GameplayHUD/Ammo rect=(-7.86, 4.20) size=(0.00, 63.65) [RectTransform,CanvasRenderer,Image,HorizontalLayoutGroup,ContentSizeFitter] 
+HUD_PlayerHud/GameplayHUD/Ammo/ammo rect=(81.50, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,ContentSizeFitter,Text,Outline] 200|
+HUD_PlayerHud/GameplayHUD/Ammo/ammoSupply rect=(212.50, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,ContentSizeFitter,Text,Outline] 900
+HUD_PlayerHud/GameplayHUD/Health/health rect=(0.00, 10.00) size=(180.00, 80.00) [RectTransform,CanvasRenderer,Text,Outline,Shadow] 200
+HUD_PlayerHud/GameplayHUD/Health/healthBa_background rect=(0.00, 0.00) size=(180.00, 10.00) [RectTransform,CanvasRenderer,Image] 
+HUD_PlayerHud/GameplayHUD/Health/healthBar rect=(0.00, 0.00) size=(180.00, 10.00) [RectTransform,CanvasRenderer,Image,Outline,Shadow] 
+HUD_PlayerHud/GameplayHUD/Equipment/ItemRepresenter rect=(0.00, 0.00) size=(600.00, 160.00) [RectTransform,CanvasRenderer,Image,HudInventoryElement] 
+HUD_PlayerHud/GameplayHUD/Equipment/ItemRepresenter/ItemImage rect=(-40.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image,Outline,ContentSizeFitter,Shadow] 
+HUD_PlayerHud/GameplayHUD/Equipment/ItemRepresenter/ItemName rect=(366.69, -104.21) size=(333.37, 88.43) [RectTransform,CanvasRenderer,Text,Outline,LayoutElement] EMPTY
+HUD_PlayerHud/GameplayHUD/Equipment/ItemRepresenter/Text (Legacy) rect=(-29.03, 41.40) size=(58.05, 82.80) [RectTransform,CanvasRenderer,Text,Outline] 1
+HUD_PlayerHud/GameplayHUD/KillInfo rect=(800.00, -504.00) size=(1200.00, 120.00) [RectTransform,CanvasRenderer,Text,Outline] TERMINATED: Player
+HUD_PlayerHud/GameplayHUD/HitMarkerParent rect=(0.00, 0.00) size=(100.00, 100.00) [RectTransform,HitMarker] 
+HUD_PlayerHud/GameplayHUD/HitMarkerParent/HitMarker rect=(0.00, 0.00) size=(32.00, 32.00) [RectTransform,CanvasRenderer,Image,Outline] 
+HUD_PlayerHud/GameplayHUD/KillConfirmationParent rect=(0.00, 0.00) size=(100.00, 100.00) [RectTransform,HitMarker] 
+HUD_PlayerHud/GameplayHUD/KillConfirmationParent/KillConfirmationIcon rect=(0.00, 0.00) size=(32.00, 32.00) [RectTransform,CanvasRenderer,Image,Outline] 
+HUD_PlayerHud/GameplayHUD/takeDamageMarker rect=(0.00, 0.00) size=(100.00, 100.00) [RectTransform,HUDSingleHitIndicator] 
+HUD_PlayerHud/GameplayHUD/takeDamageMarker/img rect=(0.00, 0.00) size=(512.00, 512.00) [RectTransform,CanvasRenderer,Image] 
+HUD_PlayerHud/GameplayHUD/Spectator/Image rect=(0.00, 0.00) size=(450.00, 100.00) [RectTransform,CanvasRenderer,Image] 
+HUD_PlayerHud/GameplayHUD/Spectator/Text (Legacy) rect=(0.00, -0.16) size=(450.00, 83.60) [RectTransform,CanvasRenderer,Text,Outline,Shadow] SPECTATING: USERNAME
+HUD_PlayerHud/GameplayHUD/Spectator/bot Indicator rect=(0.00, 80.72) size=(450.00, 49.86) [RectTransform,CanvasRenderer,Text] Press [E] to take over
+HUD_PlayerHud/GameplayHUD/ItemSwap/background_left rect=(0.00, 0.00) size=(300.00, 80.00) [RectTransform,CanvasRenderer,Image] 
+HUD_PlayerHud/GameplayHUD/ItemSwap/background_right rect=(0.00, 0.00) size=(300.00, 80.00) [RectTransform,CanvasRenderer,Image] 
+HUD_PlayerHud/GameplayHUD/ItemSwap/swapIcon rect=(0.00, 0.00) size=(100.00, 100.00) [RectTransform,CanvasRenderer,Image] 
+HUD_PlayerHud/GameplayHUD/ItemSwap/owned rect=(-30.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image,ContentSizeFitter,Outline] 
+HUD_PlayerHud/GameplayHUD/ItemSwap/abouttotake rect=(30.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Image,ContentSizeFitter,Outline] 
+HUD_PlayerHud/GameplayHUD/ItemSwap/input rect=(0.00, -79.25) size=(160.00, 90.91) [RectTransform,CanvasRenderer,Text,Outline] [E]
+HUD_PlayerHud/message/msg background rect=(0.00, 22.50) size=(352.00, 45.00) [RectTransform,CanvasRenderer,Image,ContentBackground] 
+HUD_PlayerHud/message/msg Text rect=(0.00, 22.50) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text,ContentSizeFitter,Outline,Shadow] Message
+HUD_PlayerHud/SpawnCooldownCounter rect=(0.00, 234.00) size=(100.00, 100.00) [RectTransform,UIRespawnCooldown] 
+HUD_PlayerHud/SpawnCooldownCounter/bar_background rect=(0.00, -8.00) size=(450.00, 40.00) [RectTransform,CanvasRenderer,Image] 
+HUD_PlayerHud/SpawnCooldownCounter/bar rect=(0.00, -8.00) size=(450.00, 40.00) [RectTransform,CanvasRenderer,Image,Outline] 
+HUD_PlayerHud/SpawnCooldownCounter/msg rect=(0.00, 42.00) size=(450.00, 60.00) [RectTransform,CanvasRenderer,Text,Shadow,Outline] You will respawn in 1 sec
+HUD_PlayerHud/PickupPopup rect=(22.00, 165.00) size=(100.00, 400.00) [RectTransform,HUDPickupPopup,VerticalLayoutGroup] 
+HUD_PlayerHud/PickupPopup/Popup rect=(0.00, 0.00) size=(201.00, 40.00) [RectTransform,CanvasRenderer,Image,ContentBackground,HUDPickupPopupElement] 
+HUD_PlayerHud/PickupPopup/Popup/Text (Legacy) rect=(0.00, -40.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text,Outline,ContentSizeFitter] Asset + 99
+PREFAB Assets/MultiFPS/Levels/Prefabs/UI/HUD/UI_HUD_DamageDealtPopup.prefab
+UI_HUD_DamageDealtPopup rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,Canvas,CanvasScaler,GraphicRaycaster,HUDDamagePopup] 
+UI_HUD_DamageDealtPopup/Grid/DamagePopup rect=(0.00, 0.00) size=(300.00, 30.00) [RectTransform,HUDDamagePopupElement] 
+UI_HUD_DamageDealtPopup/Grid/DamagePopup/Image rect=(-24.10, -15.00) size=(100.00, 30.00) [RectTransform,CanvasRenderer,Image,ContentBackground] 
+UI_HUD_DamageDealtPopup/Grid/DamagePopup/text rect=(-194.60, -15.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text,ContentSizeFitter,UILayoutElement,Outline] New Text
+UI_HUD_DamageDealtPopup/Grid/DamagePopup/dmg rect=(87.60, -15.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text,Outline,ContentSizeFitter,UILayoutElement] +4000
+UI_HUD_DamageDealtPopup/Grid/DamagePopup/eliminatedText rect=(-59.50, -15.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text,ContentSizeFitter,UILayoutElement,Outline] Eliminated:
+PREFAB Assets/MultiFPS/Levels/Prefabs/UI/Gamemodes/UI_GM_Deathmatch.prefab
+UI_GM_Deathmatch rect=(0.00, 0.00) size=(100.00, 100.00) [RectTransform,Canvas,CanvasScaler,GraphicRaycaster,UIDeathmatch] 
+UI_GM_Deathmatch/UI_GM_Universal_Timer rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,Canvas,CanvasScaler,UIGamemodeTimer] 
+UI_GM_Deathmatch/UI_GM_Universal_Timer/TeamIndicator rect=(0.00, -70.50) size=(500.00, 500.00) [RectTransform,CanvasRenderer,Image,Outline] 
+UI_GM_Deathmatch/UI_GM_Universal_Timer/Timer rect=(0.00, 15.30) size=(100.00, 30.59) [RectTransform,CanvasRenderer,Text,Outline,Shadow] 9:99
+PREFAB Assets/MultiFPS/Levels/Prefabs/UI/Gamemodes/UI_GM_TeamBasedGamemode.prefab
+UI_GM_TeamBasedGamemode rect=(0.00, 0.00) size=(1280.00, 720.00) [RectTransform,Canvas,CanvasScaler,GraphicRaycaster,UITeamBasedGamemode] 
+UI_GM_TeamBasedGamemode/TeamIndicator rect=(0.00, 0.00) size=(400.00, 400.00) [RectTransform,CanvasRenderer,Image,Outline] 
+UI_GM_TeamBasedGamemode/Score_Enemy rect=(10.00, -29.94) size=(90.00, 44.12) [RectTransform,CanvasRenderer,Text,Outline] 0
+UI_GM_TeamBasedGamemode/Score_We rect=(-10.00, -29.94) size=(90.00, 44.12) [RectTransform,CanvasRenderer,Text,Outline] 0
+UI_GM_TeamBasedGamemode/ScoreToWin rect=(0.00, -68.97) size=(78.80, 28.39) [RectTransform,CanvasRenderer,Text,Outline] /1000
+UI_GM_TeamBasedGamemode/msg team selector rect=(0.00, -92.70) size=(500.00, 55.23) [RectTransform,CanvasRenderer,Text,Outline] 
+UI_GM_TeamBasedGamemode/TeamAbundance_WE rect=(-142.07, -29.03) size=(42.48, 39.24) [RectTransform,CanvasRenderer,Text,Outline] 9
+UI_GM_TeamBasedGamemode/TeamAbundance_Enemy rect=(140.30, -29.03) size=(44.83, 39.24) [RectTransform,CanvasRenderer,Text,Outline] 9
+UI_GM_TeamBasedGamemode/UI_GM_Universal_Timer rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,Canvas,CanvasScaler,UIGamemodeTimer] 
+UI_GM_TeamBasedGamemode/UI_GM_Universal_Timer/TeamIndicator rect=(0.00, -70.50) size=(500.00, 500.00) [RectTransform,CanvasRenderer,Image,Outline] 
+UI_GM_TeamBasedGamemode/UI_GM_Universal_Timer/Timer rect=(0.00, 15.30) size=(100.00, 30.59) [RectTransform,CanvasRenderer,Text,Outline,Shadow] 9:99
+UI_GM_TeamBasedGamemode/UI_GM_Universal_TeamSelector rect=(0.00, 0.00) size=(100.00, 100.00) [RectTransform,UITeamSelector] 
+UI_GM_TeamBasedGamemode/UI_GM_Universal_TeamSelector/background rect=(4.08, 31.60) size=(340.00, 180.00) [RectTransform,CanvasRenderer,Image] 
+UI_GM_TeamBasedGamemode/UI_GM_Universal_TeamSelector/Orange rect=(80.00, 0.00) size=(160.00, 100.00) [RectTransform,CanvasRenderer,Image,Button] 
+UI_GM_TeamBasedGamemode/UI_GM_Universal_TeamSelector/Orange/Text rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text] Orange
+UI_GM_TeamBasedGamemode/UI_GM_Universal_TeamSelector/Blue rect=(-80.00, 0.00) size=(160.00, 100.00) [RectTransform,CanvasRenderer,Image,Button] 
+UI_GM_TeamBasedGamemode/UI_GM_Universal_TeamSelector/Blue/Text rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text] Blue
+UI_GM_TeamBasedGamemode/UI_GM_Universal_TeamSelector/Select team rect=(0.00, 80.65) size=(300.00, 65.11) [RectTransform,CanvasRenderer,Text] Select team
+UI_GM_TeamBasedGamemode/UI_GM_Universal_TeamSelector/msg team selector rect=(0.00, -94.21) size=(500.00, 52.20) [RectTransform,CanvasRenderer,Text,Outline] Display here rejection reason if occured
+PREFAB Assets/MultiFPS/Levels/Prefabs/UI/Gamemodes/UI_GM_Defuse.prefab
+UI_GM_Defuse rect=(0.00, 0.00) size=(1280.00, 720.00) [RectTransform,Canvas,CanvasScaler,GraphicRaycaster,UIDefuse] 
+UI_GM_Defuse/TeamIndicator rect=(0.00, 0.00) size=(400.00, 400.00) [RectTransform,CanvasRenderer,Image,Outline] 
+UI_GM_Defuse/Score_Enemy rect=(10.00, -30.77) size=(90.00, 42.46) [RectTransform,CanvasRenderer,Text,Outline] 9
+UI_GM_Defuse/Score_We rect=(-10.00, -30.77) size=(90.00, 42.46) [RectTransform,CanvasRenderer,Text,Outline] 9
+UI_GM_Defuse/ScoreToWin rect=(0.00, -69.98) size=(78.80, 26.38) [RectTransform,CanvasRenderer,Text,Outline] /1000
+UI_GM_Defuse/TeamAbundance_WE rect=(-142.07, -26.09) size=(42.48, 39.08) [RectTransform,CanvasRenderer,Text,Outline] 9
+UI_GM_Defuse/TeamAbundance_Enemy rect=(140.30, -26.09) size=(44.83, 39.08) [RectTransform,CanvasRenderer,Text,Outline] 9
+UI_GM_Defuse/UI_GM_Universal_Timer rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,Canvas,CanvasScaler,UIGamemodeTimer] 
+UI_GM_Defuse/UI_GM_Universal_Timer/TeamIndicator rect=(0.00, -70.50) size=(500.00, 500.00) [RectTransform,CanvasRenderer,Image,Outline] 
+UI_GM_Defuse/UI_GM_Universal_Timer/Timer rect=(0.00, 15.30) size=(100.00, 30.59) [RectTransform,CanvasRenderer,Text,Outline,Shadow] 9:99
+UI_GM_Defuse/BombPlantedIndicator rect=(0.00, 82.10) size=(100.00, 100.00) [RectTransform,CanvasRenderer,Image] 
+UI_GM_Defuse/UI_GM_Universal_TeamSelector rect=(0.00, 0.00) size=(100.00, 100.00) [RectTransform,UITeamSelector] 
+UI_GM_Defuse/UI_GM_Universal_TeamSelector/background rect=(4.08, 31.60) size=(340.00, 180.00) [RectTransform,CanvasRenderer,Image] 
+UI_GM_Defuse/UI_GM_Universal_TeamSelector/Orange rect=(80.00, 0.00) size=(160.00, 100.00) [RectTransform,CanvasRenderer,Image,Button] 
+UI_GM_Defuse/UI_GM_Universal_TeamSelector/Orange/Text rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text] Orange
+UI_GM_Defuse/UI_GM_Universal_TeamSelector/Blue rect=(-80.00, 0.00) size=(160.00, 100.00) [RectTransform,CanvasRenderer,Image,Button] 
+UI_GM_Defuse/UI_GM_Universal_TeamSelector/Blue/Text rect=(0.00, 0.00) size=(0.00, 0.00) [RectTransform,CanvasRenderer,Text] Blue
+UI_GM_Defuse/UI_GM_Universal_TeamSelector/Select team rect=(0.00, 80.65) size=(300.00, 65.11) [RectTransform,CanvasRenderer,Text] Select team
+UI_GM_Defuse/UI_GM_Universal_TeamSelector/msg team selector rect=(0.00, -94.21) size=(500.00, 52.20) [RectTransform,CanvasRenderer,Text,Outline] Display here rejection reason if occured
+EMOTES
+SALUTE human=False path=Assets/IDS ASSETS/Characters/Anrak/TEMP_Anims/SALUTE.anim
+DI_WavingHand2 human=False path=Assets/IDS ASSETS/Characters/Dark_Irina_TX_UN/AnimsDarkIrina/DI_WavingHand2.anim
+IdleWavingHand human=False path=Assets/IDS ASSETS/Characters/Dark_Irina_TX_UN/AnimsDarkIrina/IdleWavingHand.anim
+Mutant Flexing Muscles human=False path=Assets/IDS ASSETS/Characters/TEMP_Mixamo/DN/Dinork_S01_Mesh@Mutant Flexing Muscles.fbx
+Mutant Flexing Muscles human=False path=Assets/IDS ASSETS/Characters/TEMP_Mixamo/DN/Mutant Flexing Muscles.anim

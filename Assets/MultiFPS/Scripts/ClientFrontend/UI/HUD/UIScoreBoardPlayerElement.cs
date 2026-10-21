@@ -13,6 +13,8 @@ namespace MultiFPS.UI.HUD
         [SerializeField] Text _latency;
         [SerializeField] Image _background;
         [SerializeField] Color _localPlayerColor = Color.yellow;
+        [SerializeField] Color _rowColor = new Color(.025f,.024f,.034f,.94f);
+        [SerializeField] Color _textColor = new Color(.94f,.91f,.87f);
 
         public void WriteData(PlayerInstance player)
         {
@@ -21,20 +23,17 @@ namespace MultiFPS.UI.HUD
             _deaths.text = player.Deaths.ToString();
             _assists.text = player.Assists.ToString();
             //assign appropriate color for player in scoreboard depending on team, if player is not in any team, give him white color
-            Color teamColor = player.Team == -1 ? Color.white : ClientInterfaceManager.Instance.UIColorSet.TeamColors[player.Team];
+            Color teamColor = _textColor;
 
             _playerName.color = teamColor;
             _kills.color = teamColor;
             _deaths.color = teamColor;
             _assists.color = teamColor;
+            _latency.color = teamColor;
 
             _latency.text = player.BOT ? "BOT" : player.Latency.ToString();
 
-            if (player.Team != -1 && player == ClientFrontend.ClientPlayerInstance)
-            {
-                Color color = ClientInterfaceManager.Instance.UIColorSet.TeamColors[player.Team];
-                _background.color = new Color(color.r, color.g, color.b, 0.1f);
-            }
+            _background.color=player==ClientFrontend.ClientPlayerInstance?_localPlayerColor:_rowColor;
         }
     }
 }

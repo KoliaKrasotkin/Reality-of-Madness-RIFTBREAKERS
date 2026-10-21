@@ -178,8 +178,8 @@ namespace MultiFPS.Gameplay {
 
             if (isServer)
             {
-                CharacterItemManager.SpawnStarterEquipment();
-                CharacterItemManager.ServerCommandTakeItem(0);
+                if(!GetComponent<RiftCombat.WarriorAvatar>()){CharacterItemManager.SpawnStarterEquipment();
+                CharacterItemManager.ServerCommandTakeItem(0);}
                 GameSync.Singleton.Characters.ServerRegisterDNSyncObj(this);
                 _spawned = true;
             }
@@ -197,14 +197,7 @@ namespace MultiFPS.Gameplay {
             if (Block)
                 Input.Movement = Vector2.zero;
 
-#if UNITY_EDITOR 
-            //rough 3rd person camera for debuging 3rd person animations
-            if (UnityEngine.Input.GetKeyDown(KeyCode.I) && isOwned)
-            {
-                SetFppPerspective(!FPP);
-                GetComponent<CharacterMotor>().cameraTargetPosition = new Vector3(0.55f, 2.1f, -3f);
-            }
-#endif
+
 
             if (Health.CurrentHealth <= 0) 
                 return;
@@ -280,8 +273,8 @@ namespace MultiFPS.Gameplay {
 
             if (_spawned)
             {
-                CharacterItemManager.SpawnStarterEquipment();
-                CharacterItemManager.ServerCommandTakeItem(0);
+                if(!GetComponent<RiftCombat.WarriorAvatar>()){CharacterItemManager.SpawnStarterEquipment();
+                CharacterItemManager.ServerCommandTakeItem(0);}
             }
         }
         private void OnClientResurrect(int health)
@@ -312,7 +305,8 @@ namespace MultiFPS.Gameplay {
 
         public void SetFppPerspective(bool fpp) 
         {
-            FPP = fpp;
+            fpp = false; // El Rift always shows the equipped third-person skin.
+            FPP = false;
 
             Client_OnPerspectiveSet?.Invoke(fpp);
 
@@ -364,7 +358,7 @@ namespace MultiFPS.Gameplay {
         //for ui to read this and display message in hud
         void OnClientHealthAdded(int currentHealth, int addedHealth, byte healerID)
         {
-            Client_OnPickedupObject?.Invoke($"Health +{addedHealth}");
+            if(addedHealth>0)Client_OnPickedupObject?.Invoke($"Vida +{addedHealth}");
         }
 
         public void ServerTeleport(Vector3 pos, float rotationY) 

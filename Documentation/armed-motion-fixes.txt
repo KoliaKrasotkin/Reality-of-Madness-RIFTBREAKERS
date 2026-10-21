@@ -1,0 +1,4 @@
+Aim targets: world-space yaw, assigned after body rotation.
+Weapon mask: arms, fingers and head only; pelvis/spine remain on locomotion layer, chest/head aiming handled by existing rig constraints.
+Armed sprint: weapon arm layer remains at 0.8 instead of switching off into an unarmed arm swing.
+Animation velocity: CharacterController velocity capped by integrated planar speed; transform/physics corrections do not double the cadence. Networking unchanged.

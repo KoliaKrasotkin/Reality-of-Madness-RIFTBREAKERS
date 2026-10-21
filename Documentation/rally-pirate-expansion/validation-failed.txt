@@ -1,0 +1,22 @@
+Existing island sculpted: Isla de las ruinas; source retained Assets/ROM/Levels/FracturedForest/Meshes/Satellite_0.asset
+Existing island sculpted: Santuario del Eclipse - isla de 440 metros; source retained Assets/ROM/Levels/FracturedForest/Meshes/ExtraIsland_-620_430.asset
+Existing island sculpted: Isla del bosque antiguo; source retained Assets/ROM/Levels/FracturedForest/Meshes/Satellite_2.asset
+Walkable buried room: Archivo hundido de las ruinas interior=(-265.00, 2.20, -80.00)
+Walkable buried room: Refugio de excavación del Eclipse interior=(-525.00, 2.20, 383.00)
+Beach and empty harbor on east shore of the existing northern forest island.
+NAV (8.54, 0.20, 1.43) => (8.54, 0.11, 1.43) connected=True
+NAV (-230.04, 8.18, -3.32) => (-230.04, 8.03, -3.32) connected=True
+NAV (230.04, 8.18, -3.32) => (230.04, 8.03, -3.32) connected=True
+NAV (0.00, 8.18, 365.01) => (0.00, 8.03, 365.01) connected=True
+NAV (83.57, 8.24, -396.72) => (83.57, 8.03, -396.72) connected=True
+NAV (626.00, 9.07, 229.00) => (626.00, 8.84, 229.00) connected=True
+NAV (-553.94, 8.18, 379.88) => (-553.94, 8.03, 379.88) connected=True
+NAV (-265.00, 2.20, -80.00) => (-265.00, 2.05, -80.00) connected=True
+NAV (-525.00, 2.20, 383.00) => (-525.00, 2.09, 383.00) connected=True
+NAV (61.00, 8.20, -335.00) => (61.00, 8.29, -335.00) connected=True
+NAV (139.00, 8.20, -335.00) => (139.00, 8.03, -335.00) connected=True
+NAV (260.00, 8.20, -64.00) => (260.00, 8.03, -64.00) connected=True
+NAV (900.00, 8.20, 550.00) => (900.00, 8.13, 550.00) connected=False
+System.Exception: Disconnected new destination (900.00, 8.20, 550.00)
+  at ROM.EditorTools.RiftExpansionBuilder.Validate () [0x0011d] in C:\Users\maria\My project\Reality of Madness RIFTBREAKERS\Assets\ROM\Editor\RiftExpansionBuilder.cs:155 
+  at ROM.EditorTools.RiftExpansionBuilder.Build () [0x00268] in C:\Users\maria\My project\Reality of Madness RIFTBREAKERS\Assets\ROM\Editor\RiftExpansionBuilder.cs:52 

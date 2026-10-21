@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1775dcc59f7c8459cb90170d5c9b36, type: 3}
+  m_Name: EnemyBolt
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.AbilityDefinition
+  Id: EnemyBolt
+  DisplayName: Descarga arcana
+  Description: 
+  Icon: {fileID: 0}
+  Shape: 4
+  DamageKind: 0
+  Damage: 18
+  Range: 16
+  Radius: 16
+  Arc: 120
+  Cooldown: 4
+  Cost: 0
+  ResourceGain: 0
+  CastDuration: 0.75
+  HitTime: 0.3
+  Recovery: 0.2
+  Stagger: 0
+  ThreatMultiplier: 1
+  Implemented: 1
+  Interruptible: 1
+  AllowsMovement: 1
+  Animation: {fileID: 1827226128182048838, guid: 4d8636fbbdeacc946900c1e59c29c81b,
+    type: 3}
+  CastVfx: {fileID: 5238911004834191023, guid: 315a843d6dfbe73409c034291f271f72, type: 3}
+  ImpactVfx: {fileID: 5290583320991301603, guid: 10f25d5d1a2d14b40a90ef54034658fe,
+    type: 3}
+  Audio: {fileID: 0}
+  Color: {r: 0.7, g: 0.2, b: 1, a: 1}
+  BuffDuration: 0
+  DamageReduction: 0
+  OffensiveBonus: 0
+  AllowedSpecializations: []

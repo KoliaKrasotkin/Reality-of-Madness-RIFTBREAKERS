@@ -31,7 +31,7 @@ namespace MultiFPS
             UsernameField.text = username;
             UserSettings.UserNickname = username;
 
-            int characterSkinID = PlayerPrefs.GetInt(_playerPrefs_CharacterSkinID);
+            int characterSkinID = Mathf.Clamp(PlayerPrefs.GetInt(_playerPrefs_CharacterSkinID),0,Mathf.Max(0,CharacterSkinSelector.options.Count-1));
             CharacterSkinSelector.value = characterSkinID;
             CharacterSkinSelector.RefreshShownValue();
             UserSettings.CharacterSkinID = characterSkinID;
