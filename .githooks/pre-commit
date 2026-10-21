@@ -1,0 +1,13 @@
+#!/bin/sh
+# Validate the staged scene, not the working copy. Keep existing Git LFS hooks intact.
+root=$(git rev-parse --show-toplevel) || exit 1
+if command -v py >/dev/null 2>&1 && py -3 --version >/dev/null 2>&1; then
+    exec py -3 "$root/Tools/validate_unity_scenes.py"
+fi
+for interpreter in python3 python; do
+    if command -v "$interpreter" >/dev/null 2>&1 && "$interpreter" --version >/dev/null 2>&1; then
+        exec "$interpreter" "$root/Tools/validate_unity_scenes.py"
+    fi
+done
+echo 'Unity scene validation requires Python 3. Install it before committing.' >&2
+exit 1
