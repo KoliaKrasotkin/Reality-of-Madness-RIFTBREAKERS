@@ -17,6 +17,8 @@ namespace MultiFPS.Gameplay
         public bool Running=>!Walking||RiftControls.Held("Sprint");
         public bool Dragging=>orbit||steer;
         public Health Selected {get;private set;}public Health Hovered {get;private set;}
+        public RiftWorldTarget SelectedWorld {get;private set;}public RiftWorldTarget HoveredWorld {get;private set;}public RiftWorldTarget PickedWorld {get;private set;}
+        public bool HasSelection=>Selected||SelectedWorld;
         public RaycastHit HoverHit {get;private set;}public bool HasHoverHit {get;private set;}
         public CharacterInstance Actor {get;private set;}
         static readonly List<RaycastResult> uiHits=new List<RaycastResult>();static PointerEventData pointerData;static EventSystem pointerSystem;static int pointerFrame=-1;static bool pointerBlocked;
@@ -38,8 +40,8 @@ namespace MultiFPS.Gameplay
             if(readFrame==Time.frameCount)return;readFrame=Time.frameCount;
             if(Actor!=actor){Actor=actor;CameraYaw=actor.Input.LookY;CameraPitch=12;lastPosition=actor.transform.position;Select(null);Autorun=false;}
             if(EventSystem.current)EventSystem.current.sendNavigationEvents=!Available;
-            if(!Available){ReleasePointer();actor.Input.Movement=Vector2.zero;actor.Input.ActionCodes=0;orbit=steer=selectPending=steerPending=false;Hovered=null;HasHoverHit=false;Autorun=false;AutoAttack=false;return;}
-            if(!ReferenceEquals(Selected,null)&&!Valid(Selected,false))Select(null);
+            if(!Available){ReleasePointer();actor.Input.Movement=Vector2.zero;actor.Input.ActionCodes=0;orbit=steer=selectPending=steerPending=false;Hovered=null;HoveredWorld=null;HasHoverHit=false;Autorun=false;AutoAttack=false;return;}
+            if(!ReferenceEquals(Selected,null)&&!Valid(Selected,false))Select(null);if(!ReferenceEquals(SelectedWorld,null)&&!ValidWorld(SelectedWorld))Select(null);
             if((actor.transform.position-lastPosition).sqrMagnitude>225){CameraYaw=actor.Input.LookY;CameraPitch=12;}lastPosition=actor.transform.position;
             var mouse=Mouse.current;Vector2 pointer=mouse!=null?mouse.position.ReadValue():Vector2.zero;bool ui=PointerOnUI;bool wasDragging=Dragging;
             if(RiftControls.Pressed("Orbit")&&!ui)orbit=true;if(!RiftControls.Held("Orbit"))orbit=false;
@@ -48,8 +50,8 @@ namespace MultiFPS.Gameplay
             if(mouse!=null){if(selectPending&&!RiftControls.Pressed("Select"))selectDistance+=mouse.delta.ReadValue().magnitude;if(steerPending&&!RiftControls.Pressed("Steer"))steerDistance+=mouse.delta.ReadValue().magnitude;}
             if(!wasDragging&&Dragging)savedPointer=pointer;
             RefreshHover(ui||Dragging);
-            if(selectPending&&!RiftControls.Held("Select")){selectPending=false;if(selectDistance<6&&!ui){Select(Pick(selectStart));}}
-            if(steerPending&&!RiftControls.Held("Steer")){steerPending=false;if(steerDistance<6&&!ui){var target=Pick(steerStart);if(target){Select(target);AutoAttack=Valid(target,true);}}}
+            if(selectPending&&!RiftControls.Held("Select")){selectPending=false;if(selectDistance<6&&!ui){var target=Pick(selectStart);if(target)Select(target);else SelectWorld(PickedWorld);}}
+            if(steerPending&&!RiftControls.Held("Steer")){steerPending=false;if(steerDistance<6&&!ui){var target=Pick(steerStart);if(target){Select(target);AutoAttack=Valid(target,true);}else if(PickedWorld){SelectWorld(PickedWorld);if(Vector3.Distance(actor.transform.position,PickedWorld.transform.position)<=PickedWorld.InteractionRange)PickedWorld.Interact();}}}
             if(Dragging&&mouse!=null){Vector2 delta=mouse.delta.ReadValue()*.1f*UserSettings.MouseSensitivity;CameraYaw+=delta.x;CameraPitch=Mathf.Clamp(CameraPitch-delta.y,-65,75);if(steer)actor.Input.LookY=CameraYaw;}
             float turn=(RiftControls.Held("TurnRight")?1:0)-(RiftControls.Held("TurnLeft")?1:0);
             if(!steer&&turn!=0){float angle=turn*TurnSpeed*Time.deltaTime;actor.Input.LookY+=angle;if(!orbit)CameraYaw+=angle;}
@@ -64,7 +66,7 @@ namespace MultiFPS.Gameplay
             if(RiftControls.Pressed("Jump")){var native=actor.GetComponent<WarriorAvatar>();if(native)native.RequestJump();else{var motor=actor.GetComponent<CharacterMotor>();if(motor)motor.Jump();}}
             if(!ui){if(RiftControls.Pressed("ZoomIn"))CameraDistance=Mathf.Clamp(CameraDistance-.8f,2,14);if(RiftControls.Pressed("ZoomOut"))CameraDistance=Mathf.Clamp(CameraDistance+.8f,2,14);}
             if(RiftControls.Pressed("NextTarget"))Cycle(1);if(RiftControls.Pressed("PreviousTarget"))Cycle(-1);if(RiftControls.Pressed("SelfTarget"))Select(actor.Health);
-            if(RiftControls.Pressed("ClearTarget")&&(Selected||AutoAttack)){Select(null);RiftControls.EscapeConsumedFrame=Time.frameCount;}
+            if(RiftControls.Pressed("ClearTarget")&&(HasSelection||AutoAttack)){Select(null);RiftControls.EscapeConsumedFrame=Time.frameCount;}
             var player=ClientFrontend.ClientPlayerInstance;var combat=player?player.GetComponent<AbilityController>():null;
             if(combat&&combat.Prototype){actor.SetActionKeyCode(ActionCodes.Trigger1,false);actor.SetActionKeyCode(ActionCodes.Trigger2,false);for(int i=0;i<7;i++)if(RiftControls.Pressed("Ability"+i)){if(i==0)AutoAttack=Valid(Selected,true);combat.Request(i);}if(AutoAttack&&Valid(Selected,true)&&Time.unscaledTime>=nextAuto){nextAuto=Time.unscaledTime+.15f;var basic=combat.Definition(0);var delta=Selected.transform.position-actor.transform.position;delta.y=0;if(basic&&delta.magnitude<=basic.Radius&&Vector3.Angle(Quaternion.Euler(0,actor.Input.LookY,0)*Vector3.forward,delta)<=basic.Arc*.5f)combat.Request(0);}}
             else if(player){if(RiftControls.Pressed("Ability1"))player.CmdUseClassAbility(0);if(RiftControls.Pressed("Ability2"))player.CmdUseClassAbility(1);ReadWeapons(actor);}
@@ -72,7 +74,9 @@ namespace MultiFPS.Gameplay
         }
         void ReadWeapons(CharacterInstance actor){var items=actor.CharacterItemManager;actor.SetActionKeyCode(ActionCodes.Trigger1,RiftControls.Held("Ability0"));actor.SetActionKeyCode(ActionCodes.Trigger2,RiftControls.Held("Aim"));if(RiftControls.Pressed("Reload"))items.Reload();if(RiftControls.Pressed("Drop"))items.TryDropItem();if(RiftControls.Pressed("PreviousWeapon"))items.TakePreviousItem();if(RiftControls.Pressed("Interact"))items.TryGrabItem();if(RiftControls.Pressed("Melee")&&items.CurrentlyUsedItem)items.CurrentlyUsedItem.PushMeele();for(int i=0;i<5;i++)if(RiftControls.Pressed("Weapon"+i))items.ClientTakeItem(i);}
         public bool Valid(Health health,bool hostile){return Actor&&health&&health.CurrentHealth>0&&health.gameObject.activeInHierarchy&&Vector3.Distance(Actor.transform.position,health.transform.position)<=TargetRange&&(!hostile||health!=Actor.Health&&health.Team!=Actor.Health.Team);}
-        public void Select(Health health){if(health&&!Valid(health,false))return;if(ReferenceEquals(Selected,health))return;Selected=health;AutoAttack=false;var p=ClientFrontend.ClientPlayerInstance;var c=p?p.GetComponent<AbilityController>():null;if(c)c.CmdSetTarget(health?health.netId:0);}
+        public void Select(Health health){if(health&&!Valid(health,false))return;if(ReferenceEquals(Selected,health)&&!SelectedWorld)return;SelectedWorld=null;Selected=health;AutoAttack=false;var p=ClientFrontend.ClientPlayerInstance;var c=p?p.GetComponent<AbilityController>():null;if(c)c.CmdSetTarget(health?health.netId:0);}
+        public bool ValidWorld(RiftWorldTarget target)=>Actor&&target&&target.gameObject.activeInHierarchy&&Vector3.Distance(Actor.transform.position,target.transform.position)<=TargetRange;
+        public void SelectWorld(RiftWorldTarget target){if(target&&!ValidWorld(target))return;Select(null);SelectedWorld=target;}
         public void Cycle(int direction)
         {
             if(!Actor)return;candidates.Clear();var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():null;
@@ -82,11 +86,11 @@ namespace MultiFPS.Gameplay
         }
         public Health Pick(Vector2 pointer)
         {
-            HasHoverHit=false;var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():null;if(!camera||!Actor)return null;
+            HasHoverHit=false;PickedWorld=null;var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():null;if(!camera||!Actor)return null;
             int count=Physics.RaycastNonAlloc(camera.ScreenPointToRay(pointer),hits,150,~0,QueryTriggerInteraction.Collide);float nearest=float.PositiveInfinity;Health health=null;RaycastHit found=default;
             for(int i=0;i<count;i++){var collider=hits[i].collider;var box=collider.GetComponent<HitBox>();var h=box?box._health:collider.GetComponentInParent<Health>();if(h==Actor.Health)continue;if(collider.isTrigger&&!h)continue;if(hits[i].distance<nearest){nearest=hits[i].distance;health=h;found=hits[i];}}
-            if(nearest<float.PositiveInfinity){HasHoverHit=true;HoverHit=found;}return Valid(health,false)?health:null;
+            if(nearest<float.PositiveInfinity){HasHoverHit=true;HoverHit=found;var world=found.collider.GetComponentInParent<RiftWorldTarget>();if(ValidWorld(world))PickedWorld=world;}return Valid(health,false)?health:null;
         }
-        void RefreshHover(bool blocked){Hovered=null;HasHoverHit=false;if(!blocked&&Mouse.current!=null)Hovered=Pick(Mouse.current.position.ReadValue());}
+        void RefreshHover(bool blocked){Hovered=null;HoveredWorld=null;HasHoverHit=false;if(!blocked&&Mouse.current!=null){Hovered=Pick(Mouse.current.position.ReadValue());HoveredWorld=PickedWorld;}}
     }
 }

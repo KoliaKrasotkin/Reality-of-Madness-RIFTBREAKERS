@@ -12,6 +12,7 @@ namespace MultiFPS.Gameplay
     public struct ClientData
     {
         public string Username;
+        public string CharacterId;
         public int CharacterSkinID;
         public int ClassId;
         public bool Warrior;
@@ -75,6 +76,7 @@ namespace MultiFPS.Gameplay
                 SendClientData(new ClientData
                 {
                     Username = UserSettings.UserNickname,
+                    CharacterId = PlayerPrefs.GetString("ROM.Character.ActiveId",UserSettings.UserNickname),
                     ClassId = Mathf.Clamp(PlayerPrefs.GetInt(ClassPreference,0),0,3),
                     Warrior = PlayerPrefs.GetInt(RiftCombat.AbilityController.Preference,0)>0,
                     CharacterSkinID = UserSettings.CharacterSkinID,

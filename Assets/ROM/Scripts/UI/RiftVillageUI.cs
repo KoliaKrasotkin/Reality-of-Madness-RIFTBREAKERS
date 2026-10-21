@@ -9,7 +9,7 @@ using W = ROM.UI.Sprint01.RiftWidgets;
 namespace ROM.UI.Sprint01
 {
     [DefaultExecutionOrder(500)]
-    public sealed class RiftVillageUI : MonoBehaviour
+    public sealed partial class RiftVillageUI : MonoBehaviour
     {
         public static RiftVillageUI Instance { get; private set; }
         public RiftVillageNpc TalkingTo { get; private set; }
@@ -22,7 +22,7 @@ namespace ROM.UI.Sprint01
 
         void Start()
         {
-            Instance = this;
+            Instance = this;ROM.Progression.RiftJournalView.Changed+=JournalChanged;
             if (!W.Body) W.Body = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             if (!W.Title) W.Title = W.Body;
             var canvas = gameObject.AddComponent<Canvas>();
@@ -54,9 +54,10 @@ namespace ROM.UI.Sprint01
             var nearest = free ? FindObjectsByType<RiftVillageNpc>(FindObjectsSortMode.None)
                 .Where(n => Vector3.Distance(n.transform.position, player.MyCharacter.transform.position) <= n.InteractionRadius)
                 .OrderBy(n => Vector3.Distance(n.transform.position, player.MyCharacter.transform.position)).FirstOrDefault() : null;
+            var selected=MultiFPS.Gameplay.RiftMMOController.Instance?MultiFPS.Gameplay.RiftMMOController.Instance.SelectedWorld:null;var selectedNpc=selected?selected.GetComponent<RiftVillageNpc>():null;if(selectedNpc&&Vector3.Distance(selectedNpc.transform.position,player.MyCharacter.transform.position)<=selectedNpc.InteractionRadius)nearest=selectedNpc;
             int total = RiftVillageSupplies.Count(0) + RiftVillageSupplies.Count(1);
             bool message = NetworkTime.time < noticeUntil;
-            hint.gameObject.SetActive(free && (nearest || total > 0 || message));
+            hint.gameObject.SetActive(free && (message || !selectedNpc && (nearest || total > 0)));
             prompt.text = message ? lastNotice : nearest ? "["+MultiFPS.RiftControls.Label("Interact")+"] Hablar con " + nearest.DisplayName + " · " + nearest.Role : "["+MultiFPS.RiftControls.Label("Potion")+"] Beber poción de vida";
             supplies.text = "Pociones: " + RiftVillageSupplies.Count(0) + " / mayores: " + RiftVillageSupplies.Count(1) +
                 (player.GetComponent<RiftVillagePlayer>().PotionReadyAt > NetworkTime.time ? " · Recarga " + Mathf.CeilToInt((float)(player.GetComponent<RiftVillagePlayer>().PotionReadyAt - NetworkTime.time)) + " s" : " · "+MultiFPS.RiftControls.Label("Potion")+" para usar");
@@ -67,7 +68,7 @@ namespace ROM.UI.Sprint01
         {
             var player = ClientFrontend.ClientPlayerInstance;
             if (!npc || !player || !player.MyCharacter || Vector3.Distance(player.MyCharacter.transform.position, npc.transform.position) > npc.InteractionRadius) return;
-            Close(); TalkingTo = npc; hint.gameObject.SetActive(false);
+            Close(); TalkingTo = npc;var journal=player.GetComponent<ROM.Progression.RiftJournalPlayer>();if(journal)journal.CmdTalk(npc.Id); hint.gameObject.SetActive(false);
             if (UIPauseMenu._instance) { previousPauseAllowed = UIPauseMenu._instance.AbleToPause; UIPauseMenu._instance.AbleToPause = false; }
             UICursorManager.RequestCursor(gameObject); cursorHeld = true;
             dialog = W.Panel(transform, "Dialogo de aldea", 0, 0, 980, 670);
@@ -76,15 +77,16 @@ namespace ROM.UI.Sprint01
             W.Label(dialog, npc.DisplayName + " · " + npc.Role, 30, 20, 920, 45, 30, W.White, true);
             speech = W.Label(dialog, npc.Greeting, 30, 80, 920, 100, 23);
             balance = W.Label(dialog, "ORO DEL JUEGO: " + RiftExplorationProgress.Gold, 30, 185, 920, 35, 23, W.Gold);
-            W.Button(dialog, "HABLAR DEL REFUGIO", 30, 235, 450, 48, () => speech.text = npc.Advice);
-            if (npc.Trades) W.Button(dialog, "VER MERCANCÍA", 500, 235, 450, 48, () => ShowGoods(npc));
+            W.Button(dialog,"MISIONES",30,235,280,48,()=>ShowQuests(npc));W.Button(dialog,"HABLAR DEL REFUGIO",340,235,280,48,()=>speech.text=npc.Advice);
+            if(npc.Trades)W.Button(dialog,"COMERCIAR",650,235,280,48,()=>ShowGoods(npc));
             notice = W.Label(dialog, "", 30, 535, 920, 60, 19, W.Muted);
             W.Button(dialog, "CERRAR · ESC", 630, 605, 320, 45, Close);
-            if (!npc.Trades) W.Label(dialog, "Explorá las islas y activá sus cristales para establecer checkpoints.", 30, 325, 920, 110, 23, W.Muted);
+            ShowQuests(npc);
         }
         public void ShowGoods(RiftVillageNpc npc)
         {
             if (TalkingTo != npc || !npc.Trades) return;
+            var quests=dialog.Find("Misiones");if(quests)DestroyImmediate(quests.gameObject);
             var old = dialog.Find("Mercancia"); if (old) Destroy(old.gameObject);
             var goods = W.Rect(dialog, "Mercancia", 30, 300, 920, 230);
             for (int i = 0; i < 2; i++)
@@ -113,6 +115,7 @@ namespace ROM.UI.Sprint01
             lastNotice = message;
             if (Instance) Instance.noticeUntil = NetworkTime.time + 5;
         }
+        void OnDestroy(){ROM.Progression.RiftJournalView.Changed-=JournalChanged;}
         void OnDisable() { Close(); if (Instance == this) Instance = null; }
     }
 }

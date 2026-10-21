@@ -1,0 +1,52 @@
+PASS Main menu exposes correctly labelled journal, achievements and settings
+PASS Four typed quest definitions and seven achievement definitions load
+PASS Journal uses stable selected character identity
+PASS Target frame is outside center, below top-left world info
+PASS All village NPCs are friendly targets without fake combat health
+PASS Initial quest is discoverable on Iria
+PASS NPC mouseover is independent of selection
+PASS Left-click selects NPC and clears hostile combat target
+PASS NPC target card shows role rather than invented health
+PASS Friendly NPC cannot receive Warrior basic attacks
+PASS NPC has a small green ground marker at its feet
+PASS Short right-click opens selected NPC dialogue
+PASS Server rejects locked prerequisite quest
+PASS Server rejects wrong/far quest giver
+PASS Real NPC acceptance command starts initial quest
+PASS Server rejects turn-in before objectives are done
+PASS NPC conversation credited once for distinct-NPC achievement
+PASS Training attack 1 accepted
+PASS Training attack 2 accepted
+PASS Training attack 3 accepted
+PASS Real training hits update quest objective
+PASS Training dummy does not count as an enemy kill
+PASS Training achievement unlocks from combat event
+PASS Talking to Bram completes remaining initial objective
+PASS Ready quest shows a turn-in marker
+PASS Quest turn-in grants exactly 60 local gold
+PASS First completed quest unlocks achievement
+PASS Repeated turn-in is rejected
+PASS Replayed snapshot cannot duplicate quest gold
+PASS Completed prerequisite unlocks supply quest
+PASS Actual potion purchase succeeds with earned quest gold
+PASS Actual potion consumption heals and advances quest
+PASS Buying and using potion completes supply quest
+PASS Quest gold stays separate and potion purchase is deducted
+PASS Talking to three distinct NPCs unlocks social exploration achievement
+PASS Exploration quest can be accepted after tutorial
+PASS Actual spawned encounter enemies can be defeated for quest progress
+PASS Real encounter kills update quest and first-victory achievement
+PASS Actual non-starting checkpoint completes exploration objective
+PASS Exploration quest turns in at its giver
+PASS Guardian quest unlocks through quest chain
+PASS Boss encounter spawns actual enemies
+PASS Actual boss death and encounter clear complete guardian quest
+PASS Guardian quest rewards can be claimed
+PASS Three actual distinct checkpoints unlock exploration achievement
+PASS Revisiting a checkpoint does not farm distinct progress
+PASS Host persistence retains all four completed quests by character identity
+PASS Another character has independent progress
+PASS Offline cache reload retains character journal
+PASS Rebindable J shortcut opens real quest journal
+PASS Achievements page is accessible
+PASS Achievement unlock timestamps are persisted

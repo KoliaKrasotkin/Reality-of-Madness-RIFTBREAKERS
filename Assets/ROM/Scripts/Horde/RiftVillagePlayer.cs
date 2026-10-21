@@ -34,7 +34,7 @@ namespace ROM.Horde
                 !GameManager.Gamemode.IsProtectedPosition(MyCharacter.transform.position)) return false;
             if (NetworkTime.time < nextVillageTrade) { message = "Esperá un instante."; return false; }
             nextVillageTrade = NetworkTime.time + .15;
-            return RiftVillageSupplies.Trade(product, sell, out message);
+            bool result=RiftVillageSupplies.Trade(product, sell, out message);if(result&&!sell)ROM.Progression.RiftJournalPlayer.Record(Player,RiftProgressEvent.PotionBought,product.ToString());return result;
         }
         [Command] public void CmdDrinkVillagePotion()
         {
@@ -54,6 +54,7 @@ namespace ROM.Horde
             int heal = Mathf.CeilToInt(MyCharacter.Health.MaxHealth * RiftVillageSupplies.Healing(id));
             MyCharacter.Health.ServerHeal(heal, MyCharacter.DNID);
             PotionReadyAt = NetworkTime.time + 5;
+            ROM.Progression.RiftJournalPlayer.Record(Player,RiftProgressEvent.PotionUsed,id.ToString());
             message = "Bebiste " + RiftVillageSupplies.Name(id) + ".";
             return true;
         }

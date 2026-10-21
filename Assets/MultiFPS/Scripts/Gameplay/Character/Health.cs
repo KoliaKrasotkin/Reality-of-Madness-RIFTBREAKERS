@@ -282,7 +282,7 @@ namespace MultiFPS.Gameplay
         void RecordTrainingHit(int damage,CharacterPart part,AttackType type,Health attacker,int force){
             if(!attacker||attacker==this||attacker.Team==Team||damage<=0)return;
             if(NetworkTime.time-TrainingLastHit>10)TrainingTotalDamage=0;
-            TrainingLastDamage=damage;TrainingTotalDamage=Mathf.Min(100000000,TrainingTotalDamage+damage);TrainingLastHit=NetworkTime.time;
+            TrainingLastDamage=damage;TrainingTotalDamage=Mathf.Min(100000000,TrainingTotalDamage+damage);TrainingLastHit=NetworkTime.time;RiftWorldEvents.ReportTrainingHit(attacker);
             RpcHealthStateChanged(CurrentHealth,damage,part,type,attacker.DNID);
         }
 
