@@ -1,0 +1,38 @@
+PASS Main menu exposes correctly labelled journal, achievements and settings
+PASS Four typed quest definitions and seven achievement definitions load
+PASS Journal uses stable selected character identity
+PASS Target frame is outside center, below top-left world info
+PASS All village NPCs are friendly targets without fake combat health
+PASS Initial quest is discoverable on Iria
+PASS Baked minimap texture loads
+SPIKE step=401 frame=3506 ms=156,94 gcDelta=1
+Training phase
+Minimap.Render: calls=0 totalMs=0,00 maxMs=0,00
+HUD.HideLegacy: calls=0 totalMs=0,00 maxMs=0,00
+Journal.Persist: calls=10 totalMs=5,03 maxMs=0,63
+Journal.Snapshot: calls=10 totalMs=0,95 maxMs=0,21
+Village.Update: calls=0 totalMs=0,00 maxMs=0,00
+Exploration.Tick: calls=0 totalMs=0,00 maxMs=0,00
+Enemy.Spawn: calls=0 totalMs=0,00 maxMs=0,00
+IDS.Initialize: calls=0 totalMs=0,00 maxMs=0,00
+Corpse.Clone: calls=0 totalMs=0,00 maxMs=0,00
+
+PASS Training autoattack works
+SPIKE step=402 frame=5236 ms=166,30 gcDelta=1
+PASS Exploration spawns real encounter enemies
+Gameplay frame intervals in Editor (includes editor overhead): count=5000 medianMs=8,34 p99Ms=9,73 maxMs=166,30 above100ms=2 GC0=2
+PASS No realtime minimap camera render during play
+PASS Legacy cleanup is bounded to startup, not periodic scene scans
+PASS Minimap crops baked atlas around live player
+Training + walking + encounter combat, real map/HUD/persistence
+Minimap.Render: calls=0 totalMs=0,00 maxMs=0,00
+HUD.HideLegacy: calls=0 totalMs=0,00 maxMs=0,00
+Journal.Persist: calls=11 totalMs=5,55 maxMs=0,63
+Journal.Snapshot: calls=11 totalMs=1,04 maxMs=0,21
+Village.Update: calls=0 totalMs=0,00 maxMs=0,00
+Exploration.Tick: calls=0 totalMs=0,00 maxMs=0,00
+Enemy.Spawn: calls=8 totalMs=18,62 maxMs=3,17
+IDS.Initialize: calls=8 totalMs=6,64 maxMs=2,25
+Corpse.Clone: calls=1 totalMs=1,38 maxMs=1,38
+
+PASS Walk and encounter combat capture completed

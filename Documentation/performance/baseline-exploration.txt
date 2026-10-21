@@ -1,0 +1,31 @@
+PASS Main menu exposes correctly labelled journal, achievements and settings
+PASS Four typed quest definitions and seven achievement definitions load
+PASS Journal uses stable selected character identity
+PASS Target frame is outside center, below top-left world info
+PASS All village NPCs are friendly targets without fake combat health
+PASS Initial quest is discoverable on Iria
+Training phase
+Minimap.Render: calls=67 totalMs=221,93 maxMs=4,58
+HUD.HideLegacy: calls=18 totalMs=75,45 maxMs=4,46
+Journal.Persist: calls=10 totalMs=5,15 maxMs=0,71
+Journal.Snapshot: calls=10 totalMs=1,06 maxMs=0,23
+Village.Update: calls=0 totalMs=0,00 maxMs=0,00
+Exploration.Tick: calls=0 totalMs=0,00 maxMs=0,00
+Enemy.Spawn: calls=0 totalMs=0,00 maxMs=0,00
+IDS.Initialize: calls=0 totalMs=0,00 maxMs=0,00
+Corpse.Clone: calls=0 totalMs=0,00 maxMs=0,00
+
+PASS Training autoattack works
+PASS Exploration spawns real encounter enemies
+18 second training combat, real map/minimap/HUD/persistence
+Minimap.Render: calls=156 totalMs=622,84 maxMs=216,52
+HUD.HideLegacy: calls=41 totalMs=180,99 maxMs=6,34
+Journal.Persist: calls=11 totalMs=5,66 maxMs=0,71
+Journal.Snapshot: calls=11 totalMs=1,17 maxMs=0,23
+Village.Update: calls=0 totalMs=0,00 maxMs=0,00
+Exploration.Tick: calls=0 totalMs=0,00 maxMs=0,00
+Enemy.Spawn: calls=8 totalMs=16,49 maxMs=3,01
+IDS.Initialize: calls=8 totalMs=11,14 maxMs=4,25
+Corpse.Clone: calls=1 totalMs=1,29 maxMs=1,29
+
+PASS Walk and encounter combat capture completed

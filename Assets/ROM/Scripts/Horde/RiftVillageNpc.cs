@@ -4,6 +4,9 @@ namespace ROM.Horde
 {
     public sealed class RiftVillageNpc : MonoBehaviour
     {
+        public static readonly System.Collections.Generic.List<RiftVillageNpc> Active=new System.Collections.Generic.List<RiftVillageNpc>();
+        void OnEnable(){if(!Active.Contains(this))Active.Add(this);}
+        void OnDisable(){Active.Remove(this);}
         public string Id, DisplayName, Role;
         [TextArea] public string Greeting;
         [TextArea] public string Advice;

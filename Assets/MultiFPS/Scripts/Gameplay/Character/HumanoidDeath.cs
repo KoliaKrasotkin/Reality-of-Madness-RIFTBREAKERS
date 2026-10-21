@@ -83,7 +83,7 @@ namespace MultiFPS.Gameplay
 
             Vector3 movementDirection = transform.rotation * new Vector3(characterInstance.Input.Movement.x, 0, characterInstance.Input.Movement.y);
 
-            _spawnedRagdoll.ServerActivateRagdoll(characterInstance.Health.GetPositionToAttack(), attacker.GetPositionToAttack(), movementDirection * (characterInstance.ReadActionKeyCode(ActionCodes.Sprint) ? 2f : 1f), attackForce);
+            _spawnedRagdoll.ServerActivateRagdoll(characterInstance.Health.GetPositionToAttack(), attacker?attacker.GetPositionToAttack():characterInstance.Health.GetPositionToAttack(), movementDirection * (characterInstance.ReadActionKeyCode(ActionCodes.Sprint) ? 2f : 1f), attackForce);
 
             GetComponent<RagDollSyncer>().ServerStartSynchronizingRagdoll(_spawnedRagdoll.GetComponent<RagDoll>());
         }
@@ -121,7 +121,7 @@ namespace MultiFPS.Gameplay
             if (damagedPart==CharacterPart.head)
             {
                 PooledObject headBlood = _headBloodEffectPool.ReturnObject(_spawnedRagdoll._head.transform.position, _spawnedRagdoll._head.transform.rotation);
-                headBlood.transform.LookAt(GameSync.Singleton.Healths.GetObj(attackerID).GetPositionToAttack());
+                var attacker=GameSync.Singleton.Healths.GetObj(attackerID);if(attacker)headBlood.transform.LookAt(attacker.GetPositionToAttack());
                 headBlood.GetComponent<PooledParticleSystem>().SetPositionTarget(_spawnedRagdoll._head.transform);
             }
 
@@ -137,7 +137,12 @@ namespace MultiFPS.Gameplay
                 _spawnedRagdoll = Instantiate(ragDoll_Prefab, transform.position, transform.rotation).GetComponent<RagDoll>();
                 _spawnedRagdoll.transform.SetParent(transform);
 
-                _spawnedRagdoll.ApplySkin(skin);
+                var parent=_characterInstance.CharacterParent;
+                var pose=parent?parent.GetComponentInChildren<IDSGameplayPose>(true):null;
+                if(pose&&pose.Source&&pose.Target){
+                    if(!_spawnedRagdoll.ApplyNativeVisual(pose.Source,pose.Target))
+                        Debug.LogError("[RagDoll] No se pudo preparar el cadáver nativo: avatar humanoide inválido.");
+                }else _spawnedRagdoll.ApplySkin(skin);
                 return _spawnedRagdoll;
             }
             else 

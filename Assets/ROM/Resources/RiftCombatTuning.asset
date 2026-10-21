@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb1eaae5f8e4a045b26d6b2cde43c36, type: 3}
+  m_Name: RiftCombatTuning
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.RiftCombatTuning
+  Profiles:
+  - ClassKey: warrior
+    DisplayName: Golpe de arma
+    Damage: 18
+    Interval: 1.8
+    Range: 3.4
+    Arc: 100
+    Windup: 0.28
+    ResourceGain: 8
+    CriticalChance: 0.15
+    CriticalMultiplier: 2
+  - ClassKey: paladin
+    DisplayName: Golpe sagrado
+    Damage: 16
+    Interval: 1.8
+    Range: 3.4
+    Arc: 100
+    Windup: 0.28
+    ResourceGain: 8
+    CriticalChance: 0.15
+    CriticalMultiplier: 2
+  - ClassKey: bastion
+    DisplayName: Golpe pesado
+    Damage: 20
+    Interval: 2.1
+    Range: 3.4
+    Arc: 100
+    Windup: 0.28
+    ResourceGain: 8
+    CriticalChance: 0.15
+    CriticalMultiplier: 2
+  - ClassKey: battlemage
+    DisplayName: Descarga arcana
+    Damage: 15
+    Interval: 1.8
+    Range: 25
+    Arc: 100
+    Windup: 0.28
+    ResourceGain: 0
+    CriticalChance: 0.15
+    CriticalMultiplier: 2
+  - ClassKey: veilhunter
+    DisplayName: Disparo certero
+    Damage: 14
+    Interval: 1.5
+    Range: 30
+    Arc: 100
+    Windup: 0.28
+    ResourceGain: 0
+    CriticalChance: 0.15
+    CriticalMultiplier: 2

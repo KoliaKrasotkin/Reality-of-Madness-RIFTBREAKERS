@@ -36,6 +36,14 @@ namespace MultiFPS.Gameplay
             EnablePhysics(false);
         }
 
+        public bool ApplyNativeVisual(Animator source,Animator native)
+        {
+            var presentation=gameObject.AddComponent<RiftNativeRagdoll>();
+            if(!presentation.Initialize(source,native,this)){Destroy(presentation);return false;}
+            if(_characterMesh)_characterMesh.enabled=false;
+            return true;
+        }
+
         public void ApplySkin(SkinContainer skin)
         {
             Transform rigSoldier = null;
@@ -150,6 +158,7 @@ namespace MultiFPS.Gameplay
         {
             if (hittedPart == CharacterPart.head)
             {
+                var native=GetComponent<RiftNativeRagdoll>();if(native)native.HideHead();
                 _head.transform.localScale =
                     Vector3.zero;
 

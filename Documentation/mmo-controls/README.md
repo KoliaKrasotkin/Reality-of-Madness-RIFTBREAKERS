@@ -5,14 +5,14 @@
 Open `Assets/ROM/Scenes/MainMenu.unity`, select a character and enter El Rift. Controls apply to the native Warrior and the existing player input adapter used by other characters.
 
 - Cursor is visible and free by default; pointing does not turn the camera.
-- Hold left mouse: orbit the camera independently of character facing. A short click selects the object under the cursor; dragging does not select.
-- Hold right mouse: steer the character and camera together. A short right click on an enemy selects it and starts basic auto attack.
+- Hold left mouse: orbit the camera independently of character facing. A short left click selects an enemy and starts basic auto attack, or selects and opens a nearby NPC dialogue; dragging does not select or interact.
+- Hold right mouse: steer the character and camera together. A short right click does not select, attack or interact.
 - Hold both mouse buttons: move forward.
 - Releasing a drag restores the cursor to its initial position. UI buttons remain clickable without holding Alt.
 - W/S: forward/backward. A/D: turn in place. Q/E: strafe. While steering with right mouse, A/D strafe too.
 - Space: jump. Num Lock: autorun (manual forward/backward cancels it). Numpad Divide: walking/running toggle. Shift allows running while walking mode is active. Backpedalling uses the slower speed.
 - Mouse wheel: third-person zoom, limited to 2–14 m and still subject to camera collision.
-- 1: basic attack/auto attack. 2: Cleaving Fury. 3: Earthbreaker. 4: Honored Roar. Slots 5–7 remain reserved for their unimplemented abilities.
+- T: toggle independent auto attack. 1: Cleaving Fury. 2: Earthbreaker. 3: Honored Roar. Slots 4–7 remain reserved for unimplemented abilities.
 - J: quest journal. U: achievements. F: interact/talk/use nearby portal. H: potion. I: inventory. B: character. K: abilities. O (hold): squad. Enter: chat.
 - Escape first clears the selected target/auto attack; with no selection it opens the existing pause menu.
 
@@ -20,11 +20,11 @@ Open `Assets/ROM/Scenes/MainMenu.unity`, select a character and enter El Rift. C
 
 Left-click selects an actual Health target through physics hitboxes, including native presentation roots detached from the network object. Selection persists when looking elsewhere; it is no longer chosen from the camera direction. Tab cycles visible hostile targets within 45 m, ordered by distance and stable network identity. Shift+Tab cycles backwards. Obstructed, dead, friendly or invalid enemies are excluded from cycling. F6 targets self. Dead/despawned/out-of-range selections are cleared.
 
-Village NPCs can also be selected with left click. A short right click opens dialogue when in interaction range. Their target card shows a role instead of invented health, with green markers; hostile markers remain red. The target card sits below the top-left zone information, outside the center of the screen. Tab still cycles hostile targets only.
+Village NPCs can also be selected with left click. The same left click opens dialogue when in interaction range. Their target card shows a role instead of invented health, with green markers; hostile markers remain red. The target card sits below the top-left zone information, outside the center of the screen. Tab still cycles hostile targets only.
 
 The mouseover tooltip shows actual name, health and role only while hovering, independently of selection. Existing village NPCs also show their name, role and trading status. It hides over interactive UI, while dragging, during chat and in menus. The target frame and red markers follow the selected target rather than hover.
 
-Target identity is sent through the existing Mirror-owned PlayerInstance AbilityController. The server validates existence and distance. Warrior basic attacks additionally require a living hostile selected target, reach, facing and line of sight before spending resources/cooldowns. A strike retains its initial target identity during the animation. AoE abilities retain their positional area/cone. Legacy directed class abilities also use explicit selection, reach, facing and visibility. Free-camera yaw is presentation-only and is not replicated as character facing.
+Target identity is sent through the existing Mirror-owned PlayerInstance AbilityController. The server validates existence and distance. Using an available offensive Warrior ability (from keyboard or hotbar) also enables basic auto attack on the selected hostile. Self buffs do not start it. Selecting a friendly target or clearing selection stops it. Warrior basic attacks additionally require a living hostile selected target, reach, facing and line of sight before spending resources/cooldowns. A strike retains its initial target identity during the animation. AoE abilities retain their positional area/cone. Legacy directed class abilities also use explicit selection, reach, facing and visibility. Free-camera yaw is presentation-only and is not replicated as character facing.
 
 ## Rebinding
 
@@ -32,7 +32,7 @@ Main menu or pause > Ajustes > Controles. Scroll through Movement, Camera, Targe
 
 Bindings save immediately in local PlayerPrefs `ROM.Controls.v1`; sensitivity/FOV retain the existing Apply/confirmation flow. Escape cancels capture without closing settings. “Teclas por defecto” restores the MMO bindings. Hotbar and interaction labels read the current assignments. The UI is migrated at runtime from the template's legacy StandaloneInputModule to InputSystemUIInputModule so actual pointer input and rebindings share the same Input System.
 
-Conventional weapons keep configurable primary fire (1), aim (Z), reload (R), melee (V), drop (Y), previous weapon (X), and weapon slots (F1–F5). Native Warrior does not receive template gun slots. Developer-only editor noclip remains outside the gameplay binding menu.
+Conventional weapons keep configurable manual fire (middle mouse), aim (Z), reload (R), melee (V), drop (Y), previous weapon (X), and weapon slots (F1–F5). Native Warrior does not receive template gun slots. Developer-only editor noclip remains outside the gameplay binding menu.
 
 ## Implementation
 

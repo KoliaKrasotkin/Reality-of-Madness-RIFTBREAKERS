@@ -82,6 +82,8 @@ namespace ROM.Horde {
                     var combat=health.GetComponent<MultiFPS.Gameplay.RiftCombat.RiftEnemyCombat>();if(combat)combat.Configure(kind==EnemyKind.Boss?2:((encounter.Spawned*.618034f)%1>=MeleeEncounterFraction?3:0));
                     if(kind==EnemyKind.Boss)health.CharacterName="GUARDIÁN · "+encounter.Title;
                     encounter.Spawned++;
+                    // Budget one character creation per tick, rather than one per nearby encounter.
+                    break;
                 }
             }
             PushSnapshotIfChanged();

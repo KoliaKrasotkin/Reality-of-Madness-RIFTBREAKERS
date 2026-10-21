@@ -1,0 +1,15 @@
+PASS Main menu exposes correctly labelled journal, achievements and settings
+PASS Four typed quest definitions and seven achievement definitions load
+PASS Journal uses stable selected character identity
+PASS Target frame is outside center, below top-left world info
+PASS All village NPCs are friendly targets without fake combat health
+PASS Initial quest is discoverable on Iria
+18 second training combat, real map/minimap/HUD/persistence
+Minimap.Render: calls=66 totalMs=226,75 maxMs=5,21
+HUD.HideLegacy: calls=16 totalMs=71,48 maxMs=5,56
+Journal.Persist: calls=10 totalMs=4,96 maxMs=0,68
+Journal.Snapshot: calls=10 totalMs=1,10 maxMs=0,23
+Village.Update: calls=0 totalMs=0,00 maxMs=0,00
+Exploration.Tick: calls=0 totalMs=0,00 maxMs=0,00
+
+PASS Live autoattacks dealt damage during capture

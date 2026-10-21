@@ -22,6 +22,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         bool falling;float fallPeak;
         void Awake(){actor=GetComponent<CharacterInstance>();capsule=GetComponent<CharacterController>();previous=transform.position;}
         void Start(){
+            if(!GetComponent<RiftWarriorEquipment>())gameObject.AddComponent<RiftWarriorEquipment>();
             if(actor.PlayerRecoil)actor.PlayerRecoil.enabled=false;
             foreach(var hit in actor.CharacterParent.GetComponentsInChildren<Collider>())Physics.IgnoreCollision(capsule,hit,true);
         }
@@ -38,7 +39,8 @@ namespace MultiFPS.Gameplay.RiftCombat
             if(Grounded){lastGround=Time.time;if(vertical<0)vertical=-2;}
             bool sprint=actor.ReadActionKeyCode(ActionCodes.Sprint)&&actor.Input.Movement.y>=0;
             Vector2 input=actor.Block?Vector2.zero:actor.Input.Movement;
-            Vector3 desired=Quaternion.Euler(0,actor.Input.LookY,0)*new Vector3(input.x,0,input.y)*(sprint?SprintSpeed:WalkSpeed);
+            var combat=AbilityController.For(actor.Health);
+            Vector3 desired=Quaternion.Euler(0,actor.Input.LookY,0)*new Vector3(input.x,0,input.y)*(sprint?SprintSpeed:WalkSpeed)*(combat&&combat.Casting==5?.55f:1);
             planar=Vector3.MoveTowards(planar,desired,(input.sqrMagnitude>.01f?Acceleration:Braking)*dt);
             if(Time.time-jumpRequested<.12f&&Time.time-lastGround<.1f){vertical=Mathf.Sqrt(2*Gravity*JumpHeight);jumpRequested=lastGround=-100;Grounded=false;}
             vertical=Mathf.Max(-55,vertical-Gravity*dt);
@@ -61,7 +63,7 @@ namespace MultiFPS.Gameplay.RiftCombat
             Animator.SetFloat("MoveY",local.z/SprintSpeed,.12f,Time.deltaTime);
             bool grounded=isOwned?Grounded:Physics.Raycast(transform.position+Vector3.up*.2f,Vector3.down,.4f,GameManager.environmentLayer);
             Animator.SetBool("Grounded",grounded);
-            if(EquippedWeapon)EquippedWeapon.SetActive(alive);
+            var equipmentOwner=AbilityController.For(actor.Health);if(EquippedWeapon)EquippedWeapon.SetActive(alive&&(!equipmentOwner||!equipmentOwner.SwordAndShield));
         }
         void ServerFallDamage(){
             if(!actor||!actor.Health||actor.Health.CurrentHealth<=0){falling=false;return;}
@@ -73,7 +75,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         {
             if(!Animator||!ability||!ability.Animation)return false;
             Animator.SetFloat("AttackRate",ability.Animation.length/Mathf.Max(.1f,ability.CastDuration));
-            Animator.CrossFadeInFixedTime("Attack"+slot,.09f,0,0);
+            Animator.CrossFadeInFixedTime("Attack"+(slot>=4?(slot==5?1:slot==6?3:0):slot),.09f,0,0);
             presentationUntil=Time.time+ability.CastDuration;return true;
         }
     }

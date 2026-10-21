@@ -1,0 +1,24 @@
+PASS Main menu exposes correctly labelled journal, achievements and settings
+PASS Four typed quest definitions and seven achievement definitions load
+PASS Journal uses stable selected character identity
+PASS Target frame is outside center, below top-left world info
+PASS All village NPCs are friendly targets without fake combat health
+PASS Initial quest is discoverable on Iria
+PASS Gameplay HUD exposes a dedicated Talents shortcut alongside common functions
+Hover diagnostics point=(227.85, 50.83) mouse=(0.00, 0.00) module=InputSystemUIInputModule hits=Ability 0 slot=Ability 0 (ROM.UI.Gameplay.RiftHotbarSlot) canvas=True
+PASS Hover tooltip shows actual ability, cost, cooldown and live state even while button is disabled · actual: Furia cortante / True
+PASS Real pointer drag starts for a cooling-down ability
+PASS Pointer drop swaps abilities between slots
+PASS Dragging neither casts an ability nor resets its cooldown
+PASS Hotbar order survives reload from saved preferences
+PASS Different character has an independent layout
+PASS Returning to character restores its customized layout
+PASS Physical key 1 executes the ability moved to slot 1 while preserving original skill cooldown
+PASS P opens talent tree directly
+PASS Talents HUD button explains its function and shortcut on hover
+PASS Talents HUD button opens through actual left click
+PASS Ability book also provides hover tooltips while menu is open
+PASS N opens friends and direct messages
+PASS L opens the party conversation
+PASS Talent shortcut honors changed key binding
+PASS Restore action resets only the local slot order

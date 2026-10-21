@@ -1,0 +1,18 @@
+using System.Collections.Generic;
+using Mirror;
+using MultiFPS.Gameplay;
+using MultiFPS.Gameplay.RiftCombat;
+using UnityEngine;
+namespace ROM.Progression {
+public sealed partial class RiftJournalPlayer {
+ AbilityController Combat=>GetComponent<AbilityController>();
+ void ApplyProgression(){if(isServer&&State!=null&&Combat){if(State.TalentRanks==null||State.TalentRanks.Length!=9)State.TalentRanks=new int[9];Combat.ServerProgression(State.Experience,State.TalentRanks,State.SwordAndShield);}}
+ void AwardExperience(int amount,List<string> notices){var tuning=WarriorProgressionDefinition.Load;int level=tuning.Level(State.Experience);State.Experience=Mathf.Clamp(State.Experience+Mathf.Max(0,amount),0,tuning.MaximumExperience);int after=tuning.Level(State.Experience);if(after>level)notices.Add("Nivel "+after+" · "+(after-level)+" punto(s) de talento");}
+ void AwardProgressEvent(RiftProgressEvent kind,bool fresh,List<string> notices){var t=WarriorProgressionDefinition.Load;int xp=kind==RiftProgressEvent.Kill?t.KillExperience:kind==RiftProgressEvent.MiniBoss?t.BossExperience:kind==RiftProgressEvent.Encounter?t.EncounterExperience:kind==RiftProgressEvent.Checkpoint&&fresh?t.CrystalExperience:0;AwardExperience(xp,notices);}
+ [Server]public void ServerGrantExperience(int amount){if(!Ensure())return;var notices=new List<string>();AwardExperience(amount,notices);Persist();Push(string.Join("\n",notices));}
+ [Command]public void CmdTalent(int index){if(!ServerTalent(index))Report("No podés aprender ese talento: revisá nivel, puntos, requisitos y combate.");}
+ [Server]public bool ServerTalent(int index){if(!Ensure()||!Combat||!Combat.Prototype||!Combat.CanChangeBuild)return false;var t=Combat.Progression;if(index<0||index>=t.Talents.Length)return false;var node=t.Talents[index];int spent=0;foreach(var rank in State.TalentRanks)spent+=rank;if(State.TalentRanks[index]>=node.MaximumRank||t.Level(State.Experience)<node.RequiredLevel||spent>=t.Level(State.Experience)-1||(node.Parent>=0&&State.TalentRanks[node.Parent]<t.Talents[node.Parent].MaximumRank))return false;var old=JsonUtility.ToJson(State);State.TalentRanks[index]++;if(!Persist()){State=JsonUtility.FromJson<JournalState>(old);return false;}Push("Talento mejorado: "+node.Name);return true;}
+ [Command]public void CmdResetTalents(){if(!Ensure()||!Combat||!Combat.Prototype||!Combat.CanChangeBuild){Report("Volvé al refugio o salí de combate para reiniciar talentos.");return;}var old=JsonUtility.ToJson(State);State.TalentRanks=new int[9];if(!Persist()){State=JsonUtility.FromJson<JournalState>(old);return;}Push("Talentos reiniciados · puntos devueltos");}
+ [Command]public void CmdWarriorWeapon(bool shield){if(!ServerWarriorWeapon(shield))Report("Cambiá equipo en el refugio o fuera de combate.");}
+ [Server]public bool ServerWarriorWeapon(bool shield){if(!Ensure()||!Combat||!Combat.Prototype||!Combat.CanChangeBuild)return false;bool old=State.SwordAndShield;State.SwordAndShield=shield;if(!Persist()){State.SwordAndShield=old;return false;}Push(shield?"Espada y escudo equipados":"Hacha a dos manos equipada");return true;}
+}}

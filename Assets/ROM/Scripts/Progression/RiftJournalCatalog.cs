@@ -13,6 +13,6 @@ namespace ROM.Progression
     {
         public RiftQuestDefinition[] Quests;public RiftAchievementDefinition[] Achievements;
         public RiftQuestDefinition Quest(string id)=>Array.Find(Quests,q=>q&&q.Id==id);
-        public static RiftJournalCatalog Load=>Resources.Load<RiftJournalCatalog>("RiftJournalCatalog");
+        static RiftJournalCatalog cached;public static RiftJournalCatalog Load=>cached?cached:(cached=Resources.Load<RiftJournalCatalog>("RiftJournalCatalog"));
     }
 }

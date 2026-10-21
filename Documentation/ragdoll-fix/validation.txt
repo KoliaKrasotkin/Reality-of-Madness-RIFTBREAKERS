@@ -1,0 +1,31 @@
+PASS Main menu exposes correctly labelled journal, achievements and settings
+PASS Four typed quest definitions and seven achievement definitions load
+PASS Journal uses stable selected character identity
+PASS Target frame is outside center, below top-left world info
+PASS All village NPCs are friendly targets without fake combat health
+PASS Initial quest is discoverable on Iria
+PASS Lizardman victim uses a native humanoid avatar distinct from template
+PASS Actual server death creates physical corpse
+PASS Native corpse follows humanoid semantic bindings without bone-name remapping
+PASS All native mesh parts survive death
+PASS Native tail hierarchy is preserved on corpse
+PASS Existing Mirror ragdoll synchronization layout is unchanged
+PASS Corpse has no cloned gameplay scripts referencing live character
+PASS Skinned mesh bones point exclusively into cloned native skeleton
+PASS Corpse skin bakes without exploding geometry: BeltsBody
+PASS Corpse skin bakes without exploding geometry: BeltWais
+PASS Corpse skin bakes without exploding geometry: Body
+PASS Corpse skin bakes without exploding geometry: Cloth
+PASS Corpse skin bakes without exploding geometry: LeftArmArmor
+PASS Corpse skin bakes without exploding geometry: LeftArmArmorSpikes
+PASS Corpse skin bakes without exploding geometry: LeftShoulderArmor_01
+PASS Corpse skin bakes without exploding geometry: LeftShoulderArmor_02
+PASS Corpse skin bakes without exploding geometry: LeftShoulderArmorSpikes
+PASS Corpse skin bakes without exploding geometry: RightArmArmor
+PASS Corpse skin bakes without exploding geometry: RightArmArmorSpikes
+PASS Corpse skin bakes without exploding geometry: RightShoulderArmor
+PASS Corpse skin bakes without exploding geometry: Skull
+PASS Corpse skin bakes without exploding geometry: WaistBone
+PASS Second IDS skin also creates its own native corpse
+PASS Headshot presentation affects native head while preserving skeleton
+PASS Native Warrior player is unaffected by legacy corpse changes

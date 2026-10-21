@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d013899c5a3bd234eb017d04a50b1005, type: 3}
+  m_Name: WarriorSword
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.WeaponDefinition
+  Id: warrior-sword
+  DisplayName: Espada de una mano
+  WeaponType: 
+  DamageMultiplier: 0.85
+  AttackSpeed: 1
+  Reach: 3
+  Model: {fileID: 3827787081366005573, guid: b08d7eb9b7fe3124d90f5e24d55c710b, type: 3}
+  Socket: 18
+  Position: {x: 0, y: 0, z: 0}
+  Rotation: {x: 297.7445, y: 328.6543, z: 120.03874}
+  Scale: {x: 0.7818501, y: 0.7818501, z: 0.7818501}
+  AllowedClasses:
+  - warrior
+  AllowedSpecializations: []
+  Attack: {fileID: 0}
+  ImpactVfx: {fileID: 0}

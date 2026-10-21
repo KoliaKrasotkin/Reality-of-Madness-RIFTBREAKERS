@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 738dd4740d1dd4741b103d5eb34bc22b, type: 3}
+  m_Name: WarriorProgression
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.WarriorProgressionDefinition
+  MaximumLevel: 20
+  KillExperience: 35
+  BossExperience: 150
+  EncounterExperience: 75
+  CrystalExperience: 60
+  QuestExperience: 250
+  DamagePerLevel: 0.02
+  HealthPerLevel: 0.08
+  Sword: {fileID: 11400000, guid: d711be3fecef42b43bfbfafef42fb4fb, type: 2}
+  Shield: {fileID: 3433105614388927883, guid: 287a1c290734e5e4fbb9ed54770616e1, type: 3}
+  ShieldPosition: {x: 0, y: -0.12, z: 0}
+  ShieldRotation: {x: 0, y: 0, z: 90}
+  ShieldScale: {x: 1, y: 1, z: 1}
+  Talents:
+  - Id: arms
+    Name: Disciplina de armas
+    Description: "+3% de da\xF1o por rango."
+    Branch: Armas
+    Parent: -1
+    RequiredLevel: 2
+    MaximumRank: 3
+  - Id: wide
+    Name: Hoja amplia
+    Description: "Barrido y Furia: +15\xB0 de arco y +0,3 m por rango."
+    Branch: Armas
+    Parent: 0
+    RequiredLevel: 5
+    MaximumRank: 3
+  - Id: precision
+    Name: Instinto ejecutor
+    Description: "+1% de cr\xEDtico y +5% de da\xF1o de Barrido por rango."
+    Branch: Armas
+    Parent: 1
+    RequiredLevel: 10
+    MaximumRank: 3
+  - Id: iron
+    Name: Piel de hierro
+    Description: "+2% de reducci\xF3n de da\xF1o por rango."
+    Branch: "Protecci\xF3n"
+    Parent: -1
+    RequiredLevel: 2
+    MaximumRank: 3
+  - Id: vitality
+    Name: Tenacidad
+    Description: "+5% de vida m\xE1xima por rango."
+    Branch: "Protecci\xF3n"
+    Parent: 3
+    RequiredLevel: 5
+    MaximumRank: 3
+  - Id: shield
+    Name: "Maestr\xEDa del escudo"
+    Description: "Con escudo: +3% de reducci\xF3n y -5% de recarga de \xDAltima resistencia
+      por rango."
+    Branch: "Protecci\xF3n"
+    Parent: 4
+    RequiredLevel: 10
+    MaximumRank: 3
+  - Id: rage
+    Name: "Coraz\xF3n de furia"
+    Description: "+10% de generaci\xF3n de Furia por rango."
+    Branch: Furia
+    Parent: -1
+    RequiredLevel: 2
+    MaximumRank: 3
+  - Id: earth
+    Name: "Golpe s\xEDsmico"
+    Description: "Rompetierra: +8% de da\xF1o y +0,1 s de stagger por rango."
+    Branch: Furia
+    Parent: 6
+    RequiredLevel: 5
+    MaximumRank: 3
+  - Id: rhythm
+    Name: Ritmo de batalla
+    Description: -3% de recarga de habilidades por rango.
+    Branch: Furia
+    Parent: 7
+    RequiredLevel: 10
+    MaximumRank: 3

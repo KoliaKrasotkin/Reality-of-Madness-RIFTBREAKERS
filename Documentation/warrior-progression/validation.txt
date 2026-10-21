@@ -1,0 +1,97 @@
+PASS Main menu exposes correctly labelled journal, achievements and settings
+PASS Four typed quest definitions and seven achievement definitions load
+PASS Journal uses stable selected character identity
+PASS Target frame is outside center, below top-left world info
+PASS All village NPCs are friendly targets without fake combat health
+PASS Initial quest is discoverable on Iria
+PASS NPC mouseover is independent of selection
+PASS Left-click selects NPC and clears hostile combat target
+PASS NPC target card shows role rather than invented health
+PASS Friendly NPC cannot receive Warrior basic attacks
+PASS NPC has a small green ground marker at its feet
+PASS Left click selects and opens nearby NPC dialogue
+PASS Left-click opens selected NPC dialogue
+PASS Server rejects locked prerequisite quest
+PASS Server rejects wrong/far quest giver
+PASS Real NPC acceptance command starts initial quest
+PASS Server rejects turn-in before objectives are done
+PASS NPC conversation credited once for distinct-NPC achievement
+PASS Training attack 1 accepted
+PASS Training attack 2 accepted
+PASS Training attack 3 accepted
+PASS Training dummy grants no experience
+PASS Real training hits update quest objective
+PASS Training dummy does not count as an enemy kill
+PASS Training achievement unlocks from combat event
+PASS Talking to Bram completes remaining initial objective
+PASS Ready quest shows a turn-in marker
+PASS Quest turn-in grants exactly 60 local gold
+PASS First completed quest unlocks achievement
+PASS Repeated turn-in is rejected
+PASS Replayed snapshot cannot duplicate quest gold
+PASS Completed prerequisite unlocks supply quest
+PASS Actual potion purchase succeeds with earned quest gold
+PASS Actual potion consumption heals and advances quest
+PASS Buying and using potion completes supply quest
+PASS Quest gold stays separate and potion purchase is deducted
+PASS Talking to three distinct NPCs unlocks social exploration achievement
+PASS Exploration quest can be accepted after tutorial
+PASS Actual spawned encounter enemies can be defeated for quest progress
+PASS Real encounter kills update quest and first-victory achievement
+PASS Actual non-starting checkpoint completes exploration objective
+PASS Exploration quest turns in at its giver
+PASS Guardian quest unlocks through quest chain
+PASS Boss encounter spawns actual enemies
+PASS Actual boss death and encounter clear complete guardian quest
+PASS Guardian quest rewards can be claimed
+PASS Three actual distinct checkpoints unlock exploration achievement
+PASS Revisiting a checkpoint does not farm distinct progress
+PASS Host persistence retains all four completed quests by character identity
+PASS Another character has independent progress
+PASS Offline cache reload retains character journal
+PASS Rebindable J shortcut opens real quest journal
+PASS Achievements page is accessible
+PASS Achievement unlock timestamps are persisted
+PASS Left click selects hostile and starts auto attack
+PASS Auto attack respects melee range
+PASS Auto attack repeatedly deals authoritative melee damage in range
+PASS Clearing target stops auto attack
+PASS Offensive ability request starts auto attack for selected hostile
+PASS Friendly selection stops auto attack and clears combat target
+PASS Dedicated auto attack starts without using ability 1
+PASS Auto attack has independent cadence and does not start skill cooldown or global cast
+PASS Normal floating number matches authoritative applied damage
+PASS Guaranteed critical multiplies real damage and marks owner floating number
+PASS Warrior has a dedicated configurable auto attack profile
+PASS Paladin has a working independent auto attack
+PASS Bastion has a working independent auto attack
+PASS Battle mage supports a separate ranged auto attack
+PASS Hunter has a working independent ranged auto attack
+PASS First hotbar slot displays Cleaving Fury instead of auto attack
+PASS First hotbar button executes class ability and enables separate auto attack
+PASS Seven active Warrior abilities exist separately from auto attack
+PASS Real quests, kills and exploration grant persistent XP and level points
+PASS Experience curve advances through multiple levels
+PASS Talent server rejects missing prerequisite and invalid index
+PASS Three ranks of root weapon talent can be purchased with earned points
+PASS Weapon talent changes authoritative damage multiplier
+PASS Maximum ranks and branch prerequisites are enforced
+PASS Completed parent unlocks next talent node
+PASS Warrior can switch to sword and shield outside combat
+PASS Sword and shield alter authoritative health, mitigation and weapon mode
+PASS Native hand sword and forearm shield models are attached
+PASS Two-handed axe is hidden while sword and shield are equipped
+PASS Recovered attack executes as seventh cleave ability
+PASS Cleave hits three distinct targets in its frontal arc
+PASS Cleave excludes targets behind the Warrior
+PASS Whirlwind starts as a normal class ability
+PASS Whirlwind applies exactly four timed strikes to each of four nearby targets
+PASS Last Stand starts as a defensive ability
+PASS Last Stand reduces authoritative incoming damage
+PASS Warborn Leap starts toward selected target
+PASS Leap moves the authoritative character toward the landing area
+PASS Character save retains XP, talent ranks and sword/shield equipment
+PASS Talent tree is accessible through K abilities screen
+PASS Free talent reset returns all spent points
+PASS Warrior can return to two-handed axe
+PASS Axe presentation is restored after equipment switch

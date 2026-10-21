@@ -118,11 +118,12 @@ namespace MultiFPS.Gameplay
             if (GameManager.Gamemode && GameManager.Gamemode.BlockDamage(this, attacker)) return;
             int finalDamage = RiftClassCombat.Resolve(this,attacker,Mathf.FloorToInt(damage * damageMultipliers[(int)damagedPart]));
 
-            finalDamage = RiftCombat.CombatController.Resolve(this,attacker,finalDamage);
-            if(TrainingTarget){RecordTrainingHit(finalDamage,damagedPart,attackType,attacker,attackForce);return;}
+            finalDamage = RiftCombat.CombatController.Resolve(this,attacker,finalDamage,out bool critical);
+            if(TrainingTarget){RecordTrainingHit(finalDamage,damagedPart,attackType,attacker,attackForce,critical);return;}
             if (!(!GameManager.Gamemode.FriendyFire && attacker != this && attacker.Team == Team)) //avoid friendly fire
                 CurrentHealth -= finalDamage;
 
+            RiftCombat.CombatController.Feedback(attacker,this,Mathf.Min(finalDamage,Mathf.Max(0,CurrentHealth+finalDamage)),critical);
             RememberDamage(attacker, (short)finalDamage);
 
             CurrentHealth = Mathf.Clamp(CurrentHealth, 0, 100000);
@@ -143,11 +144,12 @@ namespace MultiFPS.Gameplay
         {
             if (GameManager.Gamemode && GameManager.Gamemode.BlockDamage(this, attacker)) return;
             damage = RiftClassCombat.Resolve(this,attacker,damage);
-            damage = RiftCombat.CombatController.Resolve(this,attacker,damage);
-            if(TrainingTarget){RecordTrainingHit(damage,damagedPart,attackType,attacker,attackForce);return;}
+            damage = RiftCombat.CombatController.Resolve(this,attacker,damage,out bool critical);
+            if(TrainingTarget){RecordTrainingHit(damage,damagedPart,attackType,attacker,attackForce,critical);return;}
             if (!(!GameManager.Gamemode.FriendyFire && attacker != this && attacker.Team == Team)) //avoid friendly fir
                 CurrentHealth -= damage;
 
+            RiftCombat.CombatController.Feedback(attacker,this,Mathf.Min(damage,Mathf.Max(0,CurrentHealth+damage)),critical);
             RememberDamage(attacker, (short)damage);
             CurrentHealth = Mathf.Clamp(CurrentHealth, 0, 100000);
 
@@ -279,10 +281,11 @@ namespace MultiFPS.Gameplay
 
         [Server] public void ServerMakeTrainingTarget(){TrainingTarget=true;ServerSetVitals(100000,100000);TrainingChanged(false,true);}
         void TrainingChanged(bool before,bool after){if(after&&!GetComponent<TrainingTargetDisplay>())gameObject.AddComponent<TrainingTargetDisplay>();}
-        void RecordTrainingHit(int damage,CharacterPart part,AttackType type,Health attacker,int force){
+        void RecordTrainingHit(int damage,CharacterPart part,AttackType type,Health attacker,int force,bool critical){
             if(!attacker||attacker==this||attacker.Team==Team||damage<=0)return;
             if(NetworkTime.time-TrainingLastHit>10)TrainingTotalDamage=0;
             TrainingLastDamage=damage;TrainingTotalDamage=Mathf.Min(100000000,TrainingTotalDamage+damage);TrainingLastHit=NetworkTime.time;RiftWorldEvents.ReportTrainingHit(attacker);
+            RiftCombat.CombatController.Feedback(attacker,this,damage,critical);
             RpcHealthStateChanged(CurrentHealth,damage,part,type,attacker.DNID);
         }
 

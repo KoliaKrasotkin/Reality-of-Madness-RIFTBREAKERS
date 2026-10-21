@@ -24,6 +24,7 @@ namespace MultiFPS.Gameplay
         void Initialize()
         {
             if(initialized)return;
+            using var measurement=new RiftFrameDiagnostics.Sample(7);
             var renderers=Target.GetComponentsInChildren<SkinnedMeshRenderer>(true);
             float bottom=float.PositiveInfinity;
             // Renderer.bounds includes the imported animation envelope; use the

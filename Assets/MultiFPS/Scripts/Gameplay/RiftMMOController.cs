@@ -29,7 +29,7 @@ namespace MultiFPS.Gameplay
         int readFrame=-1;
         public static RiftMMOController Ensure(GameObject owner){if(!Instance)owner.AddComponent<RiftMMOController>();return Instance;}
         void Awake(){RiftInputUI.Ensure();Instance=this;pointerFrame=-1;var _=RiftControls.Entries;}
-        void Update(){var actor=ClientFrontend.OwnedCharacterInstance;if(actor)ReadCharacter(actor);}
+        void Update(){if(EventSystem.current&&!(EventSystem.current.currentInputModule is UnityEngine.InputSystem.UI.InputSystemUIInputModule))RiftInputUI.Ensure();var actor=ClientFrontend.OwnedCharacterInstance;if(actor)ReadCharacter(actor);}
         void OnDestroy(){if(Instance==this)Instance=null;}
         void OnDisable(){ReleasePointer();if(Actor)Actor.Input.Movement=Vector2.zero;AutoAttack=Autorun=false;}
         void OnApplicationFocus(bool focused){if(!focused){ReleasePointer();AutoAttack=Autorun=false;}}
@@ -49,9 +49,9 @@ namespace MultiFPS.Gameplay
             if(RiftControls.Pressed("Select")&&!ui){selectPending=true;selectStart=pointer;selectDistance=0;}
             if(mouse!=null){if(selectPending&&!RiftControls.Pressed("Select"))selectDistance+=mouse.delta.ReadValue().magnitude;if(steerPending&&!RiftControls.Pressed("Steer"))steerDistance+=mouse.delta.ReadValue().magnitude;}
             if(!wasDragging&&Dragging)savedPointer=pointer;
-            RefreshHover(ui||Dragging);
-            if(selectPending&&!RiftControls.Held("Select")){selectPending=false;if(selectDistance<6&&!ui){var target=Pick(selectStart);if(target)Select(target);else SelectWorld(PickedWorld);}}
-            if(steerPending&&!RiftControls.Held("Steer")){steerPending=false;if(steerDistance<6&&!ui){var target=Pick(steerStart);if(target){Select(target);AutoAttack=Valid(target,true);}else if(PickedWorld){SelectWorld(PickedWorld);if(Vector3.Distance(actor.transform.position,PickedWorld.transform.position)<=PickedWorld.InteractionRange)PickedWorld.Interact();}}}
+            RefreshHover(ui||Dragging||RiftHotbar.Dragging);
+            if(selectPending&&!RiftControls.Held("Select")){selectPending=false;if(selectDistance<6&&!ui){var target=Pick(selectStart);if(target){Select(target);StartAutoAttack();}else{SelectWorld(PickedWorld);if(PickedWorld&&Vector3.Distance(actor.transform.position,PickedWorld.transform.position)<=PickedWorld.InteractionRange)PickedWorld.Interact();}}}
+            if(steerPending&&!RiftControls.Held("Steer"))steerPending=false;
             if(Dragging&&mouse!=null){Vector2 delta=mouse.delta.ReadValue()*.1f*UserSettings.MouseSensitivity;CameraYaw+=delta.x;CameraPitch=Mathf.Clamp(CameraPitch-delta.y,-65,75);if(steer)actor.Input.LookY=CameraYaw;}
             float turn=(RiftControls.Held("TurnRight")?1:0)-(RiftControls.Held("TurnLeft")?1:0);
             if(!steer&&turn!=0){float angle=turn*TurnSpeed*Time.deltaTime;actor.Input.LookY+=angle;if(!orbit)CameraYaw+=angle;}
@@ -68,11 +68,14 @@ namespace MultiFPS.Gameplay
             if(RiftControls.Pressed("NextTarget"))Cycle(1);if(RiftControls.Pressed("PreviousTarget"))Cycle(-1);if(RiftControls.Pressed("SelfTarget"))Select(actor.Health);
             if(RiftControls.Pressed("ClearTarget")&&(HasSelection||AutoAttack)){Select(null);RiftControls.EscapeConsumedFrame=Time.frameCount;}
             var player=ClientFrontend.ClientPlayerInstance;var combat=player?player.GetComponent<AbilityController>():null;
-            if(combat&&combat.Prototype){actor.SetActionKeyCode(ActionCodes.Trigger1,false);actor.SetActionKeyCode(ActionCodes.Trigger2,false);for(int i=0;i<7;i++)if(RiftControls.Pressed("Ability"+i)){if(i==0)AutoAttack=Valid(Selected,true);combat.Request(i);}if(AutoAttack&&Valid(Selected,true)&&Time.unscaledTime>=nextAuto){nextAuto=Time.unscaledTime+.15f;var basic=combat.Definition(0);var delta=Selected.transform.position-actor.transform.position;delta.y=0;if(basic&&delta.magnitude<=basic.Radius&&Vector3.Angle(Quaternion.Euler(0,actor.Input.LookY,0)*Vector3.forward,delta)<=basic.Arc*.5f)combat.Request(0);}}
-            else if(player){if(RiftControls.Pressed("Ability1"))player.CmdUseClassAbility(0);if(RiftControls.Pressed("Ability2"))player.CmdUseClassAbility(1);ReadWeapons(actor);}
+            if(combat&&combat.Prototype){actor.SetActionKeyCode(ActionCodes.Trigger1,false);actor.SetActionKeyCode(ActionCodes.Trigger2,false);for(int i=0;i<7;i++)if(!RiftHotbar.Dragging&&RiftControls.Pressed("Ability"+i)){combat.Request(RiftHotbar.Resolve(i));} }
+            else if(player){if(!RiftHotbar.Dragging)for(int i=0;i<7;i++)if(RiftControls.Pressed("Ability"+i)&&RiftHotbar.Resolve(i)<=2){StartAutoAttack();player.CmdUseClassAbility((byte)(RiftHotbar.Resolve(i)-1));}ReadWeapons(actor);}
+            if(RiftControls.Pressed("AutoAttack")){if(AutoAttack)AutoAttack=false;else StartAutoAttack();}
+            if(combat&&AutoAttack&&Valid(Selected,true)&&Time.unscaledTime>=nextAuto){nextAuto=Time.unscaledTime+.15f;combat.RequestAutoAttack();}
             Cursor.visible=!Dragging;Cursor.lockState=Dragging?CursorLockMode.Locked:CursorLockMode.None;if(wasDragging&&!Dragging&&mouse!=null)mouse.WarpCursorPosition(savedPointer);
         }
-        void ReadWeapons(CharacterInstance actor){var items=actor.CharacterItemManager;actor.SetActionKeyCode(ActionCodes.Trigger1,RiftControls.Held("Ability0"));actor.SetActionKeyCode(ActionCodes.Trigger2,RiftControls.Held("Aim"));if(RiftControls.Pressed("Reload"))items.Reload();if(RiftControls.Pressed("Drop"))items.TryDropItem();if(RiftControls.Pressed("PreviousWeapon"))items.TakePreviousItem();if(RiftControls.Pressed("Interact"))items.TryGrabItem();if(RiftControls.Pressed("Melee")&&items.CurrentlyUsedItem)items.CurrentlyUsedItem.PushMeele();for(int i=0;i<5;i++)if(RiftControls.Pressed("Weapon"+i))items.ClientTakeItem(i);}
+        void ReadWeapons(CharacterInstance actor){var items=actor.CharacterItemManager;actor.SetActionKeyCode(ActionCodes.Trigger1,RiftControls.Held("WeaponFire"));actor.SetActionKeyCode(ActionCodes.Trigger2,RiftControls.Held("Aim"));if(RiftControls.Pressed("Reload"))items.Reload();if(RiftControls.Pressed("Drop"))items.TryDropItem();if(RiftControls.Pressed("PreviousWeapon"))items.TakePreviousItem();if(RiftControls.Pressed("Interact"))items.TryGrabItem();if(RiftControls.Pressed("Melee")&&items.CurrentlyUsedItem)items.CurrentlyUsedItem.PushMeele();for(int i=0;i<5;i++)if(RiftControls.Pressed("Weapon"+i))items.ClientTakeItem(i);}
+        public void StartAutoAttack(){AutoAttack=Available&&Valid(Selected,true);if(AutoAttack)nextAuto=Time.unscaledTime;}
         public bool Valid(Health health,bool hostile){return Actor&&health&&health.CurrentHealth>0&&health.gameObject.activeInHierarchy&&Vector3.Distance(Actor.transform.position,health.transform.position)<=TargetRange&&(!hostile||health!=Actor.Health&&health.Team!=Actor.Health.Team);}
         public void Select(Health health){if(health&&!Valid(health,false))return;if(ReferenceEquals(Selected,health)&&!SelectedWorld)return;SelectedWorld=null;Selected=health;AutoAttack=false;var p=ClientFrontend.ClientPlayerInstance;var c=p?p.GetComponent<AbilityController>():null;if(c)c.CmdSetTarget(health?health.netId:0);}
         public bool ValidWorld(RiftWorldTarget target)=>Actor&&target&&target.gameObject.activeInHierarchy&&Vector3.Distance(Actor.transform.position,target.transform.position)<=TargetRange;

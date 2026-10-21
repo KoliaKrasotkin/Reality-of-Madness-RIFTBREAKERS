@@ -16,9 +16,9 @@ namespace ROM.Progression
         public static JournalState Read(string id=null){id=id??ActiveId;if(cached!=null&&cachedId==id)return cached;cachedId=id;try{cached=JsonUtility.FromJson<JournalState>(PlayerPrefs.GetString(Key(id),""));}catch{cached=null;}return cached??(cached=new JournalState{CharacterId=id});}
         public static void ApplyServerSnapshot(string json,string notice)
         {
-            var state=JsonUtility.FromJson<JournalState>(json);if(state==null)return;cachedId=state.CharacterId;cached=state;PlayerPrefs.SetString(Key(cachedId),json);
+            var measured=MultiFPS.Gameplay.RiftFrameDiagnostics.Begin();var state=JsonUtility.FromJson<JournalState>(json);if(state==null)return;cachedId=state.CharacterId;cached=state;PlayerPrefs.SetString(Key(cachedId),json);
             var catalog=RiftJournalCatalog.Load;if(catalog)foreach(var quest in state.Quests.Where(q=>q.Status==QuestStatus.TurnedIn)){var definition=catalog.Quest(quest.Id);if(!definition)continue;string receipt="ROM.Journal.Reward.v1."+cachedId+"."+quest.Id;if(PlayerPrefs.GetInt(receipt,0)==0){PlayerPrefs.SetInt(receipt,1);RiftExplorationProgress.Receive(definition.Gold,"Misión completada: "+definition.Title+" · +"+definition.Gold+" oro local");}}
-            PlayerPrefs.Save();if(!string.IsNullOrEmpty(notice))Notify(notice);Changed?.Invoke();
+            PlayerPrefs.Save();if(!string.IsNullOrEmpty(notice))Notify(notice);Changed?.Invoke();MultiFPS.Gameplay.RiftFrameDiagnostics.End(3,measured);
         }
         public static void Notify(string text){Notice=text;NoticeUntil=Time.unscaledTime+5;}
         public static string Tracked{get=>PlayerPrefs.GetString("ROM.Journal.Track."+ActiveId,"");set{PlayerPrefs.SetString("ROM.Journal.Track."+ActiveId,value);PlayerPrefs.Save();Changed?.Invoke();}}

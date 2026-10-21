@@ -13,29 +13,31 @@ MonoBehaviour:
   m_Name: WhirlingExecution
   m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.AbilityDefinition
   Id: whirling-execution
-  DisplayName: "Ejecuci\xF3n giratoria"
-  Description: 
-  Icon: {fileID: 0}
-  Shape: 0
+  DisplayName: Torbellino
+  Description: Cuatro impactos circulares durante 1,8 s. Movimiento al 55%.
+  Icon: {fileID: 21300000, guid: fbc9ce0e022fe2244a4793a9367ba770, type: 3}
+  Shape: 1
   DamageKind: 0
-  Damage: 25
+  Damage: 18
   Range: 3
-  Radius: 3
+  Radius: 4.5
   Arc: 120
-  Cooldown: 1
-  Cost: 0
+  Cooldown: 14
+  Cost: 30
   ResourceGain: 0
-  CastDuration: 0.6
-  HitTime: 0.28
+  CastDuration: 1.8
+  HitTime: 0.2
   Recovery: 0.15
   Stagger: 0
   ThreatMultiplier: 1
-  Implemented: 0
+  Implemented: 1
   Interruptible: 1
   AllowsMovement: 1
-  Animation: {fileID: 0}
+  Animation: {fileID: 1827226128182048838, guid: 96f9c88aa8512c6489c4b64454e8a48e,
+    type: 3}
   CastVfx: {fileID: 0}
-  ImpactVfx: {fileID: 0}
+  ImpactVfx: {fileID: 5290583320991301603, guid: 10f25d5d1a2d14b40a90ef54034658fe,
+    type: 3}
   Audio: {fileID: 0}
   Color: {r: 0.7, g: 0.2, b: 1, a: 1}
   BuffDuration: 0

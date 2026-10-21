@@ -661,6 +661,7 @@ namespace ROM.Horde
 
         bool SpawnEnemy(EnemyKind kind, Transform encounterSpawn = null)
         {
+            using var measurement=new RiftFrameDiagnostics.Sample(6);
             PlayerInstance bot = GetIdleBot();
             if (!bot)
                 return false;

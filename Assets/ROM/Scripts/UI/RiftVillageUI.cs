@@ -51,13 +51,12 @@ namespace ROM.UI.Sprint01
                 hint.gameObject.SetActive(false); return;
             }
             bool free = UICursorManager.GamePlayInput();
-            var nearest = free ? FindObjectsByType<RiftVillageNpc>(FindObjectsSortMode.None)
-                .Where(n => Vector3.Distance(n.transform.position, player.MyCharacter.transform.position) <= n.InteractionRadius)
-                .OrderBy(n => Vector3.Distance(n.transform.position, player.MyCharacter.transform.position)).FirstOrDefault() : null;
+            RiftVillageNpc nearest=null;float nearestDistance=float.PositiveInfinity;
+            if(free)foreach(var npc in RiftVillageNpc.Active){if(!npc)continue;float distance=(npc.transform.position-player.MyCharacter.transform.position).sqrMagnitude;if(distance<=npc.InteractionRadius*npc.InteractionRadius&&distance<nearestDistance){nearest=npc;nearestDistance=distance;}}
             var selected=MultiFPS.Gameplay.RiftMMOController.Instance?MultiFPS.Gameplay.RiftMMOController.Instance.SelectedWorld:null;var selectedNpc=selected?selected.GetComponent<RiftVillageNpc>():null;if(selectedNpc&&Vector3.Distance(selectedNpc.transform.position,player.MyCharacter.transform.position)<=selectedNpc.InteractionRadius)nearest=selectedNpc;
             int total = RiftVillageSupplies.Count(0) + RiftVillageSupplies.Count(1);
             bool message = NetworkTime.time < noticeUntil;
-            hint.gameObject.SetActive(free && (message || !selectedNpc && (nearest || total > 0)));
+            hint.gameObject.SetActive(free && !MultiFPS.Gameplay.RiftMMOController.PointerOnUI && (message || !selectedNpc && (nearest || total > 0)));
             prompt.text = message ? lastNotice : nearest ? "["+MultiFPS.RiftControls.Label("Interact")+"] Hablar con " + nearest.DisplayName + " · " + nearest.Role : "["+MultiFPS.RiftControls.Label("Potion")+"] Beber poción de vida";
             supplies.text = "Pociones: " + RiftVillageSupplies.Count(0) + " / mayores: " + RiftVillageSupplies.Count(1) +
                 (player.GetComponent<RiftVillagePlayer>().PotionReadyAt > NetworkTime.time ? " · Recarga " + Mathf.CeilToInt((float)(player.GetComponent<RiftVillagePlayer>().PotionReadyAt - NetworkTime.time)) + " s" : " · "+MultiFPS.RiftControls.Label("Potion")+" para usar");

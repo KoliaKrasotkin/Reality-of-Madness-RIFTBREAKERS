@@ -4,8 +4,8 @@
 
 Abrí `Assets/ROM/Scenes/MainMenu.unity`, elegí tu personaje y entrá en El Rift.
 
-- Clic izquierdo: seleccionar un enemigo o NPC. El objetivo queda bajo la información de zona, arriba a la izquierda, fuera del centro de combate.
-- NPC amistoso: nombre y oficio, círculo y rombo verdes; no tiene una barra de vida ficticia. Clic derecho breve o F estando cerca abre su conversación. Tab continúa recorriendo enemigos.
+- Clic izquierdo: seleccionar un enemigo y activar autoataque, o seleccionar e interactuar con un NPC cercano. El objetivo queda bajo la información de zona, arriba a la izquierda, fuera del centro de combate.
+- NPC amistoso: nombre y oficio, círculo y rombo verdes; no tiene una barra de vida ficticia. El mismo clic izquierdo, o F estando cerca, abre su conversación. Tab continúa recorriendo enemigos.
 - Iria ofrece la primera misión. Los signos ! y ? indican misiones disponibles y entregas pendientes.
 - J abre el diario: Activas, Completadas o Disponibles. Podés seguir una misión u ocultar su seguimiento; las activas se pueden abandonar con confirmación.
 - U abre Logros. Ambos accesos son reasignables en Ajustes > Controles y están disponibles desde el menú principal.
@@ -47,4 +47,6 @@ No se modificaron la geometría del mapa, iluminación ni modelos del personaje.
 
 ## Validación
 
-`ROM.EditorTools.RiftJournalProbe.Run` ejecuta el flujo real menú → host local con identidad y carpeta de prueba aisladas. Comprueba raycast, selección amistosa, interacción, comandos de aceptación/entrega, tres impactos de entrenamiento, compra/consumo, bajas de enemigos y miniboss reales, cristales, las cuatro entregas, logros, guardado, separación entre personajes y recompensas idempotentes. **Última ejecución: 52 comprobaciones aprobadas**, sin errores de compilación C# ni excepciones de ejecución. `validation.txt` y las capturas documentan la prueba. No se probó un cliente remoto ni hardware móvil.
+`ROM.EditorTools.RiftJournalProbe.Run` ejecuta el flujo real menú → host local con identidad y carpeta de prueba aisladas. Comprueba raycast, selección amistosa, interacción, comandos de aceptación/entrega, tres impactos de entrenamiento, compra/consumo, bajas de enemigos y miniboss reales, cristales, las cuatro entregas, logros, guardado, separación entre personajes y recompensas idempotentes. **Última ejecución: 70 comprobaciones aprobadas**, sin errores de compilación C# ni excepciones de ejecución. `validation.txt` y las capturas documentan la prueba. No se probó un cliente remoto ni hardware móvil.
+
+La validación más reciente incluye interacción con clic izquierdo, autoataque por clic y habilidades, alcance y cancelación al seleccionar amistosos. Capturas actualizadas con prefijo `click-`.

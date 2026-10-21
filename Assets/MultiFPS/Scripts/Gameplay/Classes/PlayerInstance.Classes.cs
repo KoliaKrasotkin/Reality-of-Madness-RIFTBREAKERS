@@ -11,7 +11,7 @@ namespace MultiFPS.Gameplay {
         public RiftClassDefinition ClassDefinition=>GameManager.Gamemode&&GameManager.Gamemode.ClassRules?GameManager.Gamemode.ClassRules.Find(ClassId):null;
         [Server] public void ServerConfigureClass(){
             if(BOT||!MyCharacter||!ClassDefinition)return;
-            MyCharacter.Health.ServerSetVitals(ClassDefinition.Health,ClassDefinition.Health);
+            int max=GetComponent<RiftCombat.AbilityController>()?.ProgressionHealth(ClassDefinition.Health)??ClassDefinition.Health;MyCharacter.Health.ServerSetVitals(max,max);
             EmpoweredUntil=HiddenUntil=0;LastCombatAt=NetworkTime.time;
         }
         [Command] public void CmdChooseClass(int id){if(ServerChooseClass(id))TargetClassChoice(connectionToClient,id);}

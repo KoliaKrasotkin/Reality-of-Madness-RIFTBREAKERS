@@ -15,7 +15,7 @@ namespace ROM.UI.Sprint01
             var definitions=catalog.Quests.Where(q=>q.Giver==npc.Id&&state.Available(q)||q.TurnIn==npc.Id&&state.Quest(q.Id)!=null&&!state.TurnedIn(q.Id)).ToArray();
             var area=W.ScrollArea(dialog,"Misiones",30,300,920,230,Mathf.Max(230,definitions.Length*170));area.name="Quest content";
             if(definitions.Length==0){W.Label(area,"No tengo nuevas misiones para vos por ahora.",0,10,860,60,23,W.Muted);return;}
-            for(int i=0;i<definitions.Length;i++){var q=definitions[i];var record=state.Quest(q.Id);int y=i*170;W.Label(area,q.Title+" · "+q.Gold+" oro local",0,y,850,32,23,W.Gold);W.Label(area,record==null?q.Description:RiftJournalView.Objectives(q,record),0,y+36,850,67,18);
+            for(int i=0;i<definitions.Length;i++){var q=definitions[i];var record=state.Quest(q.Id);int y=i*170;W.Label(area,q.Title+" · "+q.Gold+" oro · "+MultiFPS.Gameplay.RiftCombat.WarriorProgressionDefinition.Load.QuestExperience+" XP",0,y,850,32,23,W.Gold);W.Label(area,record==null?q.Description:RiftJournalView.Objectives(q,record),0,y+36,850,67,18);
                 if(journal){if(record==null)W.Button(area,"ACEPTAR MISIÓN",0,y+110,410,45,()=>journal.CmdAccept(q.Id,npc.Id));else if(record.Status==QuestStatus.Ready)W.Button(area,"ENTREGAR · "+q.Gold+" ORO",0,y+110,410,45,()=>journal.CmdTurnIn(q.Id,npc.Id),true);else W.Label(area,"En progreso",0,y+110,410,40,20,W.Muted);}
                 W.Button(area,"VER DIARIO",450,y+110,410,45,()=>{Close();var hud=Object.FindFirstObjectByType<ROM.UI.Gameplay.RiftGameplayHUD>();if(hud)hud.Open(HubPage.Missions);});
             }

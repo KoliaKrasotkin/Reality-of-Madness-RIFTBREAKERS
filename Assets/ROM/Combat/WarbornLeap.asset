@@ -14,28 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.AbilityDefinition
   Id: warborn-leap
   DisplayName: Salto de guerra
-  Description: 
-  Icon: {fileID: 0}
-  Shape: 0
+  Description: "Desplazamiento hacia el objetivo o al frente, con da\xF1o de aterrizaje.
+    Alcance m\xE1ximo 12 m."
+  Icon: {fileID: 21300000, guid: ae08ba7ef4f6e74468f1a98f8790b9fc, type: 3}
+  Shape: 1
   DamageKind: 0
-  Damage: 25
+  Damage: 45
   Range: 3
-  Radius: 3
+  Radius: 4
   Arc: 120
-  Cooldown: 1
-  Cost: 0
+  Cooldown: 12
+  Cost: 15
   ResourceGain: 0
-  CastDuration: 0.6
-  HitTime: 0.28
+  CastDuration: 0.7
+  HitTime: 0.4
   Recovery: 0.15
-  Stagger: 0
+  Stagger: 0.5
   ThreatMultiplier: 1
-  Implemented: 0
+  Implemented: 1
   Interruptible: 1
   AllowsMovement: 1
-  Animation: {fileID: 0}
+  Animation: {fileID: 1827226128182048838, guid: 813376a7edaaa534587c7bad06730273,
+    type: 3}
   CastVfx: {fileID: 0}
-  ImpactVfx: {fileID: 0}
+  ImpactVfx: {fileID: 5254193867818708135, guid: 8ef92af01ecdf7d4dbfb47d89f7c99d1,
+    type: 3}
   Audio: {fileID: 0}
   Color: {r: 0.7, g: 0.2, b: 1, a: 1}
   BuffDuration: 0

@@ -64,7 +64,7 @@ namespace ROM.UI.Sprint01
         void DrawWarriorEquipment(Transform body)
         {
             W.Label(body,"WARRIOR",0,0,650,40,30,W.Gold);
-            W.Label(body,Roster.Active.Name+" · Lizardman\nHacha equipada · Furia\n\nClic: ataque básico\nF: Furia cortante\nZ: Rompetierra\nT: Rugido de honor",0,65,650,300,23);
+            W.Label(body,Roster.Active.Name+" · Lizardman\nHacha o espada y escudo · Furia\n\nClic / T: autoataque\n1–7: habilidades\nB: personaje y equipo\nK: habilidades y talentos",0,65,650,300,23);
             W.Button(body,"PERSONAJES",0,410,400,55,()=>{homePanel="Characters";Navigate(HubPage.Home);});
             ShowModel(body,CurrentCharacter(),750,0,1020,550);
         }
