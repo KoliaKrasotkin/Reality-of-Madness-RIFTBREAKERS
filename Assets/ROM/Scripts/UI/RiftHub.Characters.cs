@@ -23,7 +23,7 @@ namespace ROM.UI.Sprint01
         string ClassName(string key){if(key=="warrior")return "Warrior";if(key!=null&&key.StartsWith("legacy:")&&int.TryParse(key.Substring(7),out int id))return RiftClassRules.Load()?.Find(id)?.Name??"Clase";return "Clase";}
         public void ApplyActiveCharacter()
         {
-            var record=Roster.Active;
+            var record=Roster.Active;PlayerPrefs.SetString("ROM.Character.ActiveId",record.Id);
             if(record.ClassKey=="warrior"){
                 if(CombatSpecies&&!CombatSpecies.AllowsSkin(record.Skin))Roster.SetSkin(CombatSpecies.SkinIndices[0]);
                 // A class selection has one default balance profile; no specialization is selected by the player.

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1253385228156914474}
   - component: {fileID: 1791136284784208347}
   - component: {fileID: 8720865263414894012}
+  - component: {fileID: 3282522090837819777}
   m_Layer: 0
   m_Name: MultiFPS_PlayerInstance
   m_TagString: Untagged
@@ -76,6 +77,7 @@ MonoBehaviour:
   LastCombatAt: 0
   PlayerInfo:
     Username: 
+    CharacterId: 
     CharacterSkinID: 0
     ClassId: 0
     Warrior: 0
@@ -147,4 +149,21 @@ MonoBehaviour:
   BuffReduction: 0
   OffensiveBonus: 0
   Casting: -1
+  TargetNetId: 0
   PortalReady: 0
+--- !u!114 &3282522090837819777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4898308515290633002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14de274437e4c1147972fe2f1cef5725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftJournalPlayer
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  Catalog: {fileID: 11400000, guid: ec400eede4e37b84890f5c87eae4cfd6, type: 2}
