@@ -57,11 +57,11 @@ namespace ROM.UI.Sprint01
             int total = RiftVillageSupplies.Count(0) + RiftVillageSupplies.Count(1);
             bool message = NetworkTime.time < noticeUntil;
             hint.gameObject.SetActive(free && (nearest || total > 0 || message));
-            prompt.text = message ? lastNotice : nearest ? "[G] Hablar con " + nearest.DisplayName + " · " + nearest.Role : "[H] Beber poción de vida";
+            prompt.text = message ? lastNotice : nearest ? "["+MultiFPS.RiftControls.Label("Interact")+"] Hablar con " + nearest.DisplayName + " · " + nearest.Role : "["+MultiFPS.RiftControls.Label("Potion")+"] Beber poción de vida";
             supplies.text = "Pociones: " + RiftVillageSupplies.Count(0) + " / mayores: " + RiftVillageSupplies.Count(1) +
-                (player.GetComponent<RiftVillagePlayer>().PotionReadyAt > NetworkTime.time ? " · Recarga " + Mathf.CeilToInt((float)(player.GetComponent<RiftVillagePlayer>().PotionReadyAt - NetworkTime.time)) + " s" : " · H para usar");
-            if (free && nearest && Input.GetKeyDown(KeyCode.G)) Open(nearest);
-            if (free && Input.GetKeyDown(KeyCode.H)) player.GetComponent<RiftVillagePlayer>().CmdDrinkVillagePotion();
+                (player.GetComponent<RiftVillagePlayer>().PotionReadyAt > NetworkTime.time ? " · Recarga " + Mathf.CeilToInt((float)(player.GetComponent<RiftVillagePlayer>().PotionReadyAt - NetworkTime.time)) + " s" : " · "+MultiFPS.RiftControls.Label("Potion")+" para usar");
+            if (free && nearest && MultiFPS.RiftControls.Pressed("Interact")) Open(nearest);
+            if (free && MultiFPS.RiftControls.Pressed("Potion")) player.GetComponent<RiftVillagePlayer>().CmdDrinkVillagePotion();
         }
         public void Open(RiftVillageNpc npc)
         {

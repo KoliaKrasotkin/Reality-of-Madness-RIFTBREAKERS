@@ -9,9 +9,11 @@ namespace MultiFPS.Gameplay {
             var character=ClientFrontend.ObservedCharacterInstance;if(!character||!character.FPPCameraTarget)return;
             var camera=GetComponent<Camera>();camera.nearClipPlane=.08f;
             if(GameplayCamera._instance.FPPCamera)GameplayCamera._instance.FPPCamera.enabled=false;
-            Quaternion rotation=character.FPPCameraTarget.rotation;
+            var mmo=RiftMMOController.Instance;bool local=mmo&&mmo.Actor==character;
+            Quaternion rotation=local?Quaternion.Euler(mmo.CameraPitch,mmo.CameraYaw,0):character.FPPCameraTarget.rotation;
+            float distance=local?mmo.CameraDistance:Distance;
             Vector3 pivot=character.transform.position+Vector3.up*(character.IsCrouching?1.2f:1.7f);
-            Vector3 offset=rotation*new Vector3(.6f,.25f,-Distance);
+            Vector3 offset=rotation*new Vector3(0,.25f,-distance);
             float length=offset.magnitude;
             if(Physics.SphereCast(pivot,.22f,offset.normalized,out var hit,length,GameManager.environmentLayer,QueryTriggerInteraction.Ignore))length=Mathf.Max(.35f,hit.distance-.12f);
             var position=pivot+offset.normalized*length;

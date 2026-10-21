@@ -26,18 +26,7 @@ namespace MultiFPS.Gameplay.RiftCombat
             foreach(var hit in actor.CharacterParent.GetComponentsInChildren<Collider>())Physics.IgnoreCollision(capsule,hit,true);
         }
         public void SetSkin(int skin){ /* The first Warrior body is native Lizardman; no legacy retargeting. */ }
-        public void ReadInput()
-        {
-            if(!isOwned||!actor||actor.Health.CurrentHealth<=0)return;
-            if(!UICursorManager.GamePlayInput()){actor.Input.Movement=Vector2.zero;actor.Input.ActionCodes=0;return;}
-            var keyboard=Keyboard.current;var mouse=Mouse.current;
-            Vector2 move=Vector2.zero;
-            if(keyboard!=null){move.x=(keyboard.dKey.isPressed?1:0)-(keyboard.aKey.isPressed?1:0);move.y=(keyboard.wKey.isPressed?1:0)-(keyboard.sKey.isPressed?1:0);actor.SetActionKeyCode(ActionCodes.Sprint,keyboard.leftShiftKey.isPressed);if(keyboard.spaceKey.wasPressedThisFrame)RequestJump();}
-            actor.Input.Movement=Vector2.ClampMagnitude(move,1);
-            if(mouse!=null){Vector2 delta=mouse.delta.ReadValue()/10;actor.Input.LookY+=delta.x*UserSettings.MouseSensitivity;actor.Input.LookX=Mathf.Clamp(actor.Input.LookX-delta.y*UserSettings.MouseSensitivity,-65,75);}
-            var player=MultiFPS.UI.ClientFrontend.ClientPlayerInstance;var combat=player?player.GetComponent<AbilityController>():null;
-            if(combat){if(mouse!=null&&mouse.leftButton.isPressed)combat.Request(0);if(keyboard!=null){if(keyboard.fKey.wasPressedThisFrame)combat.Request(1);if(keyboard.zKey.wasPressedThisFrame)combat.Request(2);if(keyboard.tKey.wasPressedThisFrame)combat.Request(3);}}
-        }
+        public void ReadInput(){if(isOwned&&actor)RiftMMOController.Ensure(gameObject).ReadCharacter(actor);}
         public void RequestJump(){jumpRequested=Time.time;}
         void FixedUpdate()
         {
@@ -47,7 +36,7 @@ namespace MultiFPS.Gameplay.RiftCombat
             actor.PrepareCharacterToLerp();
             Grounded=capsule.isGrounded||Physics.SphereCast(transform.position+Vector3.up*.35f,.24f,Vector3.down,out _, .23f,GameManager.environmentLayer,QueryTriggerInteraction.Ignore);
             if(Grounded){lastGround=Time.time;if(vertical<0)vertical=-2;}
-            bool sprint=actor.ReadActionKeyCode(ActionCodes.Sprint)&&actor.Input.Movement.y>.1f;
+            bool sprint=actor.ReadActionKeyCode(ActionCodes.Sprint)&&actor.Input.Movement.y>=0;
             Vector2 input=actor.Block?Vector2.zero:actor.Input.Movement;
             Vector3 desired=Quaternion.Euler(0,actor.Input.LookY,0)*new Vector3(input.x,0,input.y)*(sprint?SprintSpeed:WalkSpeed);
             planar=Vector3.MoveTowards(planar,desired,(input.sqrMagnitude>.01f?Acceleration:Braking)*dt);

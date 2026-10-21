@@ -55,7 +55,7 @@ namespace MultiFPS.UI.HUD
 
         void Update()
         {
-            _scoreBoard.SetActive(Input.GetKey(KeyCode.Tab) && UICursorManager.GamePlayInput());
+            _scoreBoard.SetActive(RiftControls.Held("Squad") && UICursorManager.GamePlayInput());
 
             if (_scoreBoard.activeSelf && c_refresher == null)
             {

@@ -19,9 +19,9 @@ Implemented as native UGUI controls, custom masked vector frames, live Text/Imag
 - Player and target health, dummy last/total damage: existing replicated Health.
 - Warrior name stays fixed as the class; the visible character name comes from the selected character identity.
 - Rage, availability and cooldowns: existing AbilityController / Mirror NetworkTime. Unimplemented abilities remain locked. No gameplay balancing values changed.
-- Q / left mouse: basic attack. F: cleave. 2 / Z: Earthbreaker. T: roar. The HUD adds Q and 2 aliases and keeps existing controls.
-- I: current inventory/equipped weapon and potion counts. B: character. K: actual ability definitions. Escape: existing pause and settings. Hold left Alt to access HUD buttons with the mouse; native buttons also accept touch.
-- Small red ring and diamond are local presentation only. Soft selection follows the forward facing direction within 45 m and does not change authoritative melee hit detection.
+- Current MMO controls: 1 basic/auto attack, 2 cleave, 3 Earthbreaker, 4 roar. All bindings can be changed under Settings > Controls; see `../mmo-controls/README.md`.
+- I: current inventory/equipped weapon and potion counts. B: character. K: actual ability definitions. Escape: existing pause and settings. The cursor is free by default; native buttons also accept touch.
+- Small red ring and diamond follow persistent click/Tab selection within 45 m. The mouseover tooltip is independent. Targeted melee attacks now validate the selected target on the server; AoE remains positional.
 - Level uses the configurable starting value 1: no level/XP progression system was added.
 - The portrait currently represents Nertör, the requested Warrior prototype; extra character portrait assets can be assigned to the theme.
 - Minimap renders the real environment to a 256×256 texture at 4 Hz, with shadows/postprocessing disabled on its private camera. No environment lighting is modified. Device performance has not been benchmarked.

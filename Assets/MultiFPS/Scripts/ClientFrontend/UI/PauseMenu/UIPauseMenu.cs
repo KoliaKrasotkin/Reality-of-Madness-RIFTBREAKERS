@@ -59,7 +59,7 @@ namespace MultiFPS.UI
         void Update()
         {
             //check for input to show pause menu
-            if (!(Input.GetKeyDown(KeyCode.Escape) && AbleToPause && !ClientFrontend.Hub)) return;
+            if (!(RiftControls.Pressed("Pause") && RiftControls.EscapeConsumedFrame!=Time.frameCount && !RiftControls.Rebinding && AbleToPause && !ClientFrontend.Hub)) return;
 
             if (ChatBehaviour._instance && ChatBehaviour._instance.ChatWriting)
             {
