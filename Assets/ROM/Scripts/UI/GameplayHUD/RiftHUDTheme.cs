@@ -7,7 +7,7 @@ namespace ROM.UI.Gameplay
         public Font BodyFont,TitleFont;
         public Sprite[] AbilityIcons,Portraits;
         public Sprite White;
-        public Material TargetMaterial;
+        public Material TargetMaterial,FriendlyTargetMaterial;
         public Color Gold=new Color(.76f,.59f,.31f),BrightGold=new Color(.96f,.79f,.47f),Text=new Color(.96f,.89f,.69f);
         public int InitialLevel=1;
         [Range(1,10)]public float MinimapRefreshRate=4;

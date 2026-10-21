@@ -36,6 +36,7 @@ namespace MultiFPS
             for(int i=0;i<7;i++)Add("Ability"+i,i==0?"Ataque principal / automático":"Habilidad "+(i+1),"Combate","<Keyboard>/"+(i+1));
             Add("Interact","Interactuar / hablar / portal","Mundo","<Keyboard>/f");Add("Potion","Beber poción","Mundo","<Keyboard>/h");
             Add("Reload","Recargar arma","Armas","<Keyboard>/r");Add("Aim","Apuntar arma","Armas","<Keyboard>/z","",true);Add("Melee","Golpe con arma","Armas","<Keyboard>/v");Add("Drop","Soltar arma","Armas","<Keyboard>/y");Add("PreviousWeapon","Arma anterior","Armas","<Keyboard>/x");for(int i=0;i<5;i++)Add("Weapon"+i,"Equipar arma "+(i+1),"Armas","<Keyboard>/f"+(i+1));
+            Add("Journal","Diario de misiones","Interfaz","<Keyboard>/j");Add("Achievements","Logros","Interfaz","<Keyboard>/u");
             Add("Inventory","Inventario","Interfaz","<Keyboard>/i");Add("Character","Personaje","Interfaz","<Keyboard>/b");Add("Abilities","Habilidades","Interfaz","<Keyboard>/k");Add("Pause","Menú / pausa","Interfaz","<Keyboard>/escape");Add("Chat","Abrir chat","Interfaz","<Keyboard>/enter");Add("Squad","Ver escuadra","Interfaz","<Keyboard>/o","",true);
             try{var saved=JsonUtility.FromJson<Saved>(PlayerPrefs.GetString(Preference,""));if(saved!=null&&saved.Rows!=null)foreach(var row in saved.Rows)if(byId.TryGetValue(row.Id,out var e)){e.Bindings[0]=row.Primary??B("");e.Bindings[1]=row.Secondary??B("");}}catch(Exception){/* Ignore an incomplete preferences record and retain defaults. */}
             foreach(var e in entries)Build(e);

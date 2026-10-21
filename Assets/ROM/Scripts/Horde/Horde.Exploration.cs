@@ -48,6 +48,7 @@ namespace ROM.Horde {
                     if(!checkpoint||Vector3.Distance(character.transform.position,checkpoint.transform.position)>9)continue;
                     if(!_checkpoints.TryGetValue(player,out var old)||old!=checkpoint){
                         _checkpoints[player]=checkpoint;
+                        if(!checkpoint.StartingCamp)ROM.Progression.RiftJournalPlayer.Record(player,MultiFPS.Gameplay.RiftProgressEvent.Checkpoint,checkpoint.Title);
                         TargetExplorationNotice(player.connectionToClient,0,"Checkpoint: "+checkpoint.Title,checkpoint.Title);
                         character.Health.ServerHeal(character.Health.MaxHealth,character.Health.DNID);
                     }
@@ -91,10 +92,11 @@ namespace ROM.Horde {
             if(!killer || killer==victim || killer.Team!=PlayerTeam){encounter.Spawned--;return;}
             encounter.Defeated++;
             var player=GameManager.Players.FirstOrDefault(p=>p&&!p.BOT&&p.MyCharacter&&p.MyCharacter.Health==killer);
+            if(player){ROM.Progression.RiftJournalPlayer.Record(player,MultiFPS.Gameplay.RiftProgressEvent.Kill,"enemy");if(kind==EnemyKind.Boss)ROM.Progression.RiftJournalPlayer.Record(player,MultiFPS.Gameplay.RiftProgressEvent.MiniBoss,"boss");}
             if(player)TargetExplorationNotice(player.connectionToClient,kind==EnemyKind.Boss?150:20,kind==EnemyKind.Boss?"Guardián derrotado · +150 oro local":"Enemigo derrotado · +20 oro local",null);
             if(encounter.Cleared)foreach(var human in GameManager.Players)
                 if(human&&!human.BOT&&human.MyCharacter&&Vector3.Distance(human.MyCharacter.transform.position,encounter.transform.position)<180)
-                    TargetExplorationNotice(human.connectionToClient,75,encounter.Title+" despejado · +75 oro local",null);
+                    {ROM.Progression.RiftJournalPlayer.Record(human,MultiFPS.Gameplay.RiftProgressEvent.Encounter,encounter.Title);TargetExplorationNotice(human.connectionToClient,75,encounter.Title+" despejado · +75 oro local",null);}
         }
         [TargetRpc] void TargetExplorationNotice(NetworkConnectionToClient connection,int gold,string message,string checkpoint) {
             if(!string.IsNullOrEmpty(checkpoint))LocalCheckpoint=checkpoint;

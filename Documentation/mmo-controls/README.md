@@ -13,12 +13,14 @@ Open `Assets/ROM/Scenes/MainMenu.unity`, select a character and enter El Rift. C
 - Space: jump. Num Lock: autorun (manual forward/backward cancels it). Numpad Divide: walking/running toggle. Shift allows running while walking mode is active. Backpedalling uses the slower speed.
 - Mouse wheel: third-person zoom, limited to 2–14 m and still subject to camera collision.
 - 1: basic attack/auto attack. 2: Cleaving Fury. 3: Earthbreaker. 4: Honored Roar. Slots 5–7 remain reserved for their unimplemented abilities.
-- F: interact/talk/use nearby portal. H: potion. I: inventory. B: character. K: abilities. O (hold): squad. Enter: chat.
+- J: quest journal. U: achievements. F: interact/talk/use nearby portal. H: potion. I: inventory. B: character. K: abilities. O (hold): squad. Enter: chat.
 - Escape first clears the selected target/auto attack; with no selection it opens the existing pause menu.
 
 ## Targeting
 
 Left-click selects an actual Health target through physics hitboxes, including native presentation roots detached from the network object. Selection persists when looking elsewhere; it is no longer chosen from the camera direction. Tab cycles visible hostile targets within 45 m, ordered by distance and stable network identity. Shift+Tab cycles backwards. Obstructed, dead, friendly or invalid enemies are excluded from cycling. F6 targets self. Dead/despawned/out-of-range selections are cleared.
+
+Village NPCs can also be selected with left click. A short right click opens dialogue when in interaction range. Their target card shows a role instead of invented health, with green markers; hostile markers remain red. The target card sits below the top-left zone information, outside the center of the screen. Tab still cycles hostile targets only.
 
 The mouseover tooltip shows actual name, health and role only while hovering, independently of selection. Existing village NPCs also show their name, role and trading status. It hides over interactive UI, while dragging, during chat and in menus. The target frame and red markers follow the selected target rather than hover.
 
