@@ -26,7 +26,10 @@ public sealed partial class RiftHub {
   if(action=="Abilities")ShowSkills();else if(action=="Talents")ShowTalents();else if(action=="Settings")ShowGameSettings();else if(action=="Party")ShowPartyChat();else ShowGameplayPage(page);
  }
  public bool TryCloseTopLayer(){
+  if(RiftInventoryPaperdoll.DragView){RiftInventoryPaperdoll.CancelDrag();return true;}
+  if(RiftHotbar.Dragging){RiftAbilityDrag.Cancel();return true;}
   if(modal){DismissModal();return true;}
+  if(modernMoreMenu&&modernMoreMenu.gameObject.activeSelf){modernMoreMenu.gameObject.SetActive(false);return true;}
   foreach(var dropdown in GetComponentsInChildren<Dropdown>()){var list=dropdown.transform.Find("Dropdown List");if(list&&list.gameObject.activeInHierarchy){dropdown.Hide();return true;}}
   if(ArsenalPanel&&ArsenalPanel.gameObject.activeSelf){ShowGameSettings();return true;}
   return false;

@@ -8,6 +8,9 @@ namespace ROM.UI.Sprint01
     {
         public string Id,Name,ClassKey="warrior";
         public int Skin=1;
+        public int WalletVersion;
+        public string DisplayName=>MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Name(Skin);
+        public bool Available=>ClassKey=="warrior"&&MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(Skin);
     }
     [Serializable] public sealed class CharacterRosterData
     {
@@ -31,16 +34,17 @@ namespace ROM.UI.Sprint01
         }
         public string Create(string name,string classKey,int skin)
         {
-            name=(name??"").Trim();
+            name=MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Name(skin);
+            if(classKey!="warrior"||!MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(skin))return "Solo Warrior está disponible.";
             if(name.Length<2||name.Length>24)return "Usá un nombre de 2 a 24 caracteres.";
             if(data.Characters.Count>=8)return "Ya tenés ocho personajes.";
-            if(data.Characters.Any(c=>string.Equals(c.Name,name,StringComparison.OrdinalIgnoreCase)))return "Ya existe un personaje con ese nombre.";
             if(string.IsNullOrEmpty(classKey)||skin<0)return "Elegí una clase y un aspecto válidos.";
-            var character=new RiftPlayerCharacter{Id=Guid.NewGuid().ToString("N"),Name=name,ClassKey=classKey,Skin=skin};data.Characters.Add(character);data.ActiveId=character.Id;Save();return null;
+            var character=new RiftPlayerCharacter{Id=Guid.NewGuid().ToString("N"),Name=name,ClassKey=classKey,Skin=skin,WalletVersion=1};data.Characters.Add(character);data.ActiveId=character.Id;Save();return null;
         }
-        public bool Select(string id){if(!data.Characters.Any(c=>c.Id==id))return false;data.ActiveId=id;Save();return true;}
-        public void SetClass(string id,int skin){Active.ClassKey=id;Active.Skin=skin;Save();}
-        public void SetSkin(int skin){Active.Skin=skin;Save();}
+        public bool Select(string id){if(!data.Characters.Any(c=>c.Id==id&&c.Available))return false;data.ActiveId=id;Save();return true;}
+        public void SetClass(string id,int skin){/* Existing identities cannot be converted into another class. */}
+        public void SetSkin(int skin){if(!Active.Available||!MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(skin))return;Active.Skin=skin;Save();}
+        public void SaveIdentity(){Save();}
         void Save(){PlayerPrefs.SetString(key,JsonUtility.ToJson(data));PlayerPrefs.Save();}
     }
 }

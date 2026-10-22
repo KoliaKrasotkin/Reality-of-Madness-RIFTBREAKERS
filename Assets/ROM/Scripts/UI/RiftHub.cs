@@ -29,7 +29,8 @@ namespace ROM.UI.Sprint01
         public SprintServices Services {get;private set;}
         public ISocialService Social {get;private set;}
         public RiftModelView Stage {get;private set;}
-        RectTransform content,modal;
+        RectTransform content,modal,fullGameplayHeader,compactGameplayHeader;
+        RiftWarriorShowcase talentShowcase;
         Text toast;
         Image fallback;
         RiftModelView productView;
@@ -70,22 +71,24 @@ namespace ROM.UI.Sprint01
             Design=W.Rect(transform,"SafeAreaDesign",0,0,1920,1080);
             fallback=W.Image(Design,"LoadingFallback",0,0,1920,1080,Color.white,Background);
             if(!InGame&&Catalog&&Catalog.StagePrefab&&Application.isPlaying){
-                try{Stage=RiftModelView.Create(Design,0,0,1920,1080,Catalog,true);Stage.ShowParty(Catalog,Social);fallback.enabled=!Stage.Ready;}
+                try{Stage=RiftModelView.Create(Design,530,20,1100,1040,Catalog,true);Stage.ConfigureMainMenuPresentation();Stage.ShowParty(Catalog,Social);fallback.enabled=!Stage.Ready;}
                 catch(Exception e){Debug.LogError("Lobby stage failed: "+e.Message);if(Stage)Stage.gameObject.SetActive(false);fallback.enabled=true;}
             }
-            W.Image(Design,"HeaderShade",0,0,1920,110,new Color(.015f,.018f,.027f,.96f));
-            W.Image(Design,"HeaderLine",0,108,1920,2,W.Gold);
-            W.Image(Design,"Brand",28,16,210,72,Color.white,Logo).preserveAspect=true;
+            if(!InGame){BuildModernMenuEnvironment();return;}
+            var header=InGame?(fullGameplayHeader=W.Rect(Design,"Full gameplay header",0,0,1920,110)):Design;
+            W.Image(header,"HeaderShade",0,0,1920,110,new Color(.015f,.018f,.027f,.96f));
+            W.Image(header,"HeaderLine",0,108,1920,2,W.Gold);
+            W.Image(header,"Brand",28,16,210,72,Color.white,Logo).preserveAspect=true;
             if(InGame){
                 fallback.sprite=null;fallback.color=new Color(.015f,.012f,.02f,.94f);
-                W.Label(Design,"EL RIFT",260,20,170,65,22);
-                BoundButton(Design,"BOLSA","Inventory",440,24,230,58,()=>TogglePanel("Inventory",HubPage.Inventory));
-                BoundButton(Design,"PERSONAJE","Character",685,24,225,58,()=>TogglePanel("Character",HubPage.Character));
-                BoundButton(Design,"HABILIDADES","Abilities",925,24,245,58,()=>TogglePanel("Abilities",HubPage.Abilities));
-                BoundButton(Design,"DIARIO","Journal",1185,24,195,58,()=>TogglePanel("Journal",HubPage.Missions));
-                BoundButton(Design,"AJUSTES","Settings",1395,24,195,58,()=>TogglePanel("Settings",HubPage.Settings));
-                BoundButton(Design,"CERRAR","Pause",1605,24,275,58,()=>ResumeRequested?.Invoke());
-                content=W.Rect(Design,"Screen",36,150,1848,810);toast=W.Label(Design,"",460,970,1200,36,20,W.Gold);Navigate(HubPage.Settings);Fit();return;
+                W.Label(header,"EL RIFT",260,20,170,65,22);
+                BoundButton(header,"BOLSA","Inventory",440,24,230,58,()=>TogglePanel("Inventory",HubPage.Inventory));
+                BoundButton(header,"PERSONAJE","Character",685,24,225,58,()=>TogglePanel("Character",HubPage.Character));
+                BoundButton(header,"HABILIDADES","Abilities",925,24,245,58,()=>TogglePanel("Abilities",HubPage.Abilities));
+                BoundButton(header,"DIARIO","Journal",1185,24,195,58,()=>TogglePanel("Journal",HubPage.Missions));
+                BoundButton(header,"AJUSTES","Settings",1395,24,195,58,()=>TogglePanel("Settings",HubPage.Settings));
+                BoundButton(header,"CERRAR","Pause",1605,24,275,58,()=>ResumeRequested?.Invoke());
+                BuildCompactHeader();content=W.Rect(Design,"Screen",36,150,1848,810);toast=W.Label(Design,"",460,970,1200,36,20,W.Gold);Navigate(HubPage.Settings);Fit();return;
             }
             W.Button(Design,"MENÚ",1640,24,240,58,()=>ToggleHomePanel("Menu"));
             W.Label(Design,"LOCAL",36,1030,180,25,15,W.Muted);
@@ -130,16 +133,25 @@ namespace ROM.UI.Sprint01
             if(page!=HubPage.Home&&Stage)Stage.StopEmote();emoteStatus=null;
             if(page==HubPage.Lobby)page=HubPage.Home;
             if(page!=HubPage.Home)homePanel="";
-            Page=page;Clear(content);RefreshBoundLabels();productView=null;
+            Page=page;if(talentShowcase)DestroyImmediate(talentShowcase.gameObject);talentShowcase=null;Clear(content);RefreshBoundLabels();productView=null;
+            const bool talentCompositionPilotEnabled=true; // Validated by live-character, alpha and contrast review.
+            bool talentPilot=(talentCompositionPilotEnabled||(Application.isEditor&&Environment.GetCommandLineArgs().Contains("-riftTalentPilotReview")))&&InGame&&page==HubPage.Abilities&&abilityTab=="Talents";
+            bool skillLayout=InGame&&page==HubPage.Abilities;bool spellLayout=skillLayout&&!talentPilot;
+            bool inventoryLayout=InGame&&page==HubPage.Inventory;if(modernMoreMenu)modernMoreMenu.gameObject.SetActive(false);
+            bool achievementLayout=page==HubPage.Progression;
+            bool compact=InGame&&(page==HubPage.Inventory||page==HubPage.Character||page==HubPage.Missions||page==HubPage.Abilities||achievementLayout);
+            if(fullGameplayHeader)fullGameplayHeader.gameObject.SetActive(!compact);if(compactGameplayHeader)compactGameplayHeader.gameObject.SetActive(compact&&!inventoryLayout&&!achievementLayout&&!skillLayout);if(modernInventoryHeader){modernInventoryHeader.gameObject.SetActive(inventoryLayout);if(inventoryLayout)modernInventoryHeader.SetAsLastSibling();}
+            if(InGame&&fallback){fallback.enabled=!compact;fallback.raycastTarget=false;}
             int active=page==HubPage.Home?0:page==HubPage.Loadout?1:page==HubPage.Progression?2:page==HubPage.Marketplace||page==HubPage.Auction||page==HubPage.Exchange?3:page==HubPage.Settings?4:-1;
             for(int i=0;i<nav.Count;i++){var frame=nav[i].targetGraphic as RiftButtonGraphic;if(frame){frame.Active=i==active;frame.SetVerticesDirty();}}
             if(page==HubPage.Home)Home();
             else{
-                var panel=W.Panel(content,"PagePanel",0,0,1848,810);
-                W.Label(panel,PageTitle(page),28,14,1200,60,32);
-                if(!InGame)W.Button(panel,"VOLVER",1560,18,260,50,()=>Navigate(HubPage.Home));else if(page==HubPage.Settings)W.Button(panel,"SALIR DE PARTIDA",1440,18,380,50,()=>Dialog("Volver al menú","Vas a salir de esta partida.",()=>LeaveRequested?.Invoke()));
+                var panel=skillLayout?W.Panel(content,"PagePanel",talentPilot?24:724,talentPilot?-70:-110,talentPilot?1800:1124,talentPilot?930:1016):achievementLayout?W.Panel(content,"PagePanel",0,-80,1848,900):inventoryLayout?W.Panel(content,"PagePanel",860,-40,988,945):talentPilot?W.Panel(content,"PagePanel",640,80,1208,720):compact?W.Panel(content,"PagePanel",1104,80,744,720):W.Panel(content,"PagePanel",0,0,1848,810);
+                panel.GetComponent<Image>().raycastTarget=true;if(achievementLayout){RiftModernWidgets.Surface(panel,Color.clear);panel.GetComponent<Image>().raycastTarget=false;panel.GetComponent<Outline>().enabled=false;}if(inventoryLayout){RiftModernWidgets.Surface(panel,new Color(.006f,.008f,.013f,.8f));panel.gameObject.AddComponent<RiftInventoryFontScope>().Font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");panel.GetComponent<Image>().color=new Color(.006f,.008f,.013f,.8f);}if(skillLayout){var image=panel.GetComponent<Image>();image.color=Color.clear;image.raycastTarget=false;DestroyImmediate(image);foreach(Transform child in panel)child.gameObject.SetActive(false);var glass=panel.gameObject.AddComponent<ROM.UI.Gameplay.RiftMapSurface>();glass.Fill=new Color(.025f,.028f,.046f,.82f);glass.Border=new Color(.4f,.39f,.5f,.85f);glass.Radius=12;glass.raycastTarget=true;BuildSkillNavigation(panel,talentPilot);}
+                if(!inventoryLayout&&!achievementLayout&&!skillLayout)W.Label(panel,talentPilot?"TALENTOS DE WARRIOR":PageTitle(page),28,14,inventoryLayout?920:talentPilot?1120:compact?660:1200,60,compact?28:32);
+                if(!InGame&&!achievementLayout)W.Button(panel,"VOLVER",1560,18,260,50,()=>Navigate(HubPage.Home));else if(page==HubPage.Settings)W.Button(panel,"SALIR DE PARTIDA",1440,18,380,50,()=>Dialog("Volver al menú","Vas a salir de esta partida.",()=>LeaveRequested?.Invoke()));
                 if(page==HubPage.Marketplace)W.Label(panel,$"AG {Services.Balances.AncientGold:N0} / RC {Services.Balances.RiftCrystals:N0}",1050,20,490,48,19,W.Gold);
-                var body=W.Rect(panel,"Body",28,95,1792,690);
+                var body=skillLayout?W.Rect(panel,"Body",talentPilot?470:28,110,talentPilot?1302:1068,talentPilot?790:884):achievementLayout?W.Rect(panel,"Body",0,0,1848,900):W.Rect(panel,"Body",28,inventoryLayout?24:compact?80:95,inventoryLayout?932:talentPilot?1152:compact?688:1792,inventoryLayout?916:compact?610:690);
                 switch(page){
                     case HubPage.Inventory:case HubPage.Character:case HubPage.Abilities:GameplayPage(body,page);break;
                     case HubPage.Missions:QuestJournal(body);break;
@@ -152,7 +164,7 @@ namespace ROM.UI.Sprint01
                     default:W.Label(body,"EL RIFT\nExplorá el destino y defendé las fisuras dimensionales.",20,20,1500,180,28);break;
                 }
             }
-            var first=content.GetComponentInChildren<Button>();if(first&&EventSystem.current)EventSystem.current.SetSelectedGameObject(first.gameObject);
+            var first=InGame&&Page==HubPage.Abilities&&abilityTab=="Talents"?content.GetComponentsInChildren<Button>().FirstOrDefault(b=>b.name=="CENTRAR"):content.GetComponentInChildren<Button>();if(first&&EventSystem.current)EventSystem.current.SetSelectedGameObject(first.gameObject);
         }
         static string PageTitle(HubPage page)=>page switch {HubPage.Inventory=>"INVENTARIO",HubPage.Character=>"PERSONAJE",HubPage.Abilities=>"HABILIDADES",HubPage.Loadout=>"EQUIPAMIENTO",HubPage.Missions=>"DIARIO DE MISIONES",HubPage.Progression=>"LOGROS",HubPage.Settings=>"AJUSTES",HubPage.Social=>"AMIGOS Y MENSAJES",HubPage.Exchange=>"INTERCAMBIO",_=>"TIENDA"};
         public void ToggleHomePanel(string panel){homePanel=Page==HubPage.Home&&homePanel==panel?"":panel;Navigate(HubPage.Home);}
@@ -160,7 +172,8 @@ namespace ROM.UI.Sprint01
         RectTransform Drawer(string name,string title,float x,float width,float height){var r=W.Panel(content,name,x,0,width,height);W.Label(r,title,22,12,width-175,42,26,W.Gold);W.Button(r,"CERRAR",width-150,17,128,38,CloseHomePanel).GetComponentInChildren<Text>().fontSize=18;return r;}
         void Home()
         {
-            W.Label(content,Roster.Active.Name,0,620,650,45,30);
+            if(!InGame&&homePanel!="Party"&&homePanel!="Emotes"){ModernHome();return;}
+            W.Label(content,Roster.Active.DisplayName,0,620,650,45,30);
             var rules=MultiFPS.Gameplay.RiftClassRules.Load();
             W.Label(content,CombatClassLabel(rules)+" · "+(CurrentCharacter()?.Name??"Personaje"),0,670,800,32,20,W.Muted);
             W.Button(content,"CLASE",0,744,170,52,()=>ToggleHomePanel("Class"));
@@ -198,13 +211,14 @@ namespace ROM.UI.Sprint01
                 bool ready=Social.Party.Any(p=>p.ProfileId==Social.Self.Id&&p.Ready);W.Button(party,ready?"LISTO ✓":"MARCAR COMO LISTO",24,442,400,60,()=>Notify(Social.SetReady(!ready)));
             }
         }
-        string CombatClassLabel(MultiFPS.Gameplay.RiftClassRules rules)=>ClassName(Roster.Active.ClassKey);
+        string CombatClassLabel(MultiFPS.Gameplay.RiftClassRules rules)=>Roster.Active.Available?"Warrior":"CLASE NO DISPONIBLE";
         PreviewModel CurrentCharacter()
         {
             if(!Catalog)return null;var list=Catalog.Characters;return list.Length==0?null:list[Mathf.Clamp(Roster.Active.Skin,0,list.Length-1)];
         }
         public void Deploy()
         {
+            if(!RequireWarrior())return;
             if(!Creator){Notify("Abrí MainMenu para iniciar una partida.");return;}
             ApplyActiveCharacter();
             if(Social.Self.Id!=Social.LeaderId){Notify("Solo el líder puede iniciar la partida.");return;}
@@ -218,15 +232,10 @@ namespace ROM.UI.Sprint01
         void ApplyAppearance()
         {
             var character=CurrentCharacter();if(character==null)return;UserSettings.CharacterSkinID=character.SkinIndex;PlayerPrefs.SetInt("_playerPrefs_CharacterSkinID",character.SkinIndex);
-            UserSettings.UserNickname=Roster.Active.Name;PlayerPrefs.SetString("_playerPrefs_Username",Roster.Active.Name);
+            UserSettings.UserNickname=Roster.Active.DisplayName;PlayerPrefs.SetString("_playerPrefs_Username",Roster.Active.DisplayName);
         }
         int CurrentClassId=>InGame&&MultiFPS.UI.ClientFrontend.ClientPlayerInstance?MultiFPS.UI.ClientFrontend.ClientPlayerInstance.ClassId:PlayerPrefs.GetInt(MultiFPS.Gameplay.PlayerInstance.ClassPreference,0);
-        void ChooseClass(int id){
-            PlayerPrefs.SetInt(MultiFPS.Gameplay.RiftCombat.AbilityController.Preference,0);if(InGame&&MultiFPS.UI.ClientFrontend.ClientPlayerInstance)MultiFPS.UI.ClientFrontend.ClientPlayerInstance.GetComponent<MultiFPS.Gameplay.RiftCombat.AbilityController>()?.CmdSelect(-1);
-            if(!InGame)Roster.SetClass("legacy:"+id,Roster.Active.Skin);
-            if(InGame){var player=MultiFPS.UI.ClientFrontend.ClientPlayerInstance;if(!player||!player.MyCharacter||!GameManager.Gamemode.IsProtectedPosition(player.MyCharacter.transform.position)){Notify("Cambiá de clase en un refugio o junto a un cristal.");return;}player.CmdChooseClass(id);StartCoroutine(RefreshClassSelection());}
-            else{PlayerPrefs.SetInt(MultiFPS.Gameplay.PlayerInstance.ClassPreference,id);PlayerPrefs.Save();Navigate(HubPage.Loadout);Notify("Clase seleccionada. Tu skin se conserva.");}
-        }
+        void ChooseClass(int id){Notify("Solo Warrior está disponible. Elegí un personaje desde el menú principal.");}
         System.Collections.IEnumerator RefreshClassSelection(){yield return new WaitForSecondsRealtime(.3f);if(Page==HubPage.Loadout)Navigate(HubPage.Loadout);}
         public void ShowClasses(){if(!content)Build();if(ArsenalPanel)ArsenalPanel.gameObject.SetActive(false);content.gameObject.SetActive(true);Navigate(HubPage.Loadout);}
         void Equipment(Transform body)
@@ -251,7 +260,7 @@ namespace ROM.UI.Sprint01
         }
         void ChangeCharacter(int step)
         {
-            if(!Catalog||Catalog.Characters.Length==0)return;selectedModel="";int count=Catalog.Characters.Length;int skin=(Roster.Active.Skin+step+count)%count;Roster.SetSkin(skin);Social.SetAppearance(skin);ApplyAppearance();
+            if(!Catalog||Catalog.Characters.Length==0)return;selectedModel="";int count=Catalog.Characters.Length;int skin=(Roster.Active.Skin+step+count)%count;if(!MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(skin)){Notify("Este aspecto aún no está disponible para jugar.");return;}Roster.SetSkin(skin);Social.SetAppearance(skin);ApplyAppearance();
         }
         void ShowModel(Transform parent,PreviewModel model,float x,float y,float w,float h)
         {
@@ -346,8 +355,7 @@ namespace ROM.UI.Sprint01
         }
         void Profile(Transform p)
         {
-            W.Label(p,"Nombre del jugador",0,0,700,40,25);string name=Social.Self.Name;var input=W.Input(p,name,0,65,650,v=>name=v);input.text=name;
-            W.Button(p,"GUARDAR NOMBRE",690,65,500,50,()=>{Social.Rename(name);ApplyAppearance();Notify("Nombre guardado.");});
+            W.Label(p,"Nombre del personaje: "+Roster.Active.DisplayName,0,0,1200,65,25);
             W.Label(p,"PRUEBAS LOCALES\nCambiá de perfil para aceptar invitaciones y leer DM enviados en esta PC.\nEstos perfiles no representan usuarios conectados a un servidor.",0,190,1600,150,24,W.Muted);
             W.Button(p,"PERFIL LOCAL: "+Social.Self.Name,0,395,950,64,()=>{if(!(Social is LocalSocialService local)){Notify("Esta función es solo para pruebas locales.");return;}var profiles=local.Profiles.ToArray();if(profiles.Length<2){Notify("Agregá un contacto desde Amigos para probar otro perfil.");return;}profileTestIndex=(Array.FindIndex(profiles,v=>v.Id==Social.Self.Id)+1)%profiles.Length;local.SwitchLocalProfile(profiles[profileTestIndex].Id);ApplyAppearance();});
         }
@@ -377,6 +385,7 @@ namespace ROM.UI.Sprint01
         }
         void Connection()
         {
+            if(!RequireWarrior())return;
             if(!Connector){Notify("Conexión disponible desde el hub principal.");return;}
             Dialog("Unirse a El Rift","Ingresá la dirección y el puerto del host.",()=>{
                 ApplyAppearance();ROMLoadingScreen.NextDestination="El Rift";ROMLoadingScreen.Show("Conectando","El Rift");Connector.ConnectBtn.onClick.Invoke();
@@ -391,10 +400,11 @@ namespace ROM.UI.Sprint01
             modalCancel=cancel;if(modal)DestroyImmediate(modal.gameObject);modal=W.Rect(Design,"Modal",0,0,1920,1080);
             var shade=W.Image(modal,"Blocker",0,0,1920,1080,new Color(0,0,0,.8f));shade.raycastTarget=true;
             var panel=W.Panel(modal,"Dialog",490,240,940,600);W.Label(panel,title,32,24,876,70,32);W.Label(panel,message,32,115,876,310,24);
-            W.Button(panel,confirm==null?"CERRAR [Esc]":"CANCELAR [Esc]",32,500,410,64,DismissModal);
-            if(confirm!=null)W.Button(panel,"CONFIRMAR",490,500,418,64,()=>{DestroyImmediate(modal.gameObject);modalCancel=null;confirm();},true);
+            W.Button(panel,confirm==null?"CERRAR [Esc]":"CANCELAR [Esc]",32,500,410,64,()=>{if(!InGame){StartCoroutine(DeferMainMenuAction(DismissModal));return;}DismissModal();});
+            if(confirm!=null)W.Button(panel,"CONFIRMAR",490,500,418,64,()=>{if(!InGame){ConfirmMainMenuDialog(confirm);return;}DestroyImmediate(modal.gameObject);modalCancel=null;confirm();},true);
             if(EventSystem.current)EventSystem.current.SetSelectedGameObject(panel.GetComponentInChildren<Button>().gameObject);
         }
         void OnDestroy(){RiftControls.Changed-=RefreshBoundLabels;ROM.Progression.RiftJournalView.Changed-=JournalChanged;CancelBinding();if(Social!=null)Social.Changed-=SocialChanged;}
     }
 }
+

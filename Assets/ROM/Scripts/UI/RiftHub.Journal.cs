@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using MultiFPS;
 using MultiFPS.UI;
@@ -12,11 +12,12 @@ namespace ROM.UI.Sprint01
     {
         string journalSelection="",journalFilter="Activas";
         JournalState JournalState=>RiftJournalView.Read(InGame?null:Roster.Active.Id);
-        void JournalChanged(){if(Page==HubPage.Missions||Page==HubPage.Progression||Page==HubPage.Abilities||Page==HubPage.Character)Navigate(Page);}
+        void JournalChanged(){if(InGame&&Page==HubPage.Abilities&&abilityTab=="Talents")return;if(Page==HubPage.Missions||Page==HubPage.Progression||Page==HubPage.Abilities||Page==HubPage.Character)Navigate(Page);}
         public void ShowJournal(){ShowGameplayPage(HubPage.Missions);}
         public void ShowAchievements(){ShowGameplayPage(HubPage.Progression);}
         void QuestJournal(Transform body)
         {
+            if(InGame){CompactJournal(body);return;}
             var catalog=RiftJournalCatalog.Load;if(!catalog){W.Label(body,"Diario no disponible.",0,0,1500,60,24);return;}var state=JournalState;
             W.Dropdown(body,"Quest filter",0,0,520,new[]{"Activas","Completadas","Disponibles"},Array.IndexOf(new[]{"Activas","Completadas","Disponibles"},journalFilter),i=>{journalFilter=new[]{"Activas","Completadas","Disponibles"}[i];journalSelection="";Navigate(HubPage.Missions);});
             var list=catalog.Quests.Where(q=>journalFilter=="Activas"?state.Quest(q.Id)!=null&&state.Quest(q.Id).Status!=QuestStatus.TurnedIn:journalFilter=="Completadas"?state.TurnedIn(q.Id):state.Available(q)).ToArray();
@@ -31,9 +32,8 @@ namespace ROM.UI.Sprint01
         public static string NpcName(string id)=>string.IsNullOrEmpty(id)?"NPC":char.ToUpperInvariant(id[0])+id.Substring(1);
         void AchievementJournal(Transform body)
         {
-            var catalog=RiftJournalCatalog.Load;if(!catalog)return;var state=JournalState;int points=catalog.Achievements.Where(a=>state.Achievements.Any(r=>r.Id==a.Id)).Sum(a=>a.Points);
-            W.Label(body,"LOGROS: "+state.Achievements.Count+" / "+catalog.Achievements.Length+" · "+points+" PUNTOS",0,0,1700,55,30,W.Gold);
-            var scroll=W.ScrollArea(body,"Achievement list",0,78,1750,560,catalog.Achievements.Length*110);for(int i=0;i<catalog.Achievements.Length;i++){var a=catalog.Achievements[i];var unlocked=state.Achievements.FirstOrDefault(r=>r.Id==a.Id);int count=Mathf.Min(a.Criterion.Required,state.Count(a.Criterion));W.Label(scroll,(unlocked!=null?"✓ ":"")+a.Title+" · "+a.Points+" puntos",10,i*110,1700,40,25,unlocked!=null?W.Gold:W.White);W.Label(scroll,a.Description+"\n"+(unlocked!=null?"Desbloqueado · "+DateTimeOffset.FromUnixTimeSeconds(unlocked.UnlockedAt).ToString("dd/MM/yyyy"):"Progreso: "+count+" / "+a.Criterion.Required),10,i*110+42,1700,60,20,W.Muted);}
+            var catalog=RiftJournalCatalog.Load;if(!catalog){W.Label(body,"Logros no disponibles.",24,24,1000,80,24);return;}
+            body.gameObject.AddComponent<RiftAchievementView>().Build(this,JournalState,catalog,()=>{if(InGame)ResumeRequested?.Invoke();else Navigate(HubPage.Home);},Roster.Active.Skin);
         }
     }
 }

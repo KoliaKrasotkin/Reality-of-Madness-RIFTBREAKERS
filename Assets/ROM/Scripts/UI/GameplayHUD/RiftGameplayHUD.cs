@@ -33,7 +33,7 @@ namespace ROM.UI.Gameplay
         static void Install(){SceneManager.sceneLoaded-=Loaded;SceneManager.sceneLoaded+=Loaded;}
         static void Loaded(Scene scene,LoadSceneMode mode){if(scene.name=="map_rom_horde"&&!FindFirstObjectByType<RiftGameplayHUD>()){var prefab=Resources.Load<GameObject>("RiftGameplayHUD");if(prefab)Instantiate(prefab);}}
         void Awake(){if(!FindFirstObjectByType<RiftCombatNumbers>())new GameObject("Rift combat numbers").AddComponent<RiftCombatNumbers>();canvas=GetComponent<Canvas>();for(int i=0;i<Abilities.Length;i++){int slot=i;Abilities[i].onClick.AddListener(()=>Use(slot));var drag=Abilities[i].gameObject.GetComponent<RiftHotbarSlot>();if(!drag)drag=Abilities[i].gameObject.AddComponent<RiftHotbarSlot>();drag.Slot=slot;}CreateMarker();CreateBagDock();}
-        public void Use(int slot){if(RiftHotbar.Dragging||RiftControls.TextEntryFocused||ClientFrontend.Pause||!UICursorManager.GamePlayInput())return;int ability=RiftHotbar.Resolve(slot);var player=ClientFrontend.ClientPlayerInstance;if(!player)return;var combat=player.GetComponent<AbilityController>();if(combat&&combat.Prototype)combat.Request(ability);else if(ability<=2){RiftMMOController.Instance?.StartAutoAttack();player.CmdUseClassAbility((byte)(ability-1));}}
+        public void Use(int slot){if(RiftHotbar.Dragging||RiftControls.TextEntryFocused||ClientFrontend.Pause||!UICursorManager.GamePlayInput())return;int ability=RiftHotbar.Resolve(slot);if(ability<=0)return;var player=ClientFrontend.ClientPlayerInstance;if(!player)return;var combat=player.GetComponent<AbilityController>();if(combat&&combat.Prototype)combat.Request(ability);else if(ability<=2){RiftMMOController.Instance?.StartAutoAttack();player.CmdUseClassAbility((byte)(ability-1));}}
         void CreateBagDock(){
             var button=RiftWidgets.Button(Design,"BOLSA ["+RiftControls.ActionLabel("Inventory")+"]",0,0,238,58,OpenInventory);
             button.name="Always accessible inventory";bagButtonLabel=button.GetComponentInChildren<Text>();
@@ -72,13 +72,13 @@ namespace ROM.UI.Gameplay
             if(Theme.Portraits!=null&&Theme.Portraits.Length>0)Portrait.sprite=Theme.Portraits[Mathf.Clamp(UserSettings.CharacterSkinID,0,Theme.Portraits.Length-1)];
             double now=NetworkTime.time;
             for(int i=0;i<Abilities.Length;i++){
-                int id=RiftHotbar.Resolve(i);var definition=warrior?combat.Definition(id):null;bool unlocked=warrior?definition&&definition.Implemented:id<=2;
+                int id=RiftHotbar.Resolve(i);var definition=warrior&&id>0?combat.Definition(id):null;bool unlocked=warrior?combat.IsAbilityLearned(id):id>0&&id<=2;
                 double remain=warrior&&combat.Ready.Count>id?System.Math.Max(0,combat.Ready[id]-now):!warrior&&id<=2?System.Math.Max(0,(id==1?player.FirstReadyAt:player.SecondReadyAt)-now):0;
                 if(warrior&&combat.GlobalReady>now)remain=System.Math.Max(remain,combat.GlobalReady-now);
                 bool enough=!definition||definition.Cost<=amount;
                 Abilities[i].interactable=unlocked&&enough&&remain<=0;
                 Icons[i].gameObject.SetActive(unlocked);if(unlocked){if(definition&&definition.Icon)Icons[i].sprite=definition.Icon;else if(!warrior&&Theme.AbilityIcons.Length>=id)Icons[i].sprite=Theme.AbilityIcons[id-1];Icons[i].color=enough?Color.white:new Color(.72f,.65f,.65f);}
-                var locked=Abilities[i].transform.Find("Lock");if(locked)locked.gameObject.SetActive(!unlocked);
+                var locked=Abilities[i].transform.Find("Lock");if(locked)locked.gameObject.SetActive(id>0&&!unlocked);
                 Cooldowns[i].fillAmount=unlocked&&remain>0?(float)remain/Mathf.Max(.1f,definition?combat.AbilityCooldown(id,definition):1):0;
                 Timers[i].text=unlocked&&remain>=1?Mathf.CeilToInt((float)remain).ToString():"";
             }

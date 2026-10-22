@@ -206,6 +206,7 @@ namespace MultiFPS.Gameplay
         public void Server_SpawnCharacter(Transform spawnPoint) 
         {
             if (Team == -1) return; //dont spawn character if we are not assigned to a team
+            if(!BOT&&(!PlayerInfo.Warrior||!WarriorCharacterPrefab||!RiftCombat.RiftSkinIdentity.Playable(PlayerInfo.CharacterSkinID)))return;
             
 
 
@@ -412,13 +413,16 @@ namespace MultiFPS.Gameplay
             CmdReceivePlayerData(clientData);
         }
 
+        public bool CanEnterWarrior(ClientData data){var combat=GetComponent<RiftCombat.AbilityController>();return data.Warrior&&WarriorCharacterPrefab&&RiftCombat.RiftSkinIdentity.Playable(data.CharacterSkinID)&&combat&&combat.Species&&combat.Species.AllowsSkin(data.CharacterSkinID)&&System.Guid.TryParse(data.CharacterId,out _);}
         [Command]
         void CmdReceivePlayerData(ClientData clientData)
         {
             if(_receivedPlayerInfo)return;
+            if(!BOT&&!CanEnterWarrior(clientData)){Debug.LogWarning("Entrada rechazada: seleccioná un Warrior válido desde Personajes.");connectionToClient?.Disconnect();return;}
+            if(!BOT)clientData.Username=RiftCombat.RiftSkinIdentity.Name(clientData.CharacterSkinID);
             PlayerInfo = clientData;
             var combat=GetComponent<RiftCombat.AbilityController>();PlayerInfo.Warrior=clientData.Warrior&&combat&&combat.Species&&combat.Species.AllowsSkin(clientData.CharacterSkinID);
-            ClassId = Mathf.Clamp(clientData.ClassId,0,3);
+            ClassId = BOT?Mathf.Clamp(clientData.ClassId,0,3):1; // Native Warrior baseline; ignore legacy client class preference.
             PlayerInfo.ClassId=ClassId;
 
             //is player did not set his nickmane, then set his nickname with some random number
