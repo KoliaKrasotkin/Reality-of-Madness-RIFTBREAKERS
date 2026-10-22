@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 namespace MultiFPS.Gameplay.RiftCombat
 {
-    // Clean player presentation/motor. CharacterInstance is only the existing
-    // spawn/health/input-message adapter; no template bones, IK or Animator drive this rig.
+    // CharacterInstance remains the spawn/health/input adapter. Action poses run
+    // through the Animator before the weapon grip rig evaluates.
     [DefaultExecutionOrder(150)]
     public sealed class WarriorAvatar : NetworkBehaviour
     {
@@ -17,7 +17,8 @@ namespace MultiFPS.Gameplay.RiftCombat
         CharacterInstance actor;
         CharacterController capsule;
         Vector3 planar,previous;
-        float vertical, jumpRequested=-100, lastGround=-100, presentationUntil;
+        float vertical, jumpRequested=-100, lastGround=-100, presentationUntil, presentationStarted;
+        int activeAttackSlot=-1;
         
         bool falling;float fallPeak;
         void Awake(){if(Animator&&!Animator.GetComponent<RiftFootstepEvents>())Animator.gameObject.AddComponent<RiftFootstepEvents>();actor=GetComponent<CharacterInstance>();capsule=GetComponent<CharacterController>();previous=transform.position;}
@@ -64,6 +65,14 @@ namespace MultiFPS.Gameplay.RiftCombat
             bool grounded=isOwned?Grounded:Physics.Raycast(transform.position+Vector3.up*.2f,Vector3.down,.4f,GameManager.environmentLayer);
             Animator.SetBool("Grounded",grounded);
             var equipmentOwner=AbilityController.For(actor.Health);if(EquippedWeapon)EquippedWeapon.SetActive(alive&&(!equipmentOwner||!equipmentOwner.SwordAndShield));
+            Animator.SetBool("DefensiveHold",alive&&((activeAttackSlot==6&&Time.time<presentationUntil)||(equipmentOwner&&equipmentOwner.DefensiveUntil>NetworkTime.time)));
+            // The rig must evaluate after the action pose; no special may alter bones in LateUpdate.
+            if(alive&&activeAttackSlot>=0&&equipmentOwner&&Time.time>presentationStarted+.15f&&Time.time<presentationUntil-.04f&&equipmentOwner.Casting!=activeAttackSlot)
+            {
+                Animator.CrossFadeInFixedTime("Locomotion",.09f,0,0);
+                activeAttackSlot=-1;
+            }
+            if(!alive||Time.time>=presentationUntil)activeAttackSlot=-1;
         }
         void ServerFallDamage(){
             if(!actor||!actor.Health||actor.Health.CurrentHealth<=0){falling=false;return;}
@@ -74,12 +83,14 @@ namespace MultiFPS.Gameplay.RiftCombat
         public bool PresentAttack(int slot,AbilityDefinition ability)
         {
             if(!Animator||!ability)return false;
+            string state="Base Layer.Attack"+slot;
+            if(slot<0||!ability.Animation||!Animator.HasState(0,Animator.StringToHash(state)))return false;
             var special=GetComponent<WarriorSpecialMotion>();
-            if(slot>=4&&slot<=6){if(!special)special=gameObject.AddComponent<WarriorSpecialMotion>();if(special.Play(this,slot,ability)){Animator.CrossFadeInFixedTime("Locomotion",.07f,0,0);presentationUntil=Time.time+ability.CastDuration;return true;}}
             if(special)special.Stop();
-            if(!ability.Animation)return false;
             Animator.SetFloat("AttackRate",ability.Animation.length/Mathf.Max(.1f,ability.CastDuration));
-            Animator.CrossFadeInFixedTime("Attack"+(slot>=4?(slot==5?1:slot==6?3:0):slot),.09f,0,0);
+            if(slot==6)Animator.SetBool("DefensiveHold",true);
+            Animator.CrossFadeInFixedTime(state,.09f,0,0);
+            activeAttackSlot=slot;presentationStarted=Time.time;
             presentationUntil=Time.time+ability.CastDuration;return true;
         }
     }

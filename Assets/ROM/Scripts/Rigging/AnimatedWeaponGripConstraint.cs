@@ -36,6 +36,7 @@ public struct AnimatedWeaponGripData : IAnimationJobData
 public struct AnimatedWeaponGripJob : IWeightedAnimationJob
 {
     public ReadOnlyTransformHandle leftHand, rightHand;
+    public ReadOnlyTransformHandle leftUpperArm, leftLowerArm, rightUpperArm, rightLowerArm;
     public ReadWriteTransformHandle weapon, leftTarget, rightTarget;
     public Vector3 leftPalmOffset, rightPalmOffset, leftGripAxis, rightGripAxis, rightContact;
     public float minimumSpacing, maximumSpacing, scale;
@@ -73,8 +74,25 @@ public struct AnimatedWeaponGripJob : IWeightedAnimationJob
 
         leftRotation = AlignGrip(leftRotation, leftGripAxis, shaft);
         rightRotation = AlignGrip(rightRotation, rightGripAxis, shaft);
-        leftTarget.SetGlobalTR(stream, leftPalm - leftRotation * (leftPalmOffset * scale), leftRotation);
-        rightTarget.SetGlobalTR(stream, rightPalm - rightRotation * (rightPalmOffset * scale), rightRotation);
+        Vector3 leftWrist = leftPalm - leftRotation * (leftPalmOffset * scale);
+        Vector3 rightWrist = rightPalm - rightRotation * (rightPalmOffset * scale);
+        Vector3 leftShoulder = leftUpperArm.GetPosition(stream);
+        Vector3 rightShoulder = rightUpperArm.GetPosition(stream);
+        float leftReach = ArmReach(leftShoulder, leftLowerArm.GetPosition(stream), leftHand.GetPosition(stream));
+        float rightReach = ArmReach(rightShoulder, rightLowerArm.GetPosition(stream), rightHand.GetPosition(stream));
+        // Translate the rigid grip as a whole into both arms' reachable space.
+        // Attack poses can fully extend a wrist before the palm is aligned to the axe.
+        Vector3 correction = Vector3.zero;
+        for (int i = 0; i < 24; i++)
+        {
+            Vector3 previous = correction;
+            correction += ReachCorrection(leftWrist + correction, leftShoulder, leftReach);
+            correction += ReachCorrection(rightWrist + correction, rightShoulder, rightReach);
+            if ((correction - previous).sqrMagnitude < 0.0000000001f) break;
+        }
+        weapon.SetPosition(stream, weapon.GetPosition(stream) + correction * weight);
+        leftTarget.SetGlobalTR(stream, leftWrist + correction, leftRotation);
+        rightTarget.SetGlobalTR(stream, rightWrist + correction, rightRotation);
         float curl = fingerWeight.Get(stream) * weight;
         for (int i = 0; i < fingers.Length; i++)
         {
@@ -82,6 +100,16 @@ public struct AnimatedWeaponGripJob : IWeightedAnimationJob
             finger.SetLocalRotation(stream, Quaternion.Slerp(finger.GetLocalRotation(stream), fingerRotations[i], curl));
             fingers[i] = finger;
         }
+    }
+
+    private static float ArmReach(Vector3 shoulder, Vector3 elbow, Vector3 wrist) =>
+        (Vector3.Distance(shoulder, elbow) + Vector3.Distance(elbow, wrist)) * 0.999f;
+
+    private static Vector3 ReachCorrection(Vector3 wrist, Vector3 shoulder, float reach)
+    {
+        Vector3 offset = wrist - shoulder;
+        float distance = offset.magnitude;
+        return distance > reach ? offset * (reach / distance - 1f) : Vector3.zero;
     }
 
     private static Quaternion AlignGrip(Quaternion rotation, Vector3 axis, Vector3 shaft)
@@ -101,6 +129,10 @@ public class AnimatedWeaponGripBinder : AnimationJobBinder<AnimatedWeaponGripJob
         {
             leftHand = ReadOnlyTransformHandle.Bind(animator, data.leftHand),
             rightHand = ReadOnlyTransformHandle.Bind(animator, data.rightHand),
+            leftUpperArm = ReadOnlyTransformHandle.Bind(animator, animator.GetBoneTransform(HumanBodyBones.LeftUpperArm)),
+            leftLowerArm = ReadOnlyTransformHandle.Bind(animator, animator.GetBoneTransform(HumanBodyBones.LeftLowerArm)),
+            rightUpperArm = ReadOnlyTransformHandle.Bind(animator, animator.GetBoneTransform(HumanBodyBones.RightUpperArm)),
+            rightLowerArm = ReadOnlyTransformHandle.Bind(animator, animator.GetBoneTransform(HumanBodyBones.RightLowerArm)),
             weapon = ReadWriteTransformHandle.Bind(animator, data.weapon),
             leftTarget = ReadWriteTransformHandle.Bind(animator, data.leftTarget),
             rightTarget = ReadWriteTransformHandle.Bind(animator, data.rightTarget),

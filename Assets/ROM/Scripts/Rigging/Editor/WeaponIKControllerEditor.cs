@@ -9,15 +9,17 @@ using UnityEngine.Playables;
 [CustomEditor(typeof(WeaponIKController))]
 public class WeaponIKControllerEditor : Editor
 {
-    private static readonly string[] LocomotionNames =
-        { "Idle", "Run-Forward", "Run-Backward", "Run-Left", "Run-Right" };
-    private const int SampleIntervals = 20;
+    private static readonly string[] ClipNames =
+        { "Idle", "Run-Forward", "Run-Backward", "Run-Left", "Run-Right",
+          "Attack1", "Attack2", "Attack3", "Attack4", "Attack5", "Attack6", "Attack7", "Attack8", "Attack9",
+          "Jump", "Fall", "Land" };
+    private const int SampleIntervals = 60;
 
     private Animator animator;
     private RigBuilder rigBuilder;
     private AnimatedWeaponGripConstraint gripConstraint;
     private AnimationClip previewClip;
-    private int locomotionPreview;
+    private int selectedPreview;
     private float previewTime;
     private PlayableGraph previewGraph;
     private AnimationClipPlayable clipPlayable;
@@ -66,7 +68,7 @@ public class WeaponIKControllerEditor : Editor
         {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Animation Preview", EditorStyles.boldLabel);
-            if (GUILayout.Button("Validate Locomotion Grip")) ValidateLocomotionGrip();
+            if (GUILayout.Button("Validate Animation Grips")) ValidateAnimationGrips();
             if (!string.IsNullOrEmpty(validationReport))
             {
                 showValidation = EditorGUILayout.Foldout(showValidation, "Last Grip Validation");
@@ -74,11 +76,11 @@ public class WeaponIKControllerEditor : Editor
             }
 
             EditorGUI.BeginChangeCheck();
-            int next = EditorGUILayout.Popup("Locomotion Clip", locomotionPreview, LocomotionNames);
+            int next = EditorGUILayout.Popup("Animation", selectedPreview, ClipNames);
             if (EditorGUI.EndChangeCheck() || previewClip == null)
             {
-                locomotionPreview = next;
-                SelectClip(FindLocomotionClip(LocomotionNames[next]));
+                selectedPreview = next;
+                SelectClip(FindClip(ClipNames[next]));
             }
             EditorGUI.BeginChangeCheck();
             var clip = (AnimationClip)EditorGUILayout.ObjectField("Animation Clip", previewClip, typeof(AnimationClip), false);
@@ -95,7 +97,7 @@ public class WeaponIKControllerEditor : Editor
         }
     }
 
-    private AnimationClip FindLocomotionClip(string name) => animator.runtimeAnimatorController == null
+    private AnimationClip FindClip(string name) => animator.runtimeAnimatorController == null
         ? null
         : Array.Find(animator.runtimeAnimatorController.animationClips, clip => clip.name == "2Hand-Sword-" + name);
 
@@ -168,12 +170,12 @@ public class WeaponIKControllerEditor : Editor
         SceneView.RepaintAll();
     }
 
-    private void ValidateLocomotionGrip()
+    public string ValidateAnimationGrips()
     {
         if (!animator.isHuman || !gripConstraint.data.IsValid())
         {
             validationReport = "A Humanoid Animator and valid grip references are required.";
-            return;
+            return validationReport;
         }
         AnimationClip originalClip = previewClip;
         float originalTime = previewTime;
@@ -182,9 +184,9 @@ public class WeaponIKControllerEditor : Editor
         var report = new StringBuilder($"Maximum wrist-to-target error ({SampleIntervals + 1} samples per clip):");
         try
         {
-            foreach (string name in LocomotionNames)
+            foreach (string name in ClipNames)
             {
-                previewClip = FindLocomotionClip(name);
+                previewClip = FindClip(name);
                 if (previewClip == null)
                 {
                     report.Append($"\n{name}: clip missing");
@@ -218,5 +220,6 @@ public class WeaponIKControllerEditor : Editor
         }
         validationReport = report.ToString();
         Debug.Log(validationReport, target);
+        return validationReport;
     }
 }
