@@ -1,13 +1,21 @@
 #!/bin/sh
 # Validate the staged scene, not the working copy. Keep existing Git LFS hooks intact.
 root=$(git rev-parse --show-toplevel) || exit 1
-if command -v py >/dev/null 2>&1 && py -3 --version >/dev/null 2>&1; then
+configured_python=$(git config --get unityValidation.python || :)
+if [ -n "$configured_python" ]; then
+    if "$configured_python" -c 'import sys; sys.exit(sys.version_info < (3, 8))' >/dev/null 2>&1; then
+        exec "$configured_python" "$root/Tools/validate_unity_scenes.py"
+    fi
+    echo 'unityValidation.python must point to a working Python 3.8+ executable.' >&2
+    exit 1
+fi
+if command -v py >/dev/null 2>&1 && py -3 -c 'import sys; sys.exit(sys.version_info < (3, 8))' >/dev/null 2>&1; then
     exec py -3 "$root/Tools/validate_unity_scenes.py"
 fi
 for interpreter in python3 python; do
-    if command -v "$interpreter" >/dev/null 2>&1 && "$interpreter" --version >/dev/null 2>&1; then
+    if command -v "$interpreter" >/dev/null 2>&1 && "$interpreter" -c 'import sys; sys.exit(sys.version_info < (3, 8))' >/dev/null 2>&1; then
         exec "$interpreter" "$root/Tools/validate_unity_scenes.py"
     fi
 done
-echo 'Unity scene validation requires Python 3. Install it before committing.' >&2
+echo 'Unity scene validation requires Python 3.8+. Install it or configure unityValidation.python with its executable path.' >&2
 exit 1
