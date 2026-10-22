@@ -2,6 +2,14 @@
 
 Install the local pre-commit guard with `./Tools/Install-GitValidation.ps1` from PowerShell. Existing LFS hooks remain intact. Requires Python 3.
 
+If Python is installed outside PATH, configure its executable locally (paths with spaces are supported):
+
+```sh
+git config --local unityValidation.python 'C:/path/to/python.exe'
+```
+
+The validator requires Python 3.8 or newer. This setting is local to the checkout; do not commit machine-specific paths.
+
 - `python Tools/validate_unity_scenes.py`: checks the staged index.
 - `python Tools/validate_unity_scenes.py --revision HEAD`: checks the committed revision.
 
