@@ -110,7 +110,7 @@ namespace ROM.UI.Sprint01
         void UpdateCamera()
         {
             if(!view)return;
-            if(lobby){view.transform.localPosition=mainMenuPresentation?new Vector3(0,1.2f,-4.7f):new Vector3(0,1.5f,-7.4f);view.transform.LookAt(world.transform.position+(mainMenuPresentation?new Vector3(0,1.1f,0):new Vector3(.1f,1.2f,0)));view.fieldOfView=mainMenuPresentation?32:34;}
+            if(lobby){view.transform.localPosition=mainMenuPresentation?new Vector3(0,1.72f,-2.7f):new Vector3(0,1.5f,-7.4f);view.transform.LookAt(world.transform.position+(mainMenuPresentation?new Vector3(0,1.72f,0):new Vector3(.1f,1.2f,0)));view.fieldOfView=mainMenuPresentation?32:34;}
             else{view.transform.localPosition=new Vector3(0,1.4f,-4.8f*zoom);view.transform.LookAt(world.transform.position+Vector3.up*1.2f);view.fieldOfView=36;}
             if(subject)subject.transform.localRotation=Quaternion.Euler(0,yaw,0);
         }
