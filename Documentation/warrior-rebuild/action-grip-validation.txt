@@ -1,0 +1,20 @@
+Maximum wrist-to-target error (61 samples per clip):
+Idle: left 0,0 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 17,1 cm / 20,3 deg
+Run-Forward: left 0,0 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 33,8 cm / 11,1 deg
+Run-Backward: left 0,0 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 27,4 cm / 22,0 deg
+Run-Left: left 0,0 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 28,0 cm / 32,5 deg
+Run-Right: left 0,1 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 23,3 cm / 14,0 deg
+Attack1: left 0,3 mm / 0,0 deg; right 0,1 mm / 0,0 deg; axe motion 159,8 cm / 174,6 deg
+Attack2: left 0,1 mm / 0,0 deg; right 0,1 mm / 0,0 deg; axe motion 114,2 cm / 178,7 deg
+Attack3: left 0,2 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 112,1 cm / 156,6 deg
+Attack4: left 0,1 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 103,0 cm / 179,6 deg
+Attack5: left 0,1 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 133,0 cm / 139,9 deg
+Attack6: left 0,3 mm / 0,0 deg; right 0,1 mm / 0,0 deg; axe motion 110,5 cm / 179,1 deg
+Attack7: left 0,2 mm / 0,0 deg; right 0,1 mm / 0,0 deg; axe motion 124,0 cm / 171,8 deg
+Attack8: left 0,1 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 95,5 cm / 176,6 deg
+Attack9: left 0,1 mm / 0,0 deg; right 0,1 mm / 0,0 deg; axe motion 96,0 cm / 133,3 deg
+Jump: left 0,1 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 75,1 cm / 63,5 deg
+Fall: left 0,0 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 15,8 cm / 10,9 deg
+Land: left 0,0 mm / 0,0 deg; right 0,0 mm / 0,0 deg; axe motion 123,7 cm / 111,4 deg
+PASS Animator transitions: Jump / Air / Land; Attack0-8; 8 configured gameplay actions; defensive hold and release.
+PASS WarriorAvatar.PresentAttack routes all 8 configured actions to their own Animator state without procedural bone overrides.
