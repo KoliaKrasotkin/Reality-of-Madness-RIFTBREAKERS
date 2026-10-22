@@ -73,7 +73,11 @@ namespace MultiFPS.Gameplay.RiftCombat
         }
         public bool PresentAttack(int slot,AbilityDefinition ability)
         {
-            if(!Animator||!ability||!ability.Animation)return false;
+            if(!Animator||!ability)return false;
+            var special=GetComponent<WarriorSpecialMotion>();
+            if(slot>=4&&slot<=6){if(!special)special=gameObject.AddComponent<WarriorSpecialMotion>();if(special.Play(this,slot,ability)){Animator.CrossFadeInFixedTime("Locomotion",.07f,0,0);presentationUntil=Time.time+ability.CastDuration;return true;}}
+            if(special)special.Stop();
+            if(!ability.Animation)return false;
             Animator.SetFloat("AttackRate",ability.Animation.length/Mathf.Max(.1f,ability.CastDuration));
             Animator.CrossFadeInFixedTime("Attack"+(slot>=4?(slot==5?1:slot==6?3:0):slot),.09f,0,0);
             presentationUntil=Time.time+ability.CastDuration;return true;

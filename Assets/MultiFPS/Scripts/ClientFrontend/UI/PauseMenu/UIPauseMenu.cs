@@ -15,6 +15,7 @@ namespace MultiFPS.UI
         public GameObject pauseMenuOverlay;
         public bool AbleToPause = true; //disable only for hub and loading screens
         public bool pauseMenuShowing = false;
+        public Func<bool> CloseTopLayer;
 
         [SerializeField] Button _uiBtnResume;
         [SerializeField] Button _uiBtnDisconnect;
@@ -59,13 +60,18 @@ namespace MultiFPS.UI
         void Update()
         {
             //check for input to show pause menu
-            if (!(RiftControls.Pressed("Pause") && RiftControls.EscapeConsumedFrame!=Time.frameCount && !RiftControls.Rebinding && AbleToPause && !ClientFrontend.Hub)) return;
+            bool escape=UnityEngine.InputSystem.Keyboard.current!=null&&UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame;
+            if (!((RiftControls.Pressed("Pause")||(pauseMenuShowing&&escape)) && RiftControls.EscapeConsumedFrame!=Time.frameCount && !RiftControls.Rebinding && AbleToPause && !ClientFrontend.Hub)) return;
 
             if (ChatBehaviour._instance && ChatBehaviour._instance.ChatWriting)
             {
                 return;
             }
 
+            if(ChatUI.Instance&&ChatUI.Instance.ChatWriting)return;
+            if(!pauseMenuShowing&&RiftControls.TextEntryFocused){if(UnityEngine.EventSystems.EventSystem.current)UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);RiftControls.EscapeConsumedFrame=Time.frameCount;return;}
+            if(pauseMenuShowing&&CloseTopLayer!=null&&CloseTopLayer()){RiftControls.EscapeConsumedFrame=Time.frameCount;return;}
+            RiftControls.EscapeConsumedFrame=Time.frameCount;
             ShowPauseMenu(!pauseMenuShowing);
         }
 

@@ -53,7 +53,7 @@ namespace ROM.UI.Sprint01
             // use the existing Inter font to keep the new UI readable.
             W.Title=W.Body;
             W.ButtonFont=ButtonFont?ButtonFont:W.Body;
-            if(Services==null)Services=SprintServices.CreateMock(Catalog);
+            if(Services==null)Services=SprintServices.CreateMock(Catalog);if(Application.isPlaying){RiftControls.Changed-=RefreshBoundLabels;RiftControls.Changed+=RefreshBoundLabels;}
             if(Social==null){Social=new LocalSocialService();Social.Changed+=SocialChanged;}
         }
         public void UseLocalService(LocalSocialService service)
@@ -66,7 +66,7 @@ namespace ROM.UI.Sprint01
         [ContextMenu("Reconstruir vista previa del menú")]
         public void Build()
         {
-            Initialize();if(Design)DestroyImmediate(Design.gameObject);nav.Clear();productView=null;
+            Initialize();boundLabels.Clear();if(Design)DestroyImmediate(Design.gameObject);nav.Clear();productView=null;
             Design=W.Rect(transform,"SafeAreaDesign",0,0,1920,1080);
             fallback=W.Image(Design,"LoadingFallback",0,0,1920,1080,Color.white,Background);
             if(!InGame&&Catalog&&Catalog.StagePrefab&&Application.isPlaying){
@@ -78,12 +78,13 @@ namespace ROM.UI.Sprint01
             W.Image(Design,"Brand",28,16,210,72,Color.white,Logo).preserveAspect=true;
             if(InGame){
                 fallback.sprite=null;fallback.color=new Color(.015f,.012f,.02f,.94f);
-                W.Label(Design,"EL RIFT / PAUSA",285,20,180,65,22);
-                W.Button(Design,"CLASE",470,24,160,58,ShowClasses);
-                W.Button(Design,"ARSENAL",650,24,180,58,ShowArsenal);
-                W.Button(Design,"AJUSTES",850,24,180,58,ShowGameSettings);
-                W.Button(Design,"CONTINUAR",1040,24,250,58,()=>ResumeRequested?.Invoke());
-                W.Button(Design,"VOLVER AL MENÚ",1320,24,440,58,()=>Dialog("Volver al menú","Vas a salir de esta partida.",()=>LeaveRequested?.Invoke()));
+                W.Label(Design,"EL RIFT",260,20,170,65,22);
+                BoundButton(Design,"BOLSA","Inventory",440,24,230,58,()=>TogglePanel("Inventory",HubPage.Inventory));
+                BoundButton(Design,"PERSONAJE","Character",685,24,225,58,()=>TogglePanel("Character",HubPage.Character));
+                BoundButton(Design,"HABILIDADES","Abilities",925,24,245,58,()=>TogglePanel("Abilities",HubPage.Abilities));
+                BoundButton(Design,"DIARIO","Journal",1185,24,195,58,()=>TogglePanel("Journal",HubPage.Missions));
+                BoundButton(Design,"AJUSTES","Settings",1395,24,195,58,()=>TogglePanel("Settings",HubPage.Settings));
+                BoundButton(Design,"CERRAR","Pause",1605,24,275,58,()=>ResumeRequested?.Invoke());
                 content=W.Rect(Design,"Screen",36,150,1848,810);toast=W.Label(Design,"",460,970,1200,36,20,W.Gold);Navigate(HubPage.Settings);Fit();return;
             }
             W.Button(Design,"MENÚ",1640,24,240,58,()=>ToggleHomePanel("Menu"));
@@ -95,7 +96,8 @@ namespace ROM.UI.Sprint01
         void Update()
         {
             PollBinding();
-            if(!InGame&&!RiftControls.Rebinding&&RiftControls.EscapeConsumedFrame!=Time.frameCount&&Input.GetKeyDown(KeyCode.Escape)&&!modal){if(Page!=HubPage.Home){homePanel="";Navigate(HubPage.Home);}else if(!string.IsNullOrEmpty(homePanel)){homePanel="";Navigate(HubPage.Home);}}
+            HandleInterfaceKeys();
+            if(!InGame&&!RiftControls.Rebinding&&RiftControls.EscapeConsumedFrame!=Time.frameCount&&RiftControls.Pressed("Pause")&&!modal){if(Page!=HubPage.Home){homePanel="";Navigate(HubPage.Home);}else if(!string.IsNullOrEmpty(homePanel)){homePanel="";Navigate(HubPage.Home);}}
             if(toast&&Time.unscaledTime>toastUntil)toast.text="";
             Fit();if(fallback&&Stage){fallback.enabled=!Stage.Ready;Stage.SetDisplay(Stage.Ready);}
             if(emoteStatus)emoteStatus.text=Stage&&!string.IsNullOrEmpty(Stage.CurrentEmoteName)?Stage.CurrentEmoteName:"Elegí un emote para tu personaje";
@@ -128,14 +130,14 @@ namespace ROM.UI.Sprint01
             if(page!=HubPage.Home&&Stage)Stage.StopEmote();emoteStatus=null;
             if(page==HubPage.Lobby)page=HubPage.Home;
             if(page!=HubPage.Home)homePanel="";
-            Page=page;Clear(content);productView=null;
+            Page=page;Clear(content);RefreshBoundLabels();productView=null;
             int active=page==HubPage.Home?0:page==HubPage.Loadout?1:page==HubPage.Progression?2:page==HubPage.Marketplace||page==HubPage.Auction||page==HubPage.Exchange?3:page==HubPage.Settings?4:-1;
             for(int i=0;i<nav.Count;i++){var frame=nav[i].targetGraphic as RiftButtonGraphic;if(frame){frame.Active=i==active;frame.SetVerticesDirty();}}
             if(page==HubPage.Home)Home();
             else{
                 var panel=W.Panel(content,"PagePanel",0,0,1848,810);
                 W.Label(panel,PageTitle(page),28,14,1200,60,32);
-                if(!InGame)W.Button(panel,"VOLVER",1560,18,260,50,()=>Navigate(HubPage.Home));
+                if(!InGame)W.Button(panel,"VOLVER",1560,18,260,50,()=>Navigate(HubPage.Home));else if(page==HubPage.Settings)W.Button(panel,"SALIR DE PARTIDA",1440,18,380,50,()=>Dialog("Volver al menú","Vas a salir de esta partida.",()=>LeaveRequested?.Invoke()));
                 if(page==HubPage.Marketplace)W.Label(panel,$"AG {Services.Balances.AncientGold:N0} / RC {Services.Balances.RiftCrystals:N0}",1050,20,490,48,19,W.Gold);
                 var body=W.Rect(panel,"Body",28,95,1792,690);
                 switch(page){
@@ -383,15 +385,16 @@ namespace ROM.UI.Sprint01
             var port=W.Input(panel,"Puerto",32,320,820,v=>Connector.Port.text=v);port.text=Connector.Port.text;port.contentType=InputField.ContentType.IntegerNumber;
         }
         public void ReturnFromLegacy(){if(LegacyMenu)LegacyMenu.SetActive(false);gameObject.SetActive(true);Navigate(HubPage.Home);}
+        Action modalCancel;
         public void Dialog(string title,string message,Action confirm,Action cancel=null)
         {
-            if(modal)DestroyImmediate(modal.gameObject);modal=W.Rect(Design,"Modal",0,0,1920,1080);
+            modalCancel=cancel;if(modal)DestroyImmediate(modal.gameObject);modal=W.Rect(Design,"Modal",0,0,1920,1080);
             var shade=W.Image(modal,"Blocker",0,0,1920,1080,new Color(0,0,0,.8f));shade.raycastTarget=true;
             var panel=W.Panel(modal,"Dialog",490,240,940,600);W.Label(panel,title,32,24,876,70,32);W.Label(panel,message,32,115,876,310,24);
-            W.Button(panel,confirm==null?"CERRAR":"CANCELAR",32,500,410,64,()=>{DestroyImmediate(modal.gameObject);cancel?.Invoke();});
-            if(confirm!=null)W.Button(panel,"CONFIRMAR",490,500,418,64,()=>{DestroyImmediate(modal.gameObject);confirm();},true);
+            W.Button(panel,confirm==null?"CERRAR [Esc]":"CANCELAR [Esc]",32,500,410,64,DismissModal);
+            if(confirm!=null)W.Button(panel,"CONFIRMAR",490,500,418,64,()=>{DestroyImmediate(modal.gameObject);modalCancel=null;confirm();},true);
             if(EventSystem.current)EventSystem.current.SetSelectedGameObject(panel.GetComponentInChildren<Button>().gameObject);
         }
-        void OnDestroy(){ROM.Progression.RiftJournalView.Changed-=JournalChanged;CancelBinding();if(Social!=null)Social.Changed-=SocialChanged;}
+        void OnDestroy(){RiftControls.Changed-=RefreshBoundLabels;ROM.Progression.RiftJournalView.Changed-=JournalChanged;CancelBinding();if(Social!=null)Social.Changed-=SocialChanged;}
     }
 }

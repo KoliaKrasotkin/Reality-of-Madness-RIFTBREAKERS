@@ -9,7 +9,7 @@ namespace ROM.Progression
     [Serializable]public sealed class QuestRecord {public string Id;public QuestStatus Status;public int[] Progress;public long CompletedAt;public List<string> Seen=new List<string>();}
     [Serializable]public sealed class AchievementRecord {public string Id;public long UnlockedAt;}
     [Serializable]public sealed class JournalCounter {public RiftProgressEvent Kind;public string Key;public int Value;}
-    [Serializable]public sealed class JournalState
+    [Serializable]public sealed partial class JournalState
     {
         public int Experience;public int[] TalentRanks=new int[9];public bool SwordAndShield;
         public int Version=2;public string CharacterId;public List<QuestRecord> Quests=new List<QuestRecord>();public List<AchievementRecord> Achievements=new List<AchievementRecord>();public List<JournalCounter> Counters=new List<JournalCounter>();public List<string> UniqueKeys=new List<string>();

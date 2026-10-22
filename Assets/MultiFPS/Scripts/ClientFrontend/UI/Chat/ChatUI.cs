@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace MultiFPS.UI
             if (RiftControls.Pressed("Chat") && !ClientFrontend.Pause && UICursorManager.GamePlayInput() && !ChatWriting) {ShowChatInput(true);return;}
 
 
-            if (Input.GetKeyDown(KeyCode.Escape) && ChatWriting) ShowChatInput(false);
+            if (Input.GetKeyDown(KeyCode.Escape) && ChatWriting) {RiftControls.EscapeConsumedFrame=Time.frameCount;ShowChatInput(false);}
 
 
             if (Input.GetKeyDown(KeyCode.Return) && ChatWriting)
