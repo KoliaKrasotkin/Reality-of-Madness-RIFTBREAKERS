@@ -12,7 +12,7 @@ public static class CombatController {
   var player=AbilityController.For(victim);if(player&&player.Prototype)player.Player.LastCombatAt=NetworkTime.time;
   if(player&&player.Prototype)damage=Mathf.Max(1,Mathf.RoundToInt(damage*(1-player.Specialization.Armor)*(player.BuffUntil>NetworkTime.time?1-player.BuffReduction:1)));
   if(player){damage=Mathf.Max(1,Mathf.RoundToInt(damage*(1-player.ExtraArmor)*(player.DefensiveUntil>NetworkTime.time?.5f:1)));}
-  Damaged?.Invoke(victim,attacker,damage);return damage;
+  if(player&&damage>0)player.ReportIncomingThreat(attacker);Damaged?.Invoke(victim,attacker,damage);return damage;
  }
  static AbilityController ForDealer(Health health)=>health?AbilityController.For(health):null;
  public static void Feedback(Health attacker,Health victim,int amount,bool critical){var dealer=ForDealer(attacker);if(dealer&&victim&&attacker!=victim&&attacker.Team!=victim.Team)dealer.ReportDamage(victim.transform.position+Vector3.up*1.8f,amount,critical);}
