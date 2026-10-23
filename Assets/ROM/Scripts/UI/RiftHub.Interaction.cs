@@ -20,6 +20,7 @@ public sealed partial class RiftHub {
   foreach(var action in actions)if(RiftControls.Pressed(action)){var page=action=="Inventory"?HubPage.Inventory:action=="Character"||action=="Equipment"?HubPage.Character:action=="Abilities"||action=="Talents"?HubPage.Abilities:action=="Journal"?HubPage.Missions:action=="Achievements"?HubPage.Progression:action=="Friends"||action=="Party"?HubPage.Social:HubPage.Settings;TogglePanel(action,page);return;}
  }
  public void TogglePanel(string action,HubPage page){
+  if(page==HubPage.Character)page=HubPage.Inventory;
   RiftControls.InterfaceConsumedFrame=RiftInterfaceCursor.InventoryConsumedFrame=Time.frameCount;
   bool same=Page==page&&(action!="Abilities"||abilityTab=="Skills")&&(action!="Talents"||abilityTab=="Talents");
   if(same){ResumeRequested?.Invoke();return;}

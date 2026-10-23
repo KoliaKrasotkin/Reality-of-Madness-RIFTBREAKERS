@@ -18,7 +18,7 @@ namespace ROM.UI.Sprint01
         Camera view;
         RenderTexture texture;
         RawImage image;
-        bool lobby,mainMenuPresentation;GameObject stageEnvironment;
+        bool lobby,mainMenuPresentation,wideMenuPreview;GameObject stageEnvironment;
         static int nextWorld;
         float yaw=0,zoom=1;
         Bounds bounds;
@@ -28,6 +28,7 @@ namespace ROM.UI.Sprint01
         AnimatorOverrideController emoteController;
         float emoteUntil,restoreAt;
         public string CurrentEmoteName {get;private set;}
+        public Transform PreviewWorld=>world?world.transform:null;
         public Camera PreviewCamera=>view;public RenderTexture PreviewTexture=>texture;
         public Transform PreviewSubject=>subject?subject.transform:null;
         public CharacterInstance SourceCharacter {get;private set;}
@@ -106,12 +107,15 @@ namespace ROM.UI.Sprint01
                 go.transform.position+=world.transform.position+offset-box.center;go.transform.localRotation=Quaternion.Euler(0,180,0);SetLayer(go);if(mainMenuPresentation)go.SetActive(false);slot++;
             }
         }
-        public void ConfigureMainMenuPresentation(){if(!lobby)return;mainMenuPresentation=true;if(stageEnvironment)stageEnvironment.SetActive(false);UseInspectionRendering();UpdateCamera();}
+        public void ConfigureMainMenuPresentation(){if(!lobby)return;mainMenuPresentation=true;if(stageEnvironment)stageEnvironment.SetActive(false);UseInspectionRendering();RiftLivingMenuAssets.Attach(this);UpdateCamera();}
+        public void EnableWideMenuPreview(){if(mainMenuPresentation)wideMenuPreview=true;}
+        public void FitMainMenuViewport(float height){if(!mainMenuPresentation||!texture)return;var rect=(RectTransform)transform;if(wideMenuPreview){float actualHeight=Mathf.Clamp((height-540)*2,900,1800);int pixelHeight=Mathf.RoundToInt(actualHeight);if(texture.width!=1920||Mathf.Abs(texture.height-pixelHeight)>2){view.targetTexture=null;texture.Release();Destroy(texture);texture=new RenderTexture(1920,pixelHeight,24,RenderTextureFormat.ARGBHalf);texture.Create();view.targetTexture=texture;image.texture=texture;}rect.anchoredPosition=new Vector2(0,(actualHeight-1080)*.5f);rect.sizeDelta=new Vector2(1920,actualHeight);UpdateCamera();return;}float width=height*texture.width/texture.height;rect.anchoredPosition=new Vector2(1080-width*.5f,0);rect.sizeDelta=new Vector2(width,height);}
         void UpdateCamera()
         {
             if(!view)return;
             if(lobby){view.transform.localPosition=mainMenuPresentation?new Vector3(0,1.72f,-2.7f):new Vector3(0,1.5f,-7.4f);view.transform.LookAt(world.transform.position+(mainMenuPresentation?new Vector3(0,1.72f,0):new Vector3(.1f,1.2f,0)));view.fieldOfView=mainMenuPresentation?32:34;}
             else{view.transform.localPosition=new Vector3(0,1.4f,-4.8f*zoom);view.transform.LookAt(world.transform.position+Vector3.up*1.2f);view.fieldOfView=36;}
+            if(wideMenuPreview&&mainMenuPresentation){view.transform.localPosition=new Vector3(-.3f,1.72f,-2.7f);view.transform.LookAt(world.transform.position+new Vector3(-.3f,1.72f,0));}
             if(subject)subject.transform.localRotation=Quaternion.Euler(0,yaw,0);
         }
         public void OnDrag(PointerEventData e){if(lobby)return;yaw-=e.delta.x*.4f;UpdateCamera();}

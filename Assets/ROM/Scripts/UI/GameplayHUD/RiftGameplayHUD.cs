@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 namespace ROM.UI.Gameplay
 {
     [DefaultExecutionOrder(900)]
-    public sealed class RiftGameplayHUD:MonoBehaviour
+    public sealed partial class RiftGameplayHUD:MonoBehaviour
     {
         public RiftHUDTheme Theme;
         public RectTransform Design;
@@ -32,7 +32,7 @@ namespace ROM.UI.Gameplay
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Install(){SceneManager.sceneLoaded-=Loaded;SceneManager.sceneLoaded+=Loaded;}
         static void Loaded(Scene scene,LoadSceneMode mode){if(scene.name=="map_rom_horde"&&!FindFirstObjectByType<RiftGameplayHUD>()){var prefab=Resources.Load<GameObject>("RiftGameplayHUD");if(prefab)Instantiate(prefab);}}
-        void Awake(){if(!FindFirstObjectByType<RiftCombatNumbers>())new GameObject("Rift combat numbers").AddComponent<RiftCombatNumbers>();canvas=GetComponent<Canvas>();for(int i=0;i<Abilities.Length;i++){int slot=i;Abilities[i].onClick.AddListener(()=>Use(slot));var drag=Abilities[i].gameObject.GetComponent<RiftHotbarSlot>();if(!drag)drag=Abilities[i].gameObject.AddComponent<RiftHotbarSlot>();drag.Slot=slot;}CreateMarker();CreateBagDock();}
+        void Awake(){if(!FindFirstObjectByType<RiftCombatNumbers>())new GameObject("Rift combat numbers").AddComponent<RiftCombatNumbers>();canvas=GetComponent<Canvas>();for(int i=0;i<Abilities.Length;i++){int slot=i;Abilities[i].onClick.AddListener(()=>Use(slot));var drag=Abilities[i].gameObject.GetComponent<RiftHotbarSlot>();if(!drag)drag=Abilities[i].gameObject.AddComponent<RiftHotbarSlot>();drag.Slot=slot;}CreateMarker();CreateBagDock();ModernizeLayout();gameObject.AddComponent<RiftUnitFrames>();gameObject.AddComponent<RiftHUDPanelDock>();gameObject.AddComponent<RiftCombatAlerts>();gameObject.AddComponent<RiftWorldLabelOcclusion>();}
         public void Use(int slot){if(RiftHotbar.Dragging||RiftControls.TextEntryFocused||ClientFrontend.Pause||!UICursorManager.GamePlayInput())return;int ability=RiftHotbar.Resolve(slot);if(ability<=0)return;var player=ClientFrontend.ClientPlayerInstance;if(!player)return;var combat=player.GetComponent<AbilityController>();if(combat&&combat.Prototype)combat.Request(ability);else if(ability<=2){RiftMMOController.Instance?.StartAutoAttack();player.CmdUseClassAbility((byte)(ability-1));}}
         void CreateBagDock(){
             var button=RiftWidgets.Button(Design,"BOLSA ["+RiftControls.ActionLabel("Inventory")+"]",0,0,238,58,OpenInventory);
@@ -51,7 +51,7 @@ namespace ROM.UI.Gameplay
         void LateUpdate()
         {
             var player=ClientFrontend.ClientPlayerInstance;var actor=player?player.MyCharacter:null;
-            bool visible=actor&&actor.Health.CurrentHealth>0&&!ClientFrontend.Pause&&!ClientFrontend.Hub;
+            bool visible=actor&&actor.Health.CurrentHealth>0&&!ClientFrontend.Hub;
             canvas.enabled=visible;
             if(legacyCharacter!=MultiFPS.UI.HUD.UICharacter._instance){legacyCharacter=MultiFPS.UI.HUD.UICharacter._instance;legacyPasses=0;}
             if(legacyPasses<4&&Time.unscaledTime>cleanupAt){legacyPasses++;cleanupAt=Time.unscaledTime+1;var measured=RiftFrameDiagnostics.Begin();HideLegacy();RiftFrameDiagnostics.End(1,measured);}
@@ -59,7 +59,7 @@ namespace ROM.UI.Gameplay
             if(observedChat!=ChatUI.Instance){observedChat=ChatUI.Instance;chatFrames=observedChat?observedChat.GetComponentsInChildren<RectTransform>(true).Where(t=>t.name=="RiftChatFrame").Select(t=>t.gameObject).ToArray():null;}if(chatFrames!=null)foreach(var frame in chatFrames)if(frame)frame.SetActive(observedChat&&observedChat.ChatWriting);
             if(!visible){if(marker)marker.gameObject.SetActive(false);if(HoverPanel)HoverPanel.gameObject.SetActive(false);return;}
             var hp=actor.Health;var combat=player.GetComponent<AbilityController>();bool warrior=combat&&combat.Prototype;var pos=actor.transform.position;
-            if(Time.unscaledTime>=nextContent){nextContent=Time.unscaledTime+.1f;if(bagButtonLabel)bagButtonLabel.text="BOLSA ["+RiftControls.ActionLabel("Inventory")+"]";
+            if(Time.unscaledTime>=nextContent){nextContent=Time.unscaledTime+.1f;if(bagButtonLabel)bagButtonLabel.text="Inventario ["+RiftControls.ActionLabel("Inventory")+"]";
             var world=ROM.Horde.Horde.Instance;bool safe=world&&world.IsSafe(actor.transform.position);
             Zone.text=safe?"ZONA SEGURA":"EL RIFT";Zone.color=safe?new Color(.2f,1,.48f):Theme.BrightGold;
             Gold.text=RiftExplorationProgress.Gold.ToString("N0")+" ORO LOCAL";
@@ -68,7 +68,7 @@ namespace ROM.UI.Gameplay
             CharacterName.text=hp.CharacterName;ClassName.text=warrior?"Warrior":player.ClassDefinition?player.ClassDefinition.Name:"";
             Level.text=(combat?combat.Level:Theme.InitialLevel).ToString();if(ExperienceLabel&&combat){bool cap=combat.Level>=combat.Progression.MaximumLevel;int xp=combat.Progression.InLevel(combat.Experience);ExperienceLabel.text=cap?"NIVEL MÁXIMO":"XP "+xp+" / "+combat.Progression.Required(combat.Level);ExperienceFill.fillAmount=cap?1:(float)xp/combat.Progression.Required(combat.Level);}Life.text=$"{hp.CurrentHealth:N0} / {hp.MaxHealth:N0}";SetFill(LifeFill,(float)hp.CurrentHealth/Mathf.Max(1,hp.MaxHealth));
             float amount=warrior?combat.Resource:0,max=warrior?combat.Class.MaximumResource:100;
-            Resource.text=$"{amount:0} / {max:0}";SetFill(ResourceFill,amount/Mathf.Max(1,max));
+            Resource.text=$"Furia {amount:0} / {max:0}";SetFill(ResourceFill,amount/Mathf.Max(1,max));
             if(Theme.Portraits!=null&&Theme.Portraits.Length>0)Portrait.sprite=Theme.Portraits[Mathf.Clamp(UserSettings.CharacterSkinID,0,Theme.Portraits.Length-1)];
             double now=NetworkTime.time;
             for(int i=0;i<Abilities.Length;i++){
@@ -86,7 +86,7 @@ namespace ROM.UI.Gameplay
             if(KeyLabels!=null)for(int i=0;i<KeyLabels.Length;i++)if(KeyLabels[i]){string label=RiftControls.ActionLabel("Ability"+i);KeyLabels[i].text=label;KeyLabels[i].fontSize=label.Length>3?10:17;}
             if(ShortcutLabels!=null){string[] ids={"Inventory","Character","Abilities","Pause","Talents","Journal","Achievements","Friends"};for(int i=0;i<ShortcutLabels.Length&&i<ids.Length;i++)if(ShortcutLabels[i])ShortcutLabels[i].text=RiftControls.ActionLabel(ids[i]);}
             }
-            RefreshHover(actor);Minimap.Refresh(actor);if(marker&&marker.gameObject.activeSelf)marker.Follow(GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main);
+            RefreshHover(actor);if(ClientFrontend.Pause&&HoverPanel)HoverPanel.gameObject.SetActive(false);Minimap.Refresh(actor);if(marker&&marker.gameObject.activeSelf)marker.Follow(GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main);
             if(UICursorManager.GamePlayInput()&&!RiftControls.Rebinding&&!RiftInterfaceCursor.Typing&&RiftControls.InterfaceConsumedFrame!=Time.frameCount){if(RiftControls.Pressed("Talents"))OpenTalents();else if(RiftControls.Pressed("Friends"))OpenFriends();else if(RiftControls.Pressed("Party"))OpenParty();else if(RiftControls.Pressed("Equipment"))OpenCharacter();else if(RiftControls.Pressed("Journal"))Open(HubPage.Missions);else if(RiftControls.Pressed("Achievements"))Open(HubPage.Progression);else if(RiftInterfaceCursor.InventoryConsumedFrame!=Time.frameCount&&RiftControls.Pressed("Inventory"))Open(HubPage.Inventory);else if(RiftControls.Pressed("Character"))Open(HubPage.Character);else if(RiftControls.Pressed("Abilities"))OpenAbilities();else if(RiftControls.Pressed("Settings"))OpenSettings();foreach(var portal in RiftPortal.All)if(portal&&portal.Definition&&Vector3.Distance(pos,portal.transform.position)<portal.Definition.InteractRange&&RiftControls.Pressed("Interact")){if(combat)combat.CmdPortal(portal.Definition.Id);break;}}
 
         }
@@ -96,10 +96,10 @@ namespace ROM.UI.Gameplay
             var targeting=RiftMMOController.Instance;selected=targeting?targeting.Selected:null;
             var npc=targeting?targeting.SelectedWorld:null;TargetPanel.gameObject.SetActive(selected||npc);var frame=TargetPanel.Find("Target health frame");if(frame)frame.gameObject.SetActive(selected);TargetFill.gameObject.SetActive(selected);TargetLife.gameObject.SetActive(selected);
             if(npc){marker.SetWorld(npc);marker.gameObject.SetActive(true);marker.Follow(GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main);TargetName.text=npc.DisplayName;TargetStats.text=npc.Role;TargetCaption.text="Amistoso · ["+RiftControls.ActionLabel("Interact")+"] / clic izquierdo";TargetName.color=new Color(.35f,1,.6f);return;}
-            marker.SetTarget(selected,selected&&selected.Team==actor.Health.Team);if(!selected)return;marker.gameObject.SetActive(true);marker.Follow(GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main);TargetName.color=Theme.Text;
+            marker.SetTarget(selected,selected&&selected.Team==actor.Health.Team);if(!selected)return;marker.gameObject.SetActive(true);marker.Follow(GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main);TargetName.color=new Color(.94f,.93f,.98f);
             TargetName.text=selected.CharacterName.ToUpperInvariant();TargetLife.text=$"{selected.CurrentHealth:N0} / {selected.MaxHealth:N0}";SetFill(TargetFill,(float)selected.CurrentHealth/Mathf.Max(1,selected.MaxHealth));
             if(selected.TrainingTarget){TargetStats.text=$"DAÑO: {selected.TrainingLastDamage:N0}  ·  TOTAL: {selected.TrainingTotalDamage:N0}";TargetCaption.text="No ataca  ·  No da recompensas";}
-            else{var enemy=selected.GetComponent<RiftEnemyCombat>();var native=selected.GetComponent<MultiFPS.Gameplay.RiftEnemies.RiftEnemyAgent>();TargetStats.text=native&&native.Definition?native.Definition.Role:enemy&&enemy.Definition?enemy.Definition.name.Replace("_"," "):"";TargetCaption.text=native&&native.SkillEnds>NetworkTime.time?native.Definition.SkillName+"  "+(native.SkillEnds-NetworkTime.time).ToString("0.0")+" s":enemy&&enemy.CastEnds>NetworkTime.time?"PREPARANDO ATAQUE  "+(enemy.CastEnds-NetworkTime.time).ToString("0.0")+" s":"";}
+            else{var enemy=selected.GetComponent<RiftEnemyCombat>();var native=selected.GetComponent<MultiFPS.Gameplay.RiftEnemies.RiftEnemyAgent>();TargetStats.text=native&&native.Definition?native.Definition.Role:enemy&&enemy.Definition?enemy.Definition.name.Replace("_"," "):"";TargetCaption.text=selected==actor.Health?"Vos":selected.Team==actor.Health.Team?"Aliado":native&&native.SkillEnds>NetworkTime.time?native.Definition.SkillName+"  "+(native.SkillEnds-NetworkTime.time).ToString("0.0")+" s":enemy&&enemy.CastEnds>NetworkTime.time?"PREPARANDO ATAQUE  "+(enemy.CastEnds-NetworkTime.time).ToString("0.0")+" s":"";}
         }
         void RefreshHover(CharacterInstance actor)
         {
