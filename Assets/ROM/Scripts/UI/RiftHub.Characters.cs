@@ -14,7 +14,10 @@ namespace ROM.UI.Sprint01
         LocalCharacterRoster Roster
         {
             get{
-                if(roster==null||rosterAccount!=Social.Self.Id){rosterAccount=Social.Self.Id;roster=new LocalCharacterRoster(rosterAccount,Social.Self.Name,Social.Self.Skin,PlayerPrefs.GetInt(AbilityController.Preference,0)>0?"warrior":"legacy:"+PlayerPrefs.GetInt(PlayerInstance.ClassPreference,0));}
+                // Also support calls from existing UI buttons before Start or after reload.
+                if(Social==null)Initialize();
+                var profile=Social.Self;
+                if(roster==null||rosterAccount!=profile.Id){rosterAccount=profile.Id;roster=new LocalCharacterRoster(rosterAccount,profile.Name,profile.Skin,PlayerPrefs.GetInt(AbilityController.Preference,0)>0?"warrior":"legacy:"+PlayerPrefs.GetInt(PlayerInstance.ClassPreference,0));}
                 return roster;
             }
         }

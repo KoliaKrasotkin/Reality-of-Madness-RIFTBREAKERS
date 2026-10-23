@@ -8,7 +8,6 @@ using ROM.Progression;
 using ROM.UI.Gameplay;
 namespace ROM.UI.Sprint01 {
 public sealed partial class RiftHub {
- void OnEnable(){if(Application.isPlaying&&InGame&&content)Navigate(HubPage.Home);}
  void ModernPause(){
   var panel=RiftSkillStyle.Panel(content,"Modern pause landing",1104,0,744,810,.83f);
   RiftWidgets.Label(panel,"MENÚ",28,20,688,54,34,RiftSkillStyle.White);

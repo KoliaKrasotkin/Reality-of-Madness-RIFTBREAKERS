@@ -1,0 +1,67 @@
+PASS Sheathing uses a separate reversed copy of Unsheath-Back-Unarmed
+PASS Reversed clip retains Humanoid retargeting
+PASS Prefab retains its Mirror network asset ID
+PASS All reversed animation curves match source at mirrored time; max error 3,72529E-07
+PASS Animator state Locomotion
+PASS Weapon rig stays active for hand/back attachment
+PASS Animator arm IK enabled
+PASS Axe stays visible in hand or on back
+PASS Animator state SheathWeapon
+PASS Visible transition axe follows the animated right hand
+PASS Axe stays visible while being carried to storage
+PASS Animator state UnarmedLocomotion
+PASS Weapon rig stays active for hand/back attachment
+PASS Animator arm IK released
+PASS Axe stays visible in hand or on back
+PASS Holstered axe follows animated chest socket
+PASS Animator state UnarmedLocomotion
+PASS Weapon rig stays active for hand/back attachment
+PASS Animator arm IK released
+PASS Axe stays visible in hand or on back
+PASS Holstered axe follows animated chest socket
+PASS Animator state UnarmedLocomotion
+PASS Weapon rig stays active for hand/back attachment
+PASS Animator arm IK released
+PASS Axe stays visible in hand or on back
+PASS Holstered axe follows animated chest socket
+PASS Animator state UnarmedLocomotion
+PASS Weapon rig stays active for hand/back attachment
+PASS Animator arm IK released
+PASS Axe stays visible in hand or on back
+PASS Holstered axe follows animated chest socket
+PASS Animator state UnarmedLocomotion
+PASS Weapon rig stays active for hand/back attachment
+PASS Animator arm IK released
+PASS Axe stays visible in hand or on back
+PASS Holstered axe follows animated chest socket
+PASS Animator state UnarmedLocomotion
+PASS Weapon rig stays active for hand/back attachment
+PASS Animator arm IK released
+PASS Axe stays visible in hand or on back
+PASS Holstered axe follows animated chest socket
+PASS Animator state UnarmedJump
+PASS Animator state UnarmedAir
+PASS Weapon rig stays active for hand/back attachment
+PASS Animator arm IK released
+PASS Axe stays visible in hand or on back
+PASS Holstered axe follows animated chest socket
+PASS Animator state UnarmedLocomotion
+PASS Animator state DrawWeapon
+PASS Visible transition axe follows the animated right hand
+PASS Visible transition axe follows the animated right hand
+PASS Animator state Locomotion
+PASS Weapon rig stays active for hand/back attachment
+PASS Animator arm IK enabled
+PASS Axe stays visible in hand or on back
+PASS Animator state Locomotion
+PASS Weapon rig stays active for hand/back attachment
+PASS Animator arm IK enabled
+PASS Axe stays visible in hand or on back
+PASS Animator state UnarmedLocomotion
+PASS Weapon rig stays active for hand/back attachment
+PASS Animator arm IK released
+PASS Axe stays visible in hand or on back
+PASS Holstered axe follows animated chest socket
+PASS SetWeaponDrawn(false) updates Animator and blocks weapon use
+PASS Holstered character rejects attack presentation
+PASS SetWeaponDrawn(true) starts drawing and waits before allowing attacks
