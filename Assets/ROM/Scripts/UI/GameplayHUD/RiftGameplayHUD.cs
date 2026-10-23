@@ -32,7 +32,7 @@ namespace ROM.UI.Gameplay
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Install(){SceneManager.sceneLoaded-=Loaded;SceneManager.sceneLoaded+=Loaded;}
         static void Loaded(Scene scene,LoadSceneMode mode){if(scene.name=="map_rom_horde"&&!FindFirstObjectByType<RiftGameplayHUD>()){var prefab=Resources.Load<GameObject>("RiftGameplayHUD");if(prefab)Instantiate(prefab);}}
-        void Awake(){if(!FindFirstObjectByType<RiftCombatNumbers>())new GameObject("Rift combat numbers").AddComponent<RiftCombatNumbers>();canvas=GetComponent<Canvas>();for(int i=0;i<Abilities.Length;i++){int slot=i;Abilities[i].onClick.AddListener(()=>Use(slot));var drag=Abilities[i].gameObject.GetComponent<RiftHotbarSlot>();if(!drag)drag=Abilities[i].gameObject.AddComponent<RiftHotbarSlot>();drag.Slot=slot;}CreateMarker();CreateBagDock();}
+        void Awake(){if(!FindFirstObjectByType<RiftCombatNumbers>())new GameObject("Rift combat numbers").AddComponent<RiftCombatNumbers>();canvas=GetComponent<Canvas>();for(int i=0;i<Abilities.Length;i++){int slot=i;Abilities[i].onClick.AddListener(()=>Use(slot));var drag=Abilities[i].gameObject.GetComponent<RiftHotbarSlot>();if(!drag)drag=Abilities[i].gameObject.AddComponent<RiftHotbarSlot>();drag.Slot=slot;}CreateMarker();CreateBagDock();gameObject.AddComponent<RiftHUDPanelDock>();gameObject.AddComponent<RiftWorldLabelOcclusion>();}
         public void Use(int slot){if(RiftHotbar.Dragging||RiftControls.TextEntryFocused||ClientFrontend.Pause||!UICursorManager.GamePlayInput())return;int ability=RiftHotbar.Resolve(slot);if(ability<=0)return;var player=ClientFrontend.ClientPlayerInstance;if(!player)return;var combat=player.GetComponent<AbilityController>();if(combat&&combat.Prototype)combat.Request(ability);else if(ability<=2){RiftMMOController.Instance?.StartAutoAttack();player.CmdUseClassAbility((byte)(ability-1));}}
         void CreateBagDock(){
             var button=RiftWidgets.Button(Design,"BOLSA ["+RiftControls.ActionLabel("Inventory")+"]",0,0,238,58,OpenInventory);
@@ -51,7 +51,7 @@ namespace ROM.UI.Gameplay
         void LateUpdate()
         {
             var player=ClientFrontend.ClientPlayerInstance;var actor=player?player.MyCharacter:null;
-            bool visible=actor&&actor.Health.CurrentHealth>0&&!ClientFrontend.Pause&&!ClientFrontend.Hub;
+            bool visible=actor&&actor.Health.CurrentHealth>0&&!ClientFrontend.Hub;
             canvas.enabled=visible;
             if(legacyCharacter!=MultiFPS.UI.HUD.UICharacter._instance){legacyCharacter=MultiFPS.UI.HUD.UICharacter._instance;legacyPasses=0;}
             if(legacyPasses<4&&Time.unscaledTime>cleanupAt){legacyPasses++;cleanupAt=Time.unscaledTime+1;var measured=RiftFrameDiagnostics.Begin();HideLegacy();RiftFrameDiagnostics.End(1,measured);}
@@ -86,7 +86,7 @@ namespace ROM.UI.Gameplay
             if(KeyLabels!=null)for(int i=0;i<KeyLabels.Length;i++)if(KeyLabels[i]){string label=RiftControls.ActionLabel("Ability"+i);KeyLabels[i].text=label;KeyLabels[i].fontSize=label.Length>3?10:17;}
             if(ShortcutLabels!=null){string[] ids={"Inventory","Character","Abilities","Pause","Talents","Journal","Achievements","Friends"};for(int i=0;i<ShortcutLabels.Length&&i<ids.Length;i++)if(ShortcutLabels[i])ShortcutLabels[i].text=RiftControls.ActionLabel(ids[i]);}
             }
-            RefreshHover(actor);Minimap.Refresh(actor);if(marker&&marker.gameObject.activeSelf)marker.Follow(GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main);
+            RefreshHover(actor);if(ClientFrontend.Pause&&HoverPanel)HoverPanel.gameObject.SetActive(false);Minimap.Refresh(actor);if(marker&&marker.gameObject.activeSelf)marker.Follow(GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main);
             if(UICursorManager.GamePlayInput()&&!RiftControls.Rebinding&&!RiftInterfaceCursor.Typing&&RiftControls.InterfaceConsumedFrame!=Time.frameCount){if(RiftControls.Pressed("Talents"))OpenTalents();else if(RiftControls.Pressed("Friends"))OpenFriends();else if(RiftControls.Pressed("Party"))OpenParty();else if(RiftControls.Pressed("Equipment"))OpenCharacter();else if(RiftControls.Pressed("Journal"))Open(HubPage.Missions);else if(RiftControls.Pressed("Achievements"))Open(HubPage.Progression);else if(RiftInterfaceCursor.InventoryConsumedFrame!=Time.frameCount&&RiftControls.Pressed("Inventory"))Open(HubPage.Inventory);else if(RiftControls.Pressed("Character"))Open(HubPage.Character);else if(RiftControls.Pressed("Abilities"))OpenAbilities();else if(RiftControls.Pressed("Settings"))OpenSettings();foreach(var portal in RiftPortal.All)if(portal&&portal.Definition&&Vector3.Distance(pos,portal.transform.position)<portal.Definition.InteractRange&&RiftControls.Pressed("Interact")){if(combat)combat.CmdPortal(portal.Definition.Id);break;}}
 
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using MultiFPS;
 using MultiFPS.UI;
@@ -14,6 +14,7 @@ namespace ROM.UI.Sprint01
         JournalState JournalState=>RiftJournalView.Read(InGame?null:Roster.Active.Id);
         void JournalChanged(){if(InGame&&Page==HubPage.Abilities&&abilityTab=="Talents")return;if(Page==HubPage.Missions||Page==HubPage.Progression||Page==HubPage.Abilities||Page==HubPage.Character)Navigate(Page);}
         public void ShowJournal(){ShowGameplayPage(HubPage.Missions);}
+        public void ShowQuest(string questId){journalSelection=questId;var record=JournalState.Quest(questId);journalFilter=record==null?"Disponibles":record.Status==QuestStatus.TurnedIn?"Completadas":"Activas";ShowGameplayPage(HubPage.Missions); }
         public void ShowAchievements(){ShowGameplayPage(HubPage.Progression);}
         void QuestJournal(Transform body)
         {
