@@ -2653,7 +2653,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage:
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -4208,6 +4208,8 @@ GameObject:
   - component: {fileID: 8068070248855642924}
   - component: {fileID: 5119382602334834000}
   - component: {fileID: 7379947178485383657}
+  - component: {fileID: 3115259183895769214}
+  - component: {fileID: 7076413773237390902}
   m_Layer: 0
   m_Name: WarriorPlayer
   m_TagString: Untagged
@@ -4224,7 +4226,7 @@ Transform:
   m_GameObject: {fileID: 6763029804279699219}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.057, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4532,6 +4534,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponIKController
   animator: {fileID: 1131495828200463829}
+--- !u!114 &3115259183895769214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6763029804279699219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94996559277ad5444b4adf17fd974c5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.CharacterWeaponPresentation
+  Animator: {fileID: 1131495828200463829}
+  BuiltInWeapon: {fileID: 4645444090098975947}
+--- !u!114 &7076413773237390902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6763029804279699219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 995e0cd69073e4047995148636fa3b70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.RiftWarriorEquipment
+  AxeWeapon: {fileID: 11400000, guid: 7a07ada057d70da4596ab67ccc268bcb, type: 2}
+  SwordShieldWeapon: {fileID: 11400000, guid: d711be3fecef42b43bfbfafef42fb4fb, type: 2}
 --- !u!1 &6764698331295219383
 GameObject:
   m_ObjectHideFlags: 0

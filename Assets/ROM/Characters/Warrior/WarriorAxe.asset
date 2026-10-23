@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: WarriorAxe
   m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.WeaponDefinition
   Id: warrior-axe
-  DisplayName: Hacha de Warrior
+  DisplayName: Hacha de dos manos
   WeaponType: HeavyAxe
+  Role: 0
   DamageMultiplier: 1
   AttackSpeed: 1
   Reach: 3.4
@@ -28,3 +29,10 @@ MonoBehaviour:
   AllowedSpecializations: []
   Attack: {fileID: 0}
   ImpactVfx: {fileID: 0}
+  Controller: {fileID: 9100000, guid: 6738116e27198d24fb997657d9a43cdb, type: 2}
+  UsesBuiltInWeapon: 1
+  UseGripFrame: 0
+  StoredBone: 8
+  StoredPosition: {x: 0, y: 0, z: 0}
+  StoredRotation: {x: 0, y: 0, z: 0}
+  AdditionalEquipment: []

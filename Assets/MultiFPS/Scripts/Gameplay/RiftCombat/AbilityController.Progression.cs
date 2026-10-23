@@ -10,7 +10,7 @@ public sealed partial class AbilityController {
  public float PowerMultiplier=>(1+(Level-1)*Progression.DamagePerLevel)*(1+Rank(0)*.03f);
  public float CriticalChance=>Mathf.Clamp01(AutoProfile.CriticalChance+Rank(2)*.01f);
  public float ExtraArmor=>Mathf.Clamp01(Rank(3)*.02f+(Prototype&&SwordAndShield?.12f+Rank(5)*.03f:0));
- public float WeaponMultiplier=>Prototype&&SwordAndShield?.85f:Specialization&&Specialization.Weapon?Specialization.Weapon.DamageMultiplier:1;
+ public float WeaponMultiplier=>Prototype&&SwordAndShield?(Progression.Sword?Progression.Sword.DamageMultiplier:1):Specialization&&Specialization.Weapon?Specialization.Weapon.DamageMultiplier:1;
  public int ProgressionHealth(int basis)=>Mathf.Max(1,Mathf.RoundToInt(basis*(1+(Level-1)*Progression.HealthPerLevel)*(1+Rank(4)*.05f)*(Prototype&&SwordAndShield?1.15f:1)));
  public float AbilityCooldown(int slot,AbilityDefinition a)=>Mathf.Max(.1f,a.Cooldown*(1-Rank(8)*.03f)*(slot==6&&SwordAndShield?1-Rank(5)*.05f:1));
  public float AbilityRadius(int slot,AbilityDefinition a)=>a.Radius+((slot==1||slot==7)?Rank(1)*.3f:0);

@@ -1,9 +1,32 @@
 using UnityEngine;
-namespace MultiFPS.Gameplay.RiftCombat {
-public sealed class RiftWarriorEquipment:MonoBehaviour {
- WarriorAvatar avatar;CharacterInstance actor;AbilityController owner;GameObject sword,shield;
- void Awake(){avatar=GetComponent<WarriorAvatar>();actor=GetComponent<CharacterInstance>();}
- void LateUpdate(){if(!avatar||!avatar.Animator||!actor)return;owner=AbilityController.For(actor.Health);bool desired=owner&&owner.Prototype&&owner.SwordAndShield;bool alive=actor.Health.CurrentHealth>0;if(avatar.EquippedWeapon)avatar.EquippedWeapon.SetActive(alive&&!desired);if(desired&&!sword){var tuning=owner.Progression;var hand=avatar.Animator.GetBoneTransform(HumanBodyBones.RightHand);var arm=avatar.Animator.GetBoneTransform(HumanBodyBones.LeftLowerArm);if(hand&&tuning.Sword&&tuning.Sword.Model){sword=Instantiate(tuning.Sword.Model,hand);sword.name="Warrior sword";sword.transform.localPosition=tuning.Sword.Position;sword.transform.localRotation=Quaternion.Euler(tuning.Sword.Rotation);sword.transform.localScale=tuning.Sword.Scale;DisableColliders(sword);}if(arm&&tuning.Shield){shield=Instantiate(tuning.Shield,arm);shield.name="Warrior shield";var leftHand=avatar.Animator.GetBoneTransform(HumanBodyBones.LeftHand);var facing=Quaternion.Euler(0,actor.Input.LookY,0);shield.transform.position=Vector3.Lerp(arm.position,leftHand?leftHand.position:arm.position,.65f)+facing*Vector3.left*.12f;shield.transform.rotation=facing*Quaternion.Euler(90,0,0);shield.transform.localScale=tuning.ShieldScale;DisableColliders(shield);}}bool visible=desired&&alive&&avatar.WeaponPresentationVisible;if(sword)sword.SetActive(visible);if(shield)shield.SetActive(visible);}
- static void DisableColliders(GameObject root){foreach(var c in root.GetComponentsInChildren<Collider>())c.enabled=false;}
- void OnDestroy(){if(sword)Destroy(sword);if(shield)Destroy(shield);}
-}}
+namespace MultiFPS.Gameplay.RiftCombat
+{
+    // Bridges the existing replicated Warrior build to the reusable visual profiles.
+    [DefaultExecutionOrder(200)]
+    public sealed class RiftWarriorEquipment : MonoBehaviour
+    {
+        public WeaponDefinition AxeWeapon, SwordShieldWeapon;
+        WarriorAvatar avatar;
+        CharacterInstance actor;
+        CharacterWeaponPresentation presentation;
+        void Awake()
+        {
+            avatar = GetComponent<WarriorAvatar>();
+            actor = GetComponent<CharacterInstance>();
+            presentation = GetComponent<CharacterWeaponPresentation>();
+            if (!presentation) presentation = gameObject.AddComponent<CharacterWeaponPresentation>();
+            presentation.Animator = avatar.Animator;
+            presentation.BuiltInWeapon = avatar.EquippedWeapon;
+            if (!AxeWeapon) AxeWeapon = avatar.Weapon;
+            if (!SwordShieldWeapon) SwordShieldWeapon = WarriorProgressionDefinition.Load.Sword;
+        }
+        void LateUpdate()
+        {
+            if (!avatar || !actor || !presentation) return;
+            var owner = AbilityController.For(actor.Health);
+            var desired = owner && owner.Prototype && owner.SwordAndShield ? SwordShieldWeapon : AxeWeapon;
+            presentation.Alive = actor.Health && actor.Health.CurrentHealth > 0;
+            if (!avatar.IsRolling && !avatar.Animator.IsInTransition(0)) presentation.Equip(desired);
+        }
+    }
+}

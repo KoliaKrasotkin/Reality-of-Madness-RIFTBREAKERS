@@ -19,15 +19,6 @@ namespace MultiFPS.Gameplay.RiftCombat
         [SyncVar] private double weaponReadyAt;
         public bool WeaponDrawn => weaponDrawn;
         public bool CanUseWeapon => weaponDrawn&&!IsRolling&&NetworkTime.time>=weaponReadyAt;
-        private Renderer weaponRenderer;
-        internal bool WeaponPresentationVisible
-        {
-            get
-            {
-                if(!weaponRenderer&&EquippedWeapon)weaponRenderer=EquippedWeapon.GetComponentInChildren<Renderer>(true);
-                return weaponDrawn&&weaponRenderer&&weaponRenderer.enabled;
-            }
-        }
         CharacterInstance actor;
         CharacterController capsule;
         Vector3 planar,previous;
@@ -145,7 +136,9 @@ namespace MultiFPS.Gameplay.RiftCombat
             if(slot<0||!ability.Animation||!Animator.HasState(0,Animator.StringToHash(state)))return false;
             var special=GetComponent<WarriorSpecialMotion>();
             if(special)special.Stop();
-            Animator.SetFloat("AttackRate",ability.Animation.length/Mathf.Max(.1f,ability.CastDuration));
+            var equipment=GetComponent<CharacterWeaponPresentation>();
+            var clip=equipment?equipment.ResolveClip(ability.Animation):ability.Animation;
+            Animator.SetFloat("AttackRate",clip.length/Mathf.Max(.1f,ability.CastDuration));
             if(slot==6)Animator.SetBool("DefensiveHold",true);
             Animator.CrossFadeInFixedTime(state,.09f,0,0);
             activeAttackSlot=slot;presentationStarted=Time.time;

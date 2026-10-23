@@ -1,10 +1,12 @@
 using System;
 using System.Text;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Playables;
+using MultiFPS.Gameplay.RiftCombat;
 
 [CustomEditor(typeof(WeaponIKController))]
 public class WeaponIKControllerEditor : Editor
@@ -39,6 +41,14 @@ public class WeaponIKControllerEditor : Editor
     private string validationReport;
     private bool showValidation;
     private PoseSnapshot[] previewPose;
+    private WeaponDefinition previewWeapon;
+    private RuntimeAnimatorController originalController;
+    private GameObject previewEquipmentRoot;
+    private CharacterWeaponPresentation equipmentPreview;
+    private GameObject builtInWeapon;
+    private bool builtInWasActive;
+    private bool showEquipmentOffsets = true;
+    private double nextPreviewUpdate;
 
     private struct PoseSnapshot
     {
@@ -47,8 +57,29 @@ public class WeaponIKControllerEditor : Editor
         public Quaternion rotation;
     }
 
-    private void OnEnable() => RefreshReferences();
-    private void OnDisable() => StopPreview();
+    private void OnEnable()
+    {
+        RefreshReferences();
+        var equipment = animator ? animator.GetComponentInParent<RiftWarriorEquipment>() : null;
+        if (equipment) previewWeapon = equipment.AxeWeapon;
+        EditorApplication.update += UpdatePreview;
+        AssemblyReloadEvents.beforeAssemblyReload += StopPreview;
+        EditorApplication.playModeStateChanged += OnPlayModeChanged;
+    }
+    private void OnDisable()
+    {
+        StopPreview();
+        EditorApplication.update -= UpdatePreview;
+        AssemblyReloadEvents.beforeAssemblyReload -= StopPreview;
+        EditorApplication.playModeStateChanged -= OnPlayModeChanged;
+    }
+    private void OnPlayModeChanged(PlayModeStateChange state) => StopPreview();
+    private void UpdatePreview()
+    {
+        if (!previewActive || EditorApplication.timeSinceStartup < nextPreviewUpdate) return;
+        nextPreviewUpdate = EditorApplication.timeSinceStartup + .05;
+        SamplePreview();
+    }
 
     private void RefreshReferences()
     {
@@ -76,11 +107,24 @@ public class WeaponIKControllerEditor : Editor
         }
         EditorGUILayout.ObjectField("Grip Constraint", gripConstraint, typeof(AnimatedWeaponGripConstraint), true);
 
-        using (new EditorGUI.DisabledScope(Application.isPlaying))
+        bool persistentAsset = EditorUtility.IsPersistent(animator);
+        if (persistentAsset && !Application.isPlaying)
+        {
+            EditorGUILayout.HelpBox("Open the prefab to preview equipment in the Scene view.", MessageType.Info);
+            if (GUILayout.Button("Open Prefab for Preview"))
+            {
+                var stage = PrefabStageUtility.OpenPrefab(AssetDatabase.GetAssetPath(target));
+                Selection.activeGameObject = stage.prefabContentsRoot;
+                return;
+            }
+        }
+        using (new EditorGUI.DisabledScope(Application.isPlaying || persistentAsset))
         {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Animation Preview", EditorStyles.boldLabel);
-            if (GUILayout.Button("Validate Animation Grips")) ValidateAnimationGrips();
+            DrawEquipmentSelector();
+            using (new EditorGUI.DisabledScope(previewWeapon && !previewWeapon.UsesBuiltInWeapon))
+                if (GUILayout.Button("Validate Axe Animation Grips")) ValidateAnimationGrips();
             if (!string.IsNullOrEmpty(validationReport))
             {
                 showValidation = EditorGUILayout.Foldout(showValidation, "Last Grip Validation");
@@ -106,25 +150,92 @@ public class WeaponIKControllerEditor : Editor
                 else StartPreview();
             }
             if (previewActive) SamplePreview();
+            DrawEquipmentOffsets();
         }
     }
 
-    private AnimationClip FindClip(string name) => animator.runtimeAnimatorController == null
-        ? null
-        : Array.Find(animator.runtimeAnimatorController.animationClips, clip => clip.name ==
-            (name.StartsWith("Unarmed/") ? name.Replace("Unarmed/", "Unarmed-") : "2Hand-Sword-" + name));
+    private void DrawEquipmentSelector()
+    {
+        var equipment = animator.GetComponentInParent<RiftWarriorEquipment>();
+        if (equipment)
+        {
+            int current = previewWeapon == equipment.AxeWeapon ? 0 : previewWeapon == equipment.SwordShieldWeapon ? 1 : 2;
+            int next = EditorGUILayout.Popup("Equipment", current, new[] { "Axe", "Sword and shield", "Custom definition" });
+            if (next != current && next < 2) SetPreviewWeapon(next == 0 ? equipment.AxeWeapon : equipment.SwordShieldWeapon);
+            else if (next != current) SetPreviewWeapon(null);
+        }
+        EditorGUI.BeginChangeCheck();
+        var weapon = (WeaponDefinition)EditorGUILayout.ObjectField("Weapon Definition", previewWeapon, typeof(WeaponDefinition), false);
+        if (EditorGUI.EndChangeCheck()) SetPreviewWeapon(weapon);
+    }
+
+    private void SetPreviewWeapon(WeaponDefinition weapon)
+    {
+        bool restart = previewActive;
+        StopPreview();
+        previewWeapon = weapon;
+        previewClip = FindClip(ClipNames[selectedPreview]);
+        previewTime = 0;
+        if (restart) StartPreview();
+    }
+
+    private AnimationClip ResolveEquipmentClip(AnimationClip clip)
+    {
+        var overrides = previewWeapon ? previewWeapon.Controller as AnimatorOverrideController : null;
+        return clip && overrides && overrides[clip] ? overrides[clip] : clip;
+    }
+
+    private AnimationClip FindClip(string name)
+    {
+        var controller = originalController ? originalController : animator.runtimeAnimatorController;
+        if (previewWeapon && previewWeapon.Controller) controller = previewWeapon.Controller;
+        while (controller is AnimatorOverrideController overrides) controller = overrides.runtimeAnimatorController;
+        if (!controller) return null;
+        return ResolveEquipmentClip(Array.Find(controller.animationClips, clip => clip.name ==
+            (name.StartsWith("Unarmed/") ? name.Replace("Unarmed/", "Unarmed-") : "2Hand-Sword-" + name)));
+    }
+
+    private void DrawEquipmentOffsets()
+    {
+        if (!previewWeapon || previewWeapon.UsesBuiltInWeapon) return;
+        showEquipmentOffsets = EditorGUILayout.Foldout(showEquipmentOffsets, "Equipment offsets (definition assets)", true);
+        if (!showEquipmentOffsets) return;
+        EditorGUILayout.HelpBox("Position, rotation and scale update the preview immediately and are saved to each definition asset. Stop Preview restores the character pose, keeping your asset adjustments.", MessageType.Info);
+        foreach (var part in previewWeapon.EquippedParts)
+        {
+            EditorGUILayout.LabelField(part.DisplayName + " — " + part.Socket, EditorStyles.boldLabel);
+            EditorGUILayout.ObjectField("Definition", part, typeof(WeaponDefinition), false);
+            var settings = new SerializedObject(part);
+            settings.Update();
+            EditorGUI.BeginChangeCheck();
+            foreach (string name in new[] { "Position", "Rotation", "Scale", "StoredBone", "StoredPosition", "StoredRotation" })
+                EditorGUILayout.PropertyField(settings.FindProperty(name));
+            if (EditorGUI.EndChangeCheck())
+            {
+                settings.ApplyModifiedProperties();
+                AssetDatabase.SaveAssetIfDirty(part);
+                SamplePreview();
+            }
+        }
+    }
 
     private void SelectClip(AnimationClip clip)
     {
+        bool restart = previewActive;
         StopPreview();
         previewClip = clip;
         previewTime = 0f;
+        if (restart) StartPreview();
     }
 
     private void StartPreview()
     {
-        if (Application.isPlaying || animator == null || rigBuilder == null || previewClip == null) return;
+        if (Application.isPlaying || animator == null || EditorUtility.IsPersistent(animator) || rigBuilder == null || previewClip == null) return;
         StopPreview();
+        originalController = animator.runtimeAnimatorController;
+        var avatar = animator.GetComponentInParent<WarriorAvatar>();
+        builtInWeapon = avatar ? avatar.EquippedWeapon : null;
+        builtInWasActive = builtInWeapon && builtInWeapon.activeSelf;
         previewRigs = animator.GetComponentsInChildren<UnityEngine.Animations.Rigging.Rig>(true);
         previewRigWeights = Array.ConvertAll(previewRigs, rig => rig.weight);
         previewArms = animator.GetComponentsInChildren<TwoBoneIKConstraint>(true);
@@ -147,6 +258,17 @@ public class WeaponIKControllerEditor : Editor
         try
         {
             rigBuilder.Clear();
+            if (previewWeapon)
+            {
+                previewEquipmentRoot = new GameObject("Weapon equipment preview") { hideFlags = HideFlags.HideAndDontSave };
+                previewEquipmentRoot.transform.SetParent(animator.transform.parent, false);
+                equipmentPreview = previewEquipmentRoot.AddComponent<CharacterWeaponPresentation>();
+                equipmentPreview.Animator = animator;
+                equipmentPreview.BuiltInWeapon = builtInWeapon;
+                equipmentPreview.Equip(previewWeapon);
+                foreach (var item in previewEquipmentRoot.GetComponentsInChildren<Transform>(true))
+                    item.gameObject.hideFlags = HideFlags.HideAndDontSave;
+            }
             previewGraph = PlayableGraph.Create("Weapon IK Preview");
             previewGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
             clipPlayable = AnimationClipPlayable.Create(previewGraph, previewClip);
@@ -155,6 +277,7 @@ public class WeaponIKControllerEditor : Editor
                 : previewClip.name.Contains("Unsheath-") ? "WeaponDrawing"
                 : previewClip.name.Contains("Sheath-") ? "WeaponSheathing" : "WeaponDrawn";
             presentationClip = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/ROM/Animation/WarriorWeaponStates/" + presentationName + ".anim");
+            presentationClip = ResolveEquipmentClip(presentationClip);
             Playable source = clipPlayable;
             if (presentationClip != null)
             {
@@ -186,6 +309,15 @@ public class WeaponIKControllerEditor : Editor
         if (presentationPlayable.IsValid()) presentationPlayable.SetTime(Mathf.Min(previewTime, presentationClip.length));
         rigBuilder.UpdatePreviewGraph(previewGraph);
         previewGraph.Evaluate(0f);
+        if (equipmentPreview)
+        {
+            float stored = 0;
+            if (presentationClip)
+                foreach (var binding in AnimationUtility.GetCurveBindings(presentationClip))
+                    if (binding.type == typeof(Animator) && binding.propertyName == "EquipmentBackWeight")
+                    { stored = AnimationUtility.GetEditorCurve(presentationClip, binding).Evaluate(previewTime); break; }
+            equipmentPreview.RefreshPose(stored);
+        }
         SceneView.RepaintAll();
     }
 
@@ -194,6 +326,13 @@ public class WeaponIKControllerEditor : Editor
         bool hadPreview = previewPose != null;
         previewActive = false;
         if (previewGraph.IsValid()) previewGraph.Destroy();
+        if (previewEquipmentRoot) DestroyImmediate(previewEquipmentRoot);
+        previewEquipmentRoot = null;
+        equipmentPreview = null;
+        if (originalController && animator) animator.runtimeAnimatorController = originalController;
+        originalController = null;
+        if (builtInWeapon) builtInWeapon.SetActive(builtInWasActive);
+        builtInWeapon = null;
         if (hadPreview && rigBuilder != null) rigBuilder.StopPreview();
         if (previewRigs != null)
         {
