@@ -28,7 +28,16 @@ public sealed class RiftAbilityTooltip:MonoBehaviour {
  Vector2 ClampPosition(Vector2 p){p.x=Mathf.Clamp(p.x,root.rect.xMin+12,Mathf.Max(root.rect.xMin+12,root.rect.xMax-panel.rect.width-12));p.y=Mathf.Clamp(p.y,root.rect.yMin+panel.rect.height+12,root.rect.yMax-12);return p;}
  void Place(){
   if(compactInventory&&inventoryBounds){Vector2 p=Mouse.current!=null?Mouse.current.position.ReadValue():Vector2.zero;RectTransformUtility.ScreenPointToLocalPointInRectangle(root,p,null,out p);p+=new Vector2(18,panel.rect.height+24);var bounds=BoundsOf(inventoryBounds);p.x=bounds.xMin-panel.rect.width-14;var cell=owner.GetComponent<ROM.UI.Sprint01.RiftInventoryCell>();if(cell&&!cell.EquipmentTarget){var item=BoundsOf((RectTransform)owner.transform);p=new Vector2(item.xMin-panel.rect.width-14,item.yMax);}panel.anchoredPosition=ClampPosition(p);return;}
-  var ownerRect=owner.transform as RectTransform;if(!ownerRect)return;var source=BoundsOf(ownerRect);Rect face=new Rect();bool avoidFace=false;var hub=owner.GetComponentInParent<ROM.UI.Sprint01.RiftHub>();var stage=hub&&!hub.InGame?hub.Stage:null;
+  var ownerRect=owner.transform as RectTransform;if(!ownerRect)return;var source=BoundsOf(ownerRect);
+  var actionDock=owner.GetComponentInParent<RiftHUDIntegratedBar>();
+  if(ability>=0||(actionDock&&actionDock.Root&&ownerRect.IsChildOf(actionDock.Root))){
+   Vector2 cursor=source.center;
+   if(Mouse.current!=null)RectTransformUtility.ScreenPointToLocalPointInRectangle(root,Mouse.current.position.ReadValue(),null,out cursor);
+   float gap=16,top=cursor.y+panel.rect.height+gap;
+   if(top>root.rect.yMax-12)top=cursor.y-gap;
+   panel.anchoredPosition=ClampPosition(new Vector2(cursor.x-panel.rect.width*.5f,top));return;
+  }
+  Rect face=new Rect();bool avoidFace=false;var hub=owner.GetComponentInParent<ROM.UI.Sprint01.RiftHub>();var stage=hub&&!hub.InGame?hub.Stage:null;
   if(stage&&stage.PreviewSubject&&stage.PreviewCamera){var animator=stage.PreviewSubject.GetComponentInChildren<Animator>();var head=animator&&animator.isHuman?animator.GetBoneTransform(HumanBodyBones.Head):null;if(head){var uv=stage.PreviewCamera.WorldToViewportPoint(head.position);var view=(RectTransform)stage.transform;var point=view.TransformPoint(new Vector2(view.rect.xMin+uv.x*view.rect.width,view.rect.yMin+uv.y*view.rect.height));RectTransformUtility.ScreenPointToLocalPointInRectangle(root,RectTransformUtility.WorldToScreenPoint(null,point),null,out var headPoint);face=new Rect(headPoint.x-100,headPoint.y-120,200,240);avoidFace=uv.z>0;}}
   float w=panel.rect.width,h=panel.rect.height;var choices=new[]{new Vector2(source.xMax+16,source.yMax),new Vector2(source.xMin-w-16,source.yMax),new Vector2(source.center.x-w*.5f,source.yMin-16),new Vector2(source.center.x-w*.5f,source.yMax+h+16),new Vector2(source.xMax+16,source.yMin),new Vector2(source.xMin-w-16,source.yMin)};float best=float.PositiveInfinity;Vector2 selected=Vector2.zero;
   for(int i=0;i<choices.Length;i++){var point=ClampPosition(choices[i]);var candidate=new Rect(point.x,point.y-h,w,h);float score=Intersection(candidate,source)*100+(source.yMax>root.rect.yMax-140?Intersection(candidate,new Rect(root.rect.xMin,root.rect.yMax-140,root.rect.width,140))*30:0)+(avoidFace?Intersection(candidate,face)*20:0)+Vector2.Distance(point,choices[i])*.2f+i;if(score<best){best=score;selected=point;}}panel.anchoredPosition=selected;
