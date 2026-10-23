@@ -88,7 +88,7 @@ namespace ROM.UI.Sprint01
                 BoundButton(header,"DIARIO","Journal",1185,24,195,58,()=>TogglePanel("Journal",HubPage.Missions));
                 BoundButton(header,"AJUSTES","Settings",1395,24,195,58,()=>TogglePanel("Settings",HubPage.Settings));
                 BoundButton(header,"CERRAR","Pause",1605,24,275,58,()=>ResumeRequested?.Invoke());
-                BuildCompactHeader();content=W.Rect(Design,"Screen",36,150,1848,810);toast=W.Label(Design,"",460,970,1200,36,20,W.Gold);Navigate(HubPage.Settings);Fit();return;
+                BuildCompactHeader();content=W.Rect(Design,"Screen",36,150,1848,810);toast=W.Label(Design,"",460,970,1200,36,20,W.Gold);Navigate(HubPage.Home);Fit();return;
             }
             W.Button(Design,"MENÚ",1640,24,240,58,()=>ToggleHomePanel("Menu"));
             W.Label(Design,"LOCAL",36,1030,180,25,15,W.Muted);
@@ -115,6 +115,7 @@ namespace ROM.UI.Sprint01
             float scale=Mathf.Min(parent.rect.width*safe.width/Screen.width/1920f,parent.rect.height*safe.height/Screen.height/1080f);
             Design.anchorMin=Design.anchorMax=Design.pivot=new Vector2(.5f,.5f);Design.localScale=Vector3.one*scale;
             Design.anchoredPosition=new Vector2((safe.center.x/Screen.width-.5f)*parent.rect.width,(safe.center.y/Screen.height-.5f)*parent.rect.height);
+            if(!InGame&&Stage)Stage.FitMainMenuViewport(540+parent.rect.height/(2*Mathf.Max(.01f,scale)));
         }
         public void SetHint(string message){if(toast)toast.text=message;toastUntil=Time.unscaledTime+4;}
         public void ShowGameSettings(){if(ArsenalPanel)ArsenalPanel.gameObject.SetActive(false);if(content)content.gameObject.SetActive(true);Navigate(HubPage.Settings);}
@@ -138,10 +139,10 @@ namespace ROM.UI.Sprint01
             bool talentPilot=(talentCompositionPilotEnabled||(Application.isEditor&&Environment.GetCommandLineArgs().Contains("-riftTalentPilotReview")))&&InGame&&page==HubPage.Abilities&&abilityTab=="Talents";
             bool skillLayout=InGame&&page==HubPage.Abilities;bool spellLayout=skillLayout&&!talentPilot;
             bool inventoryLayout=InGame&&page==HubPage.Inventory;if(modernMoreMenu)modernMoreMenu.gameObject.SetActive(false);
-            bool achievementLayout=page==HubPage.Progression;
+            bool achievementLayout=page==HubPage.Progression;bool pauseLanding=InGame&&page==HubPage.Home;
             bool compact=InGame&&(page==HubPage.Inventory||page==HubPage.Character||page==HubPage.Missions||page==HubPage.Abilities||achievementLayout);
-            if(fullGameplayHeader)fullGameplayHeader.gameObject.SetActive(!compact);if(compactGameplayHeader)compactGameplayHeader.gameObject.SetActive(compact&&!inventoryLayout&&!achievementLayout&&!skillLayout);if(modernInventoryHeader){modernInventoryHeader.gameObject.SetActive(inventoryLayout);if(inventoryLayout)modernInventoryHeader.SetAsLastSibling();}
-            if(InGame&&fallback){fallback.enabled=!compact;fallback.raycastTarget=false;}
+            if(fullGameplayHeader)fullGameplayHeader.gameObject.SetActive(!compact&&!pauseLanding);if(compactGameplayHeader)compactGameplayHeader.gameObject.SetActive(compact&&!inventoryLayout&&!achievementLayout&&!skillLayout);if(modernInventoryHeader){modernInventoryHeader.gameObject.SetActive(inventoryLayout);if(inventoryLayout)modernInventoryHeader.SetAsLastSibling();}
+            if(InGame&&fallback){fallback.enabled=!compact&&!pauseLanding;fallback.raycastTarget=false;}
             int active=page==HubPage.Home?0:page==HubPage.Loadout?1:page==HubPage.Progression?2:page==HubPage.Marketplace||page==HubPage.Auction||page==HubPage.Exchange?3:page==HubPage.Settings?4:-1;
             for(int i=0;i<nav.Count;i++){var frame=nav[i].targetGraphic as RiftButtonGraphic;if(frame){frame.Active=i==active;frame.SetVerticesDirty();}}
             if(page==HubPage.Home)Home();
@@ -164,6 +165,7 @@ namespace ROM.UI.Sprint01
                     default:W.Label(body,"EL RIFT\nExplorá el destino y defendé las fisuras dimensionales.",20,20,1500,180,28);break;
                 }
             }
+            if(Page==HubPage.Missions||Page==HubPage.Social||Page==HubPage.Settings){RiftPanelChrome.Apply(content);if(InGame){RiftPanelChrome.Apply(fullGameplayHeader);RiftPanelChrome.Apply(compactGameplayHeader);}}
             var first=InGame&&Page==HubPage.Abilities&&abilityTab=="Talents"?content.GetComponentsInChildren<Button>().FirstOrDefault(b=>b.name=="CENTRAR"):content.GetComponentInChildren<Button>();if(first&&EventSystem.current)EventSystem.current.SetSelectedGameObject(first.gameObject);
         }
         static string PageTitle(HubPage page)=>page switch {HubPage.Inventory=>"INVENTARIO",HubPage.Character=>"PERSONAJE",HubPage.Abilities=>"HABILIDADES",HubPage.Loadout=>"EQUIPAMIENTO",HubPage.Missions=>"DIARIO DE MISIONES",HubPage.Progression=>"LOGROS",HubPage.Settings=>"AJUSTES",HubPage.Social=>"AMIGOS Y MENSAJES",HubPage.Exchange=>"INTERCAMBIO",_=>"TIENDA"};
@@ -172,6 +174,7 @@ namespace ROM.UI.Sprint01
         RectTransform Drawer(string name,string title,float x,float width,float height){var r=W.Panel(content,name,x,0,width,height);W.Label(r,title,22,12,width-175,42,26,W.Gold);W.Button(r,"CERRAR",width-150,17,128,38,CloseHomePanel).GetComponentInChildren<Text>().fontSize=18;return r;}
         void Home()
         {
+            if(InGame){ModernPause();return;}
             if(!InGame&&homePanel!="Party"&&homePanel!="Emotes"){ModernHome();return;}
             W.Label(content,Roster.Active.DisplayName,0,620,650,45,30);
             var rules=MultiFPS.Gameplay.RiftClassRules.Load();
@@ -359,30 +362,7 @@ namespace ROM.UI.Sprint01
             W.Label(p,"PRUEBAS LOCALES\nCambiá de perfil para aceptar invitaciones y leer DM enviados en esta PC.\nEstos perfiles no representan usuarios conectados a un servidor.",0,190,1600,150,24,W.Muted);
             W.Button(p,"PERFIL LOCAL: "+Social.Self.Name,0,395,950,64,()=>{if(!(Social is LocalSocialService local)){Notify("Esta función es solo para pruebas locales.");return;}var profiles=local.Profiles.ToArray();if(profiles.Length<2){Notify("Agregá un contacto desde Amigos para probar otro perfil.");return;}profileTestIndex=(Array.FindIndex(profiles,v=>v.Id==Social.Self.Id)+1)%profiles.Length;local.SwitchLocalProfile(profiles[profileTestIndex].Id);ApplyAppearance();});
         }
-        void Friends(Transform body)
-        {
-            W.Label(body,"CONTACTOS",0,0,620,35,22,W.Gold);
-            W.Input(body,"Nombre del contacto local",0,52,480,v=>friendDraft=v);
-            W.Button(body,"AGREGAR",495,52,205,48,()=>{string value=friendDraft;friendDraft="";Notify(Social.AddFriend(value));});
-            W.Button(body,"CHAT DE PARTY",0,125,700,55,()=>{peer="party";Navigate(HubPage.Social);});
-            var contacts=W.ScrollArea(body,"Contacts",0,195,700,325,Social.Friends.Count*70);int y=0;
-            foreach(var friend in Social.Friends){var f=friend;
-                W.Button(contacts,f.Name,0,y,430,55,()=>{peer=f.Id;Navigate(HubPage.Social);});
-                W.Button(contacts,"INVITAR",445,y,255,55,()=>Notify(Social.Invite(f.Id)));y+=70;
-            }
-            y=525;
-            foreach(var invite in Social.Invitations.Take(2)){var i=invite;W.Button(body,"ACEPTAR: "+Social.Find(i.From)?.Name,0,y,700,55,()=>Notify(Social.AcceptInvite(i.From)));y+=65;}
-            W.Label(body,"Los contactos y mensajes se guardan en esta PC.\nNo se envían por internet.",0,590,700,70,19,W.Muted);
-            var console=W.Panel(body,"ChatConsole",750,0,1020,675);
-            W.Label(console,peer=="party"?"PARTY":"DM / "+Social.Find(peer)?.Name,24,12,960,50,26);
-            string transcript=string.Join("\n\n",Social.Conversation(peer).Select(m=>(Social.Find(m.From)?.Name??"Jugador")+": "+m.Text));
-            var history=W.ScrollArea(console,"Messages",24,80,970,450,450,true);
-            var log=W.Label(history,string.IsNullOrEmpty(transcript)?"Todavía no hay mensajes.":transcript,0,0,940,450,23);log.alignment=TextAnchor.UpperLeft;
-            log.rectTransform.sizeDelta=new Vector2(940,Mathf.Max(450,log.preferredHeight+24));history.sizeDelta=log.rectTransform.sizeDelta;
-            var text=W.Input(console,"Escribí un mensaje…",24,560,710,v=>chatDraft=v);text.characterLimit=500;text.text=chatDraft;
-            W.Button(console,"ENVIAR",760,560,235,48,()=>{var message=chatDraft;chatDraft="";Notify(Social.Send(peer,message));});
-            W.Label(console,"Perfil actual: "+Social.Self.Name+" · Cambiar desde Ajustes > Perfil",24,620,970,30,17,W.Muted);
-        }
+        void Friends(Transform body){ModernFriends(body);}
         void Connection()
         {
             if(!RequireWarrior())return;
@@ -390,8 +370,8 @@ namespace ROM.UI.Sprint01
             Dialog("Unirse a El Rift","Ingresá la dirección y el puerto del host.",()=>{
                 ApplyAppearance();ROMLoadingScreen.NextDestination="El Rift";ROMLoadingScreen.Show("Conectando","El Rift");Connector.ConnectBtn.onClick.Invoke();
             });
-            var panel=modal.Find("Dialog");var address=W.Input(panel,"Dirección del host",32,250,820,v=>Connector.Address.text=v);address.text=Connector.Address.text;
-            var port=W.Input(panel,"Puerto",32,320,820,v=>Connector.Port.text=v);port.text=Connector.Port.text;port.contentType=InputField.ContentType.IntegerNumber;
+            var panel=modal.Find("Dialog");var connectionRect=(RectTransform)panel;connectionRect.sizeDelta=new Vector2(760,510);connectionRect.anchoredPosition=new Vector2(580,-285);foreach(var b in panel.GetComponentsInChildren<Button>()){var r=(RectTransform)b.transform;r.anchoredPosition=new Vector2(r.anchoredPosition.x,-420);}var messageText=panel.GetComponentsInChildren<Text>().FirstOrDefault(t=>t.rectTransform.anchoredPosition.y==-96);if(messageText)messageText.rectTransform.sizeDelta=new Vector2(696,72);var address=W.Input(panel,"Dirección del host",32,196,696,v=>Connector.Address.text=v);address.text=Connector.Address.text;
+            var port=W.Input(panel,"Puerto",32,270,696,v=>Connector.Port.text=v);port.text=Connector.Port.text;port.contentType=InputField.ContentType.IntegerNumber;RiftPanelChrome.Apply(panel);
         }
         public void ReturnFromLegacy(){if(LegacyMenu)LegacyMenu.SetActive(false);gameObject.SetActive(true);Navigate(HubPage.Home);}
         Action modalCancel;
@@ -399,9 +379,9 @@ namespace ROM.UI.Sprint01
         {
             modalCancel=cancel;if(modal)DestroyImmediate(modal.gameObject);modal=W.Rect(Design,"Modal",0,0,1920,1080);
             var shade=W.Image(modal,"Blocker",0,0,1920,1080,new Color(0,0,0,.8f));shade.raycastTarget=true;
-            var panel=W.Panel(modal,"Dialog",490,240,940,600);W.Label(panel,title,32,24,876,70,32);W.Label(panel,message,32,115,876,310,24);
-            W.Button(panel,confirm==null?"CERRAR [Esc]":"CANCELAR [Esc]",32,500,410,64,()=>{if(!InGame){StartCoroutine(DeferMainMenuAction(DismissModal));return;}DismissModal();});
-            if(confirm!=null)W.Button(panel,"CONFIRMAR",490,500,418,64,()=>{if(!InGame){ConfirmMainMenuDialog(confirm);return;}DestroyImmediate(modal.gameObject);modalCancel=null;confirm();},true);
+            var panel=W.Panel(modal,"Dialog",580,355,760,370);W.Label(panel,title,32,26,696,54,32);W.Label(panel,message,32,96,696,154,22);RiftPanelChrome.Apply(panel);
+            RiftSkillStyle.Button(panel,confirm==null?"CERRAR [Esc]":"CANCELAR [Esc]",32,280,328,58,()=>{if(!InGame){StartCoroutine(DeferMainMenuAction(DismissModal));return;}DismissModal();});
+            if(confirm!=null)RiftSkillStyle.Button(panel,"CONFIRMAR",384,280,344,58,()=>{if(!InGame){ConfirmMainMenuDialog(confirm);return;}DestroyImmediate(modal.gameObject);modalCancel=null;confirm();},true);
             if(EventSystem.current)EventSystem.current.SetSelectedGameObject(panel.GetComponentInChildren<Button>().gameObject);
         }
         void OnDestroy(){RiftControls.Changed-=RefreshBoundLabels;ROM.Progression.RiftJournalView.Changed-=JournalChanged;CancelBinding();if(Social!=null)Social.Changed-=SocialChanged;}

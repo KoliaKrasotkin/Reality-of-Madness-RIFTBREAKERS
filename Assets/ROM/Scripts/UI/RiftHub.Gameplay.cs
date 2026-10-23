@@ -11,7 +11,7 @@ namespace ROM.UI.Sprint01
         public void ShowSkills(){abilityTab="Skills";ShowGameplayPage(HubPage.Abilities);}
         public void ShowPartyChat(){peer="party";ShowGameplayPage(HubPage.Social);}
         public void ShowTalents(){abilityTab="Talents";ShowGameplayPage(HubPage.Abilities);}
-        public void ShowGameplayPage(HubPage page){requestedGameplayPage=page;if(!content)Build();if(ArsenalPanel)ArsenalPanel.gameObject.SetActive(false);content.gameObject.SetActive(true);Navigate(page);}
+        public void ShowGameplayPage(HubPage page){if(page==HubPage.Character)page=HubPage.Inventory;requestedGameplayPage=page;if(!content)Build();if(ArsenalPanel)ArsenalPanel.gameObject.SetActive(false);content.gameObject.SetActive(true);Navigate(page);}
         void BuildSkillNavigation(RectTransform panel,bool talents){
             float width=panel.rect.width;float tab=(width-136)/4;
             string[] titles={"PERSONAJE","INVENTARIO","TALENTOS","HABILIDADES"};
