@@ -130,6 +130,14 @@ namespace MultiFPS.Gameplay.RiftCombat
             if(!floor){if(!falling){falling=true;fallPeak=transform.position.y;}fallPeak=Mathf.Max(fallPeak,transform.position.y);}
             else if(falling){float distance=fallPeak-transform.position.y;falling=false;if(distance>5.5f)actor.Health.Server_ChangeHealthStateRaw(Mathf.RoundToInt(distance*distance*.5f),0,AttackType.falldamage,actor.Health,0);}
         }
+        public bool PresentAutoAttack(AbilityDefinition ability)
+        {
+            if(!PresentAttack(0,ability))return false;
+            // Auto swings have their own server timer, not an AbilityController.Casting slot.
+            // Let the Animator finish Attack0 rather than cancelling it as an interrupted cast.
+            activeAttackSlot=-1;
+            return true;
+        }
         public bool PresentAttack(int slot,AbilityDefinition ability)
         {
             if(!Animator||!ability||!CanUseWeapon)return false;

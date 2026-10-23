@@ -152,7 +152,16 @@ public static class WarriorActionRigSetup
         }
         if (avatar.PresentAttack(-1, abilities[0]) || avatar.PresentAttack(99, abilities[0]))
             throw new InvalidOperationException("PresentAttack accepted an invalid state.");
-        return $"PASS WarriorAvatar.PresentAttack routes all {abilities.Length} configured actions to their own Animator state without procedural bone overrides.";
+        if (!avatar.PresentAutoAttack(abilities[0]))
+            throw new InvalidOperationException("Autoattack presentation was rejected.");
+        var activeSlot = typeof(WarriorAvatar).GetField("activeAttackSlot",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        if (activeSlot == null || (int)activeSlot.GetValue(avatar) != -1)
+            throw new InvalidOperationException("Autoattack must not be cancelled by the ability cast-slot check.");
+        animator.Update(.2f);
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack0"))
+            throw new InvalidOperationException("Autoattack did not reach Attack0.");
+        return $"PASS WarriorAvatar.PresentAttack routes all {abilities.Length} configured actions to their own Animator state without procedural bone overrides. Autoattack uses Attack0 independently of the ability cast slot.";
     }
 
     private static string ValidateTransitions(WeaponIKController controller)
