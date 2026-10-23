@@ -46,6 +46,14 @@ namespace ROM.UI.Sprint01
         string homePanel="";
         float toastUntil;
         Text emoteStatus;
+        // Managed service references are lost on a script reload, while Start
+        // does not run again for an already active hub.
+        void OnEnable()
+        {
+            if(!Application.isPlaying)return;
+            if(Design)Initialize();
+            if(InGame&&content)Navigate(HubPage.Home);
+        }
         public void Initialize()
         {
             if(Application.isPlaying){RiftInputUI.Ensure();ROM.Progression.RiftJournalView.Changed-=JournalChanged;ROM.Progression.RiftJournalView.Changed+=JournalChanged;}

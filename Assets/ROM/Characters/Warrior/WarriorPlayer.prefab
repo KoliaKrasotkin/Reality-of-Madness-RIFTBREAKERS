@@ -1940,6 +1940,7 @@ Transform:
   - {fileID: 1592207410936790316}
   - {fileID: 2080685027088382297}
   - {fileID: 6526606377920744126}
+  - {fileID: 5843686349227991158}
   m_Father: {fileID: 6347616915899764530}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2954703235310137054
@@ -2220,6 +2221,37 @@ Transform:
   m_Children:
   - {fileID: 2168893508363977154}
   m_Father: {fileID: 3814767826805513699}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3602368253248549828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5843686349227991158}
+  m_Layer: 0
+  m_Name: Weapon Back Socket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5843686349227991158
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3602368253248549828}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.066709846, y: -0.75575346, z: -0.42004186, w: -0.4979472}
+  m_LocalPosition: {x: -0.42604107, y: 0.27008238, z: 0.25468183}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8408684815971744050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3727348392795204187
 GameObject:
@@ -2621,12 +2653,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'pinky_03_l'\n\tTransform 'ring_03_r'\n\tTransform
-    'ring_01_r'\n\tTransform 'index_01_l'\n\tTransform 'index_03_l'\n\tTransform
-    'index_03_r'\n\tTransform 'index_01_r'\n\tTransform 'hand_r'\n\tTransform 'ring_02_r'\n\tTransform
-    'middle_02_l'\n\tand more ..."
+  m_WarningMessage:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -3494,6 +3521,10 @@ MonoBehaviour:
     rightHand: {fileID: 3060755212526536559}
     leftTarget: {fileID: 6047018946368895887}
     rightTarget: {fileID: 4949424592172042080}
+    backSocket: {fileID: 5843686349227991158}
+    carryPoseCalibrated: 1
+    carryContact: {x: 0, y: 0, z: -0.55}
+    carryRotation: {x: -0.22088744, y: -0.12573509, z: 0.40064403, w: 0.880275}
     leftPalmOffset: {x: -0.1304133, y: -0.005200385, z: 0.014407634}
     rightPalmOffset: {x: 0.13041301, y: 0.0052004526, z: -0.014407485}
     leftGripAxis: {x: -0.24267071, y: -0.24289288, z: -0.9392092}
@@ -3564,6 +3595,8 @@ MonoBehaviour:
     - {x: -0.051049285, y: -0.0383851, z: 0.5546897, w: -0.82960224}
     - {x: -0.02828555, y: -0.0006209351, z: 0.5313617, w: -0.84667253}
     fingerWeight: 1
+    rightHandFollow: 0
+    backWeight: 0
 --- !u!1 &5911601626976761359
 GameObject:
   m_ObjectHideFlags: 0
@@ -4353,6 +4386,13 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  RollAnimation: {fileID: 7400000, guid: 6c53184d9a4fe38429cf4aac4a3979d2, type: 3}
+  UnarmedRollAnimation: {fileID: 7400000, guid: d05e1e87bea596f49b01fedb8c7da04c,
+    type: 3}
+  RollPlaybackSpeed: 1
+  RollExitNormalizedTime: 0.85
+  RollTravelMultiplier: 1.2
+  RollRecovery: 0.05
   Animator: {fileID: 1131495828200463829}
   EquippedWeapon: {fileID: 4645444090098975947}
   Weapon: {fileID: 11400000, guid: 7a07ada057d70da4596ab67ccc268bcb, type: 2}
@@ -4362,6 +4402,7 @@ MonoBehaviour:
   Braking: 30
   Gravity: 23
   JumpHeight: 1.2
+  weaponDrawn: 1
 --- !u!114 &4171858580896260143
 MonoBehaviour:
   m_ObjectHideFlags: 0

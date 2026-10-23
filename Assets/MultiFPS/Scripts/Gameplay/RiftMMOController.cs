@@ -64,6 +64,8 @@ namespace MultiFPS.Gameplay
             if(!Dragging&&actor.Input.Movement.sqrMagnitude>.01f)CameraYaw=Mathf.LerpAngle(CameraYaw,actor.Input.LookY,Time.deltaTime*3);
             actor.Input.LookX=CameraPitch;actor.Input.LookY=Mathf.Repeat(actor.Input.LookY+180,360)-180;CameraYaw=Mathf.Repeat(CameraYaw+180,360)-180;
             if(RiftControls.Pressed("Jump")){var native=actor.GetComponent<WarriorAvatar>();if(native)native.RequestJump();else{var motor=actor.GetComponent<CharacterMotor>();if(motor)motor.Jump();}}
+            var rollingWarrior=actor.GetComponent<WarriorAvatar>();
+            if(rollingWarrior){if(RiftControls.Pressed("Roll"))rollingWarrior.RequestRoll();if(rollingWarrior.IsRolling)actor.Input.LookY=rollingWarrior.RollFacing;}
             if(!ui){if(RiftControls.Pressed("ZoomIn"))CameraDistance=Mathf.Clamp(CameraDistance-.8f,2,14);if(RiftControls.Pressed("ZoomOut"))CameraDistance=Mathf.Clamp(CameraDistance+.8f,2,14);}
             if(RiftControls.Pressed("NextTarget"))Cycle(1);if(RiftControls.Pressed("PreviousTarget"))Cycle(-1);if(RiftControls.Pressed("SelfTarget"))Select(actor.Health);
             if(RiftControls.Pressed("ClearTarget")&&(HasSelection||AutoAttack)){Select(null);RiftControls.EscapeConsumedFrame=Time.frameCount;}

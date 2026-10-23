@@ -10,6 +10,10 @@ using UnityEngine.Animations.Rigging;
 public struct AnimatedWeaponGripData : IAnimationJobData
 {
     public Transform weapon, leftHand, rightHand, leftTarget, rightTarget;
+    public Transform backSocket;
+    public bool carryPoseCalibrated;
+    public Vector3 carryContact;
+    public Quaternion carryRotation;
     public Vector3 leftPalmOffset, rightPalmOffset;
     public Vector3 leftGripAxis, rightGripAxis;
     public Vector3 rightContact;
@@ -17,17 +21,25 @@ public struct AnimatedWeaponGripData : IAnimationJobData
     public Transform[] fingers;
     public Quaternion[] fingerRotations;
     [SyncSceneToStream, Range(0f, 1f)] public float fingerWeight;
+    [SyncSceneToStream, Range(0f, 1f)] public float rightHandFollow;
+    [SyncSceneToStream, Range(0f, 1f)] public float backWeight;
 
     public bool IsValid() => weapon && leftHand && rightHand && leftTarget && rightTarget;
     public void SetDefaultValues()
     {
         weapon = leftHand = rightHand = leftTarget = rightTarget = null;
+        backSocket = null;
+        carryPoseCalibrated = false;
+        carryContact = Vector3.zero;
+        carryRotation = Quaternion.identity;
         leftPalmOffset = rightPalmOffset = Vector3.zero;
         leftGripAxis = rightGripAxis = Vector3.up;
         rightContact = new Vector3(0f, 0f, -0.08f);
         minimumSpacing = 0.16f;
         maximumSpacing = 0.5f;
         fingerWeight = 1f;
+        rightHandFollow = 0f;
+        backWeight = 0f;
         fingers = Array.Empty<Transform>();
         fingerRotations = Array.Empty<Quaternion>();
     }
@@ -36,13 +48,17 @@ public struct AnimatedWeaponGripData : IAnimationJobData
 public struct AnimatedWeaponGripJob : IWeightedAnimationJob
 {
     public ReadOnlyTransformHandle leftHand, rightHand;
+    public ReadOnlyTransformHandle backSocket;
+    public bool hasBackSocket;
     public ReadOnlyTransformHandle leftUpperArm, leftLowerArm, rightUpperArm, rightLowerArm;
     public ReadWriteTransformHandle weapon, leftTarget, rightTarget;
-    public Vector3 leftPalmOffset, rightPalmOffset, leftGripAxis, rightGripAxis, rightContact;
+    public Vector3 leftPalmOffset, rightPalmOffset, leftGripAxis, rightGripAxis, rightContact, carryContact;
     public float minimumSpacing, maximumSpacing, scale;
     public NativeArray<ReadWriteTransformHandle> fingers;
     public NativeArray<Quaternion> fingerRotations;
-    public FloatProperty fingerWeight;
+    public NativeArray<byte> rightFingers;
+    public FloatProperty fingerWeight, rightHandFollow, backWeight;
+    public Quaternion rightHandWeaponRotation;
     public FloatProperty jobWeight { get; set; }
 
     public void ProcessRootMotion(AnimationStream stream) { }
@@ -51,10 +67,19 @@ public struct AnimatedWeaponGripJob : IWeightedAnimationJob
     {
         float weight = jobWeight.Get(stream);
         if (weight <= 0f) return;
+        float stored = hasBackSocket ? backWeight.Get(stream) : 0f;
+        if (stored >= 1f)
+        {
+            weapon.SetGlobalTR(stream, Vector3.Lerp(weapon.GetPosition(stream), backSocket.GetPosition(stream), weight),
+                Quaternion.Slerp(weapon.GetRotation(stream), backSocket.GetRotation(stream), weight));
+            return;
+        }
         Quaternion leftRotation = leftHand.GetRotation(stream);
         Quaternion rightRotation = rightHand.GetRotation(stream);
+        Quaternion carryRotation = rightRotation * rightHandWeaponRotation;
         Vector3 leftPalm = leftHand.GetPosition(stream) + leftRotation * (leftPalmOffset * scale);
         Vector3 rightPalm = rightHand.GetPosition(stream) + rightRotation * (rightPalmOffset * scale);
+        Vector3 carryPosition = rightPalm - carryRotation * (carryContact * scale);
         Vector3 between = rightPalm - leftPalm;
         float distance = between.magnitude;
         if (distance < 0.001f) return;
@@ -91,13 +116,20 @@ public struct AnimatedWeaponGripJob : IWeightedAnimationJob
             if ((correction - previous).sqrMagnitude < 0.0000000001f) break;
         }
         weapon.SetPosition(stream, weapon.GetPosition(stream) + correction * weight);
+        float follow = rightHandFollow.Get(stream);
+        weapon.SetGlobalTR(stream, Vector3.Lerp(weapon.GetPosition(stream), carryPosition, follow * weight),
+            Quaternion.Slerp(weapon.GetRotation(stream), carryRotation, follow * weight));
+        if (stored > 0f)
+            weapon.SetGlobalTR(stream, Vector3.Lerp(weapon.GetPosition(stream), backSocket.GetPosition(stream), stored * weight),
+                Quaternion.Slerp(weapon.GetRotation(stream), backSocket.GetRotation(stream), stored * weight));
         leftTarget.SetGlobalTR(stream, leftWrist + correction, leftRotation);
         rightTarget.SetGlobalTR(stream, rightWrist + correction, rightRotation);
-        float curl = fingerWeight.Get(stream) * weight;
+        float curl = fingerWeight.Get(stream) * weight * (1f - stored);
         for (int i = 0; i < fingers.Length; i++)
         {
             var finger = fingers[i];
-            finger.SetLocalRotation(stream, Quaternion.Slerp(finger.GetLocalRotation(stream), fingerRotations[i], curl));
+            float fingerCurl = curl * (rightFingers[i] != 0 ? 1f : 1f - follow);
+            finger.SetLocalRotation(stream, Quaternion.Slerp(finger.GetLocalRotation(stream), fingerRotations[i], fingerCurl));
             fingers[i] = finger;
         }
     }
@@ -129,6 +161,7 @@ public class AnimatedWeaponGripBinder : AnimationJobBinder<AnimatedWeaponGripJob
         {
             leftHand = ReadOnlyTransformHandle.Bind(animator, data.leftHand),
             rightHand = ReadOnlyTransformHandle.Bind(animator, data.rightHand),
+            hasBackSocket = data.backSocket != null,
             leftUpperArm = ReadOnlyTransformHandle.Bind(animator, animator.GetBoneTransform(HumanBodyBones.LeftUpperArm)),
             leftLowerArm = ReadOnlyTransformHandle.Bind(animator, animator.GetBoneTransform(HumanBodyBones.LeftLowerArm)),
             rightUpperArm = ReadOnlyTransformHandle.Bind(animator, animator.GetBoneTransform(HumanBodyBones.RightUpperArm)),
@@ -139,15 +172,22 @@ public class AnimatedWeaponGripBinder : AnimationJobBinder<AnimatedWeaponGripJob
             leftPalmOffset = data.leftPalmOffset, rightPalmOffset = data.rightPalmOffset,
             leftGripAxis = data.leftGripAxis, rightGripAxis = data.rightGripAxis,
             rightContact = data.rightContact, minimumSpacing = data.minimumSpacing, maximumSpacing = data.maximumSpacing,
+            carryContact = data.carryPoseCalibrated ? data.carryContact : data.rightContact,
             scale = Mathf.Abs(data.weapon.lossyScale.x),
             fingerWeight = FloatProperty.Bind(animator, component, ConstraintsUtils.ConstructConstraintDataPropertyName(nameof(data.fingerWeight))),
+            rightHandFollow = FloatProperty.Bind(animator, component, ConstraintsUtils.ConstructConstraintDataPropertyName(nameof(data.rightHandFollow))),
+            backWeight = FloatProperty.Bind(animator, component, ConstraintsUtils.ConstructConstraintDataPropertyName(nameof(data.backWeight))),
+            rightHandWeaponRotation = data.carryPoseCalibrated ? data.carryRotation : Quaternion.Inverse(data.rightHand.rotation) * data.weapon.rotation,
             fingers = new NativeArray<ReadWriteTransformHandle>(count, Allocator.Persistent),
+            rightFingers = new NativeArray<byte>(count, Allocator.Persistent),
             fingerRotations = new NativeArray<Quaternion>(count, Allocator.Persistent)
         };
+        if (data.backSocket) job.backSocket = ReadOnlyTransformHandle.Bind(animator, data.backSocket);
         for (int i = 0; i < count; i++)
         {
             job.fingers[i] = ReadWriteTransformHandle.Bind(animator, data.fingers[i]);
             job.fingerRotations[i] = data.fingerRotations[i];
+            job.rightFingers[i] = (byte)(data.fingers[i].IsChildOf(data.rightHand) ? 1 : 0);
         }
         return job;
     }
@@ -156,6 +196,7 @@ public class AnimatedWeaponGripBinder : AnimationJobBinder<AnimatedWeaponGripJob
     {
         if (job.fingers.IsCreated) job.fingers.Dispose();
         if (job.fingerRotations.IsCreated) job.fingerRotations.Dispose();
+        if (job.rightFingers.IsCreated) job.rightFingers.Dispose();
     }
 }
 

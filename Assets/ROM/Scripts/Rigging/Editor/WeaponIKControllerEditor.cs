@@ -12,7 +12,9 @@ public class WeaponIKControllerEditor : Editor
     private static readonly string[] ClipNames =
         { "Idle", "Run-Forward", "Run-Backward", "Run-Left", "Run-Right",
           "Attack1", "Attack2", "Attack3", "Attack4", "Attack5", "Attack6", "Attack7", "Attack8", "Attack9",
-          "Jump", "Fall", "Land" };
+          "Jump", "Fall", "Land", "DiveRoll-Forward1", "Sheath-Back-Unarmed", "Unsheath-Back-Unarmed",
+          "Unarmed/Idle", "Unarmed/Run-Forward", "Unarmed/Run-Backward", "Unarmed/Run-Left", "Unarmed/Run-Right",
+          "Unarmed/Jump", "Unarmed/Fall", "Unarmed/DiveRoll-Forward1" };
     private const int SampleIntervals = 60;
 
     private Animator animator;
@@ -23,6 +25,16 @@ public class WeaponIKControllerEditor : Editor
     private float previewTime;
     private PlayableGraph previewGraph;
     private AnimationClipPlayable clipPlayable;
+    private AnimationClipPlayable presentationPlayable;
+    private AnimationClip presentationClip;
+    private UnityEngine.Animations.Rigging.Rig[] previewRigs;
+    private float[] previewRigWeights;
+    private TwoBoneIKConstraint[] previewArms;
+    private float[] previewArmWeights;
+    private Renderer[] previewRenderers;
+    private bool[] previewRendererEnabled;
+    private float previewHandFollow;
+    private float previewBackWeight;
     private bool previewActive;
     private string validationReport;
     private bool showValidation;
@@ -99,7 +111,8 @@ public class WeaponIKControllerEditor : Editor
 
     private AnimationClip FindClip(string name) => animator.runtimeAnimatorController == null
         ? null
-        : Array.Find(animator.runtimeAnimatorController.animationClips, clip => clip.name == "2Hand-Sword-" + name);
+        : Array.Find(animator.runtimeAnimatorController.animationClips, clip => clip.name ==
+            (name.StartsWith("Unarmed/") ? name.Replace("Unarmed/", "Unarmed-") : "2Hand-Sword-" + name));
 
     private void SelectClip(AnimationClip clip)
     {
@@ -112,6 +125,14 @@ public class WeaponIKControllerEditor : Editor
     {
         if (Application.isPlaying || animator == null || rigBuilder == null || previewClip == null) return;
         StopPreview();
+        previewRigs = animator.GetComponentsInChildren<UnityEngine.Animations.Rigging.Rig>(true);
+        previewRigWeights = Array.ConvertAll(previewRigs, rig => rig.weight);
+        previewArms = animator.GetComponentsInChildren<TwoBoneIKConstraint>(true);
+        previewArmWeights = Array.ConvertAll(previewArms, arm => arm.weight);
+        previewRenderers = animator.GetComponentsInChildren<Renderer>(true);
+        previewRendererEnabled = Array.ConvertAll(previewRenderers, renderer => renderer.enabled);
+        previewHandFollow = gripConstraint.data.rightHandFollow;
+        previewBackWeight = gripConstraint.data.backWeight;
         Transform[] transforms = animator.GetComponentsInChildren<Transform>(true);
         previewPose = new PoseSnapshot[transforms.Length];
         for (int i = 0; i < transforms.Length; i++)
@@ -130,8 +151,23 @@ public class WeaponIKControllerEditor : Editor
             previewGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
             clipPlayable = AnimationClipPlayable.Create(previewGraph, previewClip);
             clipPlayable.SetApplyFootIK(false);
+            string presentationName = previewClip.name.StartsWith("Unarmed-") ? "WeaponHolstered"
+                : previewClip.name.Contains("Unsheath-") ? "WeaponDrawing"
+                : previewClip.name.Contains("Sheath-") ? "WeaponSheathing" : "WeaponDrawn";
+            presentationClip = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/ROM/Animation/WarriorWeaponStates/" + presentationName + ".anim");
+            Playable source = clipPlayable;
+            if (presentationClip != null)
+            {
+                presentationPlayable = AnimationClipPlayable.Create(previewGraph, presentationClip);
+                var mixer = AnimationLayerMixerPlayable.Create(previewGraph, 2);
+                previewGraph.Connect(clipPlayable, 0, mixer, 0);
+                previewGraph.Connect(presentationPlayable, 0, mixer, 1);
+                mixer.SetInputWeight(0, 1);
+                mixer.SetInputWeight(1, 1);
+                source = mixer;
+            }
             var output = AnimationPlayableOutput.Create(previewGraph, "Animation", animator);
-            output.SetSourcePlayable(rigBuilder.BuildPreviewGraph(previewGraph, clipPlayable));
+            output.SetSourcePlayable(rigBuilder.BuildPreviewGraph(previewGraph, source));
             previewGraph.Play();
             previewActive = true;
             SamplePreview();
@@ -147,6 +183,7 @@ public class WeaponIKControllerEditor : Editor
     {
         if (!previewActive || !previewGraph.IsValid()) return;
         clipPlayable.SetTime(previewTime);
+        if (presentationPlayable.IsValid()) presentationPlayable.SetTime(Mathf.Min(previewTime, presentationClip.length));
         rigBuilder.UpdatePreviewGraph(previewGraph);
         previewGraph.Evaluate(0f);
         SceneView.RepaintAll();
@@ -158,6 +195,24 @@ public class WeaponIKControllerEditor : Editor
         previewActive = false;
         if (previewGraph.IsValid()) previewGraph.Destroy();
         if (hadPreview && rigBuilder != null) rigBuilder.StopPreview();
+        if (previewRigs != null)
+        {
+            for (int i = 0; i < previewRigs.Length; i++) if (previewRigs[i]) previewRigs[i].weight = previewRigWeights[i];
+            if (gripConstraint)
+            {
+                var data = gripConstraint.data;
+                data.rightHandFollow = previewHandFollow;
+                data.backWeight = previewBackWeight;
+                gripConstraint.data = data;
+            }
+        }
+        if (previewRenderers != null)
+            for (int i = 0; i < previewRenderers.Length; i++) if (previewRenderers[i]) previewRenderers[i].enabled = previewRendererEnabled[i];
+        if (previewArms != null)
+            for (int i = 0; i < previewArms.Length; i++) if (previewArms[i]) previewArms[i].weight = previewArmWeights[i];
+        previewRigs = null;
+        previewRenderers = null;
+        previewArms = null;
         if (previewPose == null) return;
         foreach (var pose in previewPose)
         {
@@ -186,6 +241,7 @@ public class WeaponIKControllerEditor : Editor
         {
             foreach (string name in ClipNames)
             {
+                if (name.StartsWith("Unarmed/") || name.Contains("Sheath-") || name.Contains("Unsheath-")) continue;
                 previewClip = FindClip(name);
                 if (previewClip == null)
                 {

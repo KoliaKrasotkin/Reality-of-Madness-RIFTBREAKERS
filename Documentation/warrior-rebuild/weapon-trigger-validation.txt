@@ -1,0 +1,6 @@
+PASS Ignore Raycast blocks the Warrior collider in the project collision matrix (original cause).
+PASS Awake repairs the portal layer to trigger; collision matrix allows the actual Warrior CharacterController.
+PASS Holster trigger sets WarriorAvatar.WeaponDrawn and the prefab Animator WeaponDrawn to false.
+PASS Duplicate entry ignored.
+PASS Draw trigger sets both states to true.
+Client authority path reviewed: owning client forwards to the existing Command; remote replicas ignored; server ignores duplicate requests.
