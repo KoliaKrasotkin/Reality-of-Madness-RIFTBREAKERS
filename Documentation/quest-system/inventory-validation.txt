@@ -15,6 +15,9 @@ PASS Selecting major potion shows its own healing value
 PASS Pool supplies a real native enemy
 PASS Retired enemy is reused and network-spawned again
 PASS Reused enemy resets health, death state and collider
+PASS Legacy killfeed accepts wildlife team outside the player palette without throwing
 PASS Reused enemy can die normally
 PASS Dead enemy can be reset and reused
 PASS Reused enemy re-registers its new network identity in the damage registry
+PASS Wildlife kill does not disconnect local client
+PASS Gameplay HUD remains visible after wildlife kill and menu close

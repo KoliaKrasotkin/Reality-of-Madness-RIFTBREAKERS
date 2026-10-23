@@ -19,12 +19,12 @@ namespace ROM.UI
     /// Se abre sola en cada carga de Mirror (NetworkManager.loadingSceneAsync),
     /// incluida la vuelta al menú, y el menú la abre apenas se aprieta "jugar".
     /// </summary>
-    public class ROMLoadingScreen : MonoBehaviour
+    public partial class ROMLoadingScreen : MonoBehaviour
     {
         const float FadeInSeconds = 0.35f;
         const float FadeOutSeconds = 0.7f;
-        const float MinVisibleSeconds = 1.6f;
-        const float SettleSeconds = 0.6f;
+        const float MinVisibleSeconds = 0f;
+        const float SettleSeconds = 0f;
         const float TimeoutSeconds = 15f;
 
         [SerializeField] CanvasGroup _group;
@@ -94,6 +94,7 @@ namespace ROM.UI
             }
             DontDestroyOnLoad(gameObject);
 
+            BuildModernPresentation();
             _barWidth = _bar ? _bar.sizeDelta.x : 0f;
             SetVisible(0f);
 
@@ -126,6 +127,7 @@ namespace ROM.UI
                     _tip.text = _tips[Random.Range(0, _tips.Length)];
             }
 
+            transitionTimedOut = false;
             _active = true;
             _sceneChangedAt = -1f;
 
@@ -151,15 +153,15 @@ namespace ROM.UI
             {
                 float target = loading
                     ? Mathf.Clamp01(operation.progress / 0.9f)
-                    : _sceneChangedAt >= 0f ? 1f : 0.15f + 0.35f * Mathf.Clamp01((now - _shownAt) / 4f); //esperando que arranque la carga
+                    : _sceneChangedAt >= 0f ? 1f : 0f; // No measured progress exists before Unity starts the operation.
 
                 _shownProgress = Mathf.MoveTowards(_shownProgress, Mathf.Max(_shownProgress, target), Time.unscaledDeltaTime * 1.5f);
 
                 bool settled = !loading && _sceneChangedAt >= 0f && now - _sceneChangedAt >= SettleSeconds && now - _shownAt >= MinVisibleSeconds;
                 bool timedOut = !loading && _sceneChangedAt < 0f && now - _shownAt >= TimeoutSeconds;
 
-                if (settled || timedOut)
-                    _active = false;
+                if (settled) _active = false;
+                if (timedOut) transitionTimedOut = true;
             }
 
             SetVisible(Mathf.MoveTowards(_group.alpha, _active ? 1f : 0f,
@@ -175,8 +177,7 @@ namespace ROM.UI
                 _bar.sizeDelta = size;
             }
 
-            if (_percent)
-                _percent.text = $"{Mathf.RoundToInt(_shownProgress * 100f)}%";
+            UpdateModernStatus(loading);
 
             if (_spinner)
                 _spinner.Rotate(0f, 0f, -_spinnerSpeed * Time.unscaledDeltaTime);
@@ -189,7 +190,7 @@ namespace ROM.UI
 
             _group.alpha = alpha;
             _group.blocksRaycasts = alpha > 0.5f;
-            _group.interactable = false;
+            _group.interactable = transitionTimedOut;
         }
     }
 }

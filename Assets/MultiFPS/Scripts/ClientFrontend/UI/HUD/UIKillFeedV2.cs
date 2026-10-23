@@ -37,12 +37,15 @@ namespace MultiFPS.UI.HUD {
             _scaler.localScale = new Vector3(Size, Size, Size);
         }
 
+        Gamemode observed;
         void OnGamemodeSet(Gamemode gamamemode)
         {
-            GameManager.Gamemode.Client_PlayerKilledByPlayer += Killfeed;
+            if(observed)observed.Client_PlayerKilledByPlayer-=Killfeed;
+            observed=gamamemode;if(observed)observed.Client_PlayerKilledByPlayer+=Killfeed;
         }
         void Killfeed(Health victimID, CharacterPart hittedPart, AttackType attackType, Health killerID, Health assist)
         {
+            if(!isActiveAndEnabled||_elements.Count==0)return;
             _verticalLayoutGroup.enabled = false;
 
             if (_currentElementIDtoUse >= _elements.Count) _currentElementIDtoUse = 0;
@@ -64,6 +67,7 @@ namespace MultiFPS.UI.HUD {
         private void OnDisable()
         {
             GameManager.GameEvent_OnGamemodeSet -= OnGamemodeSet;
+            if(observed)observed.Client_PlayerKilledByPlayer-=Killfeed;observed=null;
         }
     }
 }

@@ -32,17 +32,17 @@ namespace ROM.UI.Sprint01
             float e=pressed?emphasis*.7f:emphasis;
             var bronze=new Color(.49f,.40f,.34f,fade);
             var silver=new Color(.77f,.69f,.59f,.8f*fade);
-            var ember=new Color(1,.055f,.15f,fade);
+            var ember=new Color(.9f,.69f,.36f,fade);
             var edge=Color.Lerp(bronze,ember,e);
             var points=Outline(r,cut,0);
-            Fill(vh,points,new Color(.008f+.095f*e,.007f,.011f+.012f*e,.98f*fade),new Color(.025f+.18f*e,.015f,.021f,.98f*fade));
-            // Broad translucent passes emulate the red halo without a texture or bloom requirement.
-            if(e>.01f)for(int j=4;j>=1;j--)Stroke(vh,points,j*2+1,new Color(1,.015f,.08f,.025f*e));
+            Fill(vh,points,new Color(.025f+.025f*e,.023f+.017f*e,.02f+.01f*e,.98f*fade),new Color(.06f+.045f*e,.05f+.025f*e,.035f+.01f*e,.98f*fade));
+            // Broad translucent passes emulate the amber edge glow without a texture or bloom requirement.
+            if(e>.01f)for(int j=4;j>=1;j--)Stroke(vh,points,j*2+1,new Color(.8f,.52f,.22f,.012f*e));
             Stroke(vh,points,1.25f,edge);
-            var bevel=Outline(r,cut,3);Stroke(vh,bevel,.8f,Color.Lerp(new Color(.19f,.15f,.14f,fade),new Color(.95f,.23f,.26f,fade),e));
+            var bevel=Outline(r,cut,3);Stroke(vh,bevel,.8f,Color.Lerp(new Color(.19f,.15f,.14f,fade),new Color(.76f,.56f,.29f,fade),e));
             var inner=Outline(r,cut,6);Stroke(vh,inner,.7f,new Color(.39f,.30f,.25f,.65f*fade));
             // A lit upper lip and dark lower lip give the frame its metal thickness.
-            Line(vh,points[0]+Vector2.down*1.5f,points[1]+Vector2.down*1.5f,.7f,Color.Lerp(silver,new Color(1,.67f,.62f,fade),e));
+            Line(vh,points[0]+Vector2.down*1.5f,points[1]+Vector2.down*1.5f,.7f,Color.Lerp(silver,new Color(1,.86f,.61f,fade),e));
             Line(vh,points[3]+Vector2.up*2,points[4]+Vector2.up*2,1.7f,new Color(0,0,0,.8f*fade));
             float cy=r.center.y,cx=r.center.x;
             float jewel=Mathf.Min(5,r.height*.08f);

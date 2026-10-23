@@ -26,6 +26,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
  public override void OnStartLocalPlayer(){}
  [Command]public void CmdSelect(int specialization){ServerSelect(specialization);}
  [Server]public bool ServerSelect(int specialization){
+  if(!Player.BOT&&specialization<0)return false;
   if(Player.BOT||!Class||specialization < -1||specialization>=Class.Specializations.Length||NetworkTime.time<nextSelect)return false;
   if(Actor&&(Actor.Health.CurrentHealth<=0||!GameManager.Gamemode.IsProtectedPosition(Actor.transform.position)))return false;
   if(specialization>=0&&!Species.AllowsSkin(Player.PlayerInfo.CharacterSkinID))return false;
@@ -34,13 +35,16 @@ public sealed partial class AbilityController:NetworkBehaviour {
  }
  void Configure(){if(!Actor||!Specialization)return;Resource=0;Actor.Health.ServerSetVitals(ProgressionHealth(Specialization.Health),ProgressionHealth(Specialization.Health));configured=Actor;}
  public AbilityDefinition Definition(int slot)=>Class?(slot==0?Class.BasicAttack:slot>0&&slot<=Class.Abilities.Length?Class.Abilities[slot-1]:null):null;
+ public int AbilityIndex(string id){if(string.IsNullOrEmpty(id)||!Class)return 0;for(int i=0;i<Class.Abilities.Length;i++)if(Class.Abilities[i]&&Class.Abilities[i].Id==id)return i+1;return 0;}
+ public bool IsAbilityLearned(int id){var a=Definition(id);return Prototype&&id>0&&a&&a.Implemented&&Specialization&&a.Allows(Specialization.Id);}
+ [Command]public void CmdUseAbility(string abilityId){int id=AbilityIndex(abilityId);if(id>0)ServerUse(id);}
  [Command]public void CmdUse(int slot){if(slot>0)ServerUse(slot);}
  [SyncVar]public double PortalReady;
  [Command]public void CmdPortal(int id){ServerPortal(id);}
  [Server]public bool ServerPortal(int id){if(!Actor||Actor.Health.CurrentHealth<=0||NetworkTime.time<PortalReady||Casting>=0)return false;foreach(var portal in RiftPortal.All)if(portal&&portal.Definition&&portal.Definition.Id==id&&portal.Destination&&Vector3.Distance(Actor.transform.position,portal.transform.position)<=portal.Definition.InteractRange){PortalReady=NetworkTime.time+portal.Definition.Cooldown;Actor.ServerTeleport(portal.Destination.position,portal.Destination.eulerAngles.y);return true;}return false;}
  [Server]public bool ServerUse(int slot){
   var ability=Definition(slot);double now=NetworkTime.time;
-  if(!Prototype||!Actor||Actor.Health.CurrentHealth<=0||!ability||!ability.Implemented||!ability.Allows(Specialization.Id)||slot<0||slot>=Ready.Count||now<CastEnd||now<GlobalReady||now<Ready[slot]||Resource<ability.Cost||!GameManager.Gamemode.CanUseClassAbilities(Actor.transform.position))return false;
+  if(!IsAbilityLearned(slot)||!Actor||Actor.Health.CurrentHealth<=0||slot<0||slot>=Ready.Count||now<CastEnd||now<GlobalReady||now<Ready[slot]||Resource<ability.Cost||!GameManager.Gamemode.CanUseClassAbilities(Actor.transform.position))return false;
   if(slot==0){var target=CombatTarget;if(!target||target==Actor.Health||target.Team==Actor.Health.Team||target.CurrentHealth<=0)return false;var delta=target.transform.position-Actor.transform.position;delta.y=0;var forward=Quaternion.Euler(0,Actor.Input.LookY,0)*Vector3.forward;if(delta.magnitude>ability.Radius||Vector3.Angle(forward,delta)>ability.Arc*.5f||!CombatController.Visible(Actor,target))return false;}
   Resource=Mathf.Max(0,Resource-ability.Cost);Ready[slot]=now+AbilityCooldown(slot,ability);GlobalReady=now+ability.Recovery;
   attackTarget=TargetNetId;Casting=slot;pending=ability;strikeTicks=0;CastEnd=now+ability.CastDuration;hitAt=now+ability.HitTime;applied=false;
@@ -58,7 +62,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
   }
   if(isLocalPlayer&&Prototype){if(queued>=0){if(Time.unscaledTime>queueUntil)queued=-1;else if(NetworkTime.time>=CastEnd&&NetworkTime.time>=GlobalReady){CmdUse(queued);queued=-1;}}}
  }
- public void Request(int slot){if(!isLocalPlayer||!Prototype||slot<1||slot>=Ready.Count||NetworkTime.time<Ready[slot]||NetworkTime.time<GlobalReady)return;var ability=Definition(slot);if(ability&&ability.Implemented&&ability.Allows(Specialization.Id)&&ability.Shape!=AbilityShape.Self&&Resource>=ability.Cost)RiftMMOController.Instance?.StartAutoAttack();if(NetworkTime.time<CastEnd&&CastEnd-NetworkTime.time<=.18){queued=slot;queueUntil=Time.unscaledTime+.18f;}else CmdUse(slot);}
+ public void Request(int slot){if(!isLocalPlayer||!IsAbilityLearned(slot)||slot<1||slot>=Ready.Count||NetworkTime.time<Ready[slot]||NetworkTime.time<GlobalReady)return;var ability=Definition(slot);if(ability&&ability.Implemented&&ability.Allows(Specialization.Id)&&ability.Shape!=AbilityShape.Self&&Resource>=ability.Cost)RiftMMOController.Instance?.StartAutoAttack();if(NetworkTime.time<CastEnd&&CastEnd-NetworkTime.time<=.18){queued=slot;queueUntil=Time.unscaledTime+.18f;}else CmdUseAbility(ability.Id);}
  [Server]void Apply(AbilityDefinition ability){
   if(!Actor||Actor.Health.CurrentHealth<=0)return;int hits=0;var origin=Actor.transform.position;
   if(Casting==4){var desired=CombatTarget?CombatTarget.transform.position:origin+facing*8;var delta=Vector3.ClampMagnitude(desired-origin,12);delta.y=0;if(Physics.Raycast(origin+delta+Vector3.up*8,Vector3.down,out var ground,18,GameManager.environmentLayer,QueryTriggerInteraction.Ignore)){Actor.ServerTeleport(ground.point+Vector3.up*.1f,Actor.Input.LookY);origin=Actor.transform.position;}}

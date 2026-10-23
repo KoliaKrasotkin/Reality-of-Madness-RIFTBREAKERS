@@ -34,7 +34,7 @@ namespace MultiFPS.Gameplay
         void OnDisable(){ReleasePointer();if(Actor)Actor.Input.Movement=Vector2.zero;AutoAttack=Autorun=false;}
         void OnApplicationFocus(bool focused){if(!focused){ReleasePointer();AutoAttack=Autorun=false;}}
         void ReleasePointer(){if(!Dragging)return;orbit=steer=selectPending=steerPending=false;Cursor.lockState=CursorLockMode.None;Cursor.visible=true;if(Mouse.current!=null)Mouse.current.WarpCursorPosition(savedPointer);}
-        public bool Available=>Actor&&Actor.Health.CurrentHealth>0&&!ClientFrontend.Pause&&!ClientFrontend.Hub&&!RiftControls.Rebinding&&UICursorManager.GamePlayInput();
+        public bool Available=>!RiftControls.TextEntryFocused&&Actor&&Actor.Health.CurrentHealth>0&&!ClientFrontend.Pause&&!ClientFrontend.Hub&&!RiftControls.Rebinding&&UICursorManager.GamePlayInput();
         public void ReadCharacter(CharacterInstance actor)
         {
             if(readFrame==Time.frameCount)return;readFrame=Time.frameCount;

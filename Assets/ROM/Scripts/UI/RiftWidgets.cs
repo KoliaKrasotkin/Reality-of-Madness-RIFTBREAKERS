@@ -7,7 +7,7 @@ namespace ROM.UI.Sprint01
     // Shared visual primitives. Screens compose these rather than inventing styles.
     public static class RiftWidgets
     {
-        public static readonly Color Ink = new Color(.025f,.024f,.034f,.94f), Red = new Color(.87f,.08f,.22f), Gold = new Color(.58f,.45f,.31f), Muted = new Color(.68f,.66f,.68f), White = new Color(.94f,.91f,.87f);
+        public static readonly Color Ink = new Color(.045f,.041f,.036f,.96f), Red = new Color(.58f,.39f,.18f), Gold = new Color(.58f,.45f,.31f), Muted = new Color(.68f,.66f,.68f), White = new Color(.94f,.91f,.87f);
         public static Font Body, Title, ButtonFont;
         public static RectTransform Rect(Transform parent,string name,float x,float y,float w,float h)
         {
@@ -20,7 +20,7 @@ namespace ROM.UI.Sprint01
         }
         public static Text Label(Transform p,string value,float x,float y,float w,float h,int size=22,Color? color=null,bool title=false)
         {
-            var t=Rect(p,"Text",x,y,w,h).gameObject.AddComponent<Text>(); t.font=title?Title:Body; t.fontSize=size; t.color=color??White; t.text=value;
+            var t=Rect(p,"Text",x,y,w,h).gameObject.AddComponent<Text>(); var scope=p.GetComponentInParent<RiftInventoryFontScope>();t.font=!title&&scope&&scope.Font?scope.Font:title?Title:Body; t.fontSize=size; t.color=color??White; t.text=value;
             t.alignment=TextAnchor.MiddleLeft; t.fontStyle=title?FontStyle.Bold:FontStyle.Normal; t.raycastTarget=false; t.supportRichText=false; t.verticalOverflow=VerticalWrapMode.Truncate; return t;
         }
         public static RectTransform ScrollArea(Transform parent,string name,float x,float y,float width,float height,float contentHeight,bool bottom=false)

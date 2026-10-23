@@ -1,4 +1,5 @@
 using System;
+using MultiFPS.Gameplay;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
@@ -6,6 +7,8 @@ using UnityEngine.UI;
 
 namespace ROM.UI.Sprint01
 {
+    // Marker isolates inspection alpha from gameplay camera post-processing policy.
+    public sealed class RiftInspectionCamera : MonoBehaviour {}
     // Off-world render stages have no gameplay scripts, network identities, physics or audio.
     // They render to a UI texture and never load a gameplay scene in the background.
     public sealed class RiftModelView : MonoBehaviour, IDragHandler, IScrollHandler
@@ -15,7 +18,7 @@ namespace ROM.UI.Sprint01
         Camera view;
         RenderTexture texture;
         RawImage image;
-        bool lobby;
+        bool lobby,mainMenuPresentation,wideMenuPreview;GameObject stageEnvironment;
         static int nextWorld;
         float yaw=0,zoom=1;
         Bounds bounds;
@@ -25,6 +28,11 @@ namespace ROM.UI.Sprint01
         AnimatorOverrideController emoteController;
         float emoteUntil,restoreAt;
         public string CurrentEmoteName {get;private set;}
+        public Transform PreviewWorld=>world?world.transform:null;
+        public Camera PreviewCamera=>view;public RenderTexture PreviewTexture=>texture;
+        public Transform PreviewSubject=>subject?subject.transform:null;
+        public CharacterInstance SourceCharacter {get;private set;}
+        public void SetRenderActive(bool active){if(view)view.enabled=active;}
         public Animator PreviewAnimator=>subject?subject.GetComponentInChildren<Animator>():null;
         public bool Ready=>view&&subject&&texture&&texture.IsCreated();
         public void SetDisplay(bool visible){if(image)image.enabled=visible;}
@@ -37,7 +45,7 @@ namespace ROM.UI.Sprint01
         {
             this.catalog=catalog;
             world=new GameObject("ROM Isolated Preview");world.transform.position=new Vector3(nextWorld++*250,-5000,0);
-            if(lobby&&catalog&&catalog.StagePrefab){var stage=Instantiate(catalog.StagePrefab,world.transform);stage.transform.localPosition=Vector3.zero;}
+            if(lobby&&catalog&&catalog.StagePrefab){stageEnvironment=Instantiate(catalog.StagePrefab,world.transform);stageEnvironment.transform.localPosition=Vector3.zero;}
             var cameraObject=new GameObject("Preview Camera");cameraObject.transform.SetParent(world.transform,false);view=cameraObject.AddComponent<Camera>();
             view.cullingMask=1<<PreviewLayer;view.clearFlags=CameraClearFlags.SolidColor;view.backgroundColor=new Color(.035f,.045f,.07f);view.nearClipPlane=.03f;view.farClipPlane=100;view.allowHDR=true;view.fieldOfView=38;
             var data=view.GetUniversalAdditionalCameraData();data.renderPostProcessing=true;data.antialiasing=AntialiasingMode.SubpixelMorphologicalAntiAliasing;data.volumeLayerMask=(1<<PreviewLayer)|1;
@@ -63,25 +71,51 @@ namespace ROM.UI.Sprint01
             bounds=WorldBounds(subject);subject.transform.position+=world.transform.position-bounds.center+Vector3.up*(model.Category=="Personaje"?bounds.extents.y:1.25f);
             yaw=model.Category=="Personaje"?180:130;zoom=1;SetLayer(subject);UpdateCamera();
         }
+        public void ShowLiveCharacter(CharacterInstance actor)
+        {
+            ResetEmote();if(subject)DestroyImmediate(subject);SourceCharacter=actor;
+            if(!actor||!actor.CharacterParent){image.enabled=false;return;}
+            subject=new GameObject("Live character inspection");subject.SetActive(false);subject.transform.SetParent(world.transform,false);
+            var copy=Instantiate(actor.CharacterParent.gameObject,subject.transform,false);copy.transform.localPosition=Vector3.zero;copy.transform.localRotation=Quaternion.identity;
+            foreach(var script in copy.GetComponentsInChildren<MonoBehaviour>(true))DestroyImmediate(script);
+            foreach(var source in copy.GetComponentsInChildren<AudioSource>(true))DestroyImmediate(source);
+            foreach(var collider in copy.GetComponentsInChildren<Collider>(true))DestroyImmediate(collider);
+            foreach(var body in copy.GetComponentsInChildren<Rigidbody>(true))DestroyImmediate(body);
+            foreach(var camera in copy.GetComponentsInChildren<Camera>(true))DestroyImmediate(camera);
+            foreach(var light in copy.GetComponentsInChildren<Light>(true))DestroyImmediate(light);
+            SetLayer(subject);subject.SetActive(true);
+            foreach(var animator in copy.GetComponentsInChildren<Animator>(true)){animator.applyRootMotion=false;animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;animator.Rebind();animator.SetFloat("MoveX",0);animator.SetFloat("MoveY",0);animator.SetBool("Grounded",true);animator.SetBool("Dead",false);animator.Update(0);}
+            bounds=WorldBounds(subject);subject.transform.localScale*=2.15f/Mathf.Max(.001f,bounds.size.y);bounds=WorldBounds(subject);subject.transform.position+=world.transform.position-bounds.center+Vector3.up*bounds.extents.y;
+            UseInspectionRendering();
+            yaw=140;zoom=.8f;image.enabled=true;UpdateCamera();
+        }
+        public void SetInspectionZoom(float value){zoom=Mathf.Clamp(value,.65f,1.5f);UpdateCamera();}
+        public void ShowItem(GameObject model){Show(new PreviewModel{Name=model.name,Category="Equipo",Prefab=model});subject.transform.localRotation=Quaternion.identity;var box=WorldBounds(subject);var size=box.size;Vector3 longest=size.x>=size.y&&size.x>=size.z?Vector3.right:size.y>=size.z?Vector3.up:Vector3.forward;Vector3 shortest=size.x<=size.y&&size.x<=size.z?Vector3.right:size.y<=size.z?Vector3.up:Vector3.forward;if(shortest==longest)shortest=longest==Vector3.up?Vector3.forward:Vector3.up;float maximum=Mathf.Max(size.x,size.y,size.z),minimum=Mathf.Min(size.x,size.y,size.z),middle=size.x+size.y+size.z-maximum-minimum;bool elongated=maximum/Mathf.Max(.001f,middle)>=1.6f;var face=Quaternion.LookRotation(Vector3.back,Vector3.up)*Quaternion.Inverse(Quaternion.LookRotation(shortest,longest));subject.transform.localRotation=(elongated?Quaternion.AngleAxis(-30,Vector3.forward):Quaternion.identity)*face;box=WorldBounds(subject);subject.transform.position+=world.transform.position+Vector3.up*1.2f-box.center;box=WorldBounds(subject);view.orthographic=true;view.orthographicSize=Mathf.Max(box.extents.x,box.extents.y)*1.1f;view.transform.localPosition=new Vector3(0,1.2f,-4);view.transform.localRotation=Quaternion.identity;}
+        public void UseInspectionRendering(){if(!view)return;if(!view.GetComponent<RiftInspectionCamera>())view.gameObject.AddComponent<RiftInspectionCamera>();view.backgroundColor=Color.clear;var data=view.GetUniversalAdditionalCameraData();data.renderPostProcessing=false;data.antialiasing=AntialiasingMode.None;data.requiresColorOption=CameraOverrideOption.Off;data.requiresDepthOption=CameraOverrideOption.Off;data.volumeLayerMask=1<<PreviewLayer;view.allowHDR=false;foreach(var light in world.GetComponentsInChildren<Light>())light.shadows=LightShadows.None;}
+        public void SetThumbnailResolution(int size){if(!view)return;view.targetTexture=null;if(texture){texture.Release();Destroy(texture);}texture=new RenderTexture(size,size,24,RenderTextureFormat.ARGB32);texture.Create();view.targetTexture=texture;image.texture=texture;}
         public void ShowParty(FrontEndCatalog catalog,ISocialService social)
         {
             for(int i=world.transform.childCount-1;i>=0;i--){var t=world.transform.GetChild(i);if(t.name.StartsWith("Party Avatar"))DestroyImmediate(t.gameObject);}
             var characters=catalog.Characters;if(characters.Length==0)return;
-            var hero=characters[Mathf.Clamp(social.Self.Skin,0,characters.Length-1)];Show(hero);
+            var hero=characters[Mathf.Clamp(social.Self.Skin,0,characters.Length-1)];if(mainMenuPresentation&&!MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(hero.SkinIndex)){foreach(var candidate in characters)if(MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(candidate.SkinIndex)){hero=candidate;break;}}Show(hero);
             int slot=0;
             foreach(var member in social.Party){
                 if(member.ProfileId==social.Self.Id)continue;var profile=social.Find(member.ProfileId);if(profile==null)continue;
                 var model=characters[Mathf.Clamp(profile.Skin,0,characters.Length-1)];var go=new GameObject("Party Avatar "+slot);go.transform.SetParent(world.transform,false);Instantiate(model.Prefab,go.transform);
                 var box=WorldBounds(go);go.transform.localScale*=2.05f/Mathf.Max(.001f,box.size.y);box=WorldBounds(go);
                 Vector3 offset=new Vector3(slot==0?-2.3f:slot==1?2.3f:4.3f,box.extents.y,slot==2?1.8f:1);
-                go.transform.position+=world.transform.position+offset-box.center;go.transform.localRotation=Quaternion.Euler(0,180,0);SetLayer(go);slot++;
+                go.transform.position+=world.transform.position+offset-box.center;go.transform.localRotation=Quaternion.Euler(0,180,0);SetLayer(go);if(mainMenuPresentation)go.SetActive(false);slot++;
             }
         }
+        public void ConfigureMainMenuPresentation(){if(!lobby)return;mainMenuPresentation=true;if(stageEnvironment)stageEnvironment.SetActive(false);UseInspectionRendering();RiftLivingMenuAssets.Attach(this);UpdateCamera();}
+        public void EnableWideMenuPreview(){if(mainMenuPresentation)wideMenuPreview=true;}
+        public void FitMainMenuViewport(float height){if(!mainMenuPresentation||!texture)return;var rect=(RectTransform)transform;if(wideMenuPreview){float actualHeight=Mathf.Clamp((height-540)*2,900,1800);int pixelHeight=Mathf.RoundToInt(actualHeight);if(texture.width!=1920||Mathf.Abs(texture.height-pixelHeight)>2){view.targetTexture=null;texture.Release();Destroy(texture);texture=new RenderTexture(1920,pixelHeight,24,RenderTextureFormat.ARGBHalf);texture.Create();view.targetTexture=texture;image.texture=texture;}rect.anchoredPosition=new Vector2(0,(actualHeight-1080)*.5f);rect.sizeDelta=new Vector2(1920,actualHeight);UpdateCamera();return;}float width=height*texture.width/texture.height;rect.anchoredPosition=new Vector2(1080-width*.5f,0);rect.sizeDelta=new Vector2(width,height);}
         void UpdateCamera()
         {
             if(!view)return;
-            if(lobby){view.transform.localPosition=new Vector3(0,1.5f,-7.4f);view.transform.LookAt(world.transform.position+new Vector3(.1f,1.2f,0));view.fieldOfView=34;}
+            if(lobby){view.transform.localPosition=mainMenuPresentation?new Vector3(0,1.72f,-2.7f):new Vector3(0,1.5f,-7.4f);view.transform.LookAt(world.transform.position+(mainMenuPresentation?new Vector3(0,1.72f,0):new Vector3(.1f,1.2f,0)));view.fieldOfView=mainMenuPresentation?32:34;}
             else{view.transform.localPosition=new Vector3(0,1.4f,-4.8f*zoom);view.transform.LookAt(world.transform.position+Vector3.up*1.2f);view.fieldOfView=36;}
+            if(wideMenuPreview&&mainMenuPresentation){view.transform.localPosition=new Vector3(-.3f,1.72f,-2.7f);view.transform.LookAt(world.transform.position+new Vector3(-.3f,1.72f,0));}
             if(subject)subject.transform.localRotation=Quaternion.Euler(0,yaw,0);
         }
         public void OnDrag(PointerEventData e){if(lobby)return;yaw-=e.delta.x*.4f;UpdateCamera();}
@@ -106,9 +140,11 @@ namespace ROM.UI.Sprint01
         static Bounds WorldBounds(GameObject go)
         {
             var renderers=go.GetComponentsInChildren<Renderer>(true);var b=new Bounds(go.transform.position,Vector3.zero);bool first=true;
-            foreach(var r in renderers){if(!r.enabled)continue;if(first){b=r.bounds;first=false;}else b.Encapsulate(r.bounds);}return b;
+            foreach(var r in renderers){if(!r.enabled||!r.gameObject.activeInHierarchy)continue;if(first){b=r.bounds;first=false;}else b.Encapsulate(r.bounds);}return b;
         }
         static void SetLayer(GameObject go){foreach(var t in go.GetComponentsInChildren<Transform>(true))t.gameObject.layer=PreviewLayer;}
+        void OnEnable(){if(view)view.enabled=true;}
+        void OnDisable(){if(view)view.enabled=false;}
         void OnDestroy(){ResetEmote();if(view)view.targetTexture=null;if(texture){texture.Release();Destroy(texture);}if(world)Destroy(world);}
     }
 }

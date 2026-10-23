@@ -16,6 +16,7 @@ namespace MultiFPS.Gameplay {
         }
         [Command] public void CmdChooseClass(int id){if(ServerChooseClass(id))TargetClassChoice(connectionToClient,id);}
         [Server] public bool ServerChooseClass(int id){
+            if(!BOT)return false; // Only the native Warrior is playable; legacy definitions remain for compatibility.
             var rules=GameManager.Gamemode?GameManager.Gamemode.ClassRules:null;
             if(BOT||!rules||!rules.Find(id)||id==ClassId)return false;
             if(MyCharacter&&(!GameManager.Gamemode.IsProtectedPosition(MyCharacter.transform.position)||MyCharacter.Health.CurrentHealth<=0))return false;
@@ -29,7 +30,7 @@ namespace MultiFPS.Gameplay {
         }
         [Command] public void CmdUseClassAbility(byte slot){ServerUseClassAbility(slot);}
         [Server] public bool ServerUseClassAbility(byte slot){
-            var combat=GetComponent<RiftCombat.AbilityController>();if(combat&&combat.Prototype)return false;
+            var combat=GetComponent<RiftCombat.AbilityController>();if(PlayerInfo.Warrior||combat&&combat.Prototype)return false;
             var def=ClassDefinition;double now=NetworkTime.time;
             if(BOT||!MyCharacter||!def||MyCharacter.Health.CurrentHealth<=0||slot>1||!GameManager.Gamemode.CanUseClassAbilities(MyCharacter.transform.position))return false;
             if((slot==0?FirstReadyAt:SecondReadyAt)>now)return false;

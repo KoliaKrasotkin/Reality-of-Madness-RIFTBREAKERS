@@ -11,7 +11,7 @@ namespace ROM.UI.Sprint01
         public static int Price(int id) => id == 0 ? 25 : 60;
         public static int Resale(int id) => Price(id) / 2;
         public static float Healing(int id) => id == 0 ? .4f : .75f;
-        public static string Key(int id) => "ROM.Exploration.Potion." + MultiFPS.UserSettings.UserNickname + "." + id;
+        public static string Key(int id) => RiftCharacterWallet.PotionKey(id);
         public static int Count(int id) => Valid(id) ? Mathf.Clamp(PlayerPrefs.GetInt(Key(id), 0), 0, MaxStack) : 0;
         public static bool Trade(int id, bool sell, out string message)
         {

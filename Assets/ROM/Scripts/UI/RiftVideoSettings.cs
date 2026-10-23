@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using MultiFPS;
 using UnityEngine;
@@ -43,7 +43,7 @@ namespace ROM.UI.Sprint01
         void OnScene(Scene scene,LoadSceneMode mode){ApplyEffects();}
         void OnCamera(ScriptableRenderContext context,Camera camera)
         {
-            if(!camera||camera.cameraType!=CameraType.Game)return;
+            if(!camera||camera.cameraType!=CameraType.Game||camera.GetComponent<RiftInspectionCamera>())return;
             if(camera.TryGetComponent<UniversalAdditionalCameraData>(out var data)){
                 data.renderPostProcessing=true;data.antialiasing=Current.AA==0?AntialiasingMode.None:Current.AA==1?AntialiasingMode.FastApproximateAntialiasing:AntialiasingMode.SubpixelMorphologicalAntiAliasing;
                 data.antialiasingQuality=AntialiasingQuality.High;

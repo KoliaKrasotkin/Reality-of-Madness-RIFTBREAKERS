@@ -29,7 +29,7 @@ namespace MultiFPS.UI.HUD
             //there is possibility that killfeed message will come late to the client, when killer or victim are no longer present on map,
             //due to respawn, disconnect, changed team etc. If this is the case omit killfeed message
             //This is extremely likely to happer if game run in webgl, and tab is not in focus
-            if (!killer)
+            if (!killer || !victim)
                 return;
 
             if (victim.Team == -1 || assist && assist.Team == -1 || killer.Team == -1) return;
@@ -54,7 +54,7 @@ namespace MultiFPS.UI.HUD
                 else
                     _textKiller.text = $" {killer.CharacterName} ";
 
-                _textKiller.color = ClientInterfaceManager.Instance.UIColorSet.TeamColors[killer.Team];
+                _textKiller.color = TeamColor(killer.Team);
             }
             else
             {
@@ -63,13 +63,13 @@ namespace MultiFPS.UI.HUD
 
             _textVictim.text = " "+victim.CharacterName + " ";   
 
-            _textVictim.color = ClientInterfaceManager.Instance.UIColorSet.TeamColors[victim.Team]; //TODO: nullref sometimes
+            _textVictim.color = TeamColor(victim.Team); //TODO: nullref sometimes
 
             Sprite weaponSprite = null;
             if (attackType == AttackType.hitscan || attackType == AttackType.hitscanPenetrated)
             {
                 if (killer)
-                    weaponSprite = charKiller.CharacterItemManager.LastUsedItem ? charKiller.CharacterItemManager.LastUsedItem.KillFeedIcon : null;
+                    weaponSprite = charKiller.CharacterItemManager && charKiller.CharacterItemManager.LastUsedItem ? charKiller.CharacterItemManager.LastUsedItem.KillFeedIcon : null;
                 else
                     weaponSprite = null;
             }
@@ -106,6 +106,8 @@ namespace MultiFPS.UI.HUD
                 gameObject.SetActive(false);
             }
         }
+
+        static Color TeamColor(int team){var ui=ClientInterfaceManager.Instance;var palette=ui&&ui.UIColorSet?ui.UIColorSet.TeamColors:null;return palette!=null&&team>=0&&team<palette.Length?palette[team]:Color.white;}
 
         private void OnDisable()
         {
