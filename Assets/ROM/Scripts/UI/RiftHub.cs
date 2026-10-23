@@ -327,13 +327,13 @@ namespace ROM.UI.Sprint01
         void Progress(Transform body){AchievementJournal(body);}
         void Settings(Transform body)
         {
-            string[] tabs=InGame?new[]{"Video","Sonido","Controles"}:new[]{"Video","Sonido","Controles","Perfil"};for(int i=0;i<tabs.Length;i++){string tab=tabs[i];W.Button(body,tab.ToUpperInvariant(),i*350,0,330,50,()=>{settingsTab=tab;Navigate(HubPage.Settings);},settingsTab==tab);}
+            string[] tabs=InGame?new[]{"Video","Sonido","Controles","Interfaz"}:new[]{"Video","Sonido","Controles","Perfil"};for(int i=0;i<tabs.Length;i++){string tab=tabs[i];W.Button(body,tab.ToUpperInvariant(),i*350,0,330,50,()=>{settingsTab=tab;Navigate(HubPage.Settings);},settingsTab==tab);}
             var video=Application.isPlaying?RiftVideoSettings.Ensure():null;if(draft==null)draft=video?video.Current.Copy():new VideoPreferences();
             var panel=W.Rect(body,"Options",0,85,1750,590);
             if(settingsTab=="Video")Video(panel,video);
             else if(settingsTab=="Sonido"){W.Label(panel,"Volumen general",0,10,700,40,25);W.Slider(panel,"MasterVolume",0,70,1100,0,1,draft.Volume,v=>draft.Volume=v);SaveSettings(panel,video);}
             else if(settingsTab=="Controles"){ControlsSettings(panel,video);
-            }else Profile(panel);
+            }else if(settingsTab=="Interfaz"&&InGame)InterfaceOptions(panel);else Profile(panel);
         }
         void Choice(Transform parent,string label,string value,float x,float y,float width,Action change)
         {W.Label(parent,label,x,y,width,30,20,W.Muted);W.Button(parent,value,x,y+37,width,52,change);}
