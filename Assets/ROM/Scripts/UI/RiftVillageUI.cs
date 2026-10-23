@@ -71,17 +71,17 @@ namespace ROM.UI.Sprint01
             Close(); TalkingTo = npc;var journal=player.GetComponent<ROM.Progression.RiftJournalPlayer>();if(journal)journal.CmdTalk(npc.Id); hint.gameObject.SetActive(false);
             if (UIPauseMenu._instance) { previousPauseAllowed = UIPauseMenu._instance.AbleToPause; UIPauseMenu._instance.AbleToPause = false; }
             UICursorManager.RequestCursor(gameObject); cursorHeld = true;
-            dialog = W.Panel(transform, "Dialogo de aldea", 0, 0, 980, 670);
-            dialog.anchorMin = dialog.anchorMax = dialog.pivot = new Vector2(.5f, .5f); dialog.anchoredPosition = Vector2.zero;
+            dialog = W.Panel(transform, "Dialogo de aldea", 0, 0, 988, 850);
+            dialog.anchorMin = dialog.anchorMax = dialog.pivot = new Vector2(1, .5f); dialog.anchoredPosition = new Vector2(-36,30);
             dialog.GetComponent<Image>().raycastTarget = true;
-            W.Label(dialog, npc.DisplayName + " · " + npc.Role, 30, 20, 920, 45, 30, W.White, true);
-            speech = W.Label(dialog, npc.Greeting, 30, 80, 920, 100, 23);
-            balance = W.Label(dialog, "ORO DEL JUEGO: " + RiftExplorationProgress.Gold, 30, 185, 920, 35, 23, W.Gold);
+            W.Label(dialog, npc.DisplayName, 30, 24, 920, 45, 32, W.White, true);
+            W.Label(dialog,npc.Role,30,76,920,28,18,W.Muted);speech = W.Label(dialog, npc.Greeting, 30, 124, 920, 86, 21);
+            balance = W.Label(dialog, "ORO DEL JUEGO: " + RiftExplorationProgress.Gold, 30, 185, 920, 35, 23, W.Gold);balance.gameObject.SetActive(npc.Trades);
             W.Button(dialog,"MISIONES",30,235,280,48,()=>ShowQuests(npc));W.Button(dialog,"HABLAR DEL REFUGIO",340,235,280,48,()=>speech.text=npc.Advice);
             if(npc.Trades)W.Button(dialog,"COMERCIAR",650,235,280,48,()=>ShowGoods(npc));
-            notice = W.Label(dialog, "", 30, 535, 920, 60, 19, W.Muted);
-            W.Button(dialog, "CERRAR · ESC", 630, 605, 320, 45, Close);
-            ShowQuests(npc);
+            notice = W.Label(dialog, "", 30, 704, 920, 42, 19, W.Muted);
+            W.Button(dialog, "CERRAR · ESC", 630, 780, 320, 45, Close);
+            ShowQuests(npc);RiftPanelChrome.Apply(dialog);
         }
         public void ShowGoods(RiftVillageNpc npc)
         {
@@ -97,6 +97,7 @@ namespace ROM.UI.Sprint01
                 W.Button(goods, "COMPRAR · " + RiftVillageSupplies.Price(i) + " ORO", 370, y + 37, 265, 43, () => ClientFrontend.ClientPlayerInstance.GetComponent<RiftVillagePlayer>().CmdVillageTrade(npc.Id, id, false));
                 W.Button(goods, "VENDER · " + RiftVillageSupplies.Resale(i) + " ORO", 650, y + 37, 270, 43, () => ClientFrontend.ClientPlayerInstance.GetComponent<RiftVillagePlayer>().CmdVillageTrade(npc.Id, id, true));
             }
+            RiftPanelChrome.Apply(dialog);
         }
         public void Close()
         {

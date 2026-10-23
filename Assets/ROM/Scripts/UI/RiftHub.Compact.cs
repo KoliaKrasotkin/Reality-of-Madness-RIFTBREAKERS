@@ -32,19 +32,6 @@ public sealed partial class RiftHub {
   BoundButton(body,"ABRIR BOLSA","Inventory",0,480,330,54,()=>ShowGameplayPage(HubPage.Inventory));BoundButton(body,"HABILIDADES","Abilities",346,480,330,54,ShowSkills);
   W.Label(body,"El personaje sigue visible en el mundo.\nEl resto de ranuras de equipo aún no está implementado.",0,550,676,54,18,W.Muted);
  }
- void CompactJournal(Transform body){
-  var catalog=RiftJournalCatalog.Load;if(!catalog){W.Label(body,"Diario no disponible.",0,0,676,60,22);return;}var state=JournalState;
-  W.Dropdown(body,"Quest filter",0,0,676,new[]{"Activas","Completadas","Disponibles"},Array.IndexOf(new[]{"Activas","Completadas","Disponibles"},journalFilter),i=>{journalFilter=new[]{"Activas","Completadas","Disponibles"}[i];journalSelection="";Navigate(HubPage.Missions);});
-  var list=catalog.Quests.Where(q=>journalFilter=="Activas"?state.Quest(q.Id)!=null&&state.Quest(q.Id).Status!=QuestStatus.TurnedIn:journalFilter=="Completadas"?state.TurnedIn(q.Id):state.Available(q)).ToArray();visibleQuests=list;
-  if(!list.Any(q=>q.Id==journalSelection))journalSelection=list.FirstOrDefault()?.Id??"";
-  var scroll=W.ScrollArea(body,"Quest list",0,65,676,135,list.Length*52);journalScroll=scroll;
-  for(int i=0;i<list.Length;i++){var q=list[i];W.Button(scroll,q.Title,0,i*52,656,46,()=>{journalSelection=q.Id;Navigate(HubPage.Missions);},journalSelection==q.Id);}
-  BoundButton(body,"ANTERIOR","JournalPrevious",0,208,330,39,()=>SelectJournal(-1)).interactable=list.Length>1;BoundButton(body,"SIGUIENTE","JournalNext",346,208,330,39,()=>SelectJournal(1)).interactable=list.Length>1;
-  var selected=list.FirstOrDefault(q=>q.Id==journalSelection);if(!selected){W.Label(body,"No hay misiones en esta categoría.\nBuscá el signo ! sobre los NPC del refugio.",0,275,676,120,23,W.Muted);return;}
-  var record=state.Quest(selected.Id);var details=W.ScrollArea(body,"Quest details",0,265,676,245,430);
-  W.Label(details,selected.Title,0,0,650,54,25,W.Gold);W.Label(details,selected.Description,0,60,650,100,21);W.Label(details,RiftJournalView.Objectives(selected,record),0,165,650,130,21);
-  W.Label(details,"Recompensa: "+selected.Gold+" oro local · "+WarriorProgressionDefinition.Load.QuestExperience+" XP\n"+(record?.Status==QuestStatus.TurnedIn?"Completada":record?.Status==QuestStatus.Ready?"Entregar a "+NpcName(selected.TurnIn):"Hablar con "+NpcName(record==null?selected.Giver:selected.TurnIn)),0,305,650,100,21,W.Gold);
-  if(record!=null&&record.Status!=QuestStatus.TurnedIn){BoundButton(body,RiftJournalView.Tracked==selected.Id?"OCULTAR SEGUIMIENTO":"SEGUIR MISIÓN","JournalTrack",0,535,430,58,ToggleJournalTracking);W.Button(body,"ABANDONAR",446,535,230,58,()=>Dialog("Abandonar misión",selected.Title+"\nSe perderá el progreso de esta misión.",()=>ClientFrontend.ClientPlayerInstance.GetComponent<RiftJournalPlayer>().CmdAbandon(selected.Id)));}
- }
+ void CompactJournal(Transform body){ModernJournal((RectTransform)body);}
 }
 }
