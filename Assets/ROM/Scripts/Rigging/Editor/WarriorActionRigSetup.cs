@@ -93,6 +93,7 @@ public static class WarriorActionRigSetup
         EditorUtility.SetDirty(machine);
         EditorUtility.SetDirty(controller);
         AssetDatabase.SaveAssetIfDirty(controller);
+        WarriorWeaponStateSetup.Configure();
         Debug.Log($"Warrior: configured {attacks.Length} two-handed actions and Jump / Fall / Land. Grip rig preserved.");
     }
 
@@ -180,6 +181,7 @@ public static class WarriorActionRigSetup
                     throw new InvalidOperationException("Warrior transition failed: expected " + state);
             }
             playable.SetBool("Grounded", true);
+            playable.SetBool("WeaponDrawn", true);
             playable.SetFloat("AttackRate", 1f);
             Step(.2f);
             Expect("Locomotion");

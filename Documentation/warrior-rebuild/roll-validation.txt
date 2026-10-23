@@ -1,0 +1,51 @@
+PASS Prefab uses requested forward roll clip
+PASS Prefab uses separate requested Unarmed roll clip
+PASS Roll animation plays at natural speed
+PASS Configured minimum recovery is preserved; early CTRL presses are not buffered
+PASS Roll exits before the final recovery tail without speeding up the clip
+PASS Roll is a non-looping Humanoid animation
+PASS Left/right CTRL binding also matches while CTRL itself is held
+PASS Enter roll armed
+PASS Animator speed matches roll movement timer: RollForward
+PASS Animator plays the matching clip: 2Hand-Sword-DiveRoll-Forward1
+PASS Network seek follows state time; normalized=0,250
+PASS Two-hand grip throughout 61 roll samples; max error 0,02 mm
+PASS Roll does not exit before movement timer finishes
+PASS Return to matching locomotion after roll
+PASS Roll off a ledge enters matching fall state
+PASS Enter roll unarmed
+PASS Animator speed matches roll movement timer: UnarmedRollForward
+PASS Animator plays the matching clip: Unarmed-DiveRoll-Forward1
+PASS Network seek follows state time; normalized=0,250
+PASS Back attachment throughout 61 roll samples; max error 0,00 mm
+PASS Roll does not exit before movement timer finishes
+PASS Return to matching locomotion after roll
+PASS Roll off a ledge enters matching fall state
+PASS Five impulse rolls cover their configured distance through CharacterController: True
+PASS Armed repeated-roll average including delay: 6,84 m/s vs sprint 5,70
+Roll tuning: duration 1,02 s, distance 7,32 m, recovery 0,05 s
+PASS Five impulse rolls cover their configured distance through CharacterController: False
+PASS Unarmed repeated-roll average including delay: 6,84 m/s vs sprint 5,70
+Roll tuning: duration 1,02 s, distance 7,32 m, recovery 0,05 s
+PASS Impulse accelerates, carries momentum, and finishes before standing
+Physics API prerequisites: state=-2089788878, transition=False, ground=True, health=100, block=False, server=False, client=False
+PASS Public RequestRoll starts on ground
+PASS Active roll duration respects the configured clip exit point
+PASS Rolling blocks attacks and repeated roll requests
+PASS Forward displacement follows character facing and configured distance
+PASS Roll displacement is stopped by a wall through CharacterController.Move
+PASS Weapon trigger requests wait until roll finishes
+PASS Crossing a second gate replaces the pending holster with draw during a long roll
+PASS The last gate determines the requested weapon state
+PASS Queued holster applies after roll
+PASS Recovery prevents immediate roll spam
+PASS Fresh press before recovery ends is rejected: True
+PASS Rejected early press is not replayed automatically: True
+PASS Exercise a roll exit blend still in progress: True
+PASS New roll starts after recovery during the old exit blend: True
+PASS Fresh press before recovery ends is rejected: False
+PASS Rejected early press is not replayed automatically: False
+PASS Exercise a roll exit blend still in progress: False
+PASS New roll starts after recovery during the old exit blend: False
+PASS Dead characters cannot roll
+Networking: server validates requests and replicates start time/facing; movement uses the existing owning-client CharacterController path.

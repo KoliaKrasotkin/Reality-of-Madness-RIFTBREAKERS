@@ -1,0 +1,7 @@
+PASS Roster initializes services before Start
+PASS ModernHome renders the selected character
+PASS Lost service references recover without replacing the active character
+PASS Repeated initialization preserves character identity
+PASS Existing real roster data stays unchanged
+PASS El Rift map remains configured
+PASS Deploy passes RequireWarrior and opens the map entry confirmation
