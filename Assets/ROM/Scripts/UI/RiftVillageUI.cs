@@ -31,10 +31,10 @@ namespace ROM.UI.Sprint01
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920, 1080); scaler.matchWidthOrHeight = .5f;
             gameObject.AddComponent<GraphicRaycaster>();
-            hint = W.Panel(transform, "Interaccion y pociones", 0, 0, 650, 66);
-            hint.anchorMin = hint.anchorMax = new Vector2(.5f, .25f); hint.pivot = new Vector2(.5f, .5f); hint.anchoredPosition = Vector2.zero;
-            prompt = W.Label(hint, "", 15, 0, 620, 32, 20);
-            supplies = W.Label(hint, "", 15, 32, 620, 30, 18, W.Muted);
+            hint = W.Panel(transform, "Interacción contextual", 0, 0, 380, 40);
+            hint.anchorMin = hint.anchorMax = new Vector2(.5f, .32f); hint.pivot = new Vector2(.5f, .5f); hint.anchoredPosition = Vector2.zero;
+            prompt = W.Label(hint, "", 12, 3, 356, 34, 17);
+            supplies = W.Label(hint, "", 0, 0, 1, 1, 12, W.Muted);supplies.gameObject.SetActive(false);
         }
         void Update()
         {
@@ -42,9 +42,10 @@ namespace ROM.UI.Sprint01
             var player = ClientFrontend.ClientPlayerInstance;
             bool alive = player && player.MyCharacter && player.MyCharacter.Health.CurrentHealth > 0 && !ClientFrontend.Hub;
             if (!alive || ClientFrontend.Pause) { Close(); hint.gameObject.SetActive(false); return; }
+            if(cursorHeld&&!TalkingTo){Close();return;}
             if (TalkingTo)
             {
-                if (Vector3.Distance(player.MyCharacter.transform.position, TalkingTo.transform.position) > TalkingTo.InteractionRadius + 1 || Input.GetKeyDown(KeyCode.Escape)) { Close(); return; }
+                if (Vector3.Distance(player.MyCharacter.transform.position, TalkingTo.transform.position) > TalkingTo.InteractionRadius + 1 || MultiFPS.RiftControls.Pressed("Pause")) { MultiFPS.RiftControls.EscapeConsumedFrame=Time.frameCount;Close(); return; }
                 balance.text = "ORO DEL JUEGO: " + RiftExplorationProgress.Gold;
                 for (int i = 0; i < 2; i++) if (stock[i]) stock[i].text = "En la mochila: " + RiftVillageSupplies.Count(i);
                 if (notice) notice.text = NetworkTime.time < noticeUntil ? lastNotice : "";
@@ -58,7 +59,7 @@ namespace ROM.UI.Sprint01
             var selectedItem=selected?selected.GetComponent<ROM.Progression.RiftQuestCollectible>():null;if(selectedItem)nearest=null;
             bool message = NetworkTime.time < noticeUntil;
             hint.gameObject.SetActive(free && !MultiFPS.Gameplay.RiftMMOController.PointerOnUI && (message || !selectedNpc && nearest));
-            prompt.text = message ? lastNotice : selectedItem ? "["+MultiFPS.RiftControls.Label("Interact")+"] Recoger "+selectedItem.DisplayName : nearest ? "["+MultiFPS.RiftControls.Label("Interact")+"] Hablar con " + nearest.DisplayName + " · " + nearest.Role : "["+MultiFPS.RiftControls.Label("Potion")+"] Beber poción de vida";
+            prompt.text = message ? lastNotice : selectedItem ? "["+MultiFPS.RiftControls.Label("Interact")+"] Recoger "+selectedItem.DisplayName : nearest ? "["+MultiFPS.RiftControls.Label("Interact")+"] Hablar con " + nearest.DisplayName + "" : "["+MultiFPS.RiftControls.Label("Potion")+"] Beber poción de vida";
             supplies.text = "Pociones: " + RiftVillageSupplies.Count(0) + " / mayores: " + RiftVillageSupplies.Count(1) +
                 (player.GetComponent<RiftVillagePlayer>().PotionReadyAt > NetworkTime.time ? " · Recarga " + Mathf.CeilToInt((float)(player.GetComponent<RiftVillagePlayer>().PotionReadyAt - NetworkTime.time)) + " s" : " · "+MultiFPS.RiftControls.Label("Potion")+" para usar");
             if (free && nearest && MultiFPS.RiftControls.Pressed("Interact")) Open(nearest);
@@ -68,7 +69,7 @@ namespace ROM.UI.Sprint01
         {
             var player = ClientFrontend.ClientPlayerInstance;
             if (!npc || !player || !player.MyCharacter || Vector3.Distance(player.MyCharacter.transform.position, npc.transform.position) > npc.InteractionRadius) return;
-            Close(); TalkingTo = npc;var journal=player.GetComponent<ROM.Progression.RiftJournalPlayer>();if(journal)journal.CmdTalk(npc.Id); hint.gameObject.SetActive(false);
+            Close();var dialogueCamera=MultiFPS.GameplayCamera._instance?MultiFPS.GameplayCamera._instance.GetComponent<MultiFPS.Gameplay.RiftThirdPersonCamera>():null;if(dialogueCamera&&!dialogueCamera.BeginConversation(npc.transform,npc.Target?npc.Target.Head:null,npc.InteractionRadius,Close))return; TalkingTo = npc;var journal=player.GetComponent<ROM.Progression.RiftJournalPlayer>();if(journal)journal.CmdTalk(npc.Id); hint.gameObject.SetActive(false);
             if (UIPauseMenu._instance) { previousPauseAllowed = UIPauseMenu._instance.AbleToPause; UIPauseMenu._instance.AbleToPause = false; }
             UICursorManager.RequestCursor(gameObject); cursorHeld = true;
             dialog = W.Panel(transform, "Dialogo de aldea", 0, 0, 988, 850);
@@ -101,6 +102,7 @@ namespace ROM.UI.Sprint01
         }
         public void Close()
         {
+            var dialogueCamera=MultiFPS.GameplayCamera._instance?MultiFPS.GameplayCamera._instance.GetComponent<MultiFPS.Gameplay.RiftThirdPersonCamera>():null;if(dialogueCamera)dialogueCamera.EndConversation();
             if (cursorHeld)
             {
                 cursorHeld = false;

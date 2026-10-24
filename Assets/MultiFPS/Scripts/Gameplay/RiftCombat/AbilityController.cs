@@ -44,7 +44,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
  [Command]public void CmdSetTarget(uint id){ServerSetTarget(id);}
 
- [Server]public bool ServerSetTarget(uint id){if(id==0){TargetNetId=0;return true;}if(!Actor||!NetworkServer.spawned.TryGetValue(id,out var identity))return false;var health=identity.GetComponent<Health>();if(!health||!health.gameObject.activeInHierarchy||health.gameObject.scene!=Actor.gameObject.scene||health.CurrentHealth<=0||Vector3.Distance(Actor.transform.position,health.transform.position)>60)return false;TargetNetId=id;return true;}
+ [Server]public bool ServerSetTarget(uint id){if(id==0){TargetNetId=0;return true;}if(!Actor||!NetworkServer.spawned.TryGetValue(id,out var identity))return false;var health=identity.GetComponent<Health>();if(!health||!health.gameObject.activeInHierarchy||health.gameObject.scene!=Actor.gameObject.scene||health.CurrentHealth<=0||Vector3.Distance(Actor.transform.position,health.transform.position)>100)return false;TargetNetId=id;return true;}
 
  CharacterInstance localSelected;
 
@@ -124,7 +124,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
    if(!Species.AllowsSkin(Player.PlayerInfo.CharacterSkinID)){Prototype=false;Cancel();return;}
 
-   if(!Actor||Actor.Health.CurrentHealth<=0){TargetNetId=0;Cancel();configured=null;return;}if(TargetNetId!=0&&(!CombatTarget||CombatTarget.CurrentHealth<=0||Vector3.Distance(Actor.transform.position,CombatTarget.transform.position)>60))TargetNetId=0;if(configured!=Actor)Configure();
+   if(!Actor||Actor.Health.CurrentHealth<=0){TargetNetId=0;Cancel();configured=null;return;}if(TargetNetId!=0&&(!CombatTarget||CombatTarget.CurrentHealth<=0||Vector3.Distance(Actor.transform.position,CombatTarget.transform.position)>110))TargetNetId=0;if(configured!=Actor)Configure();
 
    while(pending&&!applied&&NetworkTime.time>=hitAt){Apply(pending);strikeTicks++;if(Casting==5&&strikeTicks<4)hitAt+=.4;else applied=true;}if(pending&&NetworkTime.time>=CastEnd)Cancel();
 

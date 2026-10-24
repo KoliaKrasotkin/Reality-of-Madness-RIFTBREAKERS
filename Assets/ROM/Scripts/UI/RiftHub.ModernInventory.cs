@@ -22,8 +22,8 @@ public sealed class RiftModernKeycap:MonoBehaviour {
 public sealed partial class RiftHub {
  RectTransform modernInventoryHeader,modernMoreMenu;
  void BuildModernInventoryHeader(){modernInventoryHeader=RiftModernWidgets.Panel(Design,"Modern inventory navigation",896,35,988,72);modernInventoryHeader.gameObject.AddComponent<RiftInventoryFontScope>().Font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-  ModernBound("PERSONAJE","Character",12,10,266,52,()=>TogglePanel("Character",HubPage.Character),HUDShape.Helmet);
-  var inventory=ModernBound("INVENTARIO","Inventory",286,10,292,52,()=>TogglePanel("Inventory",HubPage.Inventory),HUDShape.Bag);RiftModernWidgets.Tab(inventory,true);AddInventoryActiveGlow(inventory);
+  // Character statistics/equipment remain available through their existing supported routes.
+  var inventory=ModernBound("INVENTARIO","Inventory",12,10,360,52,()=>TogglePanel("Inventory",HubPage.Inventory),HUDShape.Bag);RiftModernWidgets.Tab(inventory,true);AddInventoryActiveGlow(inventory);
   ModernBound("TALENTOS","Talents",586,10,246,52,ShowTalents,HUDShape.Skill);
   RiftModernWidgets.Button(modernInventoryHeader,"MÁS",840,10,64,52,()=>modernMoreMenu.gameObject.SetActive(!modernMoreMenu.gameObject.activeSelf));
   var close=RiftModernWidgets.Button(modernInventoryHeader,"×",912,10,64,52,()=>ResumeRequested?.Invoke());close.GetComponentInChildren<UnityEngine.UI.Text>().fontSize=26;var closeTip=close.gameObject.AddComponent<RiftTooltipTrigger>();closeTip.Title="Cerrar";closeTip.Description="Volver al juego";closeTip.ActionId="Pause";

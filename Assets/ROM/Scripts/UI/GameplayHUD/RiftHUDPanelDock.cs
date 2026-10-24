@@ -17,7 +17,7 @@ namespace ROM.UI.Gameplay {
   Place("Player vitals",left,new Vector2(24,(mode==Mode.Side?328:180)*scale),scale);
   Place("Integrated action dock",left,new Vector2(24+(RiftHUDIntegratedBar.Width*.5f+(mode==Mode.Side?0:630))*scale,RiftHUDIntegratedBar.Bottom*scale),scale);
   Place("Gameplay shortcuts",left,new Vector2(mode==Mode.Side?24+400*scale:24+1265*scale,mode==Mode.Side?270*scale:95*scale),scale);
-  Hide("Always accessible inventory");Hide("Mouseover tooltip");
+  Hide("Always accessible inventory");Hide("Mouseover tooltip");Hide("General menu shortcuts");
   if(mode==Mode.Side){Place("Selected target",left,new Vector2(24,486*scale),scale);Place("Circular minimap",Vector2.up,new Vector2(24+400*scale,-24),scale);Place("Tracked quest",Vector2.up,new Vector2(24,-330*scale),scale);Place("Journal notification",Vector2.up,new Vector2(24,-640*scale),scale);}
   else{Place("Tracked quest",Vector2.zero,new Vector2(24+1810*scale,180*scale),scale*.72f);foreach(var n in new[]{"Circular minimap","Zone and checkpoint","Selected target","Journal notification"})Hide(n);}
  }

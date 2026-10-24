@@ -110,7 +110,7 @@ namespace ROM.UI.Sprint01
             HandleInterfaceKeys();
             if(!InGame&&!RiftControls.Rebinding&&RiftControls.EscapeConsumedFrame!=Time.frameCount&&RiftControls.Pressed("Pause")&&!modal){if(Page!=HubPage.Home){homePanel="";Navigate(HubPage.Home);}else if(!string.IsNullOrEmpty(homePanel)){homePanel="";Navigate(HubPage.Home);}}
             if(toast&&Time.unscaledTime>toastUntil)toast.text="";
-            Fit();if(fallback&&Stage){fallback.enabled=!Stage.Ready;Stage.SetDisplay(Stage.Ready);}
+            Fit();if(fallback&&Stage){fallback.enabled=!Stage.Ready&&Page==HubPage.Home;Stage.SetDisplay(Stage.Ready&&Page==HubPage.Home&&homePanel!="Characters"&&homePanel!="CreateCharacter");}
             if(emoteStatus)emoteStatus.text=Stage&&!string.IsNullOrEmpty(Stage.CurrentEmoteName)?Stage.CurrentEmoteName:"Elegí un emote para tu personaje";
             if(videoDialog&&RiftVideoSettings.Instance){
                 if(videoTimer)videoTimer.text="Restaurar en "+Mathf.CeilToInt(RiftVideoSettings.Instance.SecondsRemaining)+" s";
@@ -165,7 +165,7 @@ namespace ROM.UI.Sprint01
                     case HubPage.Inventory:case HubPage.Character:case HubPage.Abilities:GameplayPage(body,page);break;
                     case HubPage.Missions:QuestJournal(body);break;
                     case HubPage.Loadout:Equipment(body);break;
-                    case HubPage.Marketplace:case HubPage.Auction:Shop(body);break;
+                    case HubPage.Marketplace:case HubPage.Auction:if(page==HubPage.Marketplace&&shopTab=="Marketplace")ModernStore(panel);else Shop(body);break;
                     case HubPage.Exchange:Exchange(body);break;
                     case HubPage.Settings:Settings(body);break;
                     case HubPage.Social:Friends(body);break;
@@ -174,12 +174,12 @@ namespace ROM.UI.Sprint01
                 }
             }
             if(Page==HubPage.Missions||Page==HubPage.Social||Page==HubPage.Settings){RiftPanelChrome.Apply(content);if(InGame){RiftPanelChrome.Apply(fullGameplayHeader);RiftPanelChrome.Apply(compactGameplayHeader);}}
-            var first=InGame&&Page==HubPage.Abilities&&abilityTab=="Talents"?content.GetComponentsInChildren<Button>().FirstOrDefault(b=>b.name=="CENTRAR"):content.GetComponentInChildren<Button>();if(first&&EventSystem.current)EventSystem.current.SetSelectedGameObject(first.gameObject);
+            var first=InGame&&Page==HubPage.Abilities&&abilityTab=="Talents"?content.GetComponentsInChildren<Button>().FirstOrDefault(b=>b.name=="CENTRAR"):content.GetComponentsInChildren<Button>().FirstOrDefault(b=>b.IsInteractable());if(first&&EventSystem.current)EventSystem.current.SetSelectedGameObject(first.gameObject);
         }
-        static string PageTitle(HubPage page)=>page switch {HubPage.Inventory=>"INVENTARIO",HubPage.Character=>"PERSONAJE",HubPage.Abilities=>"HABILIDADES",HubPage.Loadout=>"EQUIPAMIENTO",HubPage.Missions=>"DIARIO DE MISIONES",HubPage.Progression=>"LOGROS",HubPage.Settings=>"AJUSTES",HubPage.Social=>"AMIGOS Y MENSAJES",HubPage.Exchange=>"INTERCAMBIO",_=>"TIENDA"};
+        static string PageTitle(HubPage page)=>page switch {HubPage.Inventory=>"INVENTARIO",HubPage.Character=>"PERSONAJE",HubPage.Abilities=>"HABILIDADES",HubPage.Loadout=>"EQUIPAMIENTO",HubPage.Missions=>"DIARIO DE MISIONES",HubPage.Progression=>"LOGROS",HubPage.Settings=>"AJUSTES",HubPage.Social=>"AMIGOS Y MENSAJES",HubPage.Exchange=>"INTERCAMBIO",HubPage.Auction=>"CASA DE SUBASTAS",_=>"TIENDA"};
         public void ToggleHomePanel(string panel){homePanel=Page==HubPage.Home&&homePanel==panel?"":panel;Navigate(HubPage.Home);}
         void CloseHomePanel(){homePanel="";Navigate(HubPage.Home);}
-        RectTransform Drawer(string name,string title,float x,float width,float height){var r=W.Panel(content,name,x,0,width,height);W.Label(r,title,22,12,width-175,42,26,W.Gold);W.Button(r,"CERRAR",width-150,17,128,38,CloseHomePanel).GetComponentInChildren<Text>().fontSize=18;return r;}
+        RectTransform Drawer(string name,string title,float x,float width,float height){bool rosterModal=name=="CharacterRoster"||name=="CreateCharacter";var r=rosterModal?RiftModernWidgets.Panel(content,name,(1848-width)*.5f,-80,width,height):W.Panel(content,name,x,0,width,height);W.Label(r,title,22,12,width-175,42,26,rosterModal?W.White:W.Gold);var close=rosterModal?RiftModernWidgets.Button(r,"CERRAR",width-150,17,128,38,CloseHomePanel):W.Button(r,"CERRAR",width-150,17,128,38,CloseHomePanel);close.GetComponentInChildren<Text>().fontSize=18;return r;}
         void Home()
         {
             if(InGame){ModernPause();return;}
@@ -195,8 +195,8 @@ namespace ROM.UI.Sprint01
             W.Button(content,"JUGAR",1398,702,450,94,Deploy,true);
             if(homePanel=="Menu"){
                 var menu=Drawer("MenuDrawer","MENÚ",0,450,650);
-                string[] names={"EQUIPAMIENTO","MISIONES","LOGROS","TIENDA","AMIGOS","AJUSTES"};HubPage[] pages={HubPage.Loadout,HubPage.Missions,HubPage.Progression,HubPage.Marketplace,HubPage.Social,HubPage.Settings};
-                for(int i=0;i<names.Length;i++){var page=pages[i];W.Button(menu,names[i],22,78+i*68,406,56,()=>Navigate(page));}
+                string[] names={"LOGROS","TIENDA","CASA DE SUBASTAS","AMIGOS"};HubPage[] pages={HubPage.Progression,HubPage.Marketplace,HubPage.Auction,HubPage.Social};
+                for(int i=0;i<names.Length;i++){var page=pages[i];W.Button(menu,names[i],22,78+i*68,406,56,()=>{shopTab=page==HubPage.Auction?"Subastas":"Marketplace";Navigate(page);});}
                 W.Button(menu,"UNIRSE POR DIRECCIÓN",22,514,406,56,Connection);
                 W.Label(menu,"Esc para volver",22,590,406,30,18,W.Muted);
             }
@@ -275,9 +275,9 @@ namespace ROM.UI.Sprint01
         }
         void ShowModel(Transform parent,PreviewModel model,float x,float y,float w,float h)
         {
-            var panel=W.Panel(parent,"ModelPreview",x,y,w,h);
+            var panel=W.Panel(parent,"ModelPreview",x,y,w,h);bool shopPreview=Page==HubPage.Marketplace||Page==HubPage.Auction;if(shopPreview)RiftModernWidgets.Surface(panel,new Color(.025f,.027f,.044f,.64f));
             if(model==null||!model.Prefab){W.Label(panel,"Modelo no disponible",30,30,w-60,80,25,W.Muted);return;}
-            if(Application.isPlaying){productView=RiftModelView.Create(panel,2,2,w-4,h-4,Catalog,false);productView.Show(model);}
+            if(Application.isPlaying){productView=RiftModelView.Create(panel,2,2,w-4,h-4,Catalog,false);productView.Show(model);if(shopPreview){productView.UseInspectionRendering();productView.SetInspectionZoom(.78f);}}
             W.Label(panel,model.Name,22,16,w-44,42,25);
             W.Button(panel,"GIRAR",w-160,h-62,140,44,()=>{if(productView)productView.Turn(45);});
         }
@@ -301,7 +301,7 @@ namespace ROM.UI.Sprint01
             }
             var first=shopTab=="Marketplace"?products.FirstOrDefault()?.ModelKey:Services.Auction.Listings.FirstOrDefault()?.ModelKey;
             if(string.IsNullOrEmpty(selectedModel))selectedModel=first;
-            var model=Catalog?Catalog.Find(selectedModel):null;ShowModel(body,model,720,120,1050,410);
+            var model=Catalog?Catalog.Find(selectedModel):null;ShowModel(body,model,920,120,650,410);
             if(shopTab=="Marketplace"){
                 var p=products.FirstOrDefault(v=>v.ModelKey==selectedModel);if(p==null)return;selectedOwned=p.Owned;
                 W.Label(body,p.Description+"\n"+p.GoldPrice+" AG",740,546,1000,70,22);
