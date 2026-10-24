@@ -8,7 +8,9 @@ namespace MultiFPS.Gameplay.RiftCombat {
 public sealed class WarriorProgressionDefinition:ScriptableObject {
  public int MaximumLevel=20,KillExperience=35,BossExperience=150,EncounterExperience=75,CrystalExperience=60,QuestExperience=250;
  public float DamagePerLevel=.02f,HealthPerLevel=.08f;
- public WeaponDefinition Sword;public GameObject Shield;public Vector3 ShieldPosition=new Vector3(0,-.12f,0),ShieldRotation=new Vector3(0,0,90);public Vector3 ShieldScale=Vector3.one;
+ public WeaponDefinition Sword;
+ // Inventory compatibility; the companion definition owns the shield model.
+ public GameObject Shield {get{if(Sword)foreach(var item in Sword.AdditionalEquipment)if(item&&item.Socket==HumanBodyBones.LeftHand)return item.Model;return null;}}
  public WarriorTalent[] Talents={
  new WarriorTalent{Id="arms",Name="Disciplina de armas",Description="+3% de daño por rango.",Branch="Armas"},
  new WarriorTalent{Id="wide",Name="Hoja amplia",Description="Barrido y Furia: +15° de arco y +0,3 m por rango.",Branch="Armas",Parent=0,RequiredLevel=5},

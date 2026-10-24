@@ -9,10 +9,10 @@ namespace MultiFPS.Gameplay
 {
     // Camera yaw is deliberately local and independent of replicated character facing.
     [DefaultExecutionOrder(-100)]
-    public sealed class RiftMMOController:MonoBehaviour
+    public sealed partial class RiftMMOController:MonoBehaviour
     {
         public static RiftMMOController Instance {get;private set;}
-        public float TurnSpeed=120,TargetRange=45,CameraYaw,CameraPitch=12,CameraDistance=5.5f;
+        public float TurnSpeed=120,TargetRange=100,CameraYaw,CameraPitch=12,CameraDistance=5.5f;
         public bool Walking {get;private set;}public bool Autorun {get;private set;}public bool AutoAttack {get;private set;}
         public bool Running=>!Walking||RiftControls.Held("Sprint");
         public bool Dragging=>orbit||steer;
@@ -64,6 +64,8 @@ namespace MultiFPS.Gameplay
             if(!Dragging&&actor.Input.Movement.sqrMagnitude>.01f)CameraYaw=Mathf.LerpAngle(CameraYaw,actor.Input.LookY,Time.deltaTime*3);
             actor.Input.LookX=CameraPitch;actor.Input.LookY=Mathf.Repeat(actor.Input.LookY+180,360)-180;CameraYaw=Mathf.Repeat(CameraYaw+180,360)-180;
             if(RiftControls.Pressed("Jump")){var native=actor.GetComponent<WarriorAvatar>();if(native)native.RequestJump();else{var motor=actor.GetComponent<CharacterMotor>();if(motor)motor.Jump();}}
+            var rollingWarrior=actor.GetComponent<WarriorAvatar>();
+            if(rollingWarrior){if(RiftControls.Pressed("Roll"))rollingWarrior.RequestRoll();if(rollingWarrior.IsRolling)actor.Input.LookY=rollingWarrior.RollFacing;}
             if(!ui){if(RiftControls.Pressed("ZoomIn"))CameraDistance=Mathf.Clamp(CameraDistance-.8f,2,14);if(RiftControls.Pressed("ZoomOut"))CameraDistance=Mathf.Clamp(CameraDistance+.8f,2,14);}
             if(RiftControls.Pressed("NextTarget"))Cycle(1);if(RiftControls.Pressed("PreviousTarget"))Cycle(-1);if(RiftControls.Pressed("SelfTarget"))Select(actor.Health);
             if(RiftControls.Pressed("ClearTarget")&&(HasSelection||AutoAttack)){Select(null);RiftControls.EscapeConsumedFrame=Time.frameCount;}
@@ -90,8 +92,8 @@ namespace MultiFPS.Gameplay
         public Health Pick(Vector2 pointer)
         {
             HasHoverHit=false;PickedWorld=null;var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():null;if(!camera||!Actor)return null;
-            int count=Physics.RaycastNonAlloc(camera.ScreenPointToRay(pointer),hits,150,~0,QueryTriggerInteraction.Collide);float nearest=float.PositiveInfinity;Health health=null;RaycastHit found=default;
-            for(int i=0;i<count;i++){var collider=hits[i].collider;var box=collider.GetComponent<HitBox>();var h=box?box._health:collider.GetComponentInParent<Health>();if(h==Actor.Health)continue;if(collider.isTrigger&&!h)continue;if(hits[i].distance<nearest){nearest=hits[i].distance;health=h;found=hits[i];}}
+            int count=Physics.RaycastNonAlloc(camera.ScreenPointToRay(pointer),hits,Mathf.Max(150,TargetRange+CameraDistance+10),~0,QueryTriggerInteraction.Collide);float nearest=float.PositiveInfinity;Health health=null;RaycastHit found=default;
+            for(int i=0;i<count;i++){var collider=hits[i].collider;var box=collider.GetComponent<HitBox>();var h=box?box._health:collider.GetComponentInParent<Health>();var worldTarget=collider.GetComponentInParent<RiftWorldTarget>();if(h==Actor.Health)continue;if(collider.isTrigger&&!h&&!worldTarget)continue;if(hits[i].distance<nearest){nearest=hits[i].distance;health=h;found=hits[i];}}
             if(nearest<float.PositiveInfinity){HasHoverHit=true;HoverHit=found;var world=found.collider.GetComponentInParent<RiftWorldTarget>();if(ValidWorld(world))PickedWorld=world;}return Valid(health,false)?health:null;
         }
         void RefreshHover(bool blocked){Hovered=null;HoveredWorld=null;HasHoverHit=false;if(!blocked&&Mouse.current!=null){Hovered=Pick(Mouse.current.position.ReadValue());HoveredWorld=PickedWorld;}}

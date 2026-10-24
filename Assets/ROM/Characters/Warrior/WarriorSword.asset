@@ -14,17 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.WeaponDefinition
   Id: warrior-sword
   DisplayName: Espada de una mano
-  WeaponType: 
+  WeaponType: OneHandSword
+  Role: 0
   DamageMultiplier: 0.85
-  AttackSpeed: 1
+  AttackSpeed: 1.2
   Reach: 3
   Model: {fileID: 3827787081366005573, guid: b08d7eb9b7fe3124d90f5e24d55c710b, type: 3}
   Socket: 18
-  Position: {x: 0, y: 0, z: 0}
-  Rotation: {x: 297.7445, y: 328.6543, z: 120.03874}
-  Scale: {x: 0.7818501, y: 0.7818501, z: 0.7818501}
+  Position: {x: 0.052240554, y: -0.0052457782, z: 0.116447635}
+  Rotation: {x: -0.00003447111, y: 87.60869, z: 182.40646}
+  Scale: {x: 1, y: 1, z: 1}
   AllowedClasses:
   - warrior
   AllowedSpecializations: []
   Attack: {fileID: 0}
   ImpactVfx: {fileID: 0}
+  Controller: {fileID: 22100000, guid: 3120824b77daca54dac8c3af5e49cf90, type: 2}
+  UsesBuiltInWeapon: 0
+  UseGripFrame: 1
+  StoredBone: 8
+  StoredPosition: {x: 0.12, y: 0.18, z: -0.3}
+  StoredRotation: {x: 55.000008, y: 270, z: 90}
+  AdditionalEquipment:
+  - {fileID: 11400000, guid: a78bd710f039c9143beaf8048981c87f, type: 2}

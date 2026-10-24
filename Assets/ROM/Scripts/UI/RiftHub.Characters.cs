@@ -14,7 +14,10 @@ namespace ROM.UI.Sprint01
         LocalCharacterRoster Roster
         {
             get{
-                if(roster==null||rosterAccount!=Social.Self.Id){rosterAccount=Social.Self.Id;roster=new LocalCharacterRoster(rosterAccount,Social.Self.Name,Social.Self.Skin,PlayerPrefs.GetInt(AbilityController.Preference,0)>0?"warrior":"legacy:"+PlayerPrefs.GetInt(PlayerInstance.ClassPreference,0));}
+                // Also support calls from existing UI buttons before Start or after reload.
+                if(Social==null)Initialize();
+                var profile=Social.Self;
+                if(roster==null||rosterAccount!=profile.Id){rosterAccount=profile.Id;roster=new LocalCharacterRoster(rosterAccount,profile.Name,profile.Skin,PlayerPrefs.GetInt(AbilityController.Preference,0)>0?"warrior":"legacy:"+PlayerPrefs.GetInt(PlayerInstance.ClassPreference,0));}
                 return roster;
             }
         }
@@ -35,8 +38,9 @@ namespace ROM.UI.Sprint01
         void DrawCharacters()
         {
             var panel=Drawer("CharacterRoster","PERSONAJES",0,650,710);
-            for(int i=0;i<Roster.Characters.Count;i++){var character=Roster.Characters[i];string id=character.Id;W.Button(panel,character.DisplayName+" · "+(character.Available?"Warrior":"NO DISPONIBLE"),22,75+i*63,606,52,()=>{if(InGame){Notify("Volvé al menú para cambiar de personaje.");return;}if(!Roster.Select(id)){Notify("Clase no disponible. Sus datos se conservan; creá o seleccioná Warrior.");return;}ApplyActiveCharacter();SocialChanged();},character.Id==Roster.Active.Id);}
-            W.Button(panel,"+ CREAR PERSONAJE",22,620,606,60,()=>{homePanel="CreateCharacter";Navigate(HubPage.Home);});
+            for(int i=0;i<Roster.Characters.Count;i++){var character=Roster.Characters[i];string id=character.Id;RiftModernWidgets.Button(panel,character.DisplayName+" · "+(character.Available?"Warrior":"NO DISPONIBLE"),22,75+i*63,606,52,()=>{if(InGame){Notify("Volvé al menú para cambiar de personaje.");return;}if(!Roster.Select(id)){Notify("Clase no disponible. Sus datos se conservan; creá o seleccioná Warrior.");return;}ApplyActiveCharacter();SocialChanged();});}
+            RiftModernWidgets.Button(panel,"+ CREAR PERSONAJE",22,620,606,60,()=>{homePanel="CreateCharacter";Navigate(HubPage.Home);});
+            ROM.UI.Gameplay.RiftAbilityTooltip.HideAll();if(UnityEngine.EventSystems.EventSystem.current)UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(panel.GetComponentsInChildren<Button>().First(b=>b.name!="CERRAR").gameObject);
         }
         void DrawCharacterCreation()
         {
