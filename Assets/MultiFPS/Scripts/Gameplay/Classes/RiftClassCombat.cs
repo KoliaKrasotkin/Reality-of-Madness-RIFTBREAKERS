@@ -41,7 +41,7 @@ namespace MultiFPS.Gameplay {
         public static int Heal(PlayerInstance healer,Health target,float fraction){
             if(!target||target.CurrentHealth<=0||target.CurrentHealth>=target.MaxHealth)return 0;
             var owner=Owner(target);float bonus=healer&&healer.ClassId==0&&owner&&owner.ClassId==1?1.25f:1;
-            return target.ServerHeal(Mathf.RoundToInt(target.MaxHealth*fraction*bonus),healer.MyCharacter.Health.DNID);
+            return target.ServerHeal(Mathf.RoundToInt(target.MaxHealth*fraction*bonus),healer.MyCharacter.Health);
         }
     }
 }

@@ -6,6 +6,7 @@ public enum RiftEnemyDisposition {Hostile,Defensive,Timid}
 public sealed class RiftEnemyDefinition:ScriptableObject {
  public string Id="little-demon",DisplayName="Diablillo",Role="Enemigo común";
  public RiftEnemyAgent Prefab;
+ public MultiFPS.Gameplay.RiftCombat.RiftLootTableDefinition LootTable;
  [Min(1)]public int Health=70,Damage=5,Experience=20,Gold=8;
  [Min(.1f)]public float MoveSpeed=2.4f,Detection=22,AttackRange=1.65f,Windup=.55f,Cooldown=1.8f,Leash=36,CorpseSeconds=5;
  public float WalkAnimationSpeed=1.15f;

@@ -1,26 +1,17 @@
-using System.Collections.Generic;
-using MultiFPS.UI;
-using ROM.UI.Sprint01;
-using UnityEngine;
+using MultiFPS.UI;using ROM.UI.Sprint01;using UnityEngine;
 namespace ROM.UI.Gameplay {
-// Repositions HUD roots, never inventory content. Restores original transforms on close.
+// Overlays only gate interaction. HUD transforms and visibility remain unchanged.
 [DefaultExecutionOrder(1400)]public sealed class RiftHUDPanelDock:MonoBehaviour {
- public enum Mode{None,Side,Wide,Map}
- sealed class Pose{public RectTransform Rect;public Vector2 Min,Max,Pivot,Position;public Vector3 Scale;public bool Hidden,WasActive;public void Restore(){if(!Rect)return;Rect.anchorMin=Min;Rect.anchorMax=Max;Rect.pivot=Pivot;Rect.anchoredPosition=Position;Rect.localScale=Scale;if(Hidden){Rect.gameObject.SetActive(WasActive);Hidden=false;}}}
- readonly Dictionary<string,Pose> poses=new Dictionary<string,Pose>();Mode current;CanvasGroup group;bool wasBlocks,wasInteractable;float wasAlpha;RiftFieldUI field;
- public Mode Current=>current;
- void Awake(){foreach(Transform child in transform)if(child is RectTransform r)poses[child.name]=new Pose{Rect=r,Min=r.anchorMin,Max=r.anchorMax,Pivot=r.pivot,Position=r.anchoredPosition,Scale=r.localScale};group=GetComponent<CanvasGroup>();if(!group)group=gameObject.AddComponent<CanvasGroup>();wasBlocks=group.blocksRaycasts;wasInteractable=group.interactable;wasAlpha=group.alpha;}
- void LateUpdate(){if(!field)field=FindFirstObjectByType<RiftFieldUI>();var mode=Mode.None;if(field&&field.MapOpen)mode=Mode.Map;else{RiftHub active=null;foreach(var h in FindObjectsByType<RiftHub>(FindObjectsSortMode.None))if(h.InGame&&h.isActiveAndEnabled){active=h;break;}if(active&&ClientFrontend.Pause)mode=(active.Page==HubPage.Abilities&&active.GetComponentInChildren<ROM.UI.Sprint01.RiftTalentTreeView>())||active.Page==HubPage.Progression||active.Page==HubPage.Settings||active.Page==HubPage.Social?Mode.Wide:Mode.Side;else if(RiftVillageUI.Instance&&RiftVillageUI.Instance.TalkingTo)mode=Mode.Side;}Refresh(mode);}
- void Place(string name,Vector2 anchor,Vector2 pos,float scale){if(!poses.TryGetValue(name,out var p)||!p.Rect)return;p.Rect.anchorMin=p.Rect.anchorMax=anchor;if(name=="Player vitals"||name=="Selected target")p.Rect.pivot=Vector2.up;p.Rect.anchoredPosition=pos;p.Rect.localScale=((name=="Player vitals"||name=="Selected target")?Vector3.one*RiftHUDPreferences.FrameScale:p.Scale)*scale;}
- void Hide(string name){if(!poses.TryGetValue(name,out var p)||!p.Rect)return;if(!p.Hidden){p.WasActive=p.Rect.gameObject.activeSelf;p.Hidden=true;}p.Rect.gameObject.SetActive(false);}
- public void Refresh(Mode mode){if(mode!=current){foreach(var p in poses.Values)p.Restore();current=mode;}group.alpha=wasAlpha;group.blocksRaycasts=mode==Mode.None&&wasBlocks;group.interactable=mode==Mode.None&&wasInteractable;if(mode==Mode.None)return;var root=(RectTransform)transform;float scale=mode==Mode.Side?Mathf.Min(1,(root.rect.width*.44f-48)/RiftHUDIntegratedBar.Width):Mathf.Min(1,(root.rect.width-48)/2120);scale=Mathf.Max(mode==Mode.Side?.42f:.55f,scale);var left=Vector2.zero;
-  Place("Player vitals",left,new Vector2(24,(mode==Mode.Side?328:180)*scale),scale);
-  Place("Integrated action dock",left,new Vector2(24+(RiftHUDIntegratedBar.Width*.5f+(mode==Mode.Side?0:630))*scale,RiftHUDIntegratedBar.Bottom*scale),scale);
-  Place("Gameplay shortcuts",left,new Vector2(mode==Mode.Side?24+400*scale:24+1265*scale,mode==Mode.Side?270*scale:95*scale),scale);
-  Hide("Always accessible inventory");Hide("Mouseover tooltip");Hide("General menu shortcuts");
-  if(mode==Mode.Side){Place("Selected target",left,new Vector2(24,486*scale),scale);Place("Circular minimap",Vector2.up,new Vector2(24+400*scale,-24),scale);Place("Tracked quest",Vector2.up,new Vector2(24,-330*scale),scale);Place("Journal notification",Vector2.up,new Vector2(24,-640*scale),scale);}
-  else{Place("Tracked quest",Vector2.zero,new Vector2(24+1810*scale,180*scale),scale*.72f);foreach(var n in new[]{"Circular minimap","Zone and checkpoint","Selected target","Journal notification"})Hide(n);}
- }
- void OnDisable(){foreach(var p in poses.Values)p.Restore();if(group){group.alpha=wasAlpha;group.blocksRaycasts=wasBlocks;group.interactable=wasInteractable;}current=Mode.None;}
-}
-}
+ public enum Mode{None,Side,Wide,Map,Vendor}public Mode Current{get;private set;}
+ CanvasGroup group;bool wasBlocks,wasInteractable;RiftFieldUI field;
+ void Awake(){group=GetComponent<CanvasGroup>();if(!group)group=gameObject.AddComponent<CanvasGroup>();wasBlocks=group.blocksRaycasts;wasInteractable=group.interactable;}
+ void LateUpdate(){if(!field)field=FindFirstObjectByType<RiftFieldUI>();Mode mode=Mode.None;if(field&&field.MapOpen)mode=Mode.Map;else if(ClientFrontend.Pause)mode=Mode.Wide;else if(RiftVillageUI.Instance&&RiftVillageUI.Instance.TalkingTo)mode=RiftVillageUI.Instance.VendorWindow?Mode.Vendor:Mode.Side;Refresh(mode);}
+ public void Refresh(Mode mode){Current=mode;if(!group)return;group.blocksRaycasts=mode==Mode.None&&wasBlocks;group.interactable=mode==Mode.None&&wasInteractable;}
+ static RiftGameplayHUD overlayHUD;static readonly Vector3[] boundsCorners=new Vector3[4];
+ public static Rect ScreenBounds(RectTransform rect){rect.GetWorldCorners(boundsCorners);var min=(Vector2)boundsCorners[0];var max=min;for(int i=1;i<4;i++){min=Vector2.Min(min,boundsCorners[i]);max=Vector2.Max(max,boundsCorners[i]);}return Rect.MinMaxRect(min.x,min.y,max.x,max.y);}
+ public static Rect OverlayArea(){var safe=Screen.safeArea;float left=safe.xMin+20,right=safe.xMax-20,bottom=safe.yMin+20,top=safe.yMax-20;if(!overlayHUD)overlayHUD=FindFirstObjectByType<RiftGameplayHUD>();if(overlayHUD){foreach(var name in new[]{"Player vitals","Selected target","Integrated action dock"}){var rect=overlayHUD.Design.Find(name) as RectTransform;if(rect)bottom=Mathf.Max(bottom,ScreenBounds(rect).yMax+18);}var minimap=overlayHUD.Design.Find("Circular minimap") as RectTransform;if(minimap)right=Mathf.Min(right,ScreenBounds(minimap).xMin-18);}return Rect.MinMaxRect(left,bottom,Mathf.Max(left+100,right),Mathf.Max(bottom+100,top));}
+ public static void MoveScreenCenter(RectTransform rect,Vector2 center){var parent=rect.parent as RectTransform;RectTransformUtility.ScreenPointToLocalPointInRectangle(parent,center,null,out var target);RectTransformUtility.ScreenPointToLocalPointInRectangle(parent,ScreenBounds(rect).center,null,out var actual);rect.anchoredPosition+=target-actual;}
+ public static void FitContents(RectTransform root,System.Collections.Generic.List<RectTransform> parts){root.localScale=Vector3.one;root.anchoredPosition=Vector2.zero;if(parts.Count==0)return;Rect source=ScreenBounds(parts[0]);foreach(var part in parts){var b=ScreenBounds(part);source=Rect.MinMaxRect(Mathf.Min(source.xMin,b.xMin),Mathf.Min(source.yMin,b.yMin),Mathf.Max(source.xMax,b.xMax),Mathf.Max(source.yMax,b.yMax));}var area=OverlayArea();float scale=Mathf.Min(1,area.width/Mathf.Max(1,source.width),area.height/Mathf.Max(1,source.height));root.localScale=Vector3.one*scale;Rect fitted=ScreenBounds(parts[0]);foreach(var part in parts){var b=ScreenBounds(part);fitted=Rect.MinMaxRect(Mathf.Min(fitted.xMin,b.xMin),Mathf.Min(fitted.yMin,b.yMin),Mathf.Max(fitted.xMax,b.xMax),Mathf.Max(fitted.yMax,b.yMax));}var parent=root.parent as RectTransform;RectTransformUtility.ScreenPointToLocalPointInRectangle(parent,area.center,null,out var target);RectTransformUtility.ScreenPointToLocalPointInRectangle(parent,fitted.center,null,out var actual);root.anchoredPosition+=target-actual;}
+ public static void FitVendorWindow(RectTransform root,bool right){root.localScale=Vector3.one;root.anchoredPosition=new Vector2(right?-24:24,right?-125:-55);var area=OverlayArea();var b=ScreenBounds(root);float scale=Mathf.Min(1,area.width/Mathf.Max(1,b.width),area.height/Mathf.Max(1,b.height));root.localScale=Vector3.one*scale;b=ScreenBounds(root);MoveScreenCenter(root,new Vector2(right?area.xMax-b.width*.5f:area.xMin+b.width*.5f,area.yMax-b.height*.5f));}
+ void OnDisable(){if(group){group.blocksRaycasts=wasBlocks;group.interactable=wasInteractable;}Current=Mode.None;}
+}}

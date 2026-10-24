@@ -1,0 +1,16 @@
+using System;using UnityEngine;using ROM.UI.Sprint01;
+namespace MultiFPS.Gameplay.RiftCombat {
+[Serializable]public sealed class RiftWeightedLootItem {public RiftLootItemDefinition Item;public float Weight=1;}
+[Serializable]public sealed class RiftWeightedLootRarity {public RiftLootRarityDefinition Rarity;public float Weight=1;}
+public sealed class RiftLootRoll {public RiftLootItemDefinition Item;public Rarity Rarity;public string RarityName;public Color Tint;public int Level;public float LevelMultiplier,RarityMultiplier,PowerMultiplier;}
+[CreateAssetMenu(menuName="ROM/Loot/Table")]
+public sealed class RiftLootTableDefinition:ScriptableObject {
+ [Range(0,1)]public float EquipmentChance=.15f;
+ public RiftWeightedLootItem[] Items=Array.Empty<RiftWeightedLootItem>();public RiftWeightedLootRarity[] Rarities=Array.Empty<RiftWeightedLootRarity>();
+ public int LevelOffset;[Min(0)]public int LevelVariance;[Min(0)]public float WeaponDamagePerLevel=.03f;
+ public static bool Finite(float value)=>!float.IsNaN(value)&&!float.IsInfinity(value);
+ public static float Unit(float value)=>Finite(value)?Mathf.Clamp(value,0,.99999994f):0;
+ public static T Choose<T>(T[] entries,Func<T,float> weight,Func<T,bool> valid,float sample) where T:class {if(entries==null)return null;double total=0;foreach(var e in entries)if(e!=null&&valid(e)&&Finite(weight(e))&&weight(e)>0)total+=weight(e);if(total<=0)return null;double cursor=Unit(sample)*total;T last=null;foreach(var e in entries){if(e==null||!valid(e)||!Finite(weight(e))||weight(e)<=0)continue;last=e;cursor-=weight(e);if(cursor<0)return e;}return last;}
+ public float LevelPower(int level)=>(float)Math.Min(float.MaxValue,1+Math.Max(0,(long)level-1)*(double)(Finite(WeaponDamagePerLevel)?Mathf.Max(0,WeaponDamagePerLevel):0));
+ public bool TryRoll(int playerLevel,int maximumLevel,Func<float> random,out RiftLootRoll result,Func<RiftLootItemDefinition,bool> allowed=null){result=null;if(random==null||!Finite(EquipmentChance)||EquipmentChance<=0)return false;if(Unit(random())>=Mathf.Clamp01(EquipmentChance))return false;var item=Choose(Items,e=>e.Weight,e=>e.Item&&e.Item.Supported&&(allowed==null||allowed(e.Item)),random());if(item==null)return false;var rarity=Choose(Rarities,e=>e.Weight,e=>e.Rarity&&(int)e.Rarity.Kind>=0&&(int)e.Rarity.Kind<=3&&Finite(e.Rarity.PowerMultiplier)&&e.Rarity.PowerMultiplier>0,random());if(rarity==null)return false;int max=Math.Max(1,maximumLevel),variance=Mathf.Clamp(LevelVariance,0,Math.Min(max,1000));int spread=variance>0?(int)Math.Floor(Unit(random())*(variance*2+1))-variance:0;long raw=(long)Math.Max(1,playerLevel)+LevelOffset+item.Item.LevelOffset+spread;int level=(int)Math.Max(1,Math.Min(max,raw));float levelPower=LevelPower(level);double power=(double)levelPower*rarity.Rarity.PowerMultiplier;float final=(float)Math.Max(.01,Math.Min(10,power));var color=rarity.Rarity.Tint;if(!Finite(color.r)||!Finite(color.g)||!Finite(color.b)||color.a<=0)color=new Color(.82f,.84f,.88f);color.a=1;result=new RiftLootRoll{Item=item.Item,Rarity=rarity.Rarity.Kind,RarityName=string.IsNullOrEmpty(rarity.Rarity.DisplayName)?rarity.Rarity.Kind.ToString():rarity.Rarity.DisplayName,Tint=color,Level=level,LevelMultiplier=levelPower,RarityMultiplier=rarity.Rarity.PowerMultiplier,PowerMultiplier=final};return true;}
+}}

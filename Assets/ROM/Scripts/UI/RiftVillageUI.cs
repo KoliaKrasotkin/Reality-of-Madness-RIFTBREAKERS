@@ -45,6 +45,7 @@ namespace ROM.UI.Sprint01
             if(cursorHeld&&!TalkingTo){Close();return;}
             if (TalkingTo)
             {
+                VendorTick();
                 if (Vector3.Distance(player.MyCharacter.transform.position, TalkingTo.transform.position) > TalkingTo.InteractionRadius + 1 || MultiFPS.RiftControls.Pressed("Pause")) { MultiFPS.RiftControls.EscapeConsumedFrame=Time.frameCount;Close(); return; }
                 balance.text = "ORO DEL JUEGO: " + RiftExplorationProgress.Gold;
                 for (int i = 0; i < 2; i++) if (stock[i]) stock[i].text = "En la mochila: " + RiftVillageSupplies.Count(i);
@@ -87,21 +88,12 @@ namespace ROM.UI.Sprint01
         public void ShowGoods(RiftVillageNpc npc)
         {
             if (TalkingTo != npc || !npc.Trades) return;
-            var quests=dialog.Find("Misiones");if(quests)DestroyImmediate(quests.gameObject);
-            var old = dialog.Find("Mercancia"); if (old) Destroy(old.gameObject);
-            var goods = W.Rect(dialog, "Mercancia", 30, 300, 920, 230);
-            for (int i = 0; i < 2; i++)
-            {
-                int id = i; float y = i * 105;
-                W.Label(goods, RiftVillageSupplies.Name(i) + " · recupera " + Mathf.RoundToInt(RiftVillageSupplies.Healing(i) * 100) + "% de vida", 0, y, 900, 33, 23);
-                stock[i] = W.Label(goods, "En la mochila: " + RiftVillageSupplies.Count(i), 0, y + 40, 350, 35, 20, W.Muted);
-                W.Button(goods, "COMPRAR · " + RiftVillageSupplies.Price(i) + " ORO", 370, y + 37, 265, 43, () => ClientFrontend.ClientPlayerInstance.GetComponent<RiftVillagePlayer>().CmdVillageTrade(npc.Id, id, false));
-                W.Button(goods, "VENDER · " + RiftVillageSupplies.Resale(i) + " ORO", 650, y + 37, 270, 43, () => ClientFrontend.ClientPlayerInstance.GetComponent<RiftVillagePlayer>().CmdVillageTrade(npc.Id, id, true));
-            }
-            RiftPanelChrome.Apply(dialog);
+            ShowVendor(npc);
         }
+
         public void Close()
         {
+            CloseVendor();
             var dialogueCamera=MultiFPS.GameplayCamera._instance?MultiFPS.GameplayCamera._instance.GetComponent<MultiFPS.Gameplay.RiftThirdPersonCamera>():null;if(dialogueCamera)dialogueCamera.EndConversation();
             if (cursorHeld)
             {

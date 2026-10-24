@@ -40,7 +40,7 @@ public sealed class RiftQuestGuidance:MonoBehaviour {
  bool Incomplete(QuestRecord q,RiftQuestDefinition def,int i)=>q.Status==QuestStatus.Active&&q.Progress!=null&&i<q.Progress.Length&&q.Progress[i]<def.Objectives[i].Required;
  public static bool EnemyMatches(Health health,JournalObjective objective,CharacterInstance actor){
   if(!health||!actor||health==actor.Health||health.TrainingTarget||health.CurrentHealth<=0||health.Team==actor.Health.Team||!health.gameObject.activeInHierarchy)return false;
-  var native=health.GetComponent<RiftEnemyAgent>();if(native){if(!native.Definition||native.Dead)return false;return objective.Matches(objective.Event,native.Definition.Id)&&(objective.Event==RiftProgressEvent.Kill&&!native.Definition.IsWildlife||objective.Event==RiftProgressEvent.MiniBoss&&native.Definition.IsBoss);}
+  var native=health.GetComponent<RiftEnemyAgent>();if(native){if(!native.Definition||native.Dead)return false;return objective.Matches(objective.Event,native.Definition.Id,native.QuestEncounter)&&(objective.Event==RiftProgressEvent.Kill&&!native.Definition.IsWildlife||objective.Event==RiftProgressEvent.MiniBoss&&native.Definition.IsBoss);}
   var legacy=health.GetComponent<RiftEnemyCombat>();return legacy&&legacy.ActiveCombat&&(objective.Event==RiftProgressEvent.Kill&&objective.Matches(RiftProgressEvent.Kill,"enemy")||objective.Event==RiftProgressEvent.MiniBoss&&legacy.ArchetypeIndex==2&&objective.Matches(RiftProgressEvent.MiniBoss,"boss"));
  }
  void Resolve(JournalState state,RiftJournalCatalog catalog,CharacterInstance actor){
@@ -65,7 +65,7 @@ public sealed class RiftQuestGuidance:MonoBehaviour {
   else if(o.Event==RiftProgressEvent.Checkpoint){foreach(var crystal in checkpoints)if(crystal&&!crystal.StartingCamp&&o.Matches(o.Event,crystal.Title)&&(!o.Unique||!q.Seen.Contains(index+":"+crystal.Title)))Choose(crystal.transform,crystal.Title,actor);}
   else if(o.Event==RiftProgressEvent.Encounter){var world=ROM.Horde.Horde.Instance;if(world&&world.Encounters!=null)foreach(var encounter in world.Encounters)if(encounter&&!encounter.Cleared&&o.Matches(o.Event,encounter.Title))Choose(encounter.transform,encounter.Title,actor);}
   else if(o.Event==RiftProgressEvent.Kill||o.Event==RiftProgressEvent.MiniBoss){foreach(var h in Health.All)if(EnemyMatches(h,o,actor))Choose(h.transform,h.CharacterName,actor);
-   if(!Destination)foreach(var zone in zones)if(zone&&!zone.Cleared&&zone.Enemies!=null&&zone.Enemies.Any(e=>e.Enemy&&o.Matches(o.Event,e.Enemy.Id)&&(o.Event==RiftProgressEvent.Kill&&!e.Enemy.IsWildlife||o.Event==RiftProgressEvent.MiniBoss&&e.Enemy.IsBoss)))Choose(zone.transform,"Zona: "+zone.Title,actor);
+   if(!Destination)foreach(var zone in zones)if(zone&&!zone.Cleared&&zone.Enemies!=null&&zone.Enemies.Any(e=>e.Enemy&&o.Matches(o.Event,e.Enemy.Id,zone.Encounter?zone.Encounter.Title:zone.Title)&&(o.Event==RiftProgressEvent.Kill&&!e.Enemy.IsWildlife||o.Event==RiftProgressEvent.MiniBoss&&e.Enemy.IsBoss)))Choose(zone.transform,"Zona: "+zone.Title,actor);
    if(!Destination&&o.Event==RiftProgressEvent.MiniBoss&&o.Matches(o.Event,"boss")){var world=ROM.Horde.Horde.Instance;if(world&&world.Encounters!=null)foreach(var encounter in world.Encounters)if(encounter&&encounter.MiniBoss&&!encounter.Cleared)Choose(encounter.transform,encounter.Title,actor);}
   }
  }

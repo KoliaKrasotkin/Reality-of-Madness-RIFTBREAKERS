@@ -32,6 +32,7 @@ public sealed partial class RiftHub {
   if(modal){DismissModal();return true;}
   if(modernMoreMenu&&modernMoreMenu.gameObject.activeSelf){modernMoreMenu.gameObject.SetActive(false);return true;}
   foreach(var dropdown in GetComponentsInChildren<Dropdown>()){var list=dropdown.transform.Find("Dropdown List");if(list&&list.gameObject.activeInHierarchy){dropdown.Hide();return true;}}
+  if(InGame&&(Page==HubPage.Help||Page==HubPage.News)){Navigate(HubPage.Home);return true;}
   if(ArsenalPanel&&ArsenalPanel.gameObject.activeSelf){ShowGameSettings();return true;}
   return false;
  }

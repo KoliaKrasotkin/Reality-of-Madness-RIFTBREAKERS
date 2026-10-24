@@ -1,0 +1,13 @@
+using System;using System.Collections.Generic;using System.Linq;using Mirror;using MultiFPS.Gameplay.RiftCombat;using UnityEngine;
+namespace ROM.Progression {
+public sealed partial class JournalState {public string LastHitWearAction="";}
+public sealed partial class RiftJournalPlayer {
+ sealed class WearAction {public string Item,Life;}
+ readonly Dictionary<string,WearAction> wearActions=new Dictionary<string,WearAction>();readonly Queue<string> wearOrder=new Queue<string>();
+ public int ServerWearRollCount{get;private set;}
+ string EquippedWearAxe(){if(!Combat||!Combat.Prototype||Combat.SwordAndShield||State==null)return null;var item=State.LootAxes?.FirstOrDefault(x=>x.Id==State.EquippedLootAxe&&x.Level<=Combat.Level);return item!=null?item.Id:"starter:axe";}
+ void CaptureWearAction(AbilityController controller,string token){if(controller!=Combat||!isServer||!Ensure()||!controller.Actor||controller.Actor.Health.CurrentHealth<=0)return;string item=EquippedWearAxe();if(string.IsNullOrEmpty(item)||wearActions.ContainsKey(token))return;wearActions[token]=new WearAction{Item=item,Life=controller.Actor.Health.ServerLifeToken};wearOrder.Enqueue(token);while(wearOrder.Count>128)wearActions.Remove(wearOrder.Dequeue());}
+ void ConnectedWearAction(AbilityController controller,string token){if(controller==Combat)ServerConnectWeaponWear(token);}
+ [Server]public bool ServerConnectWeaponWear(string token){if(string.IsNullOrEmpty(token)||!wearActions.TryGetValue(token,out var action))return false;wearActions.Remove(token);if(!Ensure()||!Combat||!Combat.Actor||Combat.Actor.Health.CurrentHealth<=0||Combat.Actor.Health.ServerLifeToken!=action.Life||EquippedWearAxe()!=action.Item||TradeReserved(action.Item)||State.LastHitWearAction==token)return false;var tuning=RiftRepairTuning.Load;if(!tuning||!tuning.AttackWearEnabled)return false;ServerWearRollCount++;if(!tuning.ShouldLoseHit(UnityEngine.Random.value))return false;string old=JsonUtility.ToJson(State);State.EnsureDurability();int lost=0;if(action.Item=="starter:axe"){int before=State.StarterAxeDurability;State.StarterAxeDurability=Mathf.Max(0,before-Mathf.Max(0,tuning.WearPerAction));lost=before-State.StarterAxeDurability;}else{var item=State.LootAxes.Single(x=>x.Id==action.Item);int before=item.Durability;item.Durability=Mathf.Max(0,before-Mathf.Max(0,tuning.WearPerAction));lost=before-item.Durability;}if(lost==0)return false;State.LastHitWearAction=token;if(!PersistDurabilityAtomic()){State=JsonUtility.FromJson<JournalState>(old);Report("No se pudo guardar el desgaste del arma.");return false;}ApplyLootEquipment();if(connectionToClient!=null)TargetSnapshot(connectionToClient,JsonUtility.ToJson(State),"");return true;}
+}
+}

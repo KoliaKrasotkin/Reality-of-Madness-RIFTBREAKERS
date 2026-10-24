@@ -19,6 +19,10 @@ namespace MultiFPS.Gameplay
         /// </summary>
         public string CharacterName = "DEFAULT";
         public int CurrentHealth = 100;
+        public string ServerLifeToken {get;private set;}=Guid.NewGuid().ToString("N");
+        public static event Action<Health,string> ServerDied;
+        public static event Action<Health,Health,int> ServerHealed;
+        void NotifyServerDeath(){if(!NetworkServer.active)return;try{ServerDied?.Invoke(this,ServerLifeToken);}catch(Exception error){Debug.LogException(error);}}
         [SyncVar] public int MaxHealth = 100;
         [SyncVar(hook=nameof(TrainingChanged))] public bool TrainingTarget;
         [SyncVar] public int TrainingLastDamage,TrainingTotalDamage;
@@ -94,7 +98,7 @@ namespace MultiFPS.Gameplay
         bool nativeRegistered;
         public void ReleaseNativeRegistration(){if(nativeRegistered&&GameSync.Singleton){GameSync.Singleton.Healths.ServerDeregisterDNSyncObj(this);nativeRegistered=false;}}
         public void RegisterNativeSpawn(){if(_targetPositionTracker&&isServer&&GameSync.Singleton&&!nativeRegistered){GameSync.Singleton.Healths.ServerRegisterDNSyncObj(this);nativeRegistered=true;}}
-        public void ResetNativeSpawn(){_dead=_clientDead=false;CombatDamageMultiplier=1;CombatTransfer=false;VulnerableUntil=WeakenedUntil=0;_lastDamageMemory=0;if(_damageMemories!=null)System.Array.Clear(_damageMemories,0,_damageMemories.Length);}
+        public void ResetNativeSpawn(){ServerLifeToken=Guid.NewGuid().ToString("N");_dead=_clientDead=false;CombatDamageMultiplier=1;CombatTransfer=false;VulnerableUntil=WeakenedUntil=0;_lastDamageMemory=0;if(_damageMemories!=null)System.Array.Clear(_damageMemories,0,_damageMemories.Length);}
         void Start()
         {
             _damageMemories = new DamageMemory[6];
@@ -140,6 +144,7 @@ namespace MultiFPS.Gameplay
 
             if (CurrentHealth <= 0 && !_dead)
             {
+                NotifyServerDeath();
                 RpcNotifyGamemode(damagedPart, attackType, attacker, attackForce, EvaluateAssist(attacker));
                 Server_OnHealthDepleted?.Invoke(damagedPart, attackType, attacker, attackForce);
                 _dead = true;
@@ -162,6 +167,7 @@ namespace MultiFPS.Gameplay
 
             if (CurrentHealth <= 0 && !_dead)
             {
+                NotifyServerDeath();
                 RpcNotifyGamemode(damagedPart, attackType, attacker, attackForce, EvaluateAssist(attacker));
                 Server_OnHealthDepleted?.Invoke(damagedPart, attackType, attacker, attackForce);
                 _dead = true;
@@ -300,24 +306,24 @@ namespace MultiFPS.Gameplay
         [ClientRpc] void RpcSetVitals(int max,int current){MaxHealth=max;CurrentHealth=current;Client_OnHealthAdded?.Invoke(current,0,DNID);}
 
         //execute only on server, then server will update health state for every client
-        public int ServerHeal(int healthToAdd, byte healerID) 
+        public int ServerHeal(int healthToAdd, byte healerID)
         {
-            if (CurrentHealth == MaxHealth) return 0;
-
-            int neededHealth = MaxHealth - CurrentHealth;
-
-            if (neededHealth > healthToAdd)
-                neededHealth = healthToAdd;
-
-            CurrentHealth += neededHealth;
-
-            RpcHealthAdded(CurrentHealth, neededHealth, healerID);
-
-            return neededHealth;
+            Health healer=GameSync.Singleton&&GameSync.Singleton.Healths!=null?GameSync.Singleton.Healths.GetObj(healerID):null;
+            return ApplyServerHeal(healthToAdd,healerID,healer);
+        }
+        public int ServerHeal(int healthToAdd, Health healer)=>ApplyServerHeal(healthToAdd,healer?healer.DNID:(byte)0,healer);
+        int ApplyServerHeal(int healthToAdd,byte healerID,Health healer)
+        {
+            if(!NetworkServer.active||healthToAdd<=0||CurrentHealth<=0||_dead||CurrentHealth>=MaxHealth)return 0;
+            int effective=(int)System.Math.Min((long)healthToAdd,(long)MaxHealth-CurrentHealth);
+            CurrentHealth+=effective;RpcHealthAdded(CurrentHealth,effective,healerID);
+            if(healer)try{ServerHealed?.Invoke(this,healer,effective);}catch(Exception e){Debug.LogException(e);}
+            return effective;
         }
 
         public void ServerResurrect()
         {
+            if(_dead||CurrentHealth<=0||string.IsNullOrEmpty(ServerLifeToken))ServerLifeToken=Guid.NewGuid().ToString("N");
             //prepare client for resurrection
             RpcClientResurrect();
 

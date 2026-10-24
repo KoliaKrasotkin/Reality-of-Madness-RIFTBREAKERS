@@ -8,6 +8,14 @@ public sealed class WeaponDefinition : ScriptableObject
  public string Id,DisplayName,WeaponType;
  public EquipmentRole Role;
  public float DamageMultiplier=1,AttackSpeed=1,Reach=3;
+ [Header("Weapon damage (version 0 retains legacy definitions)")]
+ public int DamageModelVersion;
+ [Min(0)]public float DamageMinimum=16,DamageMaximum=20;
+ [Min(.2f)]public float SwingSeconds=1.8f;
+ public float BaseDamageMinimum=>IsShield?0:DamageModelVersion>0?Mathf.Max(0,DamageMinimum):18*Mathf.Max(0,DamageMultiplier);
+ public float BaseDamageMaximum=>IsShield?0:DamageModelVersion>0?Mathf.Max(BaseDamageMinimum,DamageMaximum):BaseDamageMinimum;
+ public float SwingDuration=>DamageModelVersion>0?Mathf.Max(.2f,SwingSeconds):1.8f/Mathf.Max(.1f,AttackSpeed);
+ public string DamageSummary(float power=1){power=float.IsNaN(power)||float.IsInfinity(power)?1:Mathf.Clamp(power,.01f,10);float min=BaseDamageMinimum*power,max=BaseDamageMaximum*power;return "Daño: "+min.ToString("0.##")+"–"+max.ToString("0.##")+"\nVelocidad: "+SwingDuration.ToString("0.##")+" s\nDPS del arma: "+((min+max)*.5f/SwingDuration).ToString("0.##");}
  public GameObject Model;
  public HumanBodyBones Socket=HumanBodyBones.RightHand;
  public Vector3 Position,Rotation,Scale=Vector3.one;

@@ -16,6 +16,8 @@ MonoBehaviour:
   DisplayName: Warrior
   Resource: 0
   MaximumResource: 100
+  RageDecayDelay: 8
+  RageDecayPerSecond: 5
   BasicAttack: {fileID: 11400000, guid: e20ad3e585a391a44a4de12454680fbf, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 919c949b41266984eb293d24cc24f08a, type: 2}

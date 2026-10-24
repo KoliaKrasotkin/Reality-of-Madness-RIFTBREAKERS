@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae601eb47e202149b5c8b932c3897a9, type: 3}
+  m_Name: pt20-field-medicine
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftQuestDefinition
+  Id: "pt20-field-medicine"
+  Title: "Medicina de campa\u00f1a"
+  Description: "Comprar y usar una poci\u00f3n despu\u00e9s de aceptar; no requiere morir ni agotar durabilidad"
+  Giver: "alma"
+  TurnIn: "alma"
+  Prerequisite: "pt20-west-upper-salvage"
+  Gold: 65
+  Experience: 2000
+  AdditionalPrerequisites:
+  - pt20-training-return
+  - pt20-west-upper-hostiles
+  - pt20-west-ward-pieces
+  Objectives:
+  - Event: 6
+    Filter: ""
+    Label: "Comprar una poci\u00f3n"
+    Required: 1
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: ""
+  - Event: 7
+    Filter: ""
+    Label: "Usar una poci\u00f3n"
+    Required: 1
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: ""

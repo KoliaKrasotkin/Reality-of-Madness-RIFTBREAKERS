@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae601eb47e202149b5c8b932c3897a9, type: 3}
+  m_Name: pt20-west-seals
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftQuestDefinition
+  Id: "pt20-west-seals"
+  Title: "Los tres sellos"
+  Description: "3 sellos f\u00edsicos alrededor de la aproximaci\u00f3n al guardi\u00e1n, no dentro de su melee"
+  Giver: "iria"
+  TurnIn: "iria"
+  Prerequisite: "pt20-west-second-report"
+  Gold: 75
+  Experience: 2400
+  AdditionalPrerequisites: []
+  Objectives:
+  - Event: 9
+    Filter: "pt20-west-seals-item"
+    Label: "Recuperar tres sellos distintos"
+    Required: 3
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: ""

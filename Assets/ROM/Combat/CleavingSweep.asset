@@ -18,7 +18,12 @@ MonoBehaviour:
     Independiente del autoataque.
   Icon: {fileID: 21300000, guid: 78c5ef25e72840c4afdf26c2dd0ea230, type: 3}
   Shape: 0
+  MaximumTargets: 3
+  RequiresPrimaryTarget: 1
   DamageKind: 0
+  UsesWeaponDamage: 1
+  WeaponCoefficient: 1
+  WeaponBonus: 4
   Damage: 22
   Range: 3.4
   Radius: 3.6

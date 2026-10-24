@@ -102,9 +102,13 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
   if(slot==0){var target=CombatTarget;if(!target||target==Actor.Health||target.Team==Actor.Health.Team||target.CurrentHealth<=0)return false;var delta=target.transform.position-Actor.transform.position;delta.y=0;var forward=Quaternion.Euler(0,Actor.Input.LookY,0)*Vector3.forward;if(delta.magnitude>ability.Radius||Vector3.Angle(forward,delta)>ability.Arc*.5f||!CombatController.Visible(Actor,target))return false;}
 
+  if(ability.RequiresPrimaryTarget&&!ValidAreaVictim(CombatTarget,Actor.transform.position,Quaternion.Euler(0,Actor.Input.LookY,0)*Vector3.forward,slot,ability))return RejectAction("Seleccioná un enemigo válido.");
+
+  if(ability.Shape!=AbilityShape.Self&&ability.Damage>0&&QueueWeaponDraw(slot))return true;
+
   Resource=Mathf.Max(0,Resource-ability.Cost);Ready[slot]=now+AbilityCooldown(slot,ability);GlobalReady=now+ability.Recovery;
 
-  attackTarget=TargetNetId;Casting=slot;pending=ability;strikeTicks=0;CastEnd=now+ability.CastDuration;hitAt=now+ability.HitTime;applied=false;
+  castWeaponRoll=ability.Shape!=AbilityShape.Self&&ability.Damage>0?RollWeaponDamage():0;castWearToken=ability.Shape!=AbilityShape.Self&&ability.Damage>0?BeginWearAction():null;castWearConnected=false;attackTarget=TargetNetId;Casting=slot;pending=ability;strikeTicks=0;CastEnd=now+ability.CastDuration;hitAt=now+ability.HitTime;applied=false;
 
   facing=Quaternion.Euler(0,Actor.Input.LookY,0)*Vector3.forward;Player.LastCombatAt=now;
 
@@ -112,7 +116,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
  }
 
- [Server]public void Cancel(){Casting=-1;pending=null;CastEnd=0;}
+ [Server]public void Cancel(){CancelWeaponDraw();Casting=-1;pending=null;CastEnd=0;}
 
  void Update(){
 
@@ -124,7 +128,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
    if(!Species.AllowsSkin(Player.PlayerInfo.CharacterSkinID)){Prototype=false;Cancel();return;}
 
-   if(!Actor||Actor.Health.CurrentHealth<=0){TargetNetId=0;Cancel();configured=null;return;}if(TargetNetId!=0&&(!CombatTarget||CombatTarget.CurrentHealth<=0||Vector3.Distance(Actor.transform.position,CombatTarget.transform.position)>110))TargetNetId=0;if(configured!=Actor)Configure();
+   if(!Actor||Actor.Health.CurrentHealth<=0){if(Class&&Class.Resource==CombatResourceKind.Rage)Resource=0;TargetNetId=0;Cancel();configured=null;return;}if(TargetNetId!=0&&(!CombatTarget||CombatTarget.CurrentHealth<=0||Vector3.Distance(Actor.transform.position,CombatTarget.transform.position)>110))TargetNetId=0;if(configured!=Actor)Configure();TickRageDecay(Time.deltaTime);
 
    while(pending&&!applied&&NetworkTime.time>=hitAt){Apply(pending);strikeTicks++;if(Casting==5&&strikeTicks<4)hitAt+=.4;else applied=true;}if(pending&&NetworkTime.time>=CastEnd)Cancel();
 
@@ -135,6 +139,21 @@ public sealed partial class AbilityController:NetworkBehaviour {
  }
 
  public void Request(int slot){if(!isLocalPlayer||slot<1||slot>=Ready.Count)return;if(!IsAbilityLearned(slot)){LocalNotice(AbilityUnavailableReason(slot));return;}if(NetworkTime.time<Ready[slot]||NetworkTime.time<GlobalReady){LocalNotice("Habilidad en recarga");return;}var ability=Definition(slot);if(ability&&ability.Shape!=AbilityShape.Self)RiftMMOController.Instance?.TryAutoTarget(ability,this);if(ability&&ability.Implemented&&ability.Allows(Specialization.Id)&&ability.Shape!=AbilityShape.Self&&Resource>=ability.Cost)RiftMMOController.Instance?.StartAutoAttack();if(NetworkTime.time<CastEnd&&CastEnd-NetworkTime.time<=.18){queued=slot;queueUntil=Time.unscaledTime+.18f;}else CmdUseAbility(ability.Id);}
+
+
+ [Server]void TickRageDecay(float elapsed){if(!Class||Class.Resource!=CombatResourceKind.Rage)return;Resource=Mathf.Clamp(Resource,0,Class.MaximumResource);if(Casting>=0||autoPending||NetworkTime.time-Player.LastCombatAt<Class.RageDecayDelay)return;Resource=Mathf.Max(0,Resource-Mathf.Max(0,Class.RageDecayPerSecond)*Mathf.Max(0,elapsed));}
+ bool CanTaunt(Health target,Vector3 origin,AbilityDefinition ability)=>Actor&&target&&target!=Actor.Health&&target.gameObject.activeInHierarchy&&target.CurrentHealth>0&&target.Team!=Actor.Health.Team&&target.gameObject.scene==Actor.gameObject.scene&&(target.transform.position-origin).sqrMagnitude<=ability.Radius*ability.Radius&&CombatController.Visible(Actor,target);
+ bool ValidAreaVictim(Health victim,Vector3 origin,Vector3 forward,int slot,AbilityDefinition ability){
+  if(!Actor||!victim||victim==Actor.Health||!victim.gameObject.activeInHierarchy||victim.CurrentHealth<=0||victim.Team==Actor.Health.Team||victim.gameObject.scene!=Actor.gameObject.scene)return false;
+  var delta=victim.transform.position-origin;delta.y=0;if(delta.magnitude>AbilityRadius(slot,ability)||(ability.Shape==AbilityShape.Arc&&Vector3.Angle(forward,delta)>AbilityArc(slot,ability)*.5f))return false;
+  return (!GameManager.Gamemode||!GameManager.Gamemode.BlockDamage(victim,Actor.Health))&&CombatController.Visible(Actor,victim);
+ }
+ static float AreaDistanceSquared(Health victim,Vector3 origin){var delta=victim.transform.position-origin;delta.y=0;return delta.sqrMagnitude;}
+ List<Health> SelectAreaVictims(int slot,AbilityDefinition ability,Vector3 origin,Vector3 forward){
+  var selected=new List<Health>();if(ability.RequiresPrimaryTarget){Health primary=null;if(attackTarget!=0&&NetworkServer.spawned.TryGetValue(attackTarget,out var identity))primary=identity.GetComponent<Health>();if(!ValidAreaVictim(primary,origin,forward,slot,ability))return selected;selected.Add(primary);}
+  var candidates=new List<Health>();var seen=new HashSet<Health>(selected);foreach(var victim in Health.All)if(victim&&seen.Add(victim)&&ValidAreaVictim(victim,origin,forward,slot,ability))candidates.Add(victim);
+  candidates.Sort((a,b)=>{int order=AreaDistanceSquared(a,origin).CompareTo(AreaDistanceSquared(b,origin));return order!=0?order:a.netId.CompareTo(b.netId);});int limit=ability.MaximumTargets>0?ability.MaximumTargets:int.MaxValue;foreach(var candidate in candidates){if(selected.Count>=limit)break;selected.Add(candidate);}return selected;
+ }
 
  [Server]void Apply(AbilityDefinition ability){
 
@@ -148,15 +167,16 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
    BuffUntil=NetworkTime.time+ability.BuffDuration;BuffReduction=Specialization.Id=="guardian"?ability.DamageReduction:ability.DamageReduction*.5f;OffensiveBonus=Specialization.Id=="ravager"?ability.OffensiveBonus:0;
 
-   foreach(var enemy in RiftEnemyCombat.Active)if(enemy&&Vector3.Distance(enemy.transform.position,origin)<=ability.Radius)enemy.Taunt(Actor.Health,ability.BuffDuration,Specialization.Id=="guardian");
+   var taunted=new HashSet<Health>();foreach(var enemy in RiftEnemyCombat.Active)if(enemy&&CanTaunt(enemy.GetComponent<Health>(),origin,ability)&&taunted.Add(enemy.GetComponent<Health>()))enemy.Taunt(Actor.Health,ability.BuffDuration,Specialization.Id=="guardian");
 
-   foreach(var enemy in RiftEnemies.RiftEnemyAgent.All)if(enemy&&(enemy.transform.position-origin).sqrMagnitude<=ability.Radius*ability.Radius)enemy.Taunt(Actor.Health,ability.BuffDuration,Specialization.Id=="guardian");
+   foreach(var enemy in RiftEnemies.RiftEnemyAgent.All)if(enemy&&CanTaunt(enemy.Health,origin,ability)&&taunted.Add(enemy.Health))enemy.Taunt(Actor.Health,ability.BuffDuration,Specialization.Id=="guardian");
 
   }else{
 
    // Registry contains each Health once: one damage event per target per strike.
 
-   foreach(var victim in Health.All){if(!victim)continue;
+   IEnumerable<Health> victims=ability.MaximumTargets>0||ability.RequiresPrimaryTarget?SelectAreaVictims(Casting,ability,origin,facing):Health.All;
+   foreach(var victim in victims){if(!victim)continue;
 
     if(victim==Actor.Health||victim.Team==Actor.Health.Team||victim.CurrentHealth<=0||(Casting==0&&victim.netId!=attackTarget))continue;
 
@@ -166,7 +186,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
     float buff=BuffUntil>NetworkTime.time?1+OffensiveBonus:1;
 
-    int damage=Mathf.RoundToInt(ability.Damage*Specialization.DamageMultiplier*WeaponMultiplier*buff*(Casting==2?1+Rank(7)*.08f:Casting==7?1+Rank(2)*.05f:1));
+    int damage=Mathf.RoundToInt(AbilityDamageBasis(ability,castWeaponRoll)*Specialization.DamageMultiplier*buff*(Casting==2?1+Rank(7)*.08f:Casting==7?1+Rank(2)*.05f:1));
 
     if(CombatController.Hit(Actor.Health,victim,damage)){hits++;var enemy=victim.GetComponent<RiftEnemyCombat>();if(enemy){if(ability.ThreatMultiplier>1)enemy.AddThreat(Actor.Health,damage*Specialization.ThreatMultiplier*(ability.ThreatMultiplier-1));enemy.Stagger(ability.Stagger+(Casting==2?Rank(7)*.1f:0));}var npc=victim.GetComponent<RiftEnemies.RiftEnemyAgent>();if(npc){if(ability.ThreatMultiplier>1)npc.AddThreat(Actor.Health,damage*Specialization.ThreatMultiplier*(ability.ThreatMultiplier-1));npc.Stagger(ability.Stagger+(Casting==2?Rank(7)*.1f:0));}}
 
@@ -174,7 +194,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
   }
 
-  if(hits>0)Resource=Mathf.Min(Class.MaximumResource,Resource+Gain(ability.ResourceGain));
+  if(hits>0){if(!castWearConnected){castWearConnected=true;ConnectWearAction(castWearToken);}Resource=Mathf.Min(Class.MaximumResource,Resource+Gain(ability.ResourceGain));}
 
   RpcImpact(Casting,origin,facing);
 
@@ -185,4 +205,3 @@ public sealed partial class AbilityController:NetworkBehaviour {
  [ClientRpc]void RpcImpact(int slot,Vector3 origin,Vector3 forward){var a=Definition(slot);if(a&&a.ImpactVfx)CombatVfxPool.Spawn(a.ImpactVfx,origin+Vector3.up*.1f,Quaternion.LookRotation(forward),3);}
 
 }}
-

@@ -39,6 +39,8 @@ namespace MultiFPS.Gameplay.RiftCombat
         [Command] private void CmdSetWeaponDrawn(bool drawn)=>SetWeaponDrawnOnServer(drawn);
         [Server] private void SetWeaponDrawnOnServer(bool drawn)
         {
+            var combatState=actor&&actor.Health?AbilityController.For(actor.Health):null;
+            if(combatState&&combatState.Prototype)drawn=combatState.ServerWeaponCombatActive;
             if(IsRolling){queuedWeaponState=drawn?1:0;return;}
             if(weaponDrawn==drawn)return;
             PrepareWeaponChange(drawn);
@@ -71,7 +73,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         public void RequestJump(){if(!IsRolling)jumpRequested=Time.time;}
         void FixedUpdate()
         {
-            if(isServer)ServerFallDamage();
+            if(isServer){ServerFallDamage();var combatState=actor&&actor.Health?AbilityController.For(actor.Health):null;if(combatState&&combatState.Prototype)SetWeaponDrawnOnServer(combatState.ServerWeaponCombatActive);}
             if(!isOwned||!actor||actor.Health.CurrentHealth<=0||!capsule.enabled)return;
             float dt=Time.fixedDeltaTime;
             actor.PrepareCharacterToLerp();

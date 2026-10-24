@@ -20,9 +20,9 @@ namespace MultiFPS
         static readonly List<Entry> entries=new List<Entry>();static readonly Dictionary<string,Entry> byId=new Dictionary<string,Entry>();
         public static IReadOnlyList<Entry> Entries{get{Ensure();return entries;}}
         public static bool Rebinding {get;set;}
-        public static int EscapeConsumedFrame=-1;
+        public static int EscapeConsumedFrame=-1;public static int TextInputConsumedFrame=-1;
         public static int InterfaceConsumedFrame=-1;
-        public static bool TextEntryFocused {get {var events=UnityEngine.EventSystems.EventSystem.current;var selected=events?events.currentSelectedGameObject:null;return selected&&(selected.GetComponent<UnityEngine.UI.InputField>()||selected.GetComponent("TMP_InputField"));}}
+        public static bool TextEntryFocused {get {if(TextInputConsumedFrame==Time.frameCount||ChatBehaviour._instance&&ChatBehaviour._instance.ChatWriting)return true;var events=UnityEngine.EventSystems.EventSystem.current;var selected=events?events.currentSelectedGameObject:null;return selected&&(selected.GetComponent<UnityEngine.UI.InputField>()||selected.GetComponent("TMP_InputField"));}}
         public static event Action Changed;
         static Binding B(string path,Modifiers mods=0)=>new Binding(path,mods);
         static void Add(string id,string name,string group,string path,string second="",bool continuous=false,Modifiers mods=0){var e=new Entry{Id=id,Name=name,Group=group,Continuous=continuous,Bindings=new[]{B(path,mods),B(second)},Defaults=new[]{B(path,mods),B(second)}};entries.Add(e);byId.Add(id,e);}

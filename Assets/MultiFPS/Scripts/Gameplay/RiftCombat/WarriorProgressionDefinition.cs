@@ -6,7 +6,9 @@ namespace MultiFPS.Gameplay.RiftCombat {
 }
 [CreateAssetMenu(menuName="ROM/Combat/Warrior progression")]
 public sealed class WarriorProgressionDefinition:ScriptableObject {
- public int MaximumLevel=20,KillExperience=35,BossExperience=150,EncounterExperience=75,CrystalExperience=60,QuestExperience=250;
+ [UnityEngine.Serialization.FormerlySerializedAs("MaximumLevel")][SerializeField]int legacyMaximumLevel=20;
+ public int MaximumLevel=>RiftProgressionCaps.Load.ActivePlayerCap;
+ public int KillExperience=35,BossExperience=150,EncounterExperience=75,CrystalExperience=60,QuestExperience=250;
  public float DamagePerLevel=.02f,HealthPerLevel=.08f;
  public WeaponDefinition Sword;
  // Inventory compatibility; the companion definition owns the shield model.
