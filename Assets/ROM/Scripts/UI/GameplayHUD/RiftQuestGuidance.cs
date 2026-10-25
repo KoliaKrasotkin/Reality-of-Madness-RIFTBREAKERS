@@ -33,9 +33,8 @@ public sealed class RiftQuestGuidance:MonoBehaviour {
   if(!hud||!actor||actor.Health.CurrentHealth<=0||ClientFrontend.Pause||ClientFrontend.Hub){if(marker)marker.gameObject.SetActive(false);ClearGlows();return;}
   var state=RiftJournalView.Read();var catalog=RiftJournalCatalog.Load;if(!catalog)return;
   if(Time.unscaledTime>=next){next=Time.unscaledTime+.25f;Resolve(state,catalog,actor);}
-  foreach(var pair in glows)if(pair.Value)pair.Value.enabled=pair.Key&&pair.Key.enabled&&pair.Key.gameObject.activeInHierarchy;
+  foreach(var pair in glows)if(pair.Value)pair.Value.enabled=pair.Key&&pair.Key.enabled&&!pair.Key.forceRenderingOff&&pair.Key.gameObject.activeInHierarchy;
   DrawMarker(actor);
-  if(RiftControls.Pressed("Interact")&&!RiftInterfaceCursor.Typing&&UICursorManager.GamePlayInput()&&RiftMMOController.Instance&&RiftMMOController.Instance.SelectedWorld){var item=RiftMMOController.Instance.SelectedWorld.GetComponent<RiftQuestCollectible>();if(item)item.GetComponent<RiftWorldTarget>().Interact();}
  }
  bool Incomplete(QuestRecord q,RiftQuestDefinition def,int i)=>q.Status==QuestStatus.Active&&q.Progress!=null&&i<q.Progress.Length&&q.Progress[i]<def.Objectives[i].Required;
  public static bool EnemyMatches(Health health,JournalObjective objective,CharacterInstance actor){

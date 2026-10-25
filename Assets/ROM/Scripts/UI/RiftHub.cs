@@ -140,6 +140,7 @@ namespace ROM.UI.Sprint01
         {
             CancelBinding();
             if(!content)return;
+            if(InGame&&page!=HubPage.Home&&page!=HubPage.Help&&page!=HubPage.News&&MultiFPS.UI.UIPauseMenu._instance&&!MultiFPS.UI.UIPauseMenu._instance.InterfaceShowing)MultiFPS.UI.UIPauseMenu._instance.ShowInterface(true);
             if(page!=HubPage.Home&&Stage)Stage.StopEmote();emoteStatus=null;
             if(page==HubPage.Lobby)page=HubPage.Home;
             if(page!=HubPage.Home)homePanel="";
@@ -387,11 +388,11 @@ namespace ROM.UI.Sprint01
         Action modalCancel;
         public void Dialog(string title,string message,Action confirm,Action cancel=null)
         {
-            modalCancel=cancel;if(modal)DestroyImmediate(modal.gameObject);modal=W.Rect(Design,"Modal",0,0,1920,1080);
+            if(modal)DismissModal();modalCancel=cancel;modal=W.Rect(Design,"Modal",0,0,1920,1080);if(InGame)UICursorManager.RequestCursor(modal.gameObject);
             var shade=W.Image(modal,"Blocker",0,0,1920,1080,new Color(0,0,0,.8f));shade.raycastTarget=true;
             var panel=W.Panel(modal,"Dialog",580,355,760,370);W.Label(panel,title,32,26,696,54,32);W.Label(panel,message,32,96,696,154,22);RiftPanelChrome.Apply(panel);
             RiftSkillStyle.Button(panel,confirm==null?"CERRAR [Esc]":"CANCELAR [Esc]",32,280,328,58,()=>{if(!InGame){StartCoroutine(DeferMainMenuAction(DismissModal));return;}DismissModal();});
-            if(confirm!=null)RiftSkillStyle.Button(panel,"CONFIRMAR",384,280,344,58,()=>{if(!InGame){ConfirmMainMenuDialog(confirm);return;}DestroyImmediate(modal.gameObject);modalCancel=null;confirm();},true);
+            if(confirm!=null)RiftSkillStyle.Button(panel,"CONFIRMAR",384,280,344,58,()=>{if(!InGame){ConfirmMainMenuDialog(confirm);return;}UICursorManager.ReleaseCursor(modal.gameObject);DestroyImmediate(modal.gameObject);modalCancel=null;confirm();},true);
             if(EventSystem.current)EventSystem.current.SetSelectedGameObject(panel.GetComponentInChildren<Button>().gameObject);
         }
         void OnDestroy(){MultiFPS.ChatBehaviour.PartyChanged-=SessionPartyChanged;RiftControls.Changed-=RefreshBoundLabels;ROM.Progression.RiftJournalView.Changed-=JournalChanged;CancelBinding();if(Social!=null)Social.Changed-=SocialChanged;}

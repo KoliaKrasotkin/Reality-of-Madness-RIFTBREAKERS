@@ -16,6 +16,9 @@ namespace MultiFPS.UI
         public bool AbleToPause = true; //disable only for hub and loading screens
         public bool pauseMenuShowing = false;
         public Func<bool> CloseTopLayer;
+        public bool InterfaceShowing{get;private set;}
+        public void ShowInterface(bool show){if(InterfaceShowing==show)return;if(show&&pauseMenuShowing)ShowPauseMenu(false);InterfaceShowing=show;pauseMenuOverlay.SetActive(show);if(show)UICursorManager.RequestCursor(gameObject,true);else UICursorManager.ReleaseCursor(gameObject);}
+
 
         [SerializeField] Button _uiBtnResume;
         [SerializeField] Button _uiBtnDisconnect;
@@ -36,6 +39,7 @@ namespace MultiFPS.UI
         {
             if (pauseMenuShowing)
                 ShowPauseMenu(false);
+            if(InterfaceShowing)ShowInterface(false);
         }
 
         private void OnDestroy()
@@ -61,6 +65,8 @@ namespace MultiFPS.UI
         {
             //check for input to show pause menu
             bool escape=UnityEngine.InputSystem.Keyboard.current!=null&&UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame;
+            if(InterfaceShowing&&escape&&(UICursorManager.IsTopRequest(gameObject)||UICursorManager.IsTopRequestIn(pauseMenuOverlay.transform))&&RiftControls.EscapeConsumedFrame!=Time.frameCount&&!RiftControls.TextEntryFocused&&!RiftControls.Rebinding){if(CloseTopLayer==null||!CloseTopLayer())ShowInterface(false);RiftControls.EscapeConsumedFrame=Time.frameCount;return;}
+            if(InterfaceShowing)return;
             if (!((RiftControls.Pressed("Pause")||(pauseMenuShowing&&escape)) && RiftControls.EscapeConsumedFrame!=Time.frameCount && !RiftControls.Rebinding && AbleToPause && !ClientFrontend.Hub)) return;
 
             if (ChatBehaviour._instance && ChatBehaviour._instance.ChatWriting)
@@ -78,6 +84,7 @@ namespace MultiFPS.UI
         public void ShowPauseMenu(bool show)
         {
             //if we have closed pause menu, and want to close it again, return from method
+            if(!show&&InterfaceShowing){ShowInterface(false);return;}if(show&&InterfaceShowing)ShowInterface(false);
             if (pauseMenuShowing == show) return;
 
             pauseMenuShowing = show; //this method won't always be called by keyboard button, so we have to update this state again

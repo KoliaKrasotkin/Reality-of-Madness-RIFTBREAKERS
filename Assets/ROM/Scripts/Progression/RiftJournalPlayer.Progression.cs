@@ -4,12 +4,15 @@ using MultiFPS.Gameplay;
 using MultiFPS.Gameplay.RiftCombat;
 using UnityEngine;
 namespace ROM.Progression {
+public sealed partial class JournalState {
+ public bool EnsureTalentRanks(WarriorProgressionDefinition tuning){var valid=tuning.ValidTalentRanks(Experience,TalentRanks);bool changed=TalentRanks==null||!System.Linq.Enumerable.SequenceEqual(TalentRanks,valid);if(changed)TalentRanks=valid;return changed;}
+}
 public sealed partial class RiftJournalPlayer {
  public static event System.Action<Vector3,int> ExperienceAwarded;int pendingExperienceFeedback;
   [TargetRpc]void TargetExperienceAward(NetworkConnectionToClient connection,int amount){if(amount>0&&isLocalPlayer&&Player&&Player.MyCharacter)ExperienceAwarded?.Invoke(Player.MyCharacter.transform.position+Vector3.up*2.2f,amount);}
   void FlushExperienceFeedback(){int amount=pendingExperienceFeedback;pendingExperienceFeedback=0;if(amount>0&&connectionToClient!=null)TargetExperienceAward(connectionToClient,amount);}
   AbilityController Combat=>GetComponent<AbilityController>();
- void ApplyProgression(){if(isServer&&State!=null&&Combat){if(State.TalentRanks==null||State.TalentRanks.Length!=9)State.TalentRanks=new int[9];Combat.ServerProgression(State.Experience,State.TalentRanks,State.SwordAndShield);ApplyLootEquipment();}}
+ void ApplyProgression(){if(isServer&&State!=null&&Combat){State.EnsureTalentRanks(Combat.Progression);Combat.ServerProgression(State.Experience,State.TalentRanks,State.SwordAndShield);ApplyLootEquipment();}}
  void AwardExperience(int amount,List<string> notices){var tuning=WarriorProgressionDefinition.Load;int level=tuning.Level(State.Experience);int previousExperience=State.Experience;if(State.Experience<tuning.MaximumExperience)State.Experience=(int)System.Math.Min(tuning.MaximumExperience,System.Math.Max(0,(long)State.Experience)+System.Math.Max(0,amount));pendingExperienceFeedback+=Mathf.Max(0,State.Experience-previousExperience);int after=tuning.Level(State.Experience);if(after>level)notices.Add("Nivel "+after+" · "+(after-level)+" punto(s) de talento");}
  void AwardProgressEvent(RiftProgressEvent kind,bool fresh,List<string> notices){var t=WarriorProgressionDefinition.Load;int xp=kind==RiftProgressEvent.Kill?t.KillExperience:kind==RiftProgressEvent.MiniBoss?t.BossExperience:kind==RiftProgressEvent.Encounter?t.EncounterExperience:kind==RiftProgressEvent.Checkpoint&&fresh?t.CrystalExperience:0;AwardExperience(xp,notices);}
  [Server]public void ServerGrantExperience(int amount){if(!Ensure())return;var notices=new List<string>();AwardExperience(amount,notices);Persist();Push(string.Join("\n",notices));}

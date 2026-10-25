@@ -35,6 +35,6 @@ namespace ROM.UI.Sprint01
             if(conflict!=null){Dialog("Tecla ocupada","Ya está asignada a «"+conflict+"». Liberá esa asignación o elegí otra tecla.",null,()=>Navigate(HubPage.Settings));return;}
             RiftControls.Bind(id,slot,path,mods);Navigate(HubPage.Settings);Notify("Control guardado: "+RiftControls.Find(id).Name+" → "+RiftControls.Label(id,slot));
         }
-        void OnDisable(){CancelBinding();}
+        void OnDisable(){CancelBinding();if(InGame&&modal)DismissModal();}
     }
 }

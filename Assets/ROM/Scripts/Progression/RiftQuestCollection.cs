@@ -22,8 +22,8 @@ public sealed partial class JournalState {
  }
 }
 public sealed partial class RiftJournalPlayer {
- [Command]public void CmdCollect(string id){if(!ServerCollect(id,out var reason))Report(reason);}
- [Server]public bool ServerCollect(string id,out string reason){
+ [Command]public void CmdCollect(string id,bool automatic){if(!ServerCollect(id,out var reason,automatic)&&!automatic)Report(reason);}
+ [Server]public bool ServerCollect(string id,out string reason,bool automatic=false){
   reason="Necesitás una misión activa que requiera este objeto.";
   if(!Ensure()||string.IsNullOrEmpty(id)||id.Length>128)return false;
   var matches=RiftQuestCollectible.Active.Where(t=>t&&t.gameObject.activeInHierarchy&&t.StableId==id).ToArray();
@@ -31,7 +31,7 @@ public sealed partial class RiftJournalPlayer {
   var target=matches[0];if(string.IsNullOrEmpty(target.ItemKey))return false;var actor=Player.MyCharacter;
   if(!actor||actor.Health.CurrentHealth<=0||Player.BOT)return false;
   if(!State.CanCollect(Catalog,target.StableId,target.ItemKey))return false;
-  if(Vector3.Distance(actor.transform.position,target.transform.position)>Mathf.Clamp(target.Range,1,5)){reason="Acercate al objeto para recogerlo.";return false;}
+  if(Vector3.Distance(actor.transform.position,target.transform.position)>(automatic?Mathf.Clamp(target.AutoPickupRadius,.25f,Mathf.Clamp(target.Range,1,5)):Mathf.Clamp(target.Range,1,5))){reason="Acercate al objeto para recogerlo.";return false;}
   if(!target.GetComponent<Collider>()){reason="El objeto no está configurado para interacción.";return false;}
   var origin=actor.transform.position+Vector3.up;var end=target.transform.position+Vector3.up*.15f;
   if(Physics.Linecast(origin,end,out var hit,MultiFPS.GameManager.environmentLayer,QueryTriggerInteraction.Ignore)&&hit.transform!=target.transform&&!hit.transform.IsChildOf(target.transform)){reason="El objeto está detrás de un obstáculo.";return false;}

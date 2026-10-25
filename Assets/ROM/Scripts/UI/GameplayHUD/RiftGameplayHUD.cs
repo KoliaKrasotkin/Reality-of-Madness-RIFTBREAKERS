@@ -47,7 +47,7 @@ namespace ROM.UI.Gameplay
         public void OpenParty(){OpenFriends();var hub=UIPauseMenu._instance?UIPauseMenu._instance.pauseMenuOverlay.GetComponentInChildren<RiftHub>(true):null;if(hub)hub.ShowPartyChat();}
         public void OpenJournal()=>Open(HubPage.Missions);public void OpenAchievements()=>Open(HubPage.Progression);public void OpenFriends()=>Open(HubPage.Social);
         public void OpenSettings()=>Open(HubPage.Settings);
-        public void Open(HubPage page){var pause=UIPauseMenu._instance;if(!pause)return;pause.ShowPauseMenu(true);var hub=pause.pauseMenuOverlay.GetComponentInChildren<RiftHub>(true);if(hub){if(!hub.Design)hub.Build();hub.ShowGameplayPage(page);}}
+        public void Open(HubPage page){if(page==HubPage.Inventory&&RiftVillageUI.Instance&&RiftVillageUI.Instance.VendorWindow)return;var pause=UIPauseMenu._instance;if(!pause)return;var current=pause.pauseMenuOverlay.GetComponentInChildren<RiftHub>(true);if(pause.InterfaceShowing&&current&&current.Page==page){pause.ShowInterface(false);RiftControls.InterfaceConsumedFrame=Time.frameCount;return;}pause.ShowInterface(true);RiftControls.InterfaceConsumedFrame=Time.frameCount;var hub=pause.pauseMenuOverlay.GetComponentInChildren<RiftHub>(true);if(hub){if(!hub.Design)hub.Build();hub.ShowGameplayPage(page);}}
         void LateUpdate()
         {
             var player=ClientFrontend.ClientPlayerInstance;var actor=player?player.MyCharacter:null;
