@@ -9,7 +9,8 @@ public sealed class RiftEnemyCombat:NetworkBehaviour {
  public static readonly List<RiftEnemyCombat> Active=new List<RiftEnemyCombat>();
  public EnemyArchetypeDefinition Definition=>Archetypes!=null&&Archetypes.Length>0?Archetypes[Mathf.Clamp(ArchetypeIndex,0,Archetypes.Length-1)]:null;
  public CharacterInstance Actor {get;private set;}
- public Health Target;readonly Dictionary<Health,float> threat=new Dictionary<Health,float>();NavMeshPath path;Vector3 destination,aimPoint;Health castTarget,forced;double forcedUntil,staggerUntil,nextAttack,nextPlan;bool firing;double lastTargetSwitch;int corner;double nextPath;Vector3[] corners=new Vector3[0];
+ public Health[] QuestParticipants=>new List<Health>(threat.Keys).ToArray();
+  public Health Target;readonly Dictionary<Health,float> threat=new Dictionary<Health,float>();NavMeshPath path;Vector3 destination,aimPoint;Health castTarget,forced;double forcedUntil,staggerUntil,nextAttack,nextPlan;bool firing;double lastTargetSwitch;int corner;double nextPath;Vector3[] corners=new Vector3[0];
  void Awake(){Actor=GetComponent<CharacterInstance>();path=new NavMeshPath();Active.Add(this);}
  void OnEnable(){CombatController.Damaged+=OnDamaged;}
  void OnDisable(){CombatController.Damaged-=OnDamaged;ResetAggro();}
