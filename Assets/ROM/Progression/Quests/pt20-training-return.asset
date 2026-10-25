@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae601eb47e202149b5c8b932c3897a9, type: 3}
+  m_Name: pt20-training-return
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftQuestDefinition
+  Id: "pt20-training-return"
+  Title: "Volver a la disciplina"
+  Description: "3 impactos al mu\u00f1eco y hablar con Bram; ensayo de habilidades ya desbloqueadas, sin exigir una habilidad opcional"
+  Giver: "bram"
+  TurnIn: "bram"
+  Prerequisite: "pt20-west-first-report"
+  Gold: 55
+  Experience: 1400
+  AdditionalPrerequisites: []
+  Objectives:
+  - Event: 0
+    Filter: "dummy"
+    Label: "Impactar al mu\u00f1eco"
+    Required: 3
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: ""
+  - Event: 1
+    Filter: "bram"
+    Label: "Hablar con Bram"
+    Required: 1
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: ""

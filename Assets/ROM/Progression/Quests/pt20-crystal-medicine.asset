@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae601eb47e202149b5c8b932c3897a9, type: 3}
+  m_Name: pt20-crystal-medicine
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftQuestDefinition
+  Id: "pt20-crystal-medicine"
+  Title: "Atenci\u00f3n al regreso"
+  Description: "Comprar y usar una poci\u00f3n; informar a Alma tras la primera incursi\u00f3n"
+  Giver: "alma"
+  TurnIn: "alma"
+  Prerequisite: "pt20-crystal-blooms"
+  Gold: 90
+  Experience: 4000
+  AdditionalPrerequisites:
+  - pt20-crystal-hostiles
+  - pt20-crystal-pieces
+  - pt20-crystal-patrol
+  Objectives:
+  - Event: 6
+    Filter: ""
+    Label: "Comprar una poci\u00f3n"
+    Required: 1
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: ""
+  - Event: 7
+    Filter: ""
+    Label: "Usar una poci\u00f3n"
+    Required: 1
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: ""
+  - Event: 1
+    Filter: "alma"
+    Label: "Informar a Alma"
+    Required: 1
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: ""

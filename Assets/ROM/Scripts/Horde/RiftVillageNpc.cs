@@ -10,7 +10,9 @@ namespace ROM.Horde
         public string Id, DisplayName, Role;
         [TextArea] public string Greeting;
         [TextArea] public string Advice;
-        public bool Trades;
+        [System.Serializable]public sealed class SpeechLine{public string Event;[TextArea]public string Text;}public SpeechLine[] SpeechEvents=System.Array.Empty<SpeechLine>();
+        public bool ServerSpeak(string eventId){if(!Mirror.NetworkServer.active)return false;string line=eventId=="greeting"?Greeting:null;if(eventId!="greeting"&&SpeechEvents!=null)foreach(var entry in SpeechEvents)if(entry!=null&&entry.Event==eventId){line=entry.Text;break;}return MultiFPS.ChatBehaviour.ServerNpcLine(gameObject,Id,DisplayName,line);}
+        public bool Trades;public ROM.Progression.RiftVendorCatalog VendorCatalog;public ROM.Progression.RiftVendorCatalog Goods=>VendorCatalog?VendorCatalog:ROM.Progression.RiftVendorCatalog.Default;
         public float InteractionRadius = 4.5f;
         public MultiFPS.Gameplay.RiftWorldTarget Target {get;private set;}
         TextMesh questMarker;float nextMarker;

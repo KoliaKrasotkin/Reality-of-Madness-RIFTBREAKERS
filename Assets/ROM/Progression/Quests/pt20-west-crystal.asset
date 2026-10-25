@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae601eb47e202149b5c8b932c3897a9, type: 3}
+  m_Name: pt20-west-crystal
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftQuestDefinition
+  Id: "pt20-west-crystal"
+  Title: "Un punto de regreso"
+  Description: "Activar cristal Ruinas occidentales y regresar; no exige combate 11+"
+  Giver: "iria"
+  TurnIn: "iria"
+  Prerequisite: "pt20-perimeter-watch"
+  Gold: 40
+  Experience: 400
+  AdditionalPrerequisites:
+  - pt20-refuge-herbs
+  - rift-scout
+  Objectives:
+  - Event: 3
+    Filter: "Ruinas occidentales"
+    Label: "Registrar el cristal de Ruinas"
+    Required: 1
+    Unique: 1
+    CreditPriorCompletion: 1

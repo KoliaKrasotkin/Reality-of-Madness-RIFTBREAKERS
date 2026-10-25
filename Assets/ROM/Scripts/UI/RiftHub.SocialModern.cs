@@ -4,7 +4,10 @@ using UnityEngine.UI;
 using ROM.UI.Gameplay;
 namespace ROM.UI.Sprint01 {
 public sealed partial class RiftHub {
+ void SessionSocial(Transform body){RiftWidgets.Label(body,"CHAT DE SESIÓN",0,0,688,42,26,RiftSkillStyle.White);RiftWidgets.Label(body,"Local · "+MultiFPS.RiftSessionChatTuning.Load.Radius.ToString("0")+" metros.\nMensajes efímeros; no se guarda el historial.",0,56,688,68,19,RiftSkillStyle.Muted);RiftSkillStyle.Button(body,"ESCRIBIR EN LOCAL",0,140,688,48,()=>{ResumeRequested?.Invoke();var chat=RiftSessionChatHUD.Instance;if(chat){chat.SelectChannel(0);chat.BeginTyping();}});RiftWidgets.Label(body,"GRUPO DE SESIÓN · "+MultiFPS.ChatBehaviour.ClientMembers.Length+" / 4",0,216,688,36,23,RiftSkillStyle.White);for(int i=0;i<MultiFPS.ChatBehaviour.ClientNames.Length&&i<4;i++)RiftWidgets.Label(body,MultiFPS.ChatBehaviour.ClientNames[i]+(MultiFPS.ChatBehaviour.ClientMembers[i]==MultiFPS.ChatBehaviour.ClientLeader?" · Líder":""),0,264+i*34,688,30,19);if(MultiFPS.ChatBehaviour.ClientMembers.Length==0)RiftWidgets.Label(body,"Sin grupo. Seleccioná otro jugador y usá Invitar al grupo.",0,264,688,70,19,RiftSkillStyle.Muted);RiftSkillStyle.Button(body,"INVITAR AL OBJETIVO",0,424,332,48,()=>RiftSessionChatHUD.Instance?.InviteSelected());var partyButton=RiftSkillStyle.Button(body,"CHAT DE PARTY",350,424,338,48,()=>{ResumeRequested?.Invoke();var chat=RiftSessionChatHUD.Instance;if(chat){chat.SelectChannel(1);chat.BeginTyping();}});partyButton.interactable=MultiFPS.ChatBehaviour.ClientMembers.Length>0;RiftSkillStyle.Button(body,"VOLVER AL MENÚ",0,496,688,48,()=>Navigate(HubPage.Home));}
+ void SessionPartyChanged(){if(InGame&&Page==HubPage.Social&&gameObject.activeInHierarchy)Navigate(HubPage.Social);}
  void ModernFriends(Transform body){
+  if(InGame){SessionSocial(body);return;}
   var contacts=RiftSkillStyle.Panel(body,"Local contacts",0,0,580,650,.65f);
   RiftWidgets.Label(contacts,"CONTACTOS",24,18,530,40,24,RiftSkillStyle.White);
   RiftWidgets.Label(contacts,"Guardados en esta PC · sin conexión online",24,60,530,32,16,RiftSkillStyle.Muted);

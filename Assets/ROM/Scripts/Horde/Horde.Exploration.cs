@@ -94,8 +94,9 @@ namespace ROM.Horde {
             if(!killer || killer==victim || killer.Team!=PlayerTeam){encounter.Spawned--;return;}
             encounter.Defeated++;
             var player=GameManager.Players.FirstOrDefault(p=>p&&!p.BOT&&p.MyCharacter&&p.MyCharacter.Health==killer);
-            if(player){ROM.Progression.RiftJournalPlayer.Record(player,MultiFPS.Gameplay.RiftProgressEvent.Kill,"enemy");if(kind==EnemyKind.Boss)ROM.Progression.RiftJournalPlayer.Record(player,MultiFPS.Gameplay.RiftProgressEvent.MiniBoss,"boss");}
-            if(player)TargetExplorationNotice(player.connectionToClient,kind==EnemyKind.Boss?150:20,kind==EnemyKind.Boss?"Guardián derrotado · +150 oro local":"Enemigo derrotado · +20 oro local",null);
+            if(player){ROM.Progression.RiftJournalPlayer.Record(player,MultiFPS.Gameplay.RiftProgressEvent.Kill,"enemy",encounter.Title);if(kind==EnemyKind.Boss)ROM.Progression.RiftJournalPlayer.Record(player,MultiFPS.Gameplay.RiftProgressEvent.MiniBoss,"boss",encounter.Title);}
+            if(player)ROM.Progression.RiftGroundLoot.ServerDropForKill(player,victim.netId,victim.transform.position,kind==EnemyKind.Boss?150:20);
+            if(player){ROM.Progression.RiftPartyQuestCredit.Share(player,victim,MultiFPS.Gameplay.RiftProgressEvent.Kill,"enemy",encounter.Title);if(kind==EnemyKind.Boss)ROM.Progression.RiftPartyQuestCredit.Share(player,victim,MultiFPS.Gameplay.RiftProgressEvent.MiniBoss,"boss",encounter.Title);}
             if(encounter.Cleared)foreach(var human in GameManager.Players)
                 if(human&&!human.BOT&&human.MyCharacter&&Vector3.Distance(human.MyCharacter.transform.position,encounter.transform.position)<180)
                     {ROM.Progression.RiftJournalPlayer.Record(human,MultiFPS.Gameplay.RiftProgressEvent.Encounter,encounter.Title);TargetExplorationNotice(human.connectionToClient,75,encounter.Title+" despejado · +75 oro local",null);}

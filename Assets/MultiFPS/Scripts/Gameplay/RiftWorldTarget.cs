@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 namespace MultiFPS.Gameplay
 {
+    public interface IRiftLocalPickup { bool LocalVisible {get;} void RequestPickup(bool automatic=false); }
     // Friendly scene actors do not need fake Health or a networked combat body.
     public sealed class RiftWorldTarget:MonoBehaviour
     {

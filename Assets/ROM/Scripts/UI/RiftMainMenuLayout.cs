@@ -27,7 +27,7 @@ public sealed class RiftMainMenuLayout:ScriptableObject {
    var icon=button.Find("Action icon") as RectTransform;if(icon)icon.anchoredPosition=new Vector2(24,(rect.height-icon.sizeDelta.y)*-.5f);
   }
   var glass=root.Find("Main navigation glass");if(glass){var s=glass.GetComponent<RiftMapSurface>();if(s){s.Fill=GlassColor;s.Border=BorderColor;}}
-  foreach(var text in root.GetComponentsInChildren<UnityEngine.UI.Text>())if(text.text.StartsWith("Versión "))ApplyRect(text.rectTransform,Version);
+  foreach(var text in root.GetComponentsInChildren<UnityEngine.UI.Text>())if(text.name=="Rift release version"||text.text.StartsWith("Versión "))ApplyRect(text.rectTransform,Version);
  }
  static void Set(Transform root,string name,Rect value){var rect=root.Find(name) as RectTransform;if(rect)ApplyRect(rect,value);}
  static void ApplyRect(RectTransform rect,Rect value){rect.anchorMin=rect.anchorMax=rect.pivot=new Vector2(0,1);rect.anchoredPosition=new Vector2(value.x,-value.y);rect.sizeDelta=value.size;}

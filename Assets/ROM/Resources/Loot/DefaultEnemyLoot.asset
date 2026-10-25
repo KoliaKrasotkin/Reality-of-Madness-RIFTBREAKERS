@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bbcdfb5ccdc438e9b8b72cd34000a13, type: 3}
+  m_Name: DefaultEnemyLoot
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.RiftLootTableDefinition
+  EquipmentChance: 0.15
+  Items:
+  - Item: {fileID: 11400000, guid: 2ded4fb2e946425aa3f86b9b2f757a16, type: 2}
+    Weight: 100
+  Rarities:
+  - Rarity: {fileID: 11400000, guid: aa2b64495a804ad49d853d11a02e81b9, type: 2}
+    Weight: 80
+  - Rarity: {fileID: 11400000, guid: cee3e53838de4c2dacbd8cb40ea5fcbf, type: 2}
+    Weight: 15
+  - Rarity: {fileID: 11400000, guid: 4a6c1caf36b5478f9e01f77c5ff3067a, type: 2}
+    Weight: 4
+  - Rarity: {fileID: 11400000, guid: 9f59ef30f5e94af2b2ccb9caa58c1fa4, type: 2}
+    Weight: 1
+  LevelOffset: 0
+  LevelVariance: 0
+  WeaponDamagePerLevel: 0.03

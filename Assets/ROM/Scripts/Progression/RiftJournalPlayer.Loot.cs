@@ -1,0 +1,14 @@
+using System;using System.Linq;using Mirror;using MultiFPS.Gameplay.RiftCombat;using UnityEngine;using ROM.UI.Sprint01;
+namespace ROM.Progression {
+public sealed partial class RiftJournalPlayer {
+ public const int MaximumLootAxes=RiftBagLayout.Slots-5;
+ [Command]public void CmdTakeLoot(uint id){if(NetworkServer.spawned.TryGetValue(id,out var identity)){var loot=identity.GetComponent<RiftGroundLoot>();if(loot&&!loot.ServerTake(this,false))Report("Acercate al botín visible; revisá el espacio de tu bolsa.");}}
+ [Server]public bool ServerAcceptLoot(RiftGroundLoot loot){if(!loot||!Ensure())return false;if(State.LootAxes==null)State.LootAxes=new System.Collections.Generic.List<RiftLootAxe>();if(loot.Axe&&State.LootAxes.Count>=MaximumLootAxes){Report("Bolsa llena: el hacha sigue en el piso.");return false;}string previous=JsonUtility.ToJson(State);if(loot.Axe){State.LootAxes.Add(new RiftLootAxe{Id=loot.ItemId,Level=loot.ItemLevel,Multiplier=loot.WeaponMultiplier,DefinitionId=loot.DefinitionId,RarityKind=loot.RarityKind,RarityName=loot.RarityName,RarityColor=loot.RarityColor,RarityMultiplier=loot.RarityMultiplier,LevelMultiplier=loot.LevelMultiplier});}else State.LootGoldTotal=(int)Math.Min(int.MaxValue,(long)State.LootGoldTotal+Math.Max(0,loot.Gold));if(!Persist()){State=JsonUtility.FromJson<JournalState>(previous);return false;}Push(loot.Axe?"Hacha recogida · requiere nivel "+loot.ItemLevel:"+"+loot.Gold+" oro de El Rift");return true;}
+ [Command]public void CmdEquipLoot(string id){if(!ServerEquipLoot(id))Report("No podés equipar esa hacha: revisá nivel, propiedad y combate.");}
+ [Server]public bool ServerEquipLoot(string id){if(!Ensure()||!Combat||!Combat.Prototype||!Combat.CanChangeBuild)return false;var item=State.LootAxes?.FirstOrDefault(x=>x.Id==id);if(item==null||item.Level>Combat.Level||TradeReserved(id))return false;string previous=JsonUtility.ToJson(State);State.EquippedLootAxe=item.Id;State.SwordAndShield=false;if(!Persist()){State=JsonUtility.FromJson<JournalState>(previous);return false;}Push("Hacha equipada · nivel "+item.Level);return true;}
+ void ApplyLootEquipment(){if(!Combat||State==null)return;var equipped=State.LootAxes?.FirstOrDefault(x=>x.Id==State.EquippedLootAxe&&x.Level<=Combat.Level);var tuning=RiftRepairTuning.Load;Combat.ServerLootWeapon(equipped!=null&&!(tuning&&tuning.SuspendBonusesAtZero&&equipped.DurabilityNow<=0)?equipped.Multiplier:1);}
+}
+public static class RiftLootWalletBridge {
+ // Reuse the existing common local wallet. This is not Ancient Gold or an online account balance.
+ public static void Apply(JournalState state){if(state==null||state.CharacterId!=RiftCharacterWallet.Id)return;string key="ROM.Loot.GoldCredited.v1."+state.CharacterId;int credited=PlayerPrefs.GetInt(key,0);if(state.LootGoldTotal<=credited)return;int delta=state.LootGoldTotal-credited;PlayerPrefs.SetInt(key,state.LootGoldTotal);RiftExplorationProgress.Receive(delta,"+"+delta+" oro de El Rift");}
+}}

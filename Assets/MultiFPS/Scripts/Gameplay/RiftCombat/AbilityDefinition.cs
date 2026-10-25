@@ -8,6 +8,10 @@ public sealed class AbilityDefinition:ScriptableObject {
  public string Id,DisplayName; [TextArea] public string Description;
  public Sprite Icon; public AbilityShape Shape; public CombatDamageKind DamageKind;
  public float Damage=25,Range=3,Radius=3,Arc=120,Cooldown=1,Cost,ResourceGain,CastDuration=.6f,HitTime=.28f,Recovery=.15f,Stagger,ThreatMultiplier=1;
+ [Header("Weapon-based damage; legacy damage retained for compatibility")]
+ public bool UsesWeaponDamage;
+ [Min(0)]public float WeaponCoefficient=1,WeaponBonus;
+ [Min(0)]public int MaximumTargets;public bool RequiresPrimaryTarget;
  public bool Implemented=true,Interruptible=true,AllowsMovement=true;
  public AnimationClip Animation; public GameObject CastVfx,ImpactVfx; public AudioClip Audio;
  public Color Color=new Color(.7f,.2f,1); public float BuffDuration,DamageReduction,OffensiveBonus;

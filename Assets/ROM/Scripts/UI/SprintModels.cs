@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace ROM.UI.Sprint01
 {
-    public enum Rarity { Common, Rare, Epic, Legendary }
     [Serializable] public class ItemRecord
     {
         public string Id, DefinitionId, Name, Description, Category, OwnerId, CosmeticReference;

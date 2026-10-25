@@ -6,7 +6,9 @@ namespace MultiFPS.Gameplay.RiftCombat {
 }
 [CreateAssetMenu(menuName="ROM/Combat/Warrior progression")]
 public sealed class WarriorProgressionDefinition:ScriptableObject {
- public int MaximumLevel=20,KillExperience=35,BossExperience=150,EncounterExperience=75,CrystalExperience=60,QuestExperience=250;
+ [UnityEngine.Serialization.FormerlySerializedAs("MaximumLevel")][SerializeField]int legacyMaximumLevel=20;
+ public int MaximumLevel=>RiftProgressionCaps.Load.ActivePlayerCap;
+ public int KillExperience=35,BossExperience=150,EncounterExperience=75,CrystalExperience=60,QuestExperience=250;
  public float DamagePerLevel=.02f,HealthPerLevel=.08f;
  public WeaponDefinition Sword;
  // Inventory compatibility; the companion definition owns the shield model.
@@ -22,6 +24,8 @@ public sealed class WarriorProgressionDefinition:ScriptableObject {
  new WarriorTalent{Id="earth",Name="Golpe sísmico",Description="Rompetierra: +8% de daño y +0,1 s de stagger por rango.",Branch="Furia",Parent=6,RequiredLevel=5},
  new WarriorTalent{Id="rhythm",Name="Ritmo de batalla",Description="-3% de recarga de habilidades por rango.",Branch="Furia",Parent=7,RequiredLevel=10}};
  static WarriorProgressionDefinition cached;public static WarriorProgressionDefinition Load {get{if(!cached)cached=Resources.Load<WarriorProgressionDefinition>("WarriorProgression");if(!cached)cached=CreateInstance<WarriorProgressionDefinition>();return cached;}}
+ // Preserve valid builds; normalize only impossible saved/server allocations in catalogue order.
+ public int[] ValidTalentRanks(int experience,int[] requested){var result=new int[Talents.Length];int level=Level(Mathf.Clamp(experience,0,MaximumExperience)),remaining=Mathf.Max(0,level-1);for(int i=0;i<Talents.Length;i++){var node=Talents[i];if(node==null||level<node.RequiredLevel)continue;if(node.Parent>=0&&(node.Parent>=i||Talents[node.Parent]==null||result[node.Parent]<Mathf.Max(0,Talents[node.Parent].MaximumRank)))continue;int rank=requested!=null&&i<requested.Length?Mathf.Clamp(requested[i],0,Mathf.Max(0,node.MaximumRank)):0;result[i]=Mathf.Min(rank,remaining);remaining-=result[i];}return result;}
  public int Required(int level)=>Mathf.Max(1,100+50*(level-1)+25*(level-1)*(level-1));
  public int Level(int total){int level=1;while(level<MaximumLevel&&total>=Required(level)){total-=Required(level);level++;}return level;}
  public int InLevel(int total){int level=1;while(level<MaximumLevel&&total>=Required(level)){total-=Required(level);level++;}return level>=MaximumLevel?0:total;}

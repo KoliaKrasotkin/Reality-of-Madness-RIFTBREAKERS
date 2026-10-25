@@ -5,8 +5,8 @@ namespace ROM.Progression
 {
     [Serializable]public sealed class JournalObjective
     {
-        public RiftProgressEvent Event;public string Filter,Label;public int Required=1;public bool Unique;
-        public bool Matches(RiftProgressEvent kind,string key)=>Event==kind&&(string.IsNullOrEmpty(Filter)||Filter==key);
+        public RiftProgressEvent Event;public string Filter,Label;public int Required=1;public bool Unique;public bool CreditPriorCompletion;public string EncounterFilter;
+        public bool Matches(RiftProgressEvent kind,string key,string encounter="")=>Event==kind&&(string.IsNullOrEmpty(Filter)||Filter==key)&&(string.IsNullOrEmpty(EncounterFilter)||EncounterFilter==encounter);
     }
     [CreateAssetMenu(menuName="ROM/Progression/Journal catalog")]
     public sealed class RiftJournalCatalog:ScriptableObject

@@ -163,6 +163,7 @@ namespace MultiFPS
 
             //player count
             int maxPlayers = Maps[_selectedMapID].MaxPlayersPresets[_selectedPlayerNumberOptionID];
+            maxPlayers=MultiFPS.RiftSessionParty.RoomLimit(_selectedGamemode,maxPlayers);
             RoomSetup.Properties.P_MaxPlayers = maxPlayers; //for gamemode
 
             _networkManager.maxConnections = maxPlayers; //for handling connections

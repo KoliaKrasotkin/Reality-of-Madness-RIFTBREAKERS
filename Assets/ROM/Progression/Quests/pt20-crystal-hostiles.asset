@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae601eb47e202149b5c8b932c3897a9, type: 3}
+  m_Name: pt20-crystal-hostiles
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftQuestDefinition
+  Id: "pt20-crystal-hostiles"
+  Title: "Un sendero transitable"
+  Description: "3 hostiles de Bosque de cristal \u00b7 Patrulla 1, compartidos con su despeje"
+  Giver: "bram"
+  TurnIn: "bram"
+  Prerequisite: "pt20-crystal-anchor"
+  Gold: 95
+  Experience: 3400
+  AdditionalPrerequisites: []
+  Objectives:
+  - Event: 2
+    Filter: ""
+    Label: "Derrotar hostiles de Patrulla 1"
+    Required: 3
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: "Bosque de cristal \u00b7 Patrulla 1"

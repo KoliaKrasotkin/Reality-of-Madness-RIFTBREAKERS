@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
@@ -45,11 +46,13 @@ namespace MultiFPS
         #region server setup
         public override void OnStartServer()
         {
+            ChatBehaviour.ResetServerSession();
             NetworkServer.RegisterHandler<ClientSendPositionMessage>(OnReceivedPlayerPositionMessage);
             NetworkServer.RegisterHandler<ClientSendInputMessage>(OnReceivedPlayerInputMessage);
         }
         public override void OnStopServer()
         {
+            ChatBehaviour.ResetServerSession();
             NetworkServer.UnregisterHandler<ClientSendPositionMessage>();
             NetworkServer.UnregisterHandler<ClientSendInputMessage>();
         }
@@ -71,6 +74,7 @@ namespace MultiFPS
 
         public override void OnServerAddPlayer(NetworkConnectionToClient conn)
         {
+            if(!RiftSessionParty.CanAdmit(MultiFPS.Gameplay.Gamemodes.RoomSetup.Properties.P_Gamemode,NetworkServer.connections.Values.Count(c=>c!=null&&c.identity))){conn.Disconnect();return;}
             base.OnServerAddPlayer(conn);
             OnNewPlayerConnected?.Invoke(conn);
         }

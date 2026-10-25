@@ -17,12 +17,13 @@ namespace MultiFPS.Gameplay
         public bool Running=>!Walking||RiftControls.Held("Sprint");
         public bool Dragging=>orbit||steer;
         public Health Selected {get;private set;}public Health Hovered {get;private set;}
+        public IRiftLocalPickup PickedCollectible {get;private set;}
         public RiftWorldTarget SelectedWorld {get;private set;}public RiftWorldTarget HoveredWorld {get;private set;}public RiftWorldTarget PickedWorld {get;private set;}
         public bool HasSelection=>Selected||SelectedWorld;
         public RaycastHit HoverHit {get;private set;}public bool HasHoverHit {get;private set;}
         public CharacterInstance Actor {get;private set;}
         static readonly List<RaycastResult> uiHits=new List<RaycastResult>();static PointerEventData pointerData;static EventSystem pointerSystem;static int pointerFrame=-1;static bool pointerBlocked;
-        public static bool PointerOnUI{get{var events=EventSystem.current;if(!events||Mouse.current==null)return false;if(pointerFrame==Time.frameCount)return pointerBlocked;if(pointerSystem!=events){pointerSystem=events;pointerData=new PointerEventData(events);}pointerFrame=Time.frameCount;pointerData.position=Mouse.current.position.ReadValue();uiHits.Clear();events.RaycastAll(pointerData,uiHits);pointerBlocked=false;foreach(var hit in uiHits)if(hit.gameObject.GetComponentInParent<UnityEngine.UI.Selectable>()||hit.gameObject.GetComponentInParent<UnityEngine.UI.ScrollRect>()){pointerBlocked=true;break;}return pointerBlocked;}}
+        public static bool PointerOnUI{get{var events=EventSystem.current;if(!events||Mouse.current==null)return false;if(pointerFrame==Time.frameCount)return pointerBlocked;if(pointerSystem!=events){pointerSystem=events;pointerData=new PointerEventData(events);}pointerFrame=Time.frameCount;pointerData.position=Mouse.current.position.ReadValue();uiHits.Clear();events.RaycastAll(pointerData,uiHits);pointerBlocked=false;foreach(var hit in uiHits)if(hit.gameObject.GetComponentInParent<UnityEngine.UI.Selectable>()||hit.gameObject.GetComponentInParent<UnityEngine.UI.ScrollRect>()||hit.gameObject.GetComponent<UnityEngine.UI.Graphic>()){pointerBlocked=true;break;}return pointerBlocked;}}
 
         readonly RaycastHit[] hits=new RaycastHit[128];readonly List<Health> candidates=new List<Health>();
         bool orbit,steer,selectPending,steerPending;Vector2 selectStart,steerStart,savedPointer;float selectDistance,steerDistance,nextAuto;Vector3 lastPosition;
@@ -50,7 +51,7 @@ namespace MultiFPS.Gameplay
             if(mouse!=null){if(selectPending&&!RiftControls.Pressed("Select"))selectDistance+=mouse.delta.ReadValue().magnitude;if(steerPending&&!RiftControls.Pressed("Steer"))steerDistance+=mouse.delta.ReadValue().magnitude;}
             if(!wasDragging&&Dragging)savedPointer=pointer;
             RefreshHover(ui||Dragging||RiftHotbar.Dragging);
-            if(selectPending&&!RiftControls.Held("Select")){selectPending=false;if(selectDistance<6&&!ui){var target=Pick(selectStart);if(target){Select(target);StartAutoAttack();}else{SelectWorld(PickedWorld);if(PickedWorld&&Vector3.Distance(actor.transform.position,PickedWorld.transform.position)<=PickedWorld.InteractionRange)PickedWorld.Interact();}}}
+            if(selectPending&&!RiftControls.Held("Select")){selectPending=false;if(selectDistance<6&&!ui){var target=Pick(selectStart);if(target){Select(target);StartAutoAttack();}else if(PickedCollectible!=null){PickedCollectible.RequestPickup();}else{SelectWorld(PickedWorld);if(PickedWorld&&Vector3.Distance(actor.transform.position,PickedWorld.transform.position)<=PickedWorld.InteractionRange)PickedWorld.Interact();}}}
             if(steerPending&&!RiftControls.Held("Steer"))steerPending=false;
             if(Dragging&&mouse!=null){Vector2 delta=mouse.delta.ReadValue()*.1f*UserSettings.MouseSensitivity;CameraYaw+=delta.x;CameraPitch=Mathf.Clamp(CameraPitch-delta.y,-65,75);if(steer)actor.Input.LookY=CameraYaw;}
             float turn=(RiftControls.Held("TurnRight")?1:0)-(RiftControls.Held("TurnLeft")?1:0);
@@ -68,7 +69,7 @@ namespace MultiFPS.Gameplay
             if(rollingWarrior){if(RiftControls.Pressed("Roll"))rollingWarrior.RequestRoll();if(rollingWarrior.IsRolling)actor.Input.LookY=rollingWarrior.RollFacing;}
             if(!ui){if(RiftControls.Pressed("ZoomIn"))CameraDistance=Mathf.Clamp(CameraDistance-.8f,2,14);if(RiftControls.Pressed("ZoomOut"))CameraDistance=Mathf.Clamp(CameraDistance+.8f,2,14);}
             if(RiftControls.Pressed("NextTarget"))Cycle(1);if(RiftControls.Pressed("PreviousTarget"))Cycle(-1);if(RiftControls.Pressed("SelfTarget"))Select(actor.Health);
-            if(RiftControls.Pressed("ClearTarget")&&(HasSelection||AutoAttack)){Select(null);RiftControls.EscapeConsumedFrame=Time.frameCount;}
+            if(RiftControls.EscapeConsumedFrame!=Time.frameCount&&!UICursorManager.NonModalOpen&&RiftControls.Pressed("ClearTarget")&&(HasSelection||AutoAttack)){Select(null);RiftControls.EscapeConsumedFrame=Time.frameCount;}
             var player=ClientFrontend.ClientPlayerInstance;var combat=player?player.GetComponent<AbilityController>():null;
             if(combat&&combat.Prototype){actor.SetActionKeyCode(ActionCodes.Trigger1,false);actor.SetActionKeyCode(ActionCodes.Trigger2,false);for(int i=0;i<7;i++)if(!RiftHotbar.Dragging&&RiftControls.Pressed("Ability"+i)){combat.Request(RiftHotbar.Resolve(i));} }
             else if(player){if(!RiftHotbar.Dragging)for(int i=0;i<7;i++)if(RiftControls.Pressed("Ability"+i)&&RiftHotbar.Resolve(i)<=2){StartAutoAttack();player.CmdUseClassAbility((byte)(RiftHotbar.Resolve(i)-1));}ReadWeapons(actor);}
@@ -76,11 +77,11 @@ namespace MultiFPS.Gameplay
             if(combat&&AutoAttack&&Valid(Selected,true)&&Time.unscaledTime>=nextAuto){nextAuto=Time.unscaledTime+.15f;combat.RequestAutoAttack();}
             Cursor.visible=!Dragging;Cursor.lockState=Dragging?CursorLockMode.Locked:CursorLockMode.None;if(wasDragging&&!Dragging&&mouse!=null)mouse.WarpCursorPosition(savedPointer);
         }
-        void ReadWeapons(CharacterInstance actor){var items=actor.CharacterItemManager;actor.SetActionKeyCode(ActionCodes.Trigger1,RiftControls.Held("WeaponFire"));actor.SetActionKeyCode(ActionCodes.Trigger2,RiftControls.Held("Aim"));if(RiftControls.Pressed("Reload"))items.Reload();if(RiftControls.Pressed("Drop"))items.TryDropItem();if(RiftControls.Pressed("PreviousWeapon"))items.TakePreviousItem();if(RiftControls.Pressed("Interact"))items.TryGrabItem();if(RiftControls.Pressed("Melee")&&items.CurrentlyUsedItem)items.CurrentlyUsedItem.PushMeele();for(int i=0;i<5;i++)if(RiftControls.Pressed("Weapon"+i))items.ClientTakeItem(i);}
+        void ReadWeapons(CharacterInstance actor){var items=actor.CharacterItemManager;actor.SetActionKeyCode(ActionCodes.Trigger1,!PointerOnUI&&RiftControls.Held("WeaponFire"));actor.SetActionKeyCode(ActionCodes.Trigger2,!PointerOnUI&&RiftControls.Held("Aim"));if(RiftControls.Pressed("Reload"))items.Reload();if(RiftControls.Pressed("Drop"))items.TryDropItem();if(RiftControls.Pressed("PreviousWeapon"))items.TakePreviousItem();if(RiftControls.Pressed("Interact"))items.TryGrabItem();if(RiftControls.Pressed("Melee")&&items.CurrentlyUsedItem)items.CurrentlyUsedItem.PushMeele();for(int i=0;i<5;i++)if(RiftControls.Pressed("Weapon"+i))items.ClientTakeItem(i);}
         public void StartAutoAttack(){AutoAttack=Available&&Valid(Selected,true);if(AutoAttack)nextAuto=Time.unscaledTime;}
-        public bool Valid(Health health,bool hostile){return Actor&&health&&health.CurrentHealth>0&&health.gameObject.activeInHierarchy&&Vector3.Distance(Actor.transform.position,health.transform.position)<=TargetRange&&(!hostile||health!=Actor.Health&&health.Team!=Actor.Health.Team);}
+        public bool Valid(Health health,bool hostile){return Actor&&health&&health.GetComponentInParent<IRiftLocalPickup>()==null&&health.CurrentHealth>0&&health.gameObject.activeInHierarchy&&Vector3.Distance(Actor.transform.position,health.transform.position)<=TargetRange&&(!hostile||health!=Actor.Health&&health.Team!=Actor.Health.Team);}
         public void Select(Health health){if(health&&!Valid(health,false))return;if(ReferenceEquals(Selected,health)&&!SelectedWorld)return;SelectedWorld=null;Selected=health;AutoAttack=false;var p=ClientFrontend.ClientPlayerInstance;var c=p?p.GetComponent<AbilityController>():null;if(c)c.CmdSetTarget(health?health.netId:0);}
-        public bool ValidWorld(RiftWorldTarget target)=>Actor&&target&&target.gameObject.activeInHierarchy&&Vector3.Distance(Actor.transform.position,target.transform.position)<=TargetRange;
+        public bool ValidWorld(RiftWorldTarget target)=>Actor&&target&&target.GetComponentInParent<IRiftLocalPickup>()==null&&target.gameObject.activeInHierarchy&&Vector3.Distance(Actor.transform.position,target.transform.position)<=TargetRange;
         public void SelectWorld(RiftWorldTarget target){if(target&&!ValidWorld(target))return;Select(null);SelectedWorld=target;}
         public void Cycle(int direction)
         {
@@ -91,10 +92,10 @@ namespace MultiFPS.Gameplay
         }
         public Health Pick(Vector2 pointer)
         {
-            HasHoverHit=false;PickedWorld=null;var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():null;if(!camera||!Actor)return null;
+            HasHoverHit=false;PickedWorld=null;PickedCollectible=null;var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():null;if(!camera||!Actor)return null;
             int count=Physics.RaycastNonAlloc(camera.ScreenPointToRay(pointer),hits,Mathf.Max(150,TargetRange+CameraDistance+10),~0,QueryTriggerInteraction.Collide);float nearest=float.PositiveInfinity;Health health=null;RaycastHit found=default;
-            for(int i=0;i<count;i++){var collider=hits[i].collider;var box=collider.GetComponent<HitBox>();var h=box?box._health:collider.GetComponentInParent<Health>();var worldTarget=collider.GetComponentInParent<RiftWorldTarget>();if(h==Actor.Health)continue;if(collider.isTrigger&&!h&&!worldTarget)continue;if(hits[i].distance<nearest){nearest=hits[i].distance;health=h;found=hits[i];}}
-            if(nearest<float.PositiveInfinity){HasHoverHit=true;HoverHit=found;var world=found.collider.GetComponentInParent<RiftWorldTarget>();if(ValidWorld(world))PickedWorld=world;}return Valid(health,false)?health:null;
+            for(int i=0;i<count;i++){var collider=hits[i].collider;var box=collider.GetComponent<HitBox>();var h=box?box._health:collider.GetComponentInParent<Health>();var collectible=collider.GetComponentInParent<IRiftLocalPickup>();if(collectible!=null&&!collectible.LocalVisible)continue;var worldTarget=collider.GetComponentInParent<RiftWorldTarget>();if(h==Actor.Health)continue;if(collider.isTrigger&&!h&&!worldTarget&&collectible==null)continue;if(hits[i].distance<nearest){nearest=hits[i].distance;health=h;found=hits[i];}}
+            if(nearest<float.PositiveInfinity){HasHoverHit=true;HoverHit=found;PickedCollectible=found.collider.GetComponentInParent<IRiftLocalPickup>();var world=found.collider.GetComponentInParent<RiftWorldTarget>();if(ValidWorld(world))PickedWorld=world;}return Valid(health,false)?health:null;
         }
         void RefreshHover(bool blocked){Hovered=null;HoveredWorld=null;HasHoverHit=false;if(!blocked&&Mouse.current!=null){Hovered=Pick(Mouse.current.position.ReadValue());HoveredWorld=PickedWorld;}}
     }

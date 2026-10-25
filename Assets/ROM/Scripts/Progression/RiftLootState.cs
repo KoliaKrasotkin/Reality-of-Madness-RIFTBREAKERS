@@ -1,0 +1,5 @@
+using System;using System.Collections.Generic;using UnityEngine;using ROM.UI.Sprint01;
+namespace ROM.Progression {
+[Serializable]public sealed class RiftLootAxe {public int DurabilityVersion,Durability,MaximumDurability;public int DurabilityNow=>DurabilityVersion>0?Mathf.Clamp(Durability,0,Mathf.Max(1,MaximumDurability)):RiftRepairTuning.Load.Maximum;public int DurabilityMax=>DurabilityVersion>0?Mathf.Max(1,MaximumDurability):RiftRepairTuning.Load.Maximum;public string Id;public int Level;public float Multiplier=1;public string DefinitionId="nertor-axe",RarityName="Común";public Rarity RarityKind;public Color RarityColor;public float RarityMultiplier=1,LevelMultiplier;public string RarityLabel=>string.IsNullOrEmpty(RarityName)?"Común":RarityName;public Color DisplayColor=>RarityColor.a>0?RarityColor:new Color(.82f,.84f,.88f);public float LevelPower=>LevelMultiplier>0?LevelMultiplier:Multiplier;}
+public sealed partial class JournalState {public List<RiftLootAxe> LootAxes=new List<RiftLootAxe>();public string EquippedLootAxe="";public int LootGoldTotal;}
+}

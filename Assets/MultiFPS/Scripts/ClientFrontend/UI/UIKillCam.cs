@@ -46,7 +46,7 @@ public class UIKillCam : CharacterHud
             -_characterInstance.FPPLook.forward;
 
             if (_killer && (attackerID != _characterInstance.Health.DNID)) //dont show this message in case of suicide
-                GameManager.GameEvent_GamemodeEvent_Message?.Invoke("You were killed by " + _killer.CharacterName, RoomSetup.Properties.P_RespawnCooldown);
+                GameManager.GameEvent_GamemodeEvent_Message?.Invoke("Te derrotó " + _killer.CharacterName, RoomSetup.Properties.P_RespawnCooldown);
         }
     }
 

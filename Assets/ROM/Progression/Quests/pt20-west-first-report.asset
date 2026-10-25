@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae601eb47e202149b5c8b932c3897a9, type: 3}
+  m_Name: pt20-west-first-report
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftQuestDefinition
+  Id: "pt20-west-first-report"
+  Title: "El acceso est\u00e1 abierto"
+  Description: "Informe a Iria despu\u00e9s de los cinco encargos del acceso"
+  Giver: "iria"
+  TurnIn: "iria"
+  Prerequisite: "pt20-west-salvage"
+  Gold: 60
+  Experience: 1100
+  AdditionalPrerequisites:
+  - pt20-west-patrol-one
+  - pt20-west-inscriptions
+  - pt20-west-samples
+  - pt20-west-hostiles
+  Objectives:
+  - Event: 1
+    Filter: "iria"
+    Label: "Presentar informe a Iria"
+    Required: 1
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: ""

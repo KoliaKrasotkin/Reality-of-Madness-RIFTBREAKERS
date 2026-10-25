@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30a879c3b5d940e9a30210f18db64eea, type: 3}
+  m_Name: RiftLootTuning
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftLootTuning
+  AxeChance: 0.15
+  WeaponDamagePerLevel: 0.03
+  ItemLevelOffset: 0
+  AutoPickupRadius: 1.25
+  ClickRange: 3
+  Lifetime: 300
+  DefaultTable: {fileID: 11400000, guid: 96264afd195c420991a8d0ce76103094, type: 2}
+  Catalog:
+  - {fileID: 11400000, guid: 2ded4fb2e946425aa3f86b9b2f757a16, type: 2}

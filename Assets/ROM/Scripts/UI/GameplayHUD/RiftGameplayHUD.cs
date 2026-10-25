@@ -26,13 +26,13 @@ namespace ROM.UI.Gameplay
         public Image[] Icons,Cooldowns;
         public Text[] Timers;
         public RiftHUDMinimap Minimap;
-        Text bagButtonLabel;ChatUI observedChat;GameObject[] chatFrames;
+        RiftCooldownVisuals cooldownVisuals;Text bagButtonLabel;ChatUI observedChat;GameObject[] chatFrames;
         RiftHUDTargetMarker marker;Canvas canvas;float cleanupAt,nextContent;Health selected;int legacyPasses;MultiFPS.UI.HUD.UICharacter legacyCharacter;
         public Health SelectedTarget=>selected;public RiftWorldTarget SelectedNPC=>RiftMMOController.Instance?RiftMMOController.Instance.SelectedWorld:null;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Install(){SceneManager.sceneLoaded-=Loaded;SceneManager.sceneLoaded+=Loaded;}
         static void Loaded(Scene scene,LoadSceneMode mode){if(scene.name=="map_rom_horde"&&!FindFirstObjectByType<RiftGameplayHUD>()){var prefab=Resources.Load<GameObject>("RiftGameplayHUD");if(prefab)Instantiate(prefab);}}
-        void Awake(){if(!FindFirstObjectByType<RiftCombatNumbers>())new GameObject("Rift combat numbers").AddComponent<RiftCombatNumbers>();canvas=GetComponent<Canvas>();for(int i=0;i<Abilities.Length;i++){int slot=i;Abilities[i].onClick.AddListener(()=>Use(slot));var drag=Abilities[i].gameObject.GetComponent<RiftHotbarSlot>();if(!drag)drag=Abilities[i].gameObject.AddComponent<RiftHotbarSlot>();drag.Slot=slot;}CreateMarker();CreateBagDock();ModernizeLayout();gameObject.AddComponent<RiftUnitFrames>();gameObject.AddComponent<RiftHUDPanelDock>();gameObject.AddComponent<RiftCombatAlerts>();gameObject.AddComponent<RiftWorldLabelOcclusion>();}
+        void Awake(){if(!FindFirstObjectByType<RiftCombatNumbers>())new GameObject("Rift combat numbers").AddComponent<RiftCombatNumbers>();canvas=GetComponent<Canvas>();cooldownVisuals=gameObject.AddComponent<RiftCooldownVisuals>();for(int i=0;i<Abilities.Length;i++){int slot=i;Abilities[i].onClick.AddListener(()=>Use(slot));var drag=Abilities[i].gameObject.GetComponent<RiftHotbarSlot>();if(!drag)drag=Abilities[i].gameObject.AddComponent<RiftHotbarSlot>();drag.Slot=slot;}CreateMarker();CreateBagDock();ModernizeLayout();gameObject.AddComponent<RiftUnitFrames>();gameObject.AddComponent<RiftHUDPanelDock>();gameObject.AddComponent<RiftCombatAlerts>();gameObject.AddComponent<RiftWorldLabelOcclusion>();gameObject.AddComponent<RiftSessionChatHUD>();}
         public void Use(int slot){if(RiftHotbar.Dragging||RiftControls.TextEntryFocused||ClientFrontend.Pause||!UICursorManager.GamePlayInput())return;int ability=RiftHotbar.Resolve(slot);if(ability<=0)return;var player=ClientFrontend.ClientPlayerInstance;if(!player)return;var combat=player.GetComponent<AbilityController>();if(combat&&combat.Prototype)combat.Request(ability);else if(ability<=2){RiftMMOController.Instance?.StartAutoAttack();player.CmdUseClassAbility((byte)(ability-1));}}
         void CreateBagDock(){
             var button=RiftWidgets.Button(Design,"BOLSA ["+RiftControls.ActionLabel("Inventory")+"]",0,0,238,58,OpenInventory);
@@ -47,7 +47,7 @@ namespace ROM.UI.Gameplay
         public void OpenParty(){OpenFriends();var hub=UIPauseMenu._instance?UIPauseMenu._instance.pauseMenuOverlay.GetComponentInChildren<RiftHub>(true):null;if(hub)hub.ShowPartyChat();}
         public void OpenJournal()=>Open(HubPage.Missions);public void OpenAchievements()=>Open(HubPage.Progression);public void OpenFriends()=>Open(HubPage.Social);
         public void OpenSettings()=>Open(HubPage.Settings);
-        public void Open(HubPage page){var pause=UIPauseMenu._instance;if(!pause)return;pause.ShowPauseMenu(true);var hub=pause.pauseMenuOverlay.GetComponentInChildren<RiftHub>(true);if(hub){if(!hub.Design)hub.Build();hub.ShowGameplayPage(page);}}
+        public void Open(HubPage page){if(page==HubPage.Inventory&&RiftVillageUI.Instance&&RiftVillageUI.Instance.VendorWindow)return;var pause=UIPauseMenu._instance;if(!pause)return;var current=pause.pauseMenuOverlay.GetComponentInChildren<RiftHub>(true);if(pause.InterfaceShowing&&current&&current.Page==page){pause.ShowInterface(false);RiftControls.InterfaceConsumedFrame=Time.frameCount;return;}pause.ShowInterface(true);RiftControls.InterfaceConsumedFrame=Time.frameCount;var hub=pause.pauseMenuOverlay.GetComponentInChildren<RiftHub>(true);if(hub){if(!hub.Design)hub.Build();hub.ShowGameplayPage(page);}}
         void LateUpdate()
         {
             var player=ClientFrontend.ClientPlayerInstance;var actor=player?player.MyCharacter:null;
@@ -74,13 +74,12 @@ namespace ROM.UI.Gameplay
             for(int i=0;i<Abilities.Length;i++){
                 int id=RiftHotbar.Resolve(i);var definition=warrior&&id>0?combat.Definition(id):null;bool unlocked=warrior?combat.IsAbilityLearned(id):id>0&&id<=2;
                 double remain=warrior&&combat.Ready.Count>id?System.Math.Max(0,combat.Ready[id]-now):!warrior&&id<=2?System.Math.Max(0,(id==1?player.FirstReadyAt:player.SecondReadyAt)-now):0;
-                if(warrior&&combat.GlobalReady>now)remain=System.Math.Max(remain,combat.GlobalReady-now);
+                double ownRemain=remain,globalRemain=warrior?System.Math.Max(0,combat.GlobalReady-now):0;if(globalRemain>remain)remain=globalRemain;
                 bool enough=!definition||definition.Cost<=amount;
                 Abilities[i].interactable=unlocked&&enough&&remain<=0;
                 Icons[i].gameObject.SetActive(unlocked);if(unlocked){if(definition&&definition.Icon)Icons[i].sprite=definition.Icon;else if(!warrior&&Theme.AbilityIcons.Length>=id)Icons[i].sprite=Theme.AbilityIcons[id-1];Icons[i].color=enough?Color.white:new Color(.72f,.65f,.65f);}
                 var locked=Abilities[i].transform.Find("Lock");if(locked)locked.gameObject.SetActive(id>0&&!unlocked);
-                Cooldowns[i].fillAmount=unlocked&&remain>0?(float)remain/Mathf.Max(.1f,definition?combat.AbilityCooldown(id,definition):1):0;
-                Timers[i].text=unlocked&&remain>=1?Mathf.CeilToInt((float)remain).ToString():"";
+                float duration=definition?combat.AbilityCooldown(id,definition):1;if(globalRemain>ownRemain){var active=warrior?combat.Definition(combat.Casting):null;duration=active?active.Recovery:definition?definition.Recovery:1;}cooldownVisuals.Apply(i,unlocked,enough,(float)remain,duration);
             }
             SelectTarget(actor);
             if(KeyLabels!=null)for(int i=0;i<KeyLabels.Length;i++)if(KeyLabels[i]){string label=RiftControls.ActionLabel("Ability"+i);KeyLabels[i].text=label;KeyLabels[i].fontSize=label.Length>3?10:17;}

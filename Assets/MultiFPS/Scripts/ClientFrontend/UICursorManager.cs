@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 public class UICursorManager : MonoBehaviour
 {
     static List<GameObject> _cursorRequestors = new List<GameObject>();
+    static readonly HashSet<GameObject> nonModal = new HashSet<GameObject>();
+    public static bool NonModalOpen => _cursorRequestors.Exists(x=>x&&nonModal.Contains(x));
+    public static bool IsTopRequestIn(Transform root){_cursorRequestors.RemoveAll(x=>!x);return _cursorRequestors.Count>0&&_cursorRequestors[_cursorRequestors.Count-1].transform.IsChildOf(root);}
+    public static bool IsTopRequest(GameObject holder){_cursorRequestors.RemoveAll(x=>!x);return _cursorRequestors.Count>0&&_cursorRequestors[_cursorRequestors.Count-1]==holder;}
     static UICursorManager _instance;
 
 #if UNITY_EDITOR
@@ -35,10 +39,10 @@ public class UICursorManager : MonoBehaviour
     /// </summary>
     public static bool GamePlayInput()
     {
-        return _cursorRequestors.Count == 0;
+        _cursorRequestors.RemoveAll(x=>!x);return _cursorRequestors.TrueForAll(x=>nonModal.Contains(x));
     }
 
-    public static void RequestCursor(GameObject requestHolder)
+    public static void RequestCursor(GameObject requestHolder, bool allowGameplay = false)
     {
         if (_cursorRequestors.Contains(requestHolder))
         {
@@ -46,7 +50,7 @@ public class UICursorManager : MonoBehaviour
             return;
         }
 
-        _cursorRequestors.Add(requestHolder);
+        _cursorRequestors.Add(requestHolder);if(allowGameplay)nonModal.Add(requestHolder);
 
         if (_cursorRequestors.Count == 1)
         {
@@ -63,7 +67,7 @@ public class UICursorManager : MonoBehaviour
             return;
         }
 
-        _cursorRequestors.Remove(requestHolder);
+        _cursorRequestors.Remove(requestHolder);nonModal.Remove(requestHolder);
 
         if (_cursorRequestors.Count == 0)
         {
