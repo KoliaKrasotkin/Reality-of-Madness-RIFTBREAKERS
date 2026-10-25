@@ -38,7 +38,22 @@ namespace ROM.UI.Sprint01
         void DrawCharacters()
         {
             var panel=Drawer("CharacterRoster","PERSONAJES",0,650,710);
-            for(int i=0;i<Roster.Characters.Count;i++){var character=Roster.Characters[i];string id=character.Id;RiftModernWidgets.Button(panel,character.DisplayName+" · "+(character.Available?"Warrior":"NO DISPONIBLE"),22,75+i*63,606,52,()=>{if(InGame){Notify("Volvé al menú para cambiar de personaje.");return;}if(!Roster.Select(id)){Notify("Clase no disponible. Sus datos se conservan; creá o seleccioná Warrior.");return;}ApplyActiveCharacter();SocialChanged();});}
+            var rows=W.ScrollArea(panel,"Character roster list",22,78,606,510,Mathf.Max(510,Roster.Characters.Count*112));
+            for(int i=0;i<Roster.Characters.Count;i++){
+                var character=Roster.Characters[i];string id=character.Id;int slot=i+1;
+                string reason=character.Available?"":character.ClassKey!="warrior"?"Clase heredada no habilitada en este playtest":"Aspecto no compatible con Warrior";
+                string identity=character.DisplayName+" · Personaje "+slot+(Roster.Active.Id==id?" · ACTIVO":"");
+                string info=RiftCharacterMetadata.LevelLabel(id)+" · "+ClassName(character.ClassKey);
+                string text=identity+"\n"+info+"\n"+RiftCharacterMetadata.PlayedLabel(id)+(string.IsNullOrEmpty(reason)?"":"\n"+reason);
+                var row=RiftModernWidgets.Button(rows,text,0,i*112,590,104,()=>{
+                    if(InGame){Notify("Volvé al menú para cambiar de personaje.");return;}
+                    if(!Roster.Select(id)){Notify(reason+". Sus datos se conservan.");return;}
+                    ApplyActiveCharacter();SocialChanged();
+                });
+                var label=row.GetComponentInChildren<Text>();label.alignment=TextAnchor.MiddleLeft;label.fontSize=17;label.rectTransform.anchoredPosition=new Vector2(16,0);label.rectTransform.sizeDelta=new Vector2(558,104);label.supportRichText=false;
+                var tip=row.gameObject.AddComponent<ROM.UI.Gameplay.RiftTooltipTrigger>();tip.Title=identity;tip.Description=info+"\n"+RiftCharacterMetadata.PlayedLabel(id)+(string.IsNullOrEmpty(reason)?"":"\n"+reason);
+                if(Roster.Active.Id==id)W.Image(row.transform,"Selected character underline",12,101,566,2,new Color(.65f,.4f,.9f));
+            }
             RiftModernWidgets.Button(panel,"+ CREAR PERSONAJE",22,620,606,60,()=>{homePanel="CreateCharacter";Navigate(HubPage.Home);});
             ROM.UI.Gameplay.RiftAbilityTooltip.HideAll();if(UnityEngine.EventSystems.EventSystem.current)UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(panel.GetComponentsInChildren<Button>().First(b=>b.name!="CERRAR").gameObject);
         }

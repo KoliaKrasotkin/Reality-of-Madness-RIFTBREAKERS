@@ -18,6 +18,12 @@ namespace MultiFPS.UI
             }
             _myC = StartCoroutine(SetupIndicator(_source, _player));
         }
+        private void Awake()
+        {
+            // Damage direction is presentation only, even while its image is transparent.
+            // It must never intercept world selection, camera drag or mouse-wheel zoom.
+            if (_img) _img.raycastTarget = false;
+        }
         private void Start()
         {
             Clear();

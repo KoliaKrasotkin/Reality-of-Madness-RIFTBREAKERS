@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Mirror;
 using MultiFPS.UI;
 using ROM.Horde;
@@ -45,11 +45,12 @@ namespace ROM.UI.Sprint01
             if(cursorHeld&&!TalkingTo){Close();return;}
             if (TalkingTo)
             {
+                if(CinematicDialogue&&!MultiFPS.RiftControls.TextEntryFocused&&(MultiFPS.RiftControls.Held("Forward")||MultiFPS.RiftControls.Held("Backward")||MultiFPS.RiftControls.Held("StrafeLeft")||MultiFPS.RiftControls.Held("StrafeRight")||MultiFPS.RiftControls.Pressed("Jump"))){Close();return;}
                 VendorTick();
                 if (Vector3.Distance(player.MyCharacter.transform.position, TalkingTo.transform.position) > TalkingTo.InteractionRadius + 1 || MultiFPS.RiftControls.Pressed("Pause")) { MultiFPS.RiftControls.EscapeConsumedFrame=Time.frameCount;Close(); return; }
                 balance.text = "ORO DEL JUEGO: " + RiftExplorationProgress.Gold;
                 for (int i = 0; i < 2; i++) if (stock[i]) stock[i].text = "En la mochila: " + RiftVillageSupplies.Count(i);
-                if (notice) notice.text = NetworkTime.time < noticeUntil ? lastNotice : "";
+                if (notice) notice.text = NetworkTime.time < noticeUntil ? lastNotice : "Rueda para leer · Esc para cerrar";
                 hint.gameObject.SetActive(false); return;
             }
             bool free = UICursorManager.GamePlayInput();
@@ -70,20 +71,19 @@ namespace ROM.UI.Sprint01
         {
             var player = ClientFrontend.ClientPlayerInstance;
             if (!npc || !player || !player.MyCharacter || Vector3.Distance(player.MyCharacter.transform.position, npc.transform.position) > npc.InteractionRadius) return;
-            if(UIPauseMenu._instance&&UIPauseMenu._instance.InterfaceShowing)UIPauseMenu._instance.ShowInterface(false);Close();var dialogueCamera=MultiFPS.GameplayCamera._instance?MultiFPS.GameplayCamera._instance.GetComponent<MultiFPS.Gameplay.RiftThirdPersonCamera>():null;if(dialogueCamera&&!dialogueCamera.BeginConversation(npc.transform,npc.Target?npc.Target.Head:null,npc.InteractionRadius,Close))return; TalkingTo = npc;var journal=player.GetComponent<ROM.Progression.RiftJournalPlayer>();if(journal)journal.CmdTalk(npc.Id); hint.gameObject.SetActive(false);
+            if(ROM.UI.Gameplay.RiftSessionChatHUD.Instance&&ROM.UI.Gameplay.RiftSessionChatHUD.Instance.Writing)ROM.UI.Gameplay.RiftSessionChatHUD.Instance.EndTyping(false);if(UIPauseMenu._instance&&UIPauseMenu._instance.InterfaceShowing)UIPauseMenu._instance.ShowInterface(false);Close();var dialogueCamera=MultiFPS.GameplayCamera._instance?MultiFPS.GameplayCamera._instance.GetComponent<MultiFPS.Gameplay.RiftThirdPersonCamera>():null;if(dialogueCamera&&!dialogueCamera.BeginConversation(npc.transform,npc.Target?npc.Target.Head:null,npc.InteractionRadius,Close))return; TalkingTo = npc;var journal=player.GetComponent<ROM.Progression.RiftJournalPlayer>();if(journal)journal.CmdTalk(npc.Id); hint.gameObject.SetActive(false);
             if (UIPauseMenu._instance) { previousPauseAllowed = UIPauseMenu._instance.AbleToPause; UIPauseMenu._instance.AbleToPause = false; }
             UICursorManager.RequestCursor(gameObject); cursorHeld = true;
-            dialog = W.Panel(transform, "Dialogo de aldea", 0, 0, 988, 850);
-            dialog.anchorMin = dialog.anchorMax = dialog.pivot = new Vector2(1, .5f); dialog.anchoredPosition = new Vector2(-36,30);
-            dialog.GetComponent<Image>().raycastTarget = true;
-            W.Label(dialog, npc.DisplayName, 30, 24, 920, 45, 32, W.White, true);
-            W.Label(dialog,npc.Role,30,76,920,28,18,W.Muted);speech = W.Label(dialog, npc.Greeting, 30, 124, 920, 86, 21);
-            balance = W.Label(dialog, "ORO DEL JUEGO: " + RiftExplorationProgress.Gold, 30, 185, 920, 35, 23, W.Gold);balance.gameObject.SetActive(npc.Trades);
-            W.Button(dialog,"MISIONES",30,235,280,48,()=>ShowQuests(npc));W.Button(dialog,"HABLAR DEL REFUGIO",340,235,280,48,()=>speech.text=npc.Advice);
-            if(npc.Trades)W.Button(dialog,"COMERCIAR",650,235,280,48,()=>ShowGoods(npc));
-            notice = W.Label(dialog, "", 30, 704, 920, 42, 19, W.Muted);
-            W.Button(dialog, "CERRAR · ESC", 630, 780, 320, 45, Close);
-            ShowQuests(npc);RiftPanelChrome.Apply(dialog);
+            ROM.UI.Gameplay.RiftAbilityTooltip.HideAll();
+            dialog = W.Panel(transform, "Dialogo de aldea", 0, 0, DialogueWidth, DialogueHeight);
+            dialog.anchorMin=dialog.anchorMax=dialog.pivot=new Vector2(.5f,0);dialog.anchoredPosition=new Vector2(0,8);dialog.GetComponent<Image>().raycastTarget=true;
+            W.Label(dialog,npc.DisplayName,20,10,540,30,23,W.White,true);
+            W.Label(dialog,npc.Role,600,16,300,20,14,W.Muted);
+            balance=W.Label(dialog,"",0,0,1,1,12);balance.gameObject.SetActive(false);
+            notice=W.Label(dialog,"",20,134,820,18,13,W.Muted);
+            var close=W.Button(dialog,"CERRAR · ESC",960,10,180,28,Close);close.GetComponentInChildren<Text>().fontSize=14;
+            ShowDialogueGreeting(npc);RefreshDialogueHUD();LayoutDialogue();
+
         }
         public void ShowGoods(RiftVillageNpc npc)
         {
@@ -93,6 +93,7 @@ namespace ROM.UI.Sprint01
 
         public void Close()
         {
+            RestoreDialogueHUD();
             CloseVendor();
             var dialogueCamera=MultiFPS.GameplayCamera._instance?MultiFPS.GameplayCamera._instance.GetComponent<MultiFPS.Gameplay.RiftThirdPersonCamera>():null;if(dialogueCamera)dialogueCamera.EndConversation();
             if (cursorHeld)

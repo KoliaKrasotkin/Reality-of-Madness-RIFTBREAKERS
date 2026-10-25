@@ -12,7 +12,8 @@ namespace ROM.UI.Sprint01
     {
         string journalSelection="",journalFilter="Activas";
         JournalState JournalState=>RiftJournalView.Read(InGame?null:Roster.Active.Id);
-        void JournalChanged(){if(InGame&&Page==HubPage.Abilities&&abilityTab=="Talents")return;if(Page==HubPage.Missions||Page==HubPage.Progression||Page==HubPage.Abilities||Page==HubPage.Character)Navigate(Page);}
+        bool CanRefreshVisiblePage=>!InGame||(gameObject.activeInHierarchy&&UIPauseMenu._instance&&UIPauseMenu._instance.InterfaceShowing);
+        void JournalChanged(){if(!CanRefreshVisiblePage)return;if(InGame&&Page==HubPage.Abilities&&abilityTab=="Talents")return;if(Page==HubPage.Missions||Page==HubPage.Progression||Page==HubPage.Abilities||Page==HubPage.Character)Navigate(Page);}
         public void ShowJournal(){ShowGameplayPage(HubPage.Missions);}
         public void ShowQuest(string questId){journalSelection=questId;var record=JournalState.Quest(questId);journalFilter=record==null?"Disponibles":record.Status==QuestStatus.TurnedIn?"Completadas":"Activas";ShowGameplayPage(HubPage.Missions); }
         public void ShowAchievements(){ShowGameplayPage(HubPage.Progression);}

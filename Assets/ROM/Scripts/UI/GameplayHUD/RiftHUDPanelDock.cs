@@ -3,6 +3,8 @@ namespace ROM.UI.Gameplay {
 // Overlays only gate interaction. HUD transforms and visibility remain unchanged.
 [DefaultExecutionOrder(1400)]public sealed class RiftHUDPanelDock:MonoBehaviour {
  public enum Mode{None,Side,Wide,Map,Vendor}public Mode Current{get;private set;}
+ static ROM.UI.Sprint01.RiftHub previewHub;
+ public static bool PreviewOverlayActive{get{var pause=UIPauseMenu._instance;if(!pause||!pause.InterfaceShowing)return false;if(!previewHub)previewHub=pause.pauseMenuOverlay.GetComponentInChildren<ROM.UI.Sprint01.RiftHub>(true);return previewHub&&previewHub.InGame&&previewHub.Page==ROM.UI.Sprint01.HubPage.Marketplace;}}
  CanvasGroup group;bool wasBlocks,wasInteractable;RiftFieldUI field;
  void Awake(){group=GetComponent<CanvasGroup>();if(!group)group=gameObject.AddComponent<CanvasGroup>();wasBlocks=group.blocksRaycasts;wasInteractable=group.interactable;}
  void LateUpdate(){if(!field)field=FindFirstObjectByType<RiftFieldUI>();Mode mode=Mode.None;if(field&&field.MapOpen)mode=Mode.Map;else if(ClientFrontend.Pause)mode=Mode.Wide;else if(RiftVillageUI.Instance&&RiftVillageUI.Instance.TalkingTo)mode=RiftVillageUI.Instance.VendorWindow?Mode.Vendor:Mode.Side;Refresh(mode);}

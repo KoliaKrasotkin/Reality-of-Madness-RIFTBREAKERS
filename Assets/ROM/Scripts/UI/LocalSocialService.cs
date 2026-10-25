@@ -97,6 +97,7 @@ namespace ROM.UI.Sprint01
         }
         public void SwitchLocalProfile(string id){if(!state.Profiles.Any(p=>p.Id==id))return;state.ActiveId=id;Save();}
         public void SetAppearance(int skin){Self.Skin=Mathf.Max(0,skin);Save();}
+        public bool RenameLocalProfile(string name){name=(name??"").Trim();if(name.Length<2||name.Length>24)return false;Self.Name=name;Save();return true;}
         public void Rename(string name){name=(name??"").Trim();if(name.Length<2||name.Length>24)return;Self.Name=name;MultiFPS.UserSettings.UserNickname=name;PlayerPrefs.SetString("_playerPrefs_Username",name);Save();}
         void Save(){Directory.CreateDirectory(Path.GetDirectoryName(path));string temp=path+".tmp";File.WriteAllText(temp,JsonUtility.ToJson(state,true));File.Copy(temp,path,true);File.Delete(temp);Changed?.Invoke();}
     }
