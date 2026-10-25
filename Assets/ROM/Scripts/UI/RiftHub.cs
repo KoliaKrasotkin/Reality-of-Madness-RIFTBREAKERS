@@ -133,7 +133,7 @@ namespace ROM.UI.Sprint01
         void SocialChanged()
         {
             if(Stage&&Catalog)Stage.ShowParty(Catalog,Social);
-            if(content)Navigate(Page);
+            if(content&&CanRefreshVisiblePage)Navigate(Page);
         }
         static void Clear(Transform parent){foreach(var child in parent.Cast<Transform>().ToArray())DestroyImmediate(child.gameObject);}
         public void Navigate(HubPage page)
@@ -177,7 +177,7 @@ namespace ROM.UI.Sprint01
                 }
             }
             if(Page==HubPage.Missions||Page==HubPage.Social||Page==HubPage.Settings){RiftPanelChrome.Apply(content);if(InGame){RiftPanelChrome.Apply(fullGameplayHeader);RiftPanelChrome.Apply(compactGameplayHeader);}}
-            var first=InGame&&Page==HubPage.Abilities&&abilityTab=="Talents"?content.GetComponentsInChildren<Button>().FirstOrDefault(b=>b.name=="CENTRAR"):content.GetComponentsInChildren<Button>().FirstOrDefault(b=>b.IsInteractable());if(first&&EventSystem.current)EventSystem.current.SetSelectedGameObject(first.gameObject);
+            var first=Page==HubPage.Settings?content.GetComponentsInChildren<Button>().FirstOrDefault(b=>b.name=="Settings tab "+settingsTab):InGame&&Page==HubPage.Abilities&&abilityTab=="Talents"?content.GetComponentsInChildren<Button>().FirstOrDefault(b=>b.name=="CENTRAR"):content.GetComponentsInChildren<Button>().FirstOrDefault(b=>b.IsInteractable());if(first&&EventSystem.current)EventSystem.current.SetSelectedGameObject(first.gameObject);
         }
         static string PageTitle(HubPage page)=>page switch {HubPage.Inventory=>"INVENTARIO",HubPage.Character=>"PERSONAJE",HubPage.Abilities=>"HABILIDADES",HubPage.Loadout=>"EQUIPAMIENTO",HubPage.Missions=>"DIARIO DE MISIONES",HubPage.Progression=>"LOGROS",HubPage.Settings=>"AJUSTES",HubPage.Social=>"AMIGOS Y MENSAJES",HubPage.Exchange=>"INTERCAMBIO",HubPage.Auction=>"CASA DE SUBASTAS",_=>"TIENDA"};
         public void ToggleHomePanel(string panel){homePanel=Page==HubPage.Home&&homePanel==panel?"":panel;Navigate(HubPage.Home);}
@@ -330,7 +330,11 @@ namespace ROM.UI.Sprint01
         void Progress(Transform body){AchievementJournal(body);}
         void Settings(Transform body)
         {
-            string[] tabs=InGame?new[]{"Video","Sonido","Controles","Interfaz"}:new[]{"Video","Sonido","Controles","Perfil"};for(int i=0;i<tabs.Length;i++){string tab=tabs[i];W.Button(body,tab.ToUpperInvariant(),i*350,0,330,50,()=>{settingsTab=tab;Navigate(HubPage.Settings);},settingsTab==tab);}
+            string[] tabs=InGame?new[]{"Video","Sonido","Controles","Interfaz"}:new[]{"Video","Sonido","Controles","Perfil"};
+            if(!tabs.Contains(settingsTab))settingsTab=tabs[0];
+            for(int i=0;i<tabs.Length;i++){string tab=tabs[i];var button=RiftModernWidgets.Button(body,tab.ToUpperInvariant(),i*350,0,330,50,()=>{settingsTab=tab;Navigate(HubPage.Settings);});button.name="Settings tab "+tab;
+                if(settingsTab==tab)W.Image(button.transform,"Active settings underline",8,47,314,3,new Color(.65f,.4f,.9f));}
+            var section=W.Label(body,"SECCIÓN · "+settingsTab.ToUpperInvariant(),0,57,1600,24,17,W.Gold);section.name="Settings current section";
             var video=Application.isPlaying?RiftVideoSettings.Ensure():null;if(draft==null)draft=video?video.Current.Copy():new VideoPreferences();
             var panel=W.Rect(body,"Options",0,85,1750,590);
             if(settingsTab=="Video")Video(panel,video);
@@ -368,6 +372,18 @@ namespace ROM.UI.Sprint01
             W.Button(p,"RESTABLECER",0,510,450,64,()=>{draft=new VideoPreferences{Width=Screen.width,Height=Screen.height};Navigate(HubPage.Settings);});
         }
         void Profile(Transform p)
+        {
+            W.Label(p,"PERFIL DE USUARIO",0,0,1600,44,27,W.Gold);
+            W.Label(p,"Perfil local en esta PC · sin cuenta online",0,54,1600,34,20,W.Muted);
+            W.Label(p,"Nombre del usuario",0,120,1000,32,22);
+            string name=Social.Self.Name;var input=W.Input(p,"Nombre del usuario",0,164,1000,v=>name=v);input.name="User profile name";input.characterLimit=24;input.text=name;
+            W.Button(p,"GUARDAR NOMBRE",1040,158,500,60,()=>{if(!(Social is LocalSocialService local)||!local.RenameLocalProfile(name)){Notify("Usá un nombre de usuario de 2 a 24 caracteres.");return;}Notify("Nombre del perfil local guardado.");});
+            W.Label(p,"Este nombre identifica tu perfil local. No cambia el nombre ni el progreso de tus personajes.",0,252,1600,90,22,W.Muted);
+            W.Label(p,"Video, sonido y controles se configuran para esta PC. El nivel y el tiempo jugado se muestran en Personajes.",0,370,1600,90,22,W.Muted);
+        }
+        [ContextMenu("Desarrollo/Mostrar perfiles locales de prueba")]
+        void OpenLocalProfileDebug(){if(!Application.isPlaying||InGame)return;settingsTab="Perfil";ShowGameSettings();var panel=content.Find("PagePanel/Body/Options");if(panel){Clear(panel);LocalProfileDebug(panel);}}
+        void LocalProfileDebug(Transform p)
         {
             W.Label(p,"Nombre del personaje: "+Roster.Active.DisplayName,0,0,1200,65,25);
             W.Label(p,"PRUEBAS LOCALES\nCambiá de perfil para aceptar invitaciones y leer DM enviados en esta PC.\nEstos perfiles no representan usuarios conectados a un servidor.",0,190,1600,150,24,W.Muted);
