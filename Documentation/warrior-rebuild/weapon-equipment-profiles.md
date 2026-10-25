@@ -92,3 +92,60 @@ Las curvas de dedos de la mano derecha se cierran sobre el mango en el idle y en
 Se puede revisar en `Weapon IK Controller > Equipment: Sword and shield > Animation: Idle`. Los offsets del WeaponDefinition siguen siendo editables. Cambiarlos modifica el contacto calibrado; para volver a calcularlo con este personaje y modelo, usar `ROM > Animation Rigging > Calibrate Warrior Sword Shoulder Idle`. La calibración es específica del Warrior Lizardman y no debe reutilizarse sin adaptar otro cuerpo.
 
 `Validate Warrior Sword Shoulder Idle` mide 61 muestras del clip final: mango respecto de la palma, apoyo respecto del mesh exterior y separación de la geometría de la hombrera con el plano de la hoja. También comprueba las curvas de cierre de dedos. Los resultados quedan en `sword-shoulder-validation.txt`; las vistas cercanas están en `sword-idle-grip-front.png` y `sword-idle-grip-side.png`.
+
+### IK compartido por arma y animacion
+
+En `WarriorPlayer > Weapon IK Controller`, seleccionar Equipment, Animation y Start Preview. La seccion **Hand IK — selected animation** edita los assets WeaponDefinition, con Undo y guardado inmediato.
+
+- **Enable Hand IK** activa la correccion de brazos del item.
+- **Hand Grips** define cada muneca en el espacio local del modelo: Hand, Position y Rotation. Es el agarre comun a todas sus animaciones. Espada y escudo tienen un agarre cada uno; el hacha tiene ambos.
+- **Animation IK** guarda correcciones por referencia al clip. El inspector muestra la entrada del clip seleccionado; Add IK settings crea una si falta. Si dos estados usan el mismo clip, comparten este ajuste.
+- **Weapon Position / Rotation** desplaza el item y sus agarres respecto de la pose animada, usando los ejes del cuerpo. La posicion y rotacion originales de la definicion siguen siendo la base. Un ajuste de idle no cambia un ataque con otro clip.
+- **Hand Position / Rotation / Elbow Offset** corrige la mano derecha y su codo. Los campos **Left Hand Position / Rotation / Left Elbow Offset** corrigen la izquierda. Posiciones de manos en espacio del modelo; codos en espacio del cuerpo. Para el escudo usar los campos Left.
+- **Weight** mezcla el IK con las manos originales: 0 conserva la animacion y 1 intenta alcanzar completamente los agarres. El alcance sigue limitado por la longitud de los brazos.
+
+La evaluacion toma primero la pose animada, coloca todos los items y despues resuelve ambos brazos con el mismo solver de dos huesos. Las armas no vuelven a colocarse usando las manos resueltas. Antes de evaluar el siguiente frame se restauran las rotaciones base para evitar realimentacion, incluso con clips que no animan todos los huesos. El preview usa exactamente este flujo. El hacha mantiene su rig de stream existente como pose de entrada y agrega esta misma capa de ajustes.
+
+El Animator selecciona y mezcla ajustes de los clips actual y siguiente durante transiciones. Las animaciones desarmadas y de sacar/guardar conservan las manos originales; EquipmentBackWeight desvanece el IK al guardar el arma. La pose de dedos continua viniendo de los clips/rig existentes.
+
+Calibracion inicial: se conserva el montaje de espada elegido por el usuario (Position 0, .02, .116447635; Rotation 12.5, 83.1, 168.2). El agarre se calibra usando la referencia de palma del ajuste anterior; las manos acompañan el nuevo montaje. El escudo se desplaza .025m hacia afuera en sus perfiles. Configure Equipment Hand IK solo inicializa items sin agarres; no sobrescribe calibraciones posteriores.
+
+Validacion: ROM > Animation Rigging > Validate Equipment Hand IK. Reporte: `equipment-hand-ik-validation.txt`. Para consumidores externos que evalúen manualmente un PlayableGraph, llamar `BeginPoseEvaluation()` antes de evaluar y `RefreshPose(storedWeight, optionalPreviewClip)` despues.
+
+### Calibracion completa del hacha
+
+Menu `ROM > Animation Rigging > Calibrate All Warrior Axe Animations`: recalibra unicamente WarriorAxe. Mide 61 poses de cada clip armado sobre el rig de stream original y ajusta orientacion de munecas, contacto de palma, separacion de manos y una ligera apertura de codos. Los contactos quedan sobre el eje del mango. Los perfiles desarmados, de muerte y de guardar/sacar tienen Weight 0 para conservar su movimiento original.
+
+`Keep Grips Reachable` traslada lo minimo necesario el arma completa para que ambas munecas puedan alcanzar los contactos, conservando su orientacion y la distancia entre manos. `Hand Grips > Preserve Palm Contact` y `Palm Offset` permiten mezclar los perfiles de muneca usando rotaciones suaves y conservar el contacto de las palmas durante transiciones. Estos ajustes se activan en el hacha; espada y escudo conservan sus ajustes previos.
+
+`EquipmentBackWeight` tambien se anima en los cuatro clips originales de presentacion del hacha. Asi el IK compartido y el rig de stream usan el mismo estado al pasar de mano a espalda. El generador de Weapon States conserva esta sincronizacion al ejecutarse nuevamente.
+
+Validacion: `ROM > Animation Rigging > Validate All Warrior Axe Animations`. Se comprueban 1.769 muestras de 29 clips (18 armados), contacto de palmas y munecas, rotacion, estabilidad al repetir el preview y 1.002 frames del Animator con ataques, movimiento, salto/caida/aterrizaje, roll y guardar/sacar. El reporte esta en `axe-equipment-ik-validation.txt`. Las hojas `axe-ik-poses-0.png`, `axe-ik-poses-1.png` y `axe-ik-poses-2.png` muestran poses al 20%, 50% y 80%; el orden esta en `axe-ik-poses-index.txt`. Las imagenes usan mallas horneadas desde los huesos de cada muestra para evitar buffers de skinning desactualizados en el render de preview.
+
+El boton Validate Axe Animation Grips del inspector ahora mide los targets finales del sistema compartido, en lugar de comparar contra los targets anteriores al ajuste por equipo.
+
+### Ajustes basados en las referencias manuales (2026-10-24)
+
+`Fit Remaining Axe Animations From Approved Poses` toma como plantillas los valores actuales de Idle, Run-Forward, Run-Backward, Run-Left, Run-Right y Attack1. Conserva sus 54 campos manuales de arma, munecas y codos, junto con HandGrips. Ajusta Attack2–Attack9, Jump, Fall, Land y DiveRoll-Forward1 usando esas formas reales de agarre del mesh. La palma virtual del rig original no se usa como criterio visual de centrado: el artista desplazo deliberadamente las manos para envolver el mango.
+
+Los perfiles nuevos incluyen **Pose Keys**: correcciones suaves durante el clip, con giro y deslizamiento del agarre sobre el mango, posicion/rotacion adicional del arma y posiciones de codos. El giro transforma conjuntamente mano y punto de agarre alrededor del eje local Z; conserva la forma de contacto de las plantillas en lugar de doblar solamente la muneca. El preview evalua el mismo tiempo normalizado que el Animator. Los perfiles de referencia no reciben Pose Keys.
+
+**Right Thumb Rotation / Left Thumb Rotation** modifica exclusivamente la articulacion inicial del pulgar. Se comprueban vertices del mesh influenciados por sus huesos contra el radio del mango. Tambien se corrigen pulgares en las seis referencias si atraviesan el mango, manteniendo intactos los valores manuales originales. La pose base del dedo se restaura antes de evaluar cada frame para no acumular giros.
+
+**Use Approved Carry Grip / Carry Grip Position / Carry Grip Rotation** conserva el agarre aprobado de la mano derecha durante Sheath y Unsheath. El binder del rig original deriva su contacto y orientacion desde estos valores. La izquierda se libera para permitir el movimiento hacia la espalda, y los dos brazos vuelven al IK de combate al terminar de sacar el arma.
+
+Validacion actual: `Validate Axe Against Approved Grips`. El informe `axe-reference-fit.txt` incluye errores de muneca, angulos de muneca/codo, comprobaciones de pulgares y pruebas con el Animator. Se validan 61 puntos por clip y transiciones reales del controlador, incluidos los frames de transporte con una mano y el guardado en la espalda. Los menus anteriores de calibracion/validacion del hacha delegan a este flujo cuando ya existe un agarre de transporte aprobado, para proteger las seis referencias manuales.
+
+Imagenes de revision: `axe-reference-hands-0.png`, `axe-reference-hands-1.png`, `axe-reference-hands-2.png` (20%, 50%, 80%). Orden en `axe-reference-hands-index.txt`. `axe-approved-grips.json.txt` guarda las referencias de esta calibracion. Los informes anteriores de centrado de palma en el eje corresponden a la calibracion matematica previa, antes de los ajustes visuales del artista.
+
+### Espada y escudo: calibracion completa (2026-10-25)
+
+`ROM > Animation Rigging > Calibrate Warrior Sword and Shield Grips` usa los perfiles actuales de Idle como referencias independientes. Conserva el montaje de espada, su contacto sobre el hombro y los valores manuales de los dos perfiles de idle. Ajusta los otros clips de locomocion, nueve estados de ataque, salto/caida/aterrizaje y roll mediante Pose Keys. Los estados que comparten el mismo clip comparten su calibracion. Cada item usa su propia mano y su propia correccion de alcance.
+
+El escudo original solo incluia tabla, aro y pieza frontal. Se agregaron Back grip y dos Grip bracket como hijos visuales de WarriorShield.prefab, alineados con el puno izquierdo y separados de la cara posterior para alojar la mano. No agregan colliders. La espada sigue usando el modelo original y la misma posicion/rotacion/escala.
+
+`Finger Poses` en cada WeaponDefinition guarda la pose local de sus quince huesos de dedos. La derecha conserva el cierre aprobado del idle; la izquierda usa el cierre del agarre de referencia. Se mezcla con la animacion y se restaura antes del frame siguiente. Puede editarse en el inspector de Weapon IK Controller, junto a Hand Grips. Los pulgares tienen ademas sus correcciones independientes por clip. El hacha mantiene Finger Poses vacio y conserva su rig de dedos existente.
+
+Los parametros Carry Grip tambien funcionan ahora para items independientes: durante guardar/sacar, el modelo sigue la forma aprobada de la mano animada antes de pasar al socket de espalda. Esto evita recuperar el antiguo montaje sin IK durante el gesto. Las posiciones de guardado elegidas por el usuario se conservan.
+
+Validacion: `ROM > Animation Rigging > Validate Warrior Sword and Shield Grips`. Informe `sword-shield-grip-fit.txt`: 1.586 muestras de 26 clips distintos, estabilidad al repetir preview, limites de alcance, nueve estados de ataque y 1.146 frames del Animator con cambios de direccion, aire, roll, guardado y extraccion. `sword-shield-thumb-fit.txt` contiene las comprobaciones de vertices del pulgar contra las empunaduras en cinco fases del clip. Las imagenes `sword-shield-grips-front.png` y `sword-shield-grips-back.png` muestran cada clip armado; el orden esta en `sword-shield-grips-index.txt`. Los detalles de idle estan en `sword-grip-detail.png` y `shield-grip-detail.png`.
