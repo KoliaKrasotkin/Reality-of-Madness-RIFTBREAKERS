@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace ROM.EditorTools
 {
-    // Manual temporary review only: never opens, edits or saves the original scene.
+    // Independent preview; only the explicit approved integration command may save the original scene.
     public static class CiudadDelSolSouthernExitGenerator
     {
         const string Target = "Assets/Scenes/Dungeon_Isla_del_Sol.unity";
@@ -22,6 +22,7 @@ namespace ROM.EditorTools
         {
             {"Base", ET + "Pits and Platforms/Platform_Base_01.prefab"},
             {"Rail", ET + "Railings and Decors/Railing_01.prefab"},
+            {"Post", ET + "Railings and Decors/Railing_Single_Pillar_01.prefab"},
             {"Column", ET + "Columns/Column_01.prefab"}
         };
         sealed class Asset { public GameObject Prefab; public Bounds Bounds; }
@@ -33,10 +34,10 @@ namespace ROM.EditorTools
             public string FileHash;
             public bool Dirty;
             public readonly List<Action> Checks = new List<Action>();
-            public void Verify()
+            public void Verify(bool integrating=false)
             {
                 foreach(var check in Checks) check();
-                if(Scene.isDirty != Dirty || FileHash != HashScene())
+                if((!integrating && Scene.isDirty != Dirty) || FileHash != HashScene())
                     throw new InvalidOperationException("La escena original cambio durante la revision.");
             }
         }
@@ -81,6 +82,90 @@ namespace ROM.EditorTools
         public static void Close()
         {
             if(Ready && StageUtility.GetCurrentStage() is ExitPreview) StageUtility.GoToMainStage();
+        }
+        [MenuItem(Menu + "4. Vista lateral de los ocho peldanos")]
+        public static void SideView()
+        {
+            if(!(StageUtility.GetCurrentStage() is ExitPreview)) return;
+            var view=SceneView.lastActiveSceneView;
+            if(view) { view.LookAtDirect(new Vector3(30,-1,-157),Quaternion.Euler(8,90,0),22); view.Repaint(); }
+        }
+
+        const string Signature="__ROM_SouthernExit_153_v1";
+        [MenuItem(Menu + "5. Integrar salida aprobada y guardar tras validar %#&p")]
+        public static void IntegrateApproved()
+        {
+            if(!Ready) return;
+            int undo=-1; bool saved=false;
+            try
+            {
+                var preview=StageUtility.GetCurrentStage() as ExitPreview;
+                if(preview&&preview.Plan==null)
+                {
+                    Preview();
+                    var recovered=StageUtility.GetCurrentStage() as ExitPreview;
+                    if(!recovered||recovered.Plan==null) throw new InvalidOperationException("No se pudo recuperar la copia aprobada.");
+                    EditorApplication.delayCall+=IntegrateApproved; return;
+                }
+                string approved=preview&&preview.Plan!=null?Layout(preview.Plan.Root):null;
+                Close();
+                var source=Inspect();
+                if(source.Dirty) throw new InvalidOperationException("Hay cambios previos sin guardar en la original; no se guardaran con esta etapa.");
+                var existing=source.Scene.GetRootGameObjects().Where(g=>g.name==Root).ToArray();
+                if(existing.Length>1) throw new InvalidOperationException("Hay raices de salida duplicadas; no se alterara una estructura ambigua.");
+                if(existing.Length==1&&!existing[0].transform.Find(Signature)) throw new InvalidOperationException("La raiz de salida no pertenece a esta integracion; no se sobrescribira.");
+                // PreviewSceneStage copies are discarded by Close(), never copied into the original.
+                if(source.Scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Transform>(true)).Any(t=>
+                    t.name=="Contexto original - solo copias"||t.name=="TEMP_CiudadDelSol_Salida_Meridional"))
+                    throw new InvalidOperationException("La original contiene contexto temporal inesperado; no se guardara.");
+                var beforeRoots=source.Scene.GetRootGameObjects().Where(g=>existing.Length==0||g!=existing[0]).Select(g=>g.GetInstanceID()).ToArray();
+                var assets=LoadAssets();
+                Undo.IncrementCurrentGroup(); undo=Undo.GetCurrentGroup(); Undo.SetCurrentGroupName("Integrar salida sur aprobada");
+                Plan plan;
+                if(existing.Length==0)
+                {
+                    plan=Build(source,source.Root,source.Scene,assets,true);
+                    var sign=new GameObject(Signature); sign.transform.SetParent(plan.Root,false); sign.hideFlags=HideFlags.HideInHierarchy;
+                }
+                else
+                {
+                    plan=new Plan{Source=source,Root=existing[0].transform,Context=source.Root};
+                    foreach(Transform group in plan.Root) foreach(Transform t in group)
+                    {
+                        if(!PrefabUtility.IsAnyPrefabInstanceRoot(t.gameObject)) continue;
+                        string path=PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(t.gameObject);
+                        string key=Paths.Single(p=>p.Value==path).Key;
+                        var q=t.rotation*Quaternion.Inverse(assets[key].Prefab.transform.localRotation);
+                        var b=TransformBounds(assets[key].Bounds,Matrix4x4.TRS(t.position,q,Vector3.one));
+                        plan.Pieces.Add(new Piece{Key=key,Object=t.gameObject,Bounds=b});
+                    }
+                }
+                if(plan.Pieces.Count!=153||plan.Pieces.Count(p=>p.Key=="Base")!=68||plan.Pieces.Count(p=>p.Key=="Post")!=16)
+                    throw new InvalidOperationException("La salida aprobada debe conservar exactamente sus 153 prefabs.");
+                if(approved!=null&&Layout(plan.Root)!=approved) throw new InvalidOperationException("La distribucion difiere de la copia aprobada.");
+                ValidatePlan(plan,true);
+                if(!beforeRoots.SequenceEqual(source.Scene.GetRootGameObjects().Where(g=>g!=plan.Root.gameObject).Select(g=>g.GetInstanceID())))
+                    throw new InvalidOperationException("Cambio inesperado de raices originales.");
+                if(source.Scene.path!=Target||StageUtility.GetCurrentStage()!=StageUtility.GetMainStage()) throw new InvalidOperationException("Cambio el contexto de integracion.");
+                EditorSceneManager.MarkSceneDirty(source.Scene);
+                if(!EditorSceneManager.SaveScene(source.Scene,Target,false)) throw new InvalidOperationException("Fallo el guardado de la escena original.");
+                saved=true; Undo.CollapseUndoOperations(undo);
+                Debug.Log("SALIDA_SUR_INTEGRADA_GUARDADA: 153 prefabs originales, plataforma 24x12m a Y=0, ocho peldanos de 1m/0.25m, puente 18x36m a Y=-2, pretiles y soportes. Continuidad y colliders comprobados, barandas sin bloqueos. Siete arquitecturas y nueve caminos originales intactos; una sola raiz de salida y sin copias temporales en la original.",plan.Root);
+            }
+            catch(Exception e)
+            {
+                if(!saved&&undo>=0) Undo.RevertAllDownToGroup(undo);
+                Debug.LogError("SALIDA_SUR_INTEGRACION_DETENIDA: "+e.Message);
+            }
+        }
+        static string Layout(Transform root)
+        {
+            var c=System.Globalization.CultureInfo.InvariantCulture; var rows=new List<string>();
+            foreach(Transform group in root) foreach(Transform t in group)
+                if(PrefabUtility.IsAnyPrefabInstanceRoot(t.gameObject)) rows.Add(group.name+"|"+
+                    PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(t.gameObject)+"|"+t.localPosition.ToString("F5",c)+"|"+
+                    t.localRotation.ToString("F5",c)+"|"+t.localScale.ToString("F5",c));
+            return Hash128.Compute(string.Join("\n",rows)).ToString();
         }
         static Source Inspect()
         {
@@ -156,9 +241,10 @@ namespace ROM.EditorTools
                 throw new InvalidOperationException("El modulo de piedra ya no mide 6 x 2 x 6.");
             return result;
         }
-        static Plan Build(Source source, Transform context, Scene scene, Dictionary<string,Asset> assets)
+        static Plan Build(Source source, Transform context, Scene scene, Dictionary<string,Asset> assets,bool undo=false)
         {
             var root=new GameObject(Root); SceneManager.MoveGameObjectToScene(root,scene);
+            if(undo) Undo.RegisterCreatedObjectUndo(root,"Integrar salida sur aprobada");
             var plan=new Plan{Root=root.transform,Context=context,Source=source};
             var groups=new Dictionary<string,Transform>();
             GameObject P(string group,string key,float x,float z,float y,float yaw=0,bool top=false)
@@ -172,6 +258,10 @@ namespace ROM.EditorTools
                 go.transform.SetParent(parent,true); go.transform.SetPositionAndRotation(pivot,q*asset.Prefab.transform.localRotation);
                 go.transform.localScale=asset.Prefab.transform.localScale;
                 DisableImportedBehaviour(go);
+                if(key=="Post"&&!go.GetComponentsInChildren<Collider>().Any(c=>c.enabled&&!c.isTrigger))
+                    foreach(var f in go.GetComponentsInChildren<MeshFilter>())
+                        if(f.sharedMesh&&f.GetComponent<MeshRenderer>()&&f.GetComponent<MeshRenderer>().enabled)
+                            f.gameObject.AddComponent<MeshCollider>().sharedMesh=f.sharedMesh;
                 if(!go.GetComponentsInChildren<Collider>().Any(c=>c.enabled&&!c.isTrigger))
                     throw new InvalidOperationException("Prefab sin collider funcional: "+key);
                 plan.Pieces.Add(new Piece{Key=key,Object=go,Bounds=b}); return go;
@@ -194,39 +284,40 @@ namespace ROM.EditorTools
             foreach(float x in new[]{21f,39f}) P("04 - Pretiles","Rail",x,-141.53f,0,90);
             foreach(float z in new[]{-144f,-150f}) Rails("04 - Pretiles",18,42,z,0);
 
-            // Eight broad 0.25m risers made from original stone platform modules at native scale.
-            // Overlapped solid foundations expose 3m treads; first/last treads are 6m landings.
+            // Eight 1m exposed treads descend 2m over 8m (14-degree profile).
+            // The native 6m blocks overlap BELOW the visible treads, like bonded stone foundations.
+            // The upper landing conceals the first block's excess length; no coplanar tread surfaces.
             for(int i=0;i<8;i++)
             {
-                float z=i==7?-180:-156-i*3, y=-(i+1)*.25f;
+                float z=-151-i, y=-(i+1)*.25f;
                 foreach(float x in new[]{21f,27f,33f,39f}) Floor("02 - Escalinata monumental - 8 peldanos",x,z,y);
+                float edge=assets["Post"].Bounds.size.x/2+.03f;
+                foreach(float x in new[]{18+edge,42-edge})
+                    P("04 - Pretiles escalonados","Post",x,-153.5f-i,y);
             }
-            float[] guardZ={-156,-162,-168,-174,-180};
-            float[] guardY={-.25f,-.75f,-1.25f,-1.75f,-2};
-            for(int i=0;i<guardZ.Length;i++) Rails("04 - Pretiles",18,42,guardZ[i],guardY[i]);
-            foreach(float x in new[]{21f,27f,33f,39f}) foreach(float z in new[]{-186f,-192f})
+            foreach(float x in new[]{21f,27f,33f,39f}) foreach(float z in new[]{-164f,-170f})
                 Floor("03 - Descanso y puente inferior",x,z,-2);
-            foreach(float z in new[]{-186f,-192f}) Rails("04 - Pretiles",18,42,z,-2);
-            foreach(float x in new[]{21f,39f}) P("04 - Pretiles","Rail",x,-194.47f,-2,90);
+            foreach(float z in new[]{-164f,-170f}) Rails("04 - Pretiles",18,42,z,-2);
+            foreach(float x in new[]{21f,39f}) P("04 - Pretiles","Rail",x,-172.47f,-2,90);
             for(int row=0;row<6;row++)
             {
-                float z=-198-row*6;
+                float z=-176-row*6;
                 foreach(float x in new[]{24f,30f,36f}) Floor("03 - Descanso y puente inferior",x,z,-2);
                 Rails("04 - Pretiles",21,39,z,-2);
                 if(row%2==0) foreach(float x in new[]{24f,36f}) Pier(x,z,-4);
             }
-            foreach(float x in new[]{24f,30f,36f}) P("06 - Cierre provisional sin portal","Rail",x,-230.47f,-2,90);
+            foreach(float x in new[]{24f,30f,36f}) P("06 - Cierre provisional sin portal","Rail",x,-208.47f,-2,90);
             foreach(float x in new[]{27f,33f}) Pier(x,-138,-2);
             foreach(float x in new[]{21f,39f})
             {
                 foreach(float z in new[]{-144f,-150f}) Pier(x,z,-2);
-                Pier(x,-162,-2.75f); Pier(x,-174,-3.75f);
-                foreach(float z in new[]{-186f,-192f}) Pier(x,z,-4);
+                Pier(x,-156.5f,-3); Pier(x,-159.5f,-3.75f);
+                foreach(float z in new[]{-164f,-170f}) Pier(x,z,-4);
             }
             Physics.SyncTransforms(); return plan;
         }
 
-        static void ValidatePlan(Plan plan)
+        static void ValidatePlan(Plan plan,bool integrating=false)
         {
             Physics.SyncTransforms();
             var all=plan.Context.GetComponentsInChildren<Collider>().Concat(plan.Root.GetComponentsInChildren<Collider>()).Where(c=>c.enabled&&!c.isTrigger).ToArray();
@@ -259,6 +350,8 @@ namespace ROM.EditorTools
                     if(GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject)>0) throw new InvalidOperationException("Script faltante: "+t.name);
                 foreach(var r in piece.Object.GetComponentsInChildren<MeshRenderer>())
                     if(r.sharedMaterials.Any(m=>!m||!m.shader)) throw new InvalidOperationException("Material faltante: "+r.name);
+                if(!piece.Object.GetComponentsInChildren<Collider>().Any(c=>c.enabled&&!c.isTrigger))
+                    throw new InvalidOperationException("Collider ausente o deshabilitado: "+piece.Object.name);
                 if(piece.Key=="Column")
                 {
                     var b=piece.Bounds;
@@ -271,22 +364,29 @@ namespace ROM.EditorTools
             Walk(new Vector3(18,0,-132),new Vector3(31.5f,0,-132),2.4f);
             Walk(new Vector3(31.5f,0,-132),new Vector3(31.5f,0,-144),2.4f);
             Walk(new Vector3(31.5f,0,-144),new Vector3(30,0,-150),8);
-            Walk(new Vector3(30,0,-150),new Vector3(30,-2,-184),20);
-            Walk(new Vector3(30,-2,-184),new Vector3(30,-2,-227),12);
+            Walk(new Vector3(30,0,-150),new Vector3(30,0,-153),20);
+            Walk(new Vector3(30,0,-153),new Vector3(30,-2,-161),20);
+            Walk(new Vector3(30,-2,-161),new Vector3(30,-2,-205),12);
             // The actual collider surface must have eight continuous, low risers, never jumps/gaps.
             float previous=Surface(30,-152,0); int drops=0;
-            for(float z=-152.1f;z>=-184;z-=.1f)
+            for(float z=-152.1f;z>=-162;z-=.1f)
             {
-                float y=Surface(30,z,Mathf.Lerp(0,-2,Mathf.InverseLerp(-152,-184,z)));
+                float y=Surface(30,z,Mathf.Lerp(0,-2,Mathf.InverseLerp(-153,-161,z)));
                 if(y<previous-.1f) { if(previous-y>.26f) throw new InvalidOperationException("Peldaño demasiado alto."); drops++; }
                 if(y>previous+.05f) throw new InvalidOperationException("Escalinata con subida inesperada.");
                 previous=y;
             }
             if(drops!=8 || Mathf.Abs(previous+2)>.02f) throw new InvalidOperationException("Se esperaban ocho peldanos y un descenso de 2m.");
+            // Check the exact exposed tread, not merely an interpolated descending surface.
+            for(int i=0;i<8;i++) foreach(float x in new[]{21f,27f,33f,39f})
+                if(Mathf.Abs(Surface(x,-153.5f-i,-(i+1)*.25f)+(i+1)*.25f)>.02f)
+                    throw new InvalidOperationException("Huella de escalon oculta o a altura incorrecta: "+(i+1));
+            if(Mathf.Abs(Surface(30,-152.5f,0))>.02f||Mathf.Abs(Surface(30,-162.5f,-2)+2)>.02f)
+                throw new InvalidOperationException("Las tres secciones no tienen sus niveles previstos.");
             if(plan.Root.GetComponentsInChildren<Light>().Any(l=>l.enabled)||plan.Root.GetComponentsInChildren<ParticleSystem>().Any(p=>p.isPlaying))
                 throw new InvalidOperationException("No se permiten luces ni efectos.");
-            plan.Source.Verify();
-            Debug.Log("SALIDA_SUR_VALIDACION_OK: continuidad original-plataforma-escalinata-puente comprobada con cuatro carriles; ocho risers de 0.25m; acceso por hueco original sin retirar barandas. Siete arquitecturas y nueve caminos intactos. Validacion geometrica, no gameplay/NavMesh.");
+            plan.Source.Verify(integrating);
+            Debug.Log("SALIDA_SUR_VALIDACION_OK: plataforma Y=0, ocho huellas visibles de 1m y contrahuellas de 0.25m, descenso 2m en 8m, puente Y=-2. Continuidad y cuatro carriles comprobados. Acceso por hueco original sin retirar barandas. Siete arquitecturas y nueve caminos intactos. Validacion geometrica, no gameplay/NavMesh.");
         }
 
         static Bounds TransformBounds(Bounds b,Matrix4x4 matrix)
@@ -339,10 +439,10 @@ namespace ROM.EditorTools
                         if(!this||StageUtility.GetCurrentStage()!=this) return;
                         var view=SceneView.lastActiveSceneView;
                         if(view) { view.sceneLighting=false; view.sceneViewState.showImageEffects=false; view.orthographic=false;
-                            view.LookAtDirect(new Vector3(30,-1,-169),Quaternion.Euler(48,-25,0),82); view.Repaint(); }
+                            view.LookAtDirect(new Vector3(30,-1,-159),Quaternion.Euler(20,65,0),43); view.Repaint(); }
                         Selection.activeGameObject=null;
                     };
-                    Debug.Log("SALIDA_SUR_PREVIEW: "+Plan.Pieces.Count+" prefabs originales; plataforma 24x12m, 8 peldanos anchos, puente inferior 18x36m a Y=-2. Entrada existente conservada. No se integro ni guardo la escena original.");
+                    Debug.Log("SALIDA_SUR_PREVIEW: "+Plan.Pieces.Count+" prefabs originales; plataforma 24x12m, escalinata 24x8m con ocho peldanos visibles, puente inferior 18x36m a Y=-2. Vista lateral disponible en el menu 4. No se integro ni guardo la escena original.");
                     return true;
                 }
                 catch(Exception e) { Debug.LogException(e); base.OnCloseStage(); return false; }
