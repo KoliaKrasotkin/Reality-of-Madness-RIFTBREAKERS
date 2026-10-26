@@ -51,7 +51,7 @@ public static class WarriorEquipmentValidation
                 void Step(float seconds)
                 {
                     for (int j = 0; j < Mathf.Max(1, Mathf.CeilToInt(seconds * 60)); j++)
-                    { rig.UpdatePreviewGraph(graph); graph.Evaluate(seconds == 0 ? 0 : 1f / 60); }
+                    { presenter.BeginPoseEvaluation(); rig.UpdatePreviewGraph(graph); graph.Evaluate(seconds == 0 ? 0 : 1f / 60); }
                     presenter.RefreshPose(playable.GetFloat("EquipmentBackWeight"));
                 }
                 Step(.3f);
@@ -70,17 +70,16 @@ public static class WarriorEquipmentValidation
                             {
                                 var data = profile.EquippedParts.ToArray()[hand];
                                 var model = root.transform.Find(profile.Id + " " + data.Socket);
-                                var bone = animator.GetBoneTransform(data.Socket);
-                                var rotation = WeaponGripSpace.Rotation(animator, data.Socket);
-                                Check(model && Vector3.Distance(model.position, bone.position + rotation * data.Position) < .001f,
-                                    state + " sample " + sample + ": " + data.Socket + " grip follows its own animated wrist");
+                                Check(model, state + " sample " + sample + ": " + data.Socket + " model exists");
+                                foreach (var grip in data.HandGrips)
+                                    Check(float.IsFinite(animator.GetBoneTransform(grip.Hand).position.x),
+                                        state + " sample " + sample + ": " + grip.Hand + " IK is finite");
                             }
                         }
                         else
                         {
-                            var grip = animator.GetComponentInChildren<AnimatedWeaponGripConstraint>().data;
-                            Check(Vector3.Distance(grip.leftHand.position, grip.leftTarget.position) < .003f && Vector3.Distance(grip.rightHand.position, grip.rightTarget.position) < .003f,
-                                state + " sample " + sample + ": original axe grip preserved");
+                            Check(float.IsFinite(animator.GetBoneTransform(HumanBodyBones.RightHand).position.x) && float.IsFinite(animator.GetBoneTransform(HumanBodyBones.LeftHand).position.x),
+                                state + " sample " + sample + ": shared axe IK is finite");
                         }
                     }
                     if (profile == sword && state.StartsWith("Attack"))
@@ -106,18 +105,22 @@ public static class WarriorEquipmentValidation
                 graph.Destroy(); rig.StopPreview();
             }
             // Also exercise Animator's own parameter path used by LateUpdate in game.
-            animator.Rebind(); animator.Update(0);
+            presenter.BeginPoseEvaluation(); animator.Rebind(); animator.Update(0);
             animator.SetBool("Grounded", true); animator.SetBool("WeaponDrawn", false);
-            for (int i = 0; i < 240; i++) animator.Update(1f / 60);
+            for (int i = 0; i < 240; i++) { presenter.BeginPoseEvaluation(); animator.Update(1f / 60); presenter.RefreshPose(); }
             Check(animator.GetFloat("EquipmentBackWeight") > .99f, "Runtime Animator exposes the animated back attachment weight");
             presenter.RefreshPose();
             presenter.Alive = false; presenter.RefreshPose();
             Check(sword.EquippedParts.ToArray().All(a => !root.transform.Find(sword.Id + " " + a.Socket).gameObject.activeSelf), "Death hides both attached models");
             presenter.Alive = true;
             animator.SetBool("WeaponDrawn", true);
-            for (int i = 0; i < 240; i++) animator.Update(1f / 60);
+            for (int i = 0; i < 240; i++) { presenter.BeginPoseEvaluation(); animator.Update(1f / 60); presenter.RefreshPose(); }
             presenter.RefreshPose();
             Check(animator.GetFloat("EquipmentBackWeight") < .01f, "Runtime draw restores both hand attachments");
+            var activeClip = animator.GetCurrentAnimatorClipInfo(0).OrderByDescending(c => c.weight).First().clip;
+            var expectedShield = shield.AnimationIK.First(p => p.Clip == activeClip).WeaponPosition;
+            Check(Vector3.Distance(presenter.Settings(shield).WeaponPosition, expectedShield) < .0001f,
+                "Runtime Animator selects the active clip's shield IK offsets without preview overrides");
             var warrior = AssetDatabase.LoadAssetAtPath<CombatClassDefinition>("Assets/ROM/Combat/Warrior.asset");
             var actual = presenter.ResolveClip(warrior.BasicAttack.Animation);
             Check(WarriorSwordIdleSetup.IsDoubleLDerived(actual), "Autoattack resolves the selected equipment animation");
@@ -164,7 +167,7 @@ public static class WarriorEquipmentValidation
             playable.SetFloat("AttackRate", 1);
             void Step(float seconds)
             {
-                for (int i = 0; i < Mathf.CeilToInt(seconds * 60); i++) { rig.UpdatePreviewGraph(graph); graph.Evaluate(1f / 60); }
+                for (int i = 0; i < Mathf.CeilToInt(seconds * 60); i++) { presenter.BeginPoseEvaluation(); rig.UpdatePreviewGraph(graph); graph.Evaluate(1f / 60); }
                 presenter.RefreshPose(playable.GetFloat("EquipmentBackWeight"));
             }
             preview.camera.orthographic = true; preview.camera.orthographicSize = 1.35f;

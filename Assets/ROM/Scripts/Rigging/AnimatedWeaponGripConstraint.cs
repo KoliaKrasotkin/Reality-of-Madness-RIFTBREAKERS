@@ -182,6 +182,14 @@ public class AnimatedWeaponGripBinder : AnimationJobBinder<AnimatedWeaponGripJob
             rightFingers = new NativeArray<byte>(count, Allocator.Persistent),
             fingerRotations = new NativeArray<Quaternion>(count, Allocator.Persistent)
         };
+        var equipment = animator.GetComponentInParent<MultiFPS.Gameplay.RiftCombat.RiftWarriorEquipment>();
+        var definition = equipment ? equipment.AxeWeapon : null;
+        if (definition && definition.UseApprovedCarryGrip)
+        {
+            var wristRotation = Quaternion.Euler(definition.CarryGripRotation);
+            job.rightHandWeaponRotation = Quaternion.Inverse(wristRotation);
+            job.carryContact = definition.CarryGripPosition + wristRotation * data.rightPalmOffset;
+        }
         if (data.backSocket) job.backSocket = ReadOnlyTransformHandle.Bind(animator, data.backSocket);
         for (int i = 0; i < count; i++)
         {

@@ -256,6 +256,8 @@ public static class WarriorWeaponStateSetup
             AnimationUtility.SetEditorCurve(clip, EditorCurveBinding.FloatCurve(
                 AnimationUtility.CalculateTransformPath(gripConstraint.transform, animator.transform),
                 typeof(AnimatedWeaponGripConstraint), "m_Data.backWeight"), back ?? AnimationCurve.Constant(0, length, 0));
+            AnimationUtility.SetEditorCurve(clip, EditorCurveBinding.FloatCurve("", typeof(Animator), "EquipmentBackWeight"),
+                back ?? AnimationCurve.Constant(0, length, 0));
             foreach (var renderer in renderers) AnimationUtility.SetEditorCurve(clip,
                 EditorCurveBinding.FloatCurve(AnimationUtility.CalculateTransformPath(renderer.transform, animator.transform), renderer.GetType(), "m_Enabled"), visible);
             clip.frameRate = 60;

@@ -151,6 +151,7 @@ public class WeaponIKControllerEditor : Editor
             }
             if (previewActive) SamplePreview();
             DrawEquipmentOffsets();
+            DrawHandIK();
         }
     }
 
@@ -211,6 +212,46 @@ public class WeaponIKControllerEditor : Editor
             foreach (string name in new[] { "Position", "Rotation", "Scale", "StoredBone", "StoredPosition", "StoredRotation" })
                 EditorGUILayout.PropertyField(settings.FindProperty(name));
             if (EditorGUI.EndChangeCheck())
+            {
+                settings.ApplyModifiedProperties();
+                AssetDatabase.SaveAssetIfDirty(part);
+                SamplePreview();
+            }
+        }
+    }
+
+    private void DrawHandIK()
+    {
+        if (!previewWeapon || !previewClip) return;
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Hand IK — selected animation", EditorStyles.boldLabel);
+        EditorGUILayout.HelpBox("Grip positions are wrist targets in weapon model space. Animation offsets only affect the selected clip. Weapon offsets move the item and its hands together; hand offsets adjust the wrist independently. Values are saved to the definition assets.", MessageType.Info);
+        var parts = previewWeapon.UsesBuiltInWeapon ? new[] { previewWeapon } : new System.Collections.Generic.List<WeaponDefinition>(previewWeapon.EquippedParts).ToArray();
+        foreach (var part in parts)
+        {
+            EditorGUILayout.LabelField(part.DisplayName, EditorStyles.boldLabel);
+            var settings = new SerializedObject(part);
+            settings.Update();
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(settings.FindProperty("EnableHandIK"));
+            EditorGUILayout.PropertyField(settings.FindProperty("HandGrips"), true);
+            EditorGUILayout.PropertyField(settings.FindProperty("FingerPoses"), true);
+            var entries = settings.FindProperty("AnimationIK");
+            int index = Array.FindIndex(part.AnimationIK, item => item != null && item.Clip == previewClip);
+            if (index < 0)
+            {
+                if (GUILayout.Button("Add IK settings for " + previewClip.name))
+                {
+                    index = entries.arraySize++;
+                    var entry = entries.GetArrayElementAtIndex(index);
+                    entry.FindPropertyRelative("Clip").objectReferenceValue = previewClip;
+                    entry.FindPropertyRelative("Weight").floatValue = 1;
+                    foreach (string field in new[] { "WeaponPosition", "WeaponRotation", "HandPosition", "HandRotation", "ElbowOffset", "LeftHandPosition", "LeftHandRotation", "LeftElbowOffset", "RightThumbRotation", "LeftThumbRotation" })
+                        entry.FindPropertyRelative(field).vector3Value = Vector3.zero;
+                }
+            }
+            if (index >= 0) EditorGUILayout.PropertyField(entries.GetArrayElementAtIndex(index), new GUIContent(previewClip.name), true);
+            if (EditorGUI.EndChangeCheck() || settings.hasModifiedProperties)
             {
                 settings.ApplyModifiedProperties();
                 AssetDatabase.SaveAssetIfDirty(part);
@@ -305,6 +346,7 @@ public class WeaponIKControllerEditor : Editor
     private void SamplePreview()
     {
         if (!previewActive || !previewGraph.IsValid()) return;
+        if (equipmentPreview) equipmentPreview.BeginPoseEvaluation();
         clipPlayable.SetTime(previewTime);
         if (presentationPlayable.IsValid()) presentationPlayable.SetTime(Mathf.Min(previewTime, presentationClip.length));
         rigBuilder.UpdatePreviewGraph(previewGraph);
@@ -316,7 +358,7 @@ public class WeaponIKControllerEditor : Editor
                 foreach (var binding in AnimationUtility.GetCurveBindings(presentationClip))
                     if (binding.type == typeof(Animator) && binding.propertyName == "EquipmentBackWeight")
                     { stored = AnimationUtility.GetEditorCurve(presentationClip, binding).Evaluate(previewTime); break; }
-            equipmentPreview.RefreshPose(stored);
+            equipmentPreview.RefreshPose(stored, previewClip, previewTime / Mathf.Max(.0001f, previewClip.length));
         }
         SceneView.RepaintAll();
     }
@@ -396,10 +438,25 @@ public class WeaponIKControllerEditor : Editor
                 {
                     previewTime = previewClip.length * i / SampleIntervals;
                     SamplePreview();
-                    leftError = Mathf.Max(leftError, Vector3.Distance(data.leftHand.position, data.leftTarget.position));
-                    rightError = Mathf.Max(rightError, Vector3.Distance(data.rightHand.position, data.rightTarget.position));
-                    leftAngle = Mathf.Max(leftAngle, Quaternion.Angle(data.leftHand.rotation, data.leftTarget.rotation));
-                    rightAngle = Mathf.Max(rightAngle, Quaternion.Angle(data.rightHand.rotation, data.rightTarget.rotation));
+                    Vector3 leftPosition = data.leftTarget.position, rightPosition = data.rightTarget.position;
+                    Quaternion leftRotation = data.leftTarget.rotation, rightRotation = data.rightTarget.rotation;
+                    if (equipmentPreview && previewWeapon && previewWeapon.EnableHandIK)
+                    {
+                        var model = equipmentPreview.ModelFor(previewWeapon);
+                        var settings = equipmentPreview.Settings(previewWeapon, previewClip, previewTime / Mathf.Max(.0001f, previewClip.length));
+                        if (model) foreach (var grip in previewWeapon.HandGrips)
+                        {
+                            bool left = grip.Hand == HumanBodyBones.LeftHand;
+                            var position = model.transform.TransformPoint(grip.Position + (left ? settings.LeftHandPosition : settings.HandPosition));
+                            var rotation = model.transform.rotation * Quaternion.Euler(grip.Rotation) * Quaternion.Euler(left ? settings.LeftHandRotation : settings.HandRotation);
+                            if (left) { leftPosition = position; leftRotation = rotation; }
+                            else { rightPosition = position; rightRotation = rotation; }
+                        }
+                    }
+                    leftError = Mathf.Max(leftError, Vector3.Distance(data.leftHand.position, leftPosition));
+                    rightError = Mathf.Max(rightError, Vector3.Distance(data.rightHand.position, rightPosition));
+                    leftAngle = Mathf.Max(leftAngle, Quaternion.Angle(data.leftHand.rotation, leftRotation));
+                    rightAngle = Mathf.Max(rightAngle, Quaternion.Angle(data.rightHand.rotation, rightRotation));
                     travel = Mathf.Max(travel, Vector3.Distance(firstPosition, animator.transform.InverseTransformPoint(data.weapon.position)));
                     turn = Mathf.Max(turn, Quaternion.Angle(firstRotation, Quaternion.Inverse(animator.transform.rotation) * data.weapon.rotation));
                 }

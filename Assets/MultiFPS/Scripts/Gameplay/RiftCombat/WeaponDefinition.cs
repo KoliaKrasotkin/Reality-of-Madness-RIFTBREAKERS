@@ -27,6 +27,16 @@ public sealed class WeaponDefinition : ScriptableObject
  public bool UsesBuiltInWeapon,UseGripFrame;
  public HumanBodyBones StoredBone=HumanBodyBones.Chest;
  public Vector3 StoredPosition,StoredRotation;
+ [Header("Hand IK")]
+ public bool EnableHandIK;
+ [Tooltip("Move the drawn model minimally so every enabled hand grip stays within arm reach.")]
+ public bool KeepGripsReachable;
+ public EquipmentHandGrip[] HandGrips=System.Array.Empty<EquipmentHandGrip>();
+ public EquipmentAnimationIK[] AnimationIK=System.Array.Empty<EquipmentAnimationIK>();
+ public EquipmentFingerPose[] FingerPoses=System.Array.Empty<EquipmentFingerPose>();
+ [Header("Single-hand carry grip")]
+ public bool UseApprovedCarryGrip;
+ public Vector3 CarryGripPosition,CarryGripRotation;
  [Tooltip("Companion items such as a shield or a second weapon. Each item owns its model and socket.")]
  public WeaponDefinition[] AdditionalEquipment=System.Array.Empty<WeaponDefinition>();
  public bool IsShield => Role==EquipmentRole.Shield;
