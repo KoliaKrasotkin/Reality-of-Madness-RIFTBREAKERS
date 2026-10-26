@@ -50,6 +50,7 @@ public sealed class RiftQuestGuidance:MonoBehaviour {
   foreach(var source in glows.Keys.ToArray())if(!source||!wanted.Contains(source)){if(glows[source])Destroy(glows[source].gameObject);glows.Remove(source);}
   if(material)foreach(var source in wanted)if(source&&!glows.ContainsKey(source)&&glows.Count<64){var overlay=Overlay(source);if(overlay)glows.Add(source,overlay);}
   Destination=null;DestinationLabel="";var tracked=Tracked(state);var definition=tracked!=null?catalog.Quest(tracked.Id):null;if(!definition){if(direction)direction.text="";return;}
+  if(ROM.Tutorial.Crilium.CriliumSession.ObjectiveText(definition.Id)!=null){var tutorial=FindFirstObjectByType<ROM.Tutorial.Crilium.CriliumDirector>();if(direction)direction.text=tutorial?Vector3.Distance(actor.transform.position,tutorial.Goal).ToString("0")+" m · seguí la señal violeta":"";return;}
   if(tracked.Status==QuestStatus.Ready){ChooseNpc(definition.TurnIn,actor);DestinationLabel=Destination?"Entregar: "+RiftHub.NpcName(definition.TurnIn):"";}
   else for(int i=0;i<definition.Objectives.Length;i++){if(!Incomplete(tracked,definition,i))continue;FindObjective(definition.Objectives[i],tracked,i,state,catalog,actor);if(Destination)break;}
   if(direction)direction.text=Destination?DestinationLabel+"\n"+Vector3.Distance(actor.transform.position,Destination.position).ToString("0")+" m · seguí la marca dorada":"Sin ubicación disponible para este objetivo";
@@ -76,7 +77,7 @@ public sealed class RiftQuestGuidance:MonoBehaviour {
   int count=skin?skin.sharedMesh.subMeshCount:filter.sharedMesh.subMeshCount;result.sharedMaterials=Enumerable.Repeat(material,Mathf.Max(1,count)).ToArray();result.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;result.receiveShadows=false;return result;
  }
  void DrawMarker(CharacterInstance actor){
-  if(!marker)return;var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main;bool show=Destination&&camera&&journal.Tracker.gameObject.activeSelf&&!RiftHUDPanelDock.PreviewOverlayActive;marker.gameObject.SetActive(show);if(!show)return;
+  if(!marker)return;var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main;bool show=Destination&&camera&&journal.Tracker.gameObject.activeSelf&&!RiftHUDPanelDock.PreviewOverlayActive&&!(UIPauseMenu._instance&&UIPauseMenu._instance.InterfaceShowing);marker.gameObject.SetActive(show);if(!show)return;
   var point=camera.WorldToScreenPoint(Destination.position+Vector3.up*1.8f);Offscreen=point.z<=0||point.x<100||point.x>Screen.width-100||point.y<100||point.y>Screen.height-100;
   Vector2 screen=point;if(Offscreen){var delta=screen-new Vector2(Screen.width*.5f,Screen.height*.5f);if(point.z<0)delta=-delta;if(delta.sqrMagnitude<1)delta=Vector2.down;screen=new Vector2(Screen.width*.5f,Screen.height*.78f);arrow.Shape=HUDShape.Arrow;arrow.rectTransform.localRotation=Quaternion.Euler(0,0,Mathf.Atan2(delta.y,delta.x)*Mathf.Rad2Deg-90);}else{arrow.Shape=HUDShape.Diamond;arrow.rectTransform.localRotation=Quaternion.identity;}
   arrow.SetVerticesDirty();RectTransformUtility.ScreenPointToLocalPointInRectangle(hud.Design,screen,null,out var local);marker.anchoredPosition=local;caption.text=DestinationLabel+" · "+Vector3.Distance(actor.transform.position,Destination.position).ToString("0")+" m";

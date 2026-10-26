@@ -10,6 +10,8 @@ public static class CombatController {
   critical=false;var dealer=ForDealer(attacker);if(NetworkServer.active&&damage>0&&dealer&&!dealer.Player.BOT&&victim&&attacker!=victim&&attacker.Team!=victim.Team&&!victim.CombatTransfer){var profile=dealer.AutoProfile;damage=Mathf.Max(1,Mathf.RoundToInt(damage*dealer.PowerMultiplier));critical=UnityEngine.Random.value<dealer.CriticalChance;if(critical)damage=Mathf.Max(1,Mathf.RoundToInt(damage*Mathf.Max(1,profile.CriticalMultiplier)));}
   if(!NetworkServer.active||damage<=0||attacker==victim)return damage;
   var player=AbilityController.For(victim);if(player&&player.Prototype)player.Player.LastCombatAt=NetworkTime.time;
+  var native=attacker?attacker.GetComponent<MultiFPS.Gameplay.RiftEnemies.RiftEnemyAgent>():null;
+  if(player&&player.Prototype&&!player.InCrilium&&!victim.TrainingTarget&&native&&native.Definition)damage=MultiFPS.Gameplay.RiftEnemies.RiftEnemyLevelTuning.Load.DamageAgainstPlayer(damage,native.Level,player.Level);
   if(player&&player.Prototype)damage=Mathf.Max(1,Mathf.RoundToInt(damage*(1-player.Specialization.Armor)*(player.BuffUntil>NetworkTime.time?1-player.BuffReduction:1)));
   if(player){damage=Mathf.Max(1,Mathf.RoundToInt(damage*(1-player.ExtraArmor)*(player.DefensiveUntil>NetworkTime.time?.5f:1)));}
   if(player&&damage>0)player.ReportIncomingThreat(attacker);Damaged?.Invoke(victim,attacker,damage);return damage;

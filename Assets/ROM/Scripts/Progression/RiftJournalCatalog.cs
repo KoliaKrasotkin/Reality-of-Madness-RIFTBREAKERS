@@ -13,6 +13,6 @@ namespace ROM.Progression
     {
         public RiftQuestDefinition[] Quests;public RiftAchievementDefinition[] Achievements;
         public RiftQuestDefinition Quest(string id)=>Array.Find(Quests,q=>q&&q.Id==id);
-        static RiftJournalCatalog cached;public static RiftJournalCatalog Load=>cached?cached:(cached=Resources.Load<RiftJournalCatalog>("RiftJournalCatalog"));
+        static RiftJournalCatalog cached;public static RiftJournalCatalog Load=>ROM.Tutorial.Crilium.CriliumSession.Active&&ROM.Tutorial.Crilium.CriliumDefinition.Load?ROM.Tutorial.Crilium.CriliumDefinition.Load.Journal:cached?cached:(cached=Resources.Load<RiftJournalCatalog>("RiftJournalCatalog"));
     }
 }

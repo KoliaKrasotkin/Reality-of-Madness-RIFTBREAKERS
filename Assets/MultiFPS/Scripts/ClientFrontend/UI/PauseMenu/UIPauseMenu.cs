@@ -65,7 +65,7 @@ namespace MultiFPS.UI
         {
             //check for input to show pause menu
             bool escape=UnityEngine.InputSystem.Keyboard.current!=null&&UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame;
-            if(InterfaceShowing&&escape&&(UICursorManager.IsTopRequest(gameObject)||UICursorManager.IsTopRequestIn(pauseMenuOverlay.transform))&&RiftControls.EscapeConsumedFrame!=Time.frameCount&&!RiftControls.TextEntryFocused&&!RiftControls.Rebinding){if(CloseTopLayer==null||!CloseTopLayer())ShowInterface(false);RiftControls.EscapeConsumedFrame=Time.frameCount;return;}
+            if(InterfaceShowing&&escape&&(UICursorManager.IsTopRequest(gameObject)||UICursorManager.IsTopRequestIn(pauseMenuOverlay.transform))&&RiftControls.EscapeConsumedFrame!=Time.frameCount&&!RiftControls.Rebinding){if(RiftControls.TextEntryFocused){if(UnityEngine.EventSystems.EventSystem.current)UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);if(ChatUI.Instance&&ChatUI.Instance.ChatWriting)ChatUI.Instance.ShowChatInput(false);if(ChatBehaviour._instance)ChatBehaviour._instance.SetTyping(false);RiftControls.EscapeConsumedFrame=Time.frameCount;return;}if(CloseTopLayer==null||!CloseTopLayer())ShowInterface(false);RiftControls.EscapeConsumedFrame=Time.frameCount;return;}
             if(InterfaceShowing)return;
             if (!((RiftControls.Pressed("Pause")||(pauseMenuShowing&&escape)) && RiftControls.EscapeConsumedFrame!=Time.frameCount && !RiftControls.Rebinding && AbleToPause && !ClientFrontend.Hub)) return;
 

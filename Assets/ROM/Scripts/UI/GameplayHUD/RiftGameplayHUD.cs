@@ -61,9 +61,9 @@ namespace ROM.UI.Gameplay
             var hp=actor.Health;var combat=player.GetComponent<AbilityController>();bool warrior=combat&&combat.Prototype;var pos=actor.transform.position;
             if(Time.unscaledTime>=nextContent){nextContent=Time.unscaledTime+.1f;if(bagButtonLabel)bagButtonLabel.text="Inventario ["+RiftControls.ActionLabel("Inventory")+"]";
             var world=ROM.Horde.Horde.Instance;bool safe=world&&world.IsSafe(actor.transform.position);
-            Zone.text=safe?"ZONA SEGURA":"EL RIFT";Zone.color=safe?new Color(.2f,1,.48f):Theme.BrightGold;
-            Gold.text=RiftExplorationProgress.Gold.ToString("N0")+" ORO LOCAL";
-            Checkpoint.text=world?world.LocalCheckpoint:"El Rift";MapZone.text=Checkpoint.text;
+            bool crelium=ROM.Tutorial.Crilium.CriliumSession.Active;Zone.text=crelium?"CRELIUM":safe?"ZONA SEGURA":"EL RIFT";Zone.color=safe?new Color(.2f,1,.48f):Theme.BrightGold;
+            Gold.text=crelium?"EL PODER DE NERTÖR":RiftExplorationProgress.Gold.ToString("N0")+" ORO LOCAL";
+            Checkpoint.text=crelium?"Crelium":world?world.LocalCheckpoint:"El Rift";MapZone.text=Checkpoint.text;
             Coordinates.text=$"X: {pos.x:0}  Y: {pos.z:0}";
             CharacterName.text=hp.CharacterName;ClassName.text=warrior?"Warrior":player.ClassDefinition?player.ClassDefinition.Name:"";
             Level.text=(combat?combat.Level:Theme.InitialLevel).ToString();if(ExperienceLabel&&combat){bool cap=combat.Level>=combat.Progression.MaximumLevel;int xp=combat.Progression.InLevel(combat.Experience);ExperienceLabel.text=cap?"NIVEL MÁXIMO":"XP "+xp+" / "+combat.Progression.Required(combat.Level);ExperienceFill.fillAmount=cap?1:(float)xp/combat.Progression.Required(combat.Level);}Life.text=$"{hp.CurrentHealth:N0} / {hp.MaxHealth:N0}";SetFill(LifeFill,(float)hp.CurrentHealth/Mathf.Max(1,hp.MaxHealth));
@@ -103,7 +103,7 @@ namespace ROM.UI.Gameplay
         void RefreshHover(CharacterInstance actor)
         {
             if(!HoverPanel)return;var input=RiftMMOController.Instance;bool show=input&&input.Available&&!input.Dragging&&!RiftMMOController.PointerOnUI;
-            var health=show?input.Hovered:null;RiftVillageNpc npc=show&&input.HasHoverHit?input.HoverHit.collider.GetComponentInParent<RiftVillageNpc>():null;
+            var health=show?input.Hovered:null;var hoverCollider=show&&input.HasHoverHit?input.HoverHit.collider:null;RiftVillageNpc npc=hoverCollider?hoverCollider.GetComponentInParent<RiftVillageNpc>():null;
             HoverPanel.gameObject.SetActive(show&&(health||npc));if(!show||(!health&&!npc))return;
             if(health){HoverName.text=health.CharacterName;var enemy=health.GetComponent<RiftEnemyCombat>();string role=health.TrainingTarget?"Muñeco de entrenamiento":enemy&&enemy.Definition?enemy.Definition.DisplayName:health.Team==actor.Health.Team?"Aliado":"Enemigo";HoverInfo.text=role+"\nVida: "+health.CurrentHealth.ToString("N0")+" / "+health.MaxHealth.ToString("N0");}
             else{HoverName.text=npc.DisplayName;HoverInfo.text=npc.Role+(npc.Trades?"\nComerciante · Oro local":"");}
