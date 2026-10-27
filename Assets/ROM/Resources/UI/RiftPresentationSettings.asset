@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b179ace2961f48049897e5ff58ee9b7d, type: 3}
+  m_Name: RiftPresentationSettings
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.UI.Gameplay.RiftPresentationSettings
+  BodyFont: {fileID: 0}
+  Panel: {r: 0.032, g: 0.036, b: 0.058, a: 0.9}
+  Border: {r: 0.46, g: 0.36, b: 0.65, a: 0.9}
+  TextColor: {r: 0.94, g: 0.93, b: 0.98, a: 1}
+  Accent: {r: 0.6, g: 0.36, b: 0.9, a: 0.7}
+  KeepAuthoredHUDLayout: 0
+  KeepAuthoredMapLayout: 0
+  MinimumMapZoom: 1.6
+  TutorialMinimumMapZoom: 1
+  MaximumMapZoom: 4
+  MapLabelFontSize: 14
+  MapLabelSize: {x: 150, y: 24}
+  HideMinimapWithWorldMap: 1
+  MapAnchorMin: {x: 0.04, y: 0.06}
+  MapAnchorMax: {x: 0.96, y: 0.94}
+  TrackerOffset: {x: -24, y: -304}
+  TargetOffset: {x: -54, y: -350}
+  ActionDockOffset: {x: 0, y: 196}
+  TutorialPanelSize: {x: 800, y: 180}
+  TutorialPanelOffset: {x: 0, y: -36}
+  TutorialInstructionSize: {x: 752, y: 94}
+  TutorialInstructionOffset: {x: 0, y: -55}
+  TutorialButtonSize: {x: 136, y: 34}
+  TutorialInstructionFontSize: 21
+  TutorialMinimumFontSize: 17
+  TutorialButtons:
+  - {x: -320, y: -152}
+  - {x: -172, y: -152}
+  - {x: -24, y: -152}
+  - {x: 124, y: -152}
+  - {x: 272, y: -152}

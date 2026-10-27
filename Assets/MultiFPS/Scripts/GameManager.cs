@@ -31,17 +31,18 @@ namespace MultiFPS
         }
         public static PlayerInstance GetPlayerByConnID(int connID)
         {
-            return PlayersByConnID[connID];
+            return PlayersByConnID.TryGetValue(connID,out var player)&&player?player:null;
         }
 
 
         public static void RegisterConnectedPlayer(PlayerInstance pi)
         {
-            PlayersByConnID.Add(pi.connectionToClient.connectionId, pi);
+            if(!pi||pi.connectionToClient==null||pi.connectionToClient.identity!=pi.netIdentity)return;
+            PlayersByConnID[pi.connectionToClient.connectionId]=pi;
         }
-        public static void RemoveConnectedPlayer(int connID)
+        public static void RemoveConnectedPlayer(int connID,PlayerInstance expected=null)
         {
-            PlayersByConnID.Remove(connID);
+            if(PlayersByConnID.TryGetValue(connID,out var current)&&(ReferenceEquals(expected,null)||ReferenceEquals(current,expected)))PlayersByConnID.Remove(connID);
         }
         public static void ClearGameData()
         {

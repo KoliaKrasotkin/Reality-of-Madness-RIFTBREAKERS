@@ -10,7 +10,10 @@ namespace MultiFPS.Gameplay.RiftCombat {
 
 public sealed partial class AbilityController:NetworkBehaviour {
 
- public const string Preference="ROM.Combat.Nertor";public SpeciesDefinition Species;
+ public const string Preference="ROM.Combat.Nertor";[UnityEngine.Serialization.FormerlySerializedAs("Species")][SerializeField]SpeciesDefinition defaultSpecies;
+ public bool IsPaladin=>Player&&Player.PlayerInfo.CharacterSkinID==PaladinPrototypeSettings.Skin;
+ public SpeciesDefinition SpeciesForSkin(int skin)=>skin==PaladinPrototypeSettings.Skin&&PaladinPrototypeSettings.Available?PaladinPrototypeSettings.Load.Species:defaultSpecies;
+ public SpeciesDefinition Species{get=>SpeciesForSkin(Player?Player.PlayerInfo.CharacterSkinID:1);set=>defaultSpecies=value;}
 
  [SyncVar]public bool Prototype; [SyncVar]public int SpecIndex;[SyncVar]public float Resource;
 
@@ -98,7 +101,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
   if(slot==4&&(!hasGroundLeap||!TryGroundLeapLanding(Actor.GetComponent<CharacterController>(),Actor.transform.position,leapDestination,GameManager.environmentLayer,out _)))return RejectAction("Elegí un destino de salto válido");
 
-  if(Resource<ability.Cost)return RejectAction("Furia insuficiente");
+  float cost=AbilityCost(slot,ability);if(Resource<cost)return RejectAction("Furia insuficiente");
 
   if(!GameManager.Gamemode.CanUseClassAbilities(Actor.transform.position))return RejectAction("No podés usar esta habilidad aquí");
 
@@ -108,7 +111,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
   if(slot!=4&&ability.Shape!=AbilityShape.Self&&ability.Damage>0&&QueueWeaponDraw(slot))return true;
 
-  Resource=Mathf.Max(0,Resource-ability.Cost);Ready[slot]=now+AbilityCooldown(slot,ability);GlobalReady=now+ability.Recovery;
+  Resource=Mathf.Max(0,Resource-cost);Ready[slot]=now+AbilityCooldown(slot,ability);GlobalReady=now+ability.Recovery;
 
   castWeaponRoll=ability.Shape!=AbilityShape.Self&&ability.Damage>0?RollWeaponDamage():0;castWearToken=ability.Shape!=AbilityShape.Self&&ability.Damage>0?BeginWearAction():null;castWearConnected=false;attackTarget=TargetNetId;Casting=slot;pending=ability;strikeTicks=0;CastEnd=now+ability.CastDuration;hitAt=now+ability.HitTime;applied=false;
 
@@ -140,7 +143,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
  }
 
- public void Request(int slot){if(!isLocalPlayer||slot<1||slot>=Ready.Count)return;if(!IsAbilityLearned(slot)){LocalNotice(AbilityUnavailableReason(slot));return;}if(NetworkTime.time<Ready[slot]||NetworkTime.time<GlobalReady){LocalNotice("Habilidad en recarga");return;}var ability=Definition(slot);if(slot==4){BeginGroundAim();return;}if(ability&&ability.Shape!=AbilityShape.Self)RiftMMOController.Instance?.TryAutoTarget(ability,this);if(ability&&ability.Implemented&&ability.Allows(Specialization.Id)&&ability.Shape!=AbilityShape.Self&&Resource>=ability.Cost)RiftMMOController.Instance?.StartAutoAttack();if(NetworkTime.time<CastEnd&&CastEnd-NetworkTime.time<=.18){queued=slot;queueUntil=Time.unscaledTime+.18f;}else CmdUseAbility(ability.Id);}
+ public void Request(int slot){if(!isLocalPlayer||slot<1||slot>=Ready.Count)return;if(!IsAbilityLearned(slot)){LocalNotice(AbilityUnavailableReason(slot));return;}if(NetworkTime.time<Ready[slot]||NetworkTime.time<GlobalReady){LocalNotice("Habilidad en recarga");return;}var ability=Definition(slot);if(slot==4){BeginGroundAim();return;}if(ability&&ability.Shape!=AbilityShape.Self)RiftMMOController.Instance?.TryAutoTarget(ability,this);if(ability&&ability.Implemented&&ability.Allows(Specialization.Id)&&ability.Shape!=AbilityShape.Self&&Resource>=AbilityCost(slot,ability))RiftMMOController.Instance?.StartAutoAttack();if(NetworkTime.time<CastEnd&&CastEnd-NetworkTime.time<=.18){queued=slot;queueUntil=Time.unscaledTime+.18f;}else CmdUseAbility(ability.Id);}
 
 
  [Server]void TickRageDecay(float elapsed){if(!Class||Class.Resource!=CombatResourceKind.Rage)return;Resource=Mathf.Clamp(Resource,0,Class.MaximumResource);if(Casting>=0||autoPending||NetworkTime.time-Player.LastCombatAt<Class.RageDecayDelay)return;Resource=Mathf.Max(0,Resource-Mathf.Max(0,Class.RageDecayPerSecond)*Mathf.Max(0,elapsed));}

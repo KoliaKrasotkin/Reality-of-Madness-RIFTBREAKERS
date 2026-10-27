@@ -17,7 +17,7 @@ namespace MultiFPS.UI
         public bool pauseMenuShowing = false;
         public Func<bool> CloseTopLayer;
         public bool InterfaceShowing{get;private set;}
-        public void ShowInterface(bool show){if(InterfaceShowing==show)return;if(show&&pauseMenuShowing)ShowPauseMenu(false);InterfaceShowing=show;pauseMenuOverlay.SetActive(show);if(show)UICursorManager.RequestCursor(gameObject,true);else UICursorManager.ReleaseCursor(gameObject);}
+        public void ShowInterface(bool show){if(InterfaceShowing==show)return;if(show&&pauseMenuShowing)ShowPauseMenu(false);InterfaceShowing=show;pauseMenuOverlay.SetActive(show);if(show)UICursorManager.RequestCursor(gameObject,true);else {if(UICursorManager.HasRequest(gameObject))UICursorManager.ReleaseCursor(gameObject);}}
 
 
         [SerializeField] Button _uiBtnResume;
@@ -94,7 +94,7 @@ namespace MultiFPS.UI
             if(show)
                 UICursorManager.RequestCursor(gameObject);
             else
-                UICursorManager.ReleaseCursor(gameObject);
+                {if(UICursorManager.HasRequest(gameObject))UICursorManager.ReleaseCursor(gameObject);}
 
             //write currently played gamemode in pause menu
             if (show)
@@ -106,28 +106,7 @@ namespace MultiFPS.UI
         {
             ShowPauseMenu(false);
         }
-        void Btn_Disconnect()
-        {
-            ShowPauseMenu(false);
-
-
-            // (copied and pasted from Mirror's NetworkManagerHUD)
-            // stop host 
-            if (NetworkServer.active && NetworkClient.isConnected)
-            {
-                DNNetworkManager.Instance.StopHost();         
-            }
-            // stop client if client-only
-            else if (NetworkClient.isConnected)
-            {
-                DNNetworkManager.Instance.StopClient();                
-            }
-            // stop server if server-only
-            else if (NetworkServer.active)
-            {                
-                DNNetworkManager.Instance.StopServer();              
-            }
-        }
+        void Btn_Disconnect(){RiftSessionExit.ReturnToMenu();}
         #endregion
     }
 }

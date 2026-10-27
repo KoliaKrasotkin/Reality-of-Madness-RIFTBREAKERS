@@ -228,7 +228,7 @@ namespace ROM.UI.Sprint01
         string CombatClassLabel(MultiFPS.Gameplay.RiftClassRules rules)=>Roster.Active.Available?"Warrior":"CLASE NO DISPONIBLE";
         PreviewModel CurrentCharacter()
         {
-            if(!Catalog)return null;var list=Catalog.Characters;return Roster.Active==null||list.Length==0?null:list[Mathf.Clamp(Roster.Active.Skin,0,list.Length-1)];
+            if(!Catalog)return null;var list=Catalog.Characters;return Roster.Active==null?null:list.FirstOrDefault(c=>c.SkinIndex==Roster.Active.Skin);
         }
         public void Deploy()
         {

@@ -31,7 +31,7 @@ namespace ROM.UI.Gameplay
         public Health SelectedTarget=>selected;public RiftWorldTarget SelectedNPC=>RiftMMOController.Instance?RiftMMOController.Instance.SelectedWorld:null;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Install(){SceneManager.sceneLoaded-=Loaded;SceneManager.sceneLoaded+=Loaded;}
-        static void Loaded(Scene scene,LoadSceneMode mode){if(scene.name=="map_rom_horde"&&!FindFirstObjectByType<RiftGameplayHUD>()){var prefab=Resources.Load<GameObject>("RiftGameplayHUD");if(prefab)Instantiate(prefab);}}
+        static void Loaded(Scene scene,LoadSceneMode mode){if((scene.name=="map_rom_horde"||scene.name=="Crilium")&&!FindFirstObjectByType<RiftGameplayHUD>()){var prefab=Resources.Load<GameObject>("RiftGameplayHUD");if(prefab)Instantiate(prefab);}}
         void Awake(){if(!FindFirstObjectByType<RiftCombatNumbers>())new GameObject("Rift combat numbers").AddComponent<RiftCombatNumbers>();canvas=GetComponent<Canvas>();cooldownVisuals=gameObject.AddComponent<RiftCooldownVisuals>();for(int i=0;i<Abilities.Length;i++){int slot=i;Abilities[i].onClick.AddListener(()=>Use(slot));var drag=Abilities[i].gameObject.GetComponent<RiftHotbarSlot>();if(!drag)drag=Abilities[i].gameObject.AddComponent<RiftHotbarSlot>();drag.Slot=slot;}CreateMarker();CreateBagDock();ModernizeLayout();gameObject.AddComponent<RiftUnitFrames>();gameObject.AddComponent<RiftHUDPanelDock>();gameObject.AddComponent<RiftCombatAlerts>();gameObject.AddComponent<RiftWorldLabelOcclusion>();gameObject.AddComponent<RiftSessionChatHUD>();}
         public void Use(int slot){if(RiftHotbar.Dragging||RiftControls.TextEntryFocused||ClientFrontend.Pause||!UICursorManager.GamePlayInput())return;int ability=RiftHotbar.Resolve(slot);if(ability<=0)return;var player=ClientFrontend.ClientPlayerInstance;if(!player)return;var combat=player.GetComponent<AbilityController>();if(combat&&combat.Prototype)combat.Request(ability);else if(ability<=2){RiftMMOController.Instance?.StartAutoAttack();player.CmdUseClassAbility((byte)(ability-1));}}
         void CreateBagDock(){
@@ -65,17 +65,17 @@ namespace ROM.UI.Gameplay
             Gold.text=crelium?"EL PODER DE NERTÖR":RiftExplorationProgress.Gold.ToString("N0")+" ORO LOCAL";
             Checkpoint.text=crelium?"Crelium":world?world.LocalCheckpoint:"El Rift";MapZone.text=Checkpoint.text;
             Coordinates.text=$"X: {pos.x:0}  Y: {pos.z:0}";
-            CharacterName.text=hp.CharacterName;ClassName.text=warrior?"Warrior":player.ClassDefinition?player.ClassDefinition.Name:"";
+            CharacterName.text=hp.CharacterName;ClassName.text=combat&&combat.IsPaladin?"Paladín (prototipo)":warrior?"Warrior":player.ClassDefinition?player.ClassDefinition.Name:"";
             Level.text=(combat?combat.Level:Theme.InitialLevel).ToString();if(ExperienceLabel&&combat){bool cap=combat.Level>=combat.Progression.MaximumLevel;int xp=combat.Progression.InLevel(combat.Experience);ExperienceLabel.text=cap?"NIVEL MÁXIMO":"XP "+xp+" / "+combat.Progression.Required(combat.Level);ExperienceFill.fillAmount=cap?1:(float)xp/combat.Progression.Required(combat.Level);}Life.text=$"{hp.CurrentHealth:N0} / {hp.MaxHealth:N0}";SetFill(LifeFill,(float)hp.CurrentHealth/Mathf.Max(1,hp.MaxHealth));
             float amount=warrior?combat.Resource:0,max=warrior?combat.Class.MaximumResource:100;
-            Resource.text=$"Furia {amount:0} / {max:0}";SetFill(ResourceFill,amount/Mathf.Max(1,max));
+            Resource.text=combat&&combat.IsPaladin?"Prototipo · Ataque cuerpo a cuerpo":$"Furia {amount:0} / {max:0}";SetFill(ResourceFill,amount/Mathf.Max(1,max));
             if(Theme.Portraits!=null&&Theme.Portraits.Length>0)Portrait.sprite=Theme.Portraits[Mathf.Clamp(UserSettings.CharacterSkinID,0,Theme.Portraits.Length-1)];
             double now=NetworkTime.time;
             for(int i=0;i<Abilities.Length;i++){
                 int id=RiftHotbar.Resolve(i);var definition=warrior&&id>0?combat.Definition(id):null;bool unlocked=warrior?combat.IsAbilityLearned(id):id>0&&id<=2;
                 double remain=warrior&&combat.Ready.Count>id?System.Math.Max(0,combat.Ready[id]-now):!warrior&&id<=2?System.Math.Max(0,(id==1?player.FirstReadyAt:player.SecondReadyAt)-now):0;
                 double ownRemain=remain,globalRemain=warrior?System.Math.Max(0,combat.GlobalReady-now):0;if(globalRemain>remain)remain=globalRemain;
-                bool enough=!definition||definition.Cost<=amount;
+                bool enough=!definition||combat.AbilityCost(id,definition)<=amount;
                 Abilities[i].interactable=unlocked&&enough&&remain<=0;
                 Icons[i].gameObject.SetActive(unlocked);if(unlocked){if(definition&&definition.Icon)Icons[i].sprite=definition.Icon;else if(!warrior&&Theme.AbilityIcons.Length>=id)Icons[i].sprite=Theme.AbilityIcons[id-1];Icons[i].color=enough?Color.white:new Color(.72f,.65f,.65f);}
                 var locked=Abilities[i].transform.Find("Lock");if(locked)locked.gameObject.SetActive(id>0&&!unlocked);

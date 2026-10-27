@@ -6,9 +6,13 @@ public sealed partial class AbilityController {
  public readonly SyncList<int> Talents=new SyncList<int>();
  public WarriorProgressionDefinition Progression=>WarriorProgressionDefinition.Load;
  public bool InCrilium=>UnityEngine.SceneManagement.SceneManager.GetActiveScene().name=="Crilium";
- public int Level=>InCrilium?20:Progression.Level(Experience);public int Rank(int i)=>InCrilium&&Prototype&&i>=0&&i<9?3:Prototype&&i>=0&&i<Talents.Count?Talents[i]:0;
- public int Spent {get{if(InCrilium)return 27;int count=0;foreach(var rank in Talents)count+=rank;return count;}}public int TalentPoints=>Mathf.Max(0,Level-1-Spent);
+ public int Level=>InCrilium?20:Progression.Level(Experience);public int Rank(int i)=>IsPaladin?0:InCrilium&&Prototype&&i>=0&&i<9?3:Prototype&&i>=0&&i<Talents.Count?Talents[i]:0;
+ public int Spent {get{if(InCrilium)return 27;int count=0;foreach(var rank in Talents)count+=rank;return count;}}public int TalentPoints=>IsPaladin?0:Mathf.Max(0,Level-1-Spent);
  [Server]public void ServerCriliumCheckpoint(float fury,bool resetCooldowns){if(!InCrilium)return;if(resetCooldowns){Cancel();for(int i=0;i<Ready.Count;i++)Ready[i]=0;GlobalReady=AutoReady=0;}Resource=Mathf.Clamp(fury,0,Class?Class.MaximumResource:100);}
+ [SyncVar]bool criliumDefenceLesson;
+ public bool CriliumDefenceFree=>InCrilium&&Prototype&&criliumDefenceLesson;
+ [Server]public void ServerCriliumDefenceLesson(bool active){criliumDefenceLesson=active&&InCrilium&&Prototype;}
+ public float AbilityCost(int slot,AbilityDefinition ability)=>ability&&slot==6&&ability.Id=="last-stand"&&CriliumDefenceFree?0:ability?Mathf.Max(0,ability.Cost):0;
  public float PowerMultiplier=>(1+(Level-1)*Progression.DamagePerLevel)*(1+Rank(0)*.03f);
  public float CriticalChance=>Mathf.Clamp01(AutoProfile.CriticalChance+Rank(2)*.01f);
  public float ExtraArmor=>Mathf.Clamp01(Rank(3)*.02f+(Prototype&&SwordAndShield?.12f+Rank(5)*.03f:0));
@@ -21,6 +25,6 @@ public sealed partial class AbilityController {
  public float AbilityArc(int slot,AbilityDefinition a)=>a.Arc+((slot==1||slot==7)?Rank(1)*15:0);
  public float Gain(float amount)=>amount*(1+Rank(6)*.1f);
  public bool CanChangeBuild=>Actor&&Actor.Health.CurrentHealth>0&&Casting<0&&!autoPending&&(GameManager.Gamemode.IsProtectedPosition(Actor.transform.position)||NetworkTime.time-Player.LastCombatAt>8);
- [Server]public void ServerProgression(int experience,int[] ranks,bool swordShield){Experience=Mathf.Clamp(experience,0,Progression.MaximumExperience);var valid=Progression.ValidTalentRanks(Experience,ranks);while(Talents.Count<Progression.Talents.Length)Talents.Add(0);for(int i=0;i<Talents.Count;i++)Talents[i]=i<valid.Length?valid[i]:0;SwordAndShield=swordShield;if(Actor){int max=ProgressionHealth(Prototype&&Specialization?Specialization.Health:Player.ClassDefinition?Player.ClassDefinition.Health:Actor.Health.MaxHealth);if(max!=Actor.Health.MaxHealth)Actor.Health.ServerSetVitals(max,Mathf.Clamp(Mathf.RoundToInt(Actor.Health.CurrentHealth*(float)max/Mathf.Max(1,Actor.Health.MaxHealth)),1,max));}}
+ [Server]public void ServerProgression(int experience,int[] ranks,bool swordShield){Experience=Mathf.Clamp(experience,0,Progression.MaximumExperience);var valid=Progression.ValidTalentRanks(Experience,ranks);while(Talents.Count<Progression.Talents.Length)Talents.Add(0);for(int i=0;i<Talents.Count;i++)Talents[i]=i<valid.Length?valid[i]:0;SwordAndShield=!IsPaladin&&swordShield;if(Actor){int max=ProgressionHealth(Prototype&&Specialization?Specialization.Health:Player.ClassDefinition?Player.ClassDefinition.Health:Actor.Health.MaxHealth);if(max!=Actor.Health.MaxHealth)Actor.Health.ServerSetVitals(max,Mathf.Clamp(Mathf.RoundToInt(Actor.Health.CurrentHealth*(float)max/Mathf.Max(1,Actor.Health.MaxHealth)),1,max));}}
 }
 }

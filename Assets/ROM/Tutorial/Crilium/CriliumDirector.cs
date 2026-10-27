@@ -1,4 +1,4 @@
-﻿using System;using System.Collections;using System.Collections.Generic;using System.Linq;
+using System;using System.Collections;using System.Collections.Generic;using System.Linq;
 using Mirror;using MultiFPS;using MultiFPS.Gameplay;using MultiFPS.Gameplay.RiftCombat;using MultiFPS.Gameplay.RiftEnemies;using MultiFPS.UI;
 using ROM.Progression;using ROM.Horde;using ROM.UI.Gameplay;using ROM.UI.Sprint01;using UnityEngine;
 namespace ROM.Tutorial.Crilium {
@@ -50,7 +50,7 @@ public sealed partial class CriliumDirector:MonoBehaviour {
  bool ScreensClosed=>!UIPauseMenu._instance||!UIPauseMenu._instance.InterfaceShowing;
  bool cameraTurned,cameraZoomed,finalDefeated;Vector3 mobilityStart;int lootBefore;
  void EnterLesson(){
-  enteredAt=NetworkTime.time;successAt=-1;traveled=0;ConnectedAutoAttacks=CleaveVictims=0;GeneratedFury=SpentFury=standUsed=roarUsed=false;inspectedItem=inspectedAbility=inspectedTalent=journalOpened=mapOpened=false;cameraTurned=cameraZoomed=finalDefeated=addsSpawned=false;finalAbilities.Clear();ClearEnemies();
+  combat.ServerCriliumDefenceLesson(Current==CriliumLesson.Defence);enteredAt=NetworkTime.time;successAt=-1;traveled=0;ConnectedAutoAttacks=CleaveVictims=0;GeneratedFury=SpentFury=standUsed=roarUsed=false;inspectedItem=inspectedAbility=inspectedTalent=journalOpened=mapOpened=false;cameraTurned=cameraZoomed=finalDefeated=addsSpawned=false;finalAbilities.Clear();ClearEnemies();
   var m=RiftMMOController.Instance;if(m){startYaw=m.CameraYaw;startPitch=m.CameraPitch;startDistance=m.CameraDistance;}
   leapSequenceAtEntry=combat.GroundLeapSequence;mobilityStart=actor.transform.position;leapReady=combat.Ready.Count>4?combat.Ready[4]:0;standReady=combat.Ready.Count>6?combat.Ready[6]:0;roarReady=combat.Ready.Count>3?combat.Ready[3]:0;
   if(Current==CriliumLesson.AutoAttack||Current==CriliumLesson.Fury)SpawnTarget(Goal+Vector3.right*3+Vector3.forward*2);
@@ -70,10 +70,10 @@ public sealed partial class CriliumDirector:MonoBehaviour {
  public void RetryCurrentLesson()=>RestartLesson(true);
  void RestartLesson(bool teleport){if(!NetworkServer.active||!actor||actor.Health.CurrentHealth<=0||leaving)return;if(teleport)actor.ServerTeleport(lastSafe,0);combat.ServerCriliumCheckpoint(Current==CriliumLesson.Fury?0:65,true);actor.Health.ServerSetVitals(actor.Health.MaxHealth,actor.Health.MaxHealth);EnterLesson();}
  public void SkipToRift(){if(NetworkServer.active&&!leaving)StartCoroutine(LeaveThroughRift());}
- public void ExitToMenu(){if(leaving)return;leaving=true;ClearEnemies();if(NetworkServer.active&&NetworkClient.active)DNNetworkManager.Instance.StopHost();}
- IEnumerator LeaveThroughRift(){leaving=true;ClearEnemies();if(message)message.text="EL RIFT TE ARREBATA TU PODER\nLo recuperarás al otro lado.";if(waypoint)waypoint.SetActive(false);yield return new WaitForSecondsRealtime(2);
+ public void ExitToMenu(){if(combat&&NetworkServer.active)combat.ServerCriliumDefenceLesson(false);leaving=true;if(NetworkServer.active)ClearEnemies();RiftSessionExit.ReturnToMenu();}
+ IEnumerator LeaveThroughRift(){combat.ServerCriliumDefenceLesson(false);leaving=true;ClearEnemies();if(message)message.text="EL RIFT TE ARREBATA TU PODER\nLo recuperarás al otro lado.";if(waypoint)waypoint.SetActive(false);yield return new WaitForSecondsRealtime(2);
   foreach(var j in UnityEngine.Object.FindObjectsByType<RiftJournalPlayer>(FindObjectsSortMode.None))j.ResetCriliumJournal();RiftJournalView.ClearTransientView();CriliumSession.BeginCrossing();DNNetworkManager.Instance.ServerChangeScene(CriliumSession.RiftScene);
  }
- void OnDestroy(){if(NetworkServer.active)ClearEnemies();if(traceMaterial)Destroy(traceMaterial);}
+ void OnDestroy(){if(NetworkServer.active&&combat)combat.ServerCriliumDefenceLesson(false);if(NetworkServer.active)ClearEnemies();if(traceMaterial)Destroy(traceMaterial);}
 }
 }
