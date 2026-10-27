@@ -81,9 +81,9 @@ namespace MultiFPS.UI {
             ClientFrontend.Hub = (index == 0);
 
             if (index == 0)
-                UICursorManager.RequestCursor(gameObject);
+                {if(!UICursorManager.HasRequest(gameObject))UICursorManager.RequestCursor(gameObject);}
             else
-                UICursorManager.ReleaseCursor(gameObject);
+                {if(UICursorManager.HasRequest(gameObject))UICursorManager.ReleaseCursor(gameObject);}
 
             ClientFrontend.SetClientTeam(-1);
 
@@ -113,6 +113,7 @@ namespace MultiFPS.UI {
         private void OnDestroy()
         {
             ClientFrontend.ClientEvent_OnJoinedToGame -= InstantiateUIforGivenGamemode;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }
 

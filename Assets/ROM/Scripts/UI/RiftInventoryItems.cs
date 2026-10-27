@@ -29,16 +29,17 @@ public static class RiftInventoryItems {
  }
 }
 [Serializable] public sealed class RiftBagLayout {
+ static RiftBagLayout crilium;public static void ClearCriliumLayout(){crilium=null;}
  public const int Slots=12;public string[] Items=new string[Slots];
  public static string Key(string character)=>"ROM.BagLayout.v1."+character;
  public static RiftBagLayout Load(string character,IEnumerable<string> known){
-  var ids=known.Distinct().ToArray();RiftBagLayout layout=null;
-  if(!string.IsNullOrEmpty(character))try{layout=JsonUtility.FromJson<RiftBagLayout>(PlayerPrefs.GetString(Key(character),""));}catch{}
+  var ids=known.Distinct().ToArray();RiftBagLayout layout=ROM.Tutorial.Crilium.CriliumSession.Active?crilium:null;
+  if(!ROM.Tutorial.Crilium.CriliumSession.Active&&!string.IsNullOrEmpty(character))try{layout=JsonUtility.FromJson<RiftBagLayout>(PlayerPrefs.GetString(Key(character),""));}catch{}
   if(layout==null||layout.Items==null||layout.Items.Length!=Slots)layout=new RiftBagLayout();
   var seen=new HashSet<string>();for(int i=0;i<Slots;i++)if(string.IsNullOrEmpty(layout.Items[i])||!ids.Contains(layout.Items[i])||!seen.Add(layout.Items[i]))layout.Items[i]="";
   foreach(var id in ids){if(seen.Contains(id))continue;int free=Array.FindIndex(layout.Items,string.IsNullOrEmpty);if(free<0)break;layout.Items[free]=id;seen.Add(id);}return layout;
  }
  public bool Move(string id,int destination,string character){int source=Array.IndexOf(Items,id);if(source<0||destination<0||destination>=Slots||string.IsNullOrEmpty(character))return false;string other=Items[destination];Items[destination]=id;Items[source]=other;Save(character);return true;}
- public void Save(string character){if(string.IsNullOrEmpty(character))return;PlayerPrefs.SetString(Key(character),JsonUtility.ToJson(this));PlayerPrefs.Save();}
+ public void Save(string character){if(ROM.Tutorial.Crilium.CriliumSession.Active){crilium=this;return;}if(string.IsNullOrEmpty(character))return;PlayerPrefs.SetString(Key(character),JsonUtility.ToJson(this));PlayerPrefs.Save();}
 }
 }

@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271e982dec174a43a6971bc8f5934ebc, type: 3}
+  m_Name: Definition
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Tutorial.Crilium.CriliumDefinition
+  Lessons:
+  - Lesson: 0
+    Title: Primeros pasos en Vitral
+    Instruction: "Avanz\xE1 hasta la se\xF1al. Us\xE1 {Forward} o manten\xE9 ambos
+      botones del mouse."
+    Help: "Tambi\xE9n pod\xE9s retroceder con {Backward}, girar con {TurnLeft}/{TurnRight}
+      y desplazarte con {StrafeLeft}/{StrafeRight}. El camino se curva, pero siempre
+      vuelve hacia la grieta."
+    Goal: {x: 0, y: 0, z: 9}
+    ArrivalRadius: 2
+  - Lesson: 1
+    Title: "Mir\xE1 a tu alrededor"
+    Instruction: "Gir\xE1 la c\xE1mara y ajust\xE1 su distancia con la rueda."
+    Help: "Manten\xE9 el bot\xF3n derecho y mov\xE9 el mouse para orientar la vista.
+      Tambi\xE9n pod\xE9s acercar/alejar con {ZoomIn}/{ZoomOut}. Pod\xE9s consultar
+      y remapear los controles en Ajustes."
+    Goal: {x: 0, y: 0, z: 12}
+    ArrivalRadius: 6
+  - Lesson: 15
+    Title: "El gu\xEDa de Vitral"
+    Instruction: "Seleccion\xE1 al gu\xEDa, habl\xE1 con {Interact} y acept\xE1 su
+      misi\xF3n. Despu\xE9s cerr\xE1 el di\xE1logo."
+    Help: "Un NPC no es un enemigo. Pod\xE9s seleccionarlo con clic e interactuar
+      a corta distancia. El di\xE1logo muestra su misi\xF3n; aceptar y seguir son
+      acciones distintas."
+    Goal: {x: 3, y: 0.04999988, z: 11}
+    ArrivalRadius: 5
+  - Lesson: 2
+    Title: "Eleg\xED tu objetivo"
+    Instruction: "Seleccion\xE1 un eco con clic o {NextTarget}. Conect\xE1 dos autoataques
+      ({AutoAttack})."
+    Help: "Acercate y mir\xE1 al objetivo. Clic sobre un enemigo activa el autoataque;
+      {AutoAttack} lo activa/cancela. No hace falta pulsarlo por cada golpe."
+    Goal: {x: 20, y: 0, z: 58}
+    ArrivalRadius: 9
+  - Lesson: 3
+    Title: "Gener\xE1 y gast\xE1 Furia"
+    Instruction: "Golpe\xE1 para generar Furia. Despu\xE9s conect\xE1 una habilidad
+      que la consuma."
+    Help: "La franja bajo tu vida muestra Furia. Furia cortante y Barrido generan;
+      Rompetierra, Salto y Torbellino consumen. Mir\xE1 el coste en su tooltip; gris
+      y barrido radial indican recarga."
+    Goal: {x: 20, y: 0, z: 58}
+    ArrivalRadius: 9
+  - Lesson: 4
+    Title: Un golpe, tres objetivos
+    Instruction: "Acercate al grupo y conect\xE1 Barrido sobre tres ecos."
+    Help: "Barrido alcanza hasta tres objetivos visibles del arco frontal. Una roca
+      interrumpe la l\xEDnea de visi\xF3n. Reubicarse es mejor que golpear a trav\xE9s
+      del obst\xE1culo."
+    Goal: {x: 45, y: 0, z: 86}
+    ArrivalRadius: 9
+  - Lesson: 5
+    Title: "Control\xE1 la distancia"
+    Instruction: "Activá Salto de guerra desde tu barra, elegí el terreno de la señal violeta y confirmá con clic. No requiere furia."
+    Help: "Verde indica un destino válido; rojo indica que no podés aterrizar ahí. Escape cancela sin consumir recarga. Alcance 12 m; recarga base 15 s."
+    Goal: {x: 42, y: 0, z: 120}
+    ArrivalRadius: 9
+  - Lesson: 6
+    Title: "Respond\xE9 al peligro"
+    Instruction: "Activ\xE1 \xDAltima resistencia. Prob\xE1 tambi\xE9n Rugido de
+      honor contra el fragmento."
+    Help: "El \xE1rea de color anticipa un golpe: sal\xED de ella o us\xE1 una defensa.
+      \xDAltima resistencia reduce da\xF1o; Rugido mejora tu protecci\xF3n y afecta
+      enemigos visibles. Con espada y escudo se activa Maestr\xEDa del escudo."
+    Goal: {x: 42, y: 0, z: 120}
+    ArrivalRadius: 9
+  - Lesson: 7
+    Title: Una pausa antes del Rift
+    Instruction: "Entr\xE1 al refugio y recog\xE9 el hacha del suelo caminando cerca
+      o con clic."
+    Help: "El brillo y el nombre identifican un objeto recogible. La recogida tiene
+      alcance corto. El equipo de Crelium pertenece \xFAnicamente a este pr\xF3logo;
+      tu equipo guardado se conserva al salir."
+    Goal: {x: 14, y: 0, z: 150}
+    ArrivalRadius: 9
+  - Lesson: 8
+    Title: "Conoc\xE9 tu equipo"
+    Instruction: "Abr\xED la bolsa ({Inventory}), inspeccion\xE1 el hacha, equipala
+      y cerr\xE1 la bolsa."
+    Help: "El tooltip muestra da\xF1o, velocidad, DPS, nivel, rareza y durabilidad
+      reales. DPS es da\xF1o promedio dividido por velocidad. Pod\xE9s comparar sin
+      perder el control del personaje."
+    Goal: {x: 14, y: 0, z: 150}
+    ArrivalRadius: 9
+  - Lesson: 9
+    Title: Tu libro de habilidades
+    Instruction: "Abr\xED habilidades ({Abilities}) inspeccion\xE1 una habilidad
+      y cerr\xE1 el libro."
+    Help: "Pas\xE1 el mouse o us\xE1 foco de teclado sobre un icono. El libro explica
+      costes y recargas. Pod\xE9s arrastrar una habilidad a la barra; las teclas
+      pertenecen a las ranuras."
+    Goal: {x: 14, y: 0, z: 150}
+    ArrivalRadius: 9
+  - Lesson: 10
+    Title: Tu poder completo
+    Instruction: "Abr\xED talentos ({Talents}) inspeccion\xE1 un nodo y cerr\xE1
+      la pantalla."
+    Help: "Tus nueve talentos est\xE1n al m\xE1ximo en Crelium: es el poder verdadero
+      de Nert\xF6r. Armas, Protecci\xF3n y Furia son ramas distintas. Maestr\xEDa
+      del escudo requiere espada y escudo; pod\xE9s probar ese equipo aqu\xED."
+    Goal: {x: 14, y: 0, z: 150}
+    ArrivalRadius: 9
+  - Lesson: 11
+    Title: Diario, mapa y minimapa
+    Instruction: "Abr\xED y segu\xED tu misi\xF3n en el diario ({Journal}); cerralo
+      y consult\xE1 el mapa ({WorldMap})."
+    Help: "Primero revis\xE1 objetivos en el diario. Despu\xE9s cerralo y abr\xED
+      el mapa para ver tu posici\xF3n y la se\xF1al violeta. El tracker queda bajo
+      el minimapa; no hace falta abrir ambas ventanas a la vez."
+    Goal: {x: 14, y: 0, z: 150}
+    ArrivalRadius: 9
+  - Lesson: 13
+    Title: El centinela de la grieta
+    Instruction: "Derrot\xE1 al centinela: combin\xE1 ataques, Furia, movilidad y
+      defensa."
+    Help: "El centinela anuncia sus golpes fuertes. Conserv\xE1 recursos para salir
+      del peligro. Si ca\xE9s, volv\xE9s al \xFAltimo espacio y pod\xE9s reintentar;
+      no perd\xE9s tu progreso guardado."
+    Goal: {x: 0, y: 0, z: 181}
+    ArrivalRadius: 9
+  - Lesson: 14
+    Title: El lugar del impacto
+    Instruction: "Investig\xE1 el fragmento ca\xEDdo. Acercate a la grieta para cruzar
+      al Rift."
+    Help: "El fragmento abri\xF3 un paso. Tu poder sigue intacto hasta cruzarlo:
+      el Rift se lo arrebata a Nert\xF6r al ingresar."
+    Goal: {x: 0, y: 0, z: 201}
+    ArrivalRadius: 9
+  Target: {fileID: 11400000, guid: 234df6d3c05ad8d4b9e693b78164d5f6, type: 2}
+  Enemy: {fileID: 11400000, guid: 92f7e24d038da004e8f4a23e09c19d9d, type: 2}
+  Sentinel: {fileID: 11400000, guid: 0048cd99711bc084ea850d2db7586191, type: 2}
+  Journal: {fileID: 11400000, guid: 843009bb0857e8148aefea0b02471ab1, type: 2}
+  Atlas: {fileID: 11400000, guid: b04fbce9524333241a9da73d9b775407, type: 2}
+  RetryHealthFraction: 1
+  QuestId: crilium-before-the-rift
+

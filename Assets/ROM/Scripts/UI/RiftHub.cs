@@ -75,6 +75,7 @@ namespace ROM.UI.Sprint01
         [ContextMenu("Reconstruir vista previa del menú")]
         public void Build()
         {
+            if(BuildAuthoredFrontEnd())return;
             Initialize();boundLabels.Clear();if(Design)DestroyImmediate(Design.gameObject);nav.Clear();productView=null;
             Design=W.Rect(transform,"SafeAreaDesign",0,0,1920,1080);
             fallback=W.Image(Design,"LoadingFallback",0,0,1920,1080,Color.white,Background);
@@ -140,6 +141,7 @@ namespace ROM.UI.Sprint01
         {
             CancelBinding();
             if(!content)return;
+            if(NavigateAuthoredHome(page))return;
             if(InGame&&page!=HubPage.Home&&page!=HubPage.Help&&page!=HubPage.News&&MultiFPS.UI.UIPauseMenu._instance&&!MultiFPS.UI.UIPauseMenu._instance.InterfaceShowing)MultiFPS.UI.UIPauseMenu._instance.ShowInterface(true);
             if(page!=HubPage.Home&&Stage)Stage.StopEmote();emoteStatus=null;
             if(page==HubPage.Lobby)page=HubPage.Home;
@@ -228,7 +230,7 @@ namespace ROM.UI.Sprint01
         string CombatClassLabel(MultiFPS.Gameplay.RiftClassRules rules)=>Roster.Active.Available?"Warrior":"CLASE NO DISPONIBLE";
         PreviewModel CurrentCharacter()
         {
-            if(!Catalog)return null;var list=Catalog.Characters;return list.Length==0?null:list[Mathf.Clamp(Roster.Active.Skin,0,list.Length-1)];
+            if(!Catalog)return null;var list=Catalog.Characters;return Roster.Active==null?null:list.FirstOrDefault(c=>c.SkinIndex==Roster.Active.Skin);
         }
         public void Deploy()
         {

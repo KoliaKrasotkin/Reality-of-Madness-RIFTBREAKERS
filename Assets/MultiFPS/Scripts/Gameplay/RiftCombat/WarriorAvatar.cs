@@ -18,7 +18,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         [SerializeField] private bool weaponDrawn=true;
         [SyncVar] private double weaponReadyAt;
         public bool WeaponDrawn => weaponDrawn;
-        public bool CanUseWeapon => weaponDrawn&&!IsRolling&&NetworkTime.time>=weaponReadyAt;
+        public bool CanUseWeapon => GetComponent<PaladinPrototypePresentation>()||weaponDrawn&&!IsRolling&&NetworkTime.time>=weaponReadyAt;
         CharacterInstance actor;
         CharacterController capsule;
         Vector3 planar,previous;
@@ -60,11 +60,12 @@ namespace MultiFPS.Gameplay.RiftCombat
         private void OnWeaponDrawnChanged(bool previousValue,bool newValue)=>ApplyWeaponDrawn();
         private void ApplyWeaponDrawn()
         {
+            if(GetComponent<PaladinPrototypePresentation>())return;
             if(Animator)Animator.SetBool("WeaponDrawn",weaponDrawn);
             if(!weaponDrawn){activeAttackSlot=-1;if(Animator)Animator.SetBool("DefensiveHold",false);}
         }
         void Start(){
-            if(!GetComponent<RiftWarriorEquipment>())gameObject.AddComponent<RiftWarriorEquipment>();
+            if(!GetComponent<PaladinPrototypePresentation>()&&!GetComponent<RiftWarriorEquipment>())gameObject.AddComponent<RiftWarriorEquipment>();
             if(actor.PlayerRecoil)actor.PlayerRecoil.enabled=false;
             foreach(var hit in actor.CharacterParent.GetComponentsInChildren<Collider>())Physics.IgnoreCollision(capsule,hit,true);
         }
@@ -96,6 +97,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         }
         void LateUpdate()
         {
+            if(GetComponent<PaladinPrototypePresentation>())return;
             UpdateRollPresentation();
             if(!Animator||!actor||!actor.Health)return;
             bool alive=actor.Health.CurrentHealth>0;
@@ -125,6 +127,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         }
         public bool PresentAutoAttack(AbilityDefinition ability)
         {
+            var paladin=GetComponent<PaladinPrototypePresentation>();if(paladin)return paladin.Attack();
             if(!PresentAttack(0,ability))return false;
             // Auto swings have their own server timer, not an AbilityController.Casting slot.
             // Let the Animator finish Attack0 rather than cancelling it as an interrupted cast.

@@ -17,7 +17,7 @@ namespace MultiFPS.UI
         public bool pauseMenuShowing = false;
         public Func<bool> CloseTopLayer;
         public bool InterfaceShowing{get;private set;}
-        public void ShowInterface(bool show){if(InterfaceShowing==show)return;if(show&&pauseMenuShowing)ShowPauseMenu(false);InterfaceShowing=show;pauseMenuOverlay.SetActive(show);if(show)UICursorManager.RequestCursor(gameObject,true);else UICursorManager.ReleaseCursor(gameObject);}
+        public void ShowInterface(bool show){if(InterfaceShowing==show)return;if(show&&pauseMenuShowing)ShowPauseMenu(false);InterfaceShowing=show;pauseMenuOverlay.SetActive(show);if(show)UICursorManager.RequestCursor(gameObject,true);else {if(UICursorManager.HasRequest(gameObject))UICursorManager.ReleaseCursor(gameObject);}}
 
 
         [SerializeField] Button _uiBtnResume;
@@ -65,7 +65,7 @@ namespace MultiFPS.UI
         {
             //check for input to show pause menu
             bool escape=UnityEngine.InputSystem.Keyboard.current!=null&&UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame;
-            if(InterfaceShowing&&escape&&(UICursorManager.IsTopRequest(gameObject)||UICursorManager.IsTopRequestIn(pauseMenuOverlay.transform))&&RiftControls.EscapeConsumedFrame!=Time.frameCount&&!RiftControls.TextEntryFocused&&!RiftControls.Rebinding){if(CloseTopLayer==null||!CloseTopLayer())ShowInterface(false);RiftControls.EscapeConsumedFrame=Time.frameCount;return;}
+            if(InterfaceShowing&&escape&&(UICursorManager.IsTopRequest(gameObject)||UICursorManager.IsTopRequestIn(pauseMenuOverlay.transform))&&RiftControls.EscapeConsumedFrame!=Time.frameCount&&!RiftControls.Rebinding){if(RiftControls.TextEntryFocused){if(UnityEngine.EventSystems.EventSystem.current)UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);if(ChatUI.Instance&&ChatUI.Instance.ChatWriting)ChatUI.Instance.ShowChatInput(false);if(ChatBehaviour._instance)ChatBehaviour._instance.SetTyping(false);RiftControls.EscapeConsumedFrame=Time.frameCount;return;}if(CloseTopLayer==null||!CloseTopLayer())ShowInterface(false);RiftControls.EscapeConsumedFrame=Time.frameCount;return;}
             if(InterfaceShowing)return;
             if (!((RiftControls.Pressed("Pause")||(pauseMenuShowing&&escape)) && RiftControls.EscapeConsumedFrame!=Time.frameCount && !RiftControls.Rebinding && AbleToPause && !ClientFrontend.Hub)) return;
 
@@ -94,7 +94,7 @@ namespace MultiFPS.UI
             if(show)
                 UICursorManager.RequestCursor(gameObject);
             else
-                UICursorManager.ReleaseCursor(gameObject);
+                {if(UICursorManager.HasRequest(gameObject))UICursorManager.ReleaseCursor(gameObject);}
 
             //write currently played gamemode in pause menu
             if (show)
@@ -106,28 +106,7 @@ namespace MultiFPS.UI
         {
             ShowPauseMenu(false);
         }
-        void Btn_Disconnect()
-        {
-            ShowPauseMenu(false);
-
-
-            // (copied and pasted from Mirror's NetworkManagerHUD)
-            // stop host 
-            if (NetworkServer.active && NetworkClient.isConnected)
-            {
-                DNNetworkManager.Instance.StopHost();         
-            }
-            // stop client if client-only
-            else if (NetworkClient.isConnected)
-            {
-                DNNetworkManager.Instance.StopClient();                
-            }
-            // stop server if server-only
-            else if (NetworkServer.active)
-            {                
-                DNNetworkManager.Instance.StopServer();              
-            }
-        }
+        void Btn_Disconnect(){RiftSessionExit.ReturnToMenu();}
         #endregion
     }
 }

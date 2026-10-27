@@ -227,7 +227,7 @@ namespace MultiFPS.Gameplay
             {
                 //despawn previous character if it exist
                 DespawnCharacterIfExist();
-                var characterPrefab=!BOT&&PlayerInfo.Warrior&&WarriorCharacterPrefab?WarriorCharacterPrefab:NetworkManager.singleton.spawnPrefabs[0];
+                var characterPrefab=!BOT&&PlayerInfo.CharacterSkinID==RiftCombat.PaladinPrototypeSettings.Skin&&RiftCombat.PaladinPrototypeSettings.Available?RiftCombat.PaladinPrototypeSettings.Load.PlayerPrefab:!BOT&&PlayerInfo.Warrior&&WarriorCharacterPrefab?WarriorCharacterPrefab:NetworkManager.singleton.spawnPrefabs[0];
                 MyCharacter = Instantiate(characterPrefab, spawnPoint.position, Quaternion.identity).GetComponent<CharacterInstance>();
 
                 MyCharacter.Health.Server_OnHealthDepleted += OnCharacterHealthDepleted;
@@ -413,7 +413,7 @@ namespace MultiFPS.Gameplay
             CmdReceivePlayerData(clientData);
         }
 
-        public bool CanEnterWarrior(ClientData data){var combat=GetComponent<RiftCombat.AbilityController>();return data.Warrior&&WarriorCharacterPrefab&&RiftCombat.RiftSkinIdentity.Playable(data.CharacterSkinID)&&combat&&combat.Species&&combat.Species.AllowsSkin(data.CharacterSkinID)&&System.Guid.TryParse(data.CharacterId,out _);}
+        public bool CanEnterWarrior(ClientData data){var combat=GetComponent<RiftCombat.AbilityController>();return data.Warrior&&WarriorCharacterPrefab&&RiftCombat.RiftSkinIdentity.Playable(data.CharacterSkinID)&&combat&&combat.Species&&combat.SpeciesForSkin(data.CharacterSkinID)&&combat.SpeciesForSkin(data.CharacterSkinID).AllowsSkin(data.CharacterSkinID)&&System.Guid.TryParse(data.CharacterId,out _);}
         [Command]
         void CmdReceivePlayerData(ClientData clientData)
         {
@@ -614,7 +614,7 @@ namespace MultiFPS.Gameplay
             if (_connectionToClient != -1)
             {
                 GameManager.Gamemode.Relay_ClientDisconnected(connectionToClient, this.netIdentity);
-                GameManager.RemoveConnectedPlayer(_connectionToClient);
+                GameManager.RemoveConnectedPlayer(_connectionToClient,this);
             }
             if (GameManager.Gamemode is Raid raid)
             {
@@ -643,7 +643,7 @@ namespace MultiFPS.Gameplay
             if (_connectionToClient != -1) 
             {
                 GameManager.Gamemode.Relay_ClientDisconnected(connectionToClient, this.netIdentity);
-                GameManager.RemoveConnectedPlayer(_connectionToClient);
+                GameManager.RemoveConnectedPlayer(_connectionToClient,this);
             }
         }
     }

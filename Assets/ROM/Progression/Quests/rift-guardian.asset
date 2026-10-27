@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftQuestDefinition
   Id: rift-guardian
   Title: Romper el asedio
-  Description: Bram necesita que despejes un encuentro y derrotes a uno de los guardianes
-    del Rift.
+  Description: "Tras preparar y despejar las patrullas occidentales, derrot\u00e1 al guardi\u00e1n de Ruinas occidentales."
   Giver: bram
   TurnIn: bram
-  Prerequisite: rift-scout
+  Prerequisite: pt20-west-patrol-two
   Gold: 200
   Objectives:
   - Event: 4
-    Filter: 
+    Filter: hollow-regent
+    EncounterFilter: "Ruinas occidentales \u00b7 Guardi\u00e1n"
     Label: Guardianes derrotados
     Required: 1
     Unique: 0
   - Event: 5
-    Filter: 
+    Filter: "Ruinas occidentales \u00b7 Guardi\u00e1n"
     Label: Encuentros despejados
     Required: 1
     Unique: 0

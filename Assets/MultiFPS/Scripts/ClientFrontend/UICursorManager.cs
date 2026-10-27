@@ -8,6 +8,7 @@ public class UICursorManager : MonoBehaviour
 {
     static List<GameObject> _cursorRequestors = new List<GameObject>();
     static readonly HashSet<GameObject> nonModal = new HashSet<GameObject>();
+    public static bool HasRequest(GameObject holder)=>holder&&_cursorRequestors.Contains(holder);
     public static bool NonModalOpen => _cursorRequestors.Exists(x=>x&&nonModal.Contains(x));
     public static bool IsTopRequestIn(Transform root){_cursorRequestors.RemoveAll(x=>!x);return _cursorRequestors.Count>0&&_cursorRequestors[_cursorRequestors.Count-1].transform.IsChildOf(root);}
     public static bool IsTopRequest(GameObject holder){_cursorRequestors.RemoveAll(x=>!x);return _cursorRequestors.Count>0&&_cursorRequestors[_cursorRequestors.Count-1]==holder;}

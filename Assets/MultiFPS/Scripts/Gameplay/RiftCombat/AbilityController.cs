@@ -10,7 +10,10 @@ namespace MultiFPS.Gameplay.RiftCombat {
 
 public sealed partial class AbilityController:NetworkBehaviour {
 
- public const string Preference="ROM.Combat.Nertor";public SpeciesDefinition Species;
+ public const string Preference="ROM.Combat.Nertor";[UnityEngine.Serialization.FormerlySerializedAs("Species")][SerializeField]SpeciesDefinition defaultSpecies;
+ public bool IsPaladin=>Player&&Player.PlayerInfo.CharacterSkinID==PaladinPrototypeSettings.Skin;
+ public SpeciesDefinition SpeciesForSkin(int skin)=>skin==PaladinPrototypeSettings.Skin&&PaladinPrototypeSettings.Available?PaladinPrototypeSettings.Load.Species:defaultSpecies;
+ public SpeciesDefinition Species{get=>SpeciesForSkin(Player?Player.PlayerInfo.CharacterSkinID:1);set=>defaultSpecies=value;}
 
  [SyncVar]public bool Prototype; [SyncVar]public int SpecIndex;[SyncVar]public float Resource;
 
@@ -34,7 +37,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
  void Awake(){Player=GetComponent<PlayerInstance>();Players.Add(this);}
 
- void OnDestroy(){Players.Remove(this);}
+ void OnDestroy(){Players.Remove(this);DisposeGroundAim();}
 
  public override void OnStartServer(){for(int i=0;i<8;i++)Ready.Add(0);for(int i=0;i<9;i++)Talents.Add(0);}
 
@@ -96,7 +99,9 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
   if(now<CastEnd||now<GlobalReady||now<Ready[slot])return RejectAction("Habilidad en recarga");
 
-  if(Resource<ability.Cost)return RejectAction("Furia insuficiente");
+  if(slot==4&&(!hasGroundLeap||!TryGroundLeapLanding(Actor.GetComponent<CharacterController>(),Actor.transform.position,leapDestination,GameManager.environmentLayer,out _)))return RejectAction("Elegí un destino de salto válido");
+
+  float cost=AbilityCost(slot,ability);if(Resource<cost)return RejectAction("Furia insuficiente");
 
   if(!GameManager.Gamemode.CanUseClassAbilities(Actor.transform.position))return RejectAction("No podés usar esta habilidad aquí");
 
@@ -104,9 +109,9 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
   if(ability.RequiresPrimaryTarget&&!ValidAreaVictim(CombatTarget,Actor.transform.position,Quaternion.Euler(0,Actor.Input.LookY,0)*Vector3.forward,slot,ability))return RejectAction("Seleccioná un enemigo válido.");
 
-  if(ability.Shape!=AbilityShape.Self&&ability.Damage>0&&QueueWeaponDraw(slot))return true;
+  if(slot!=4&&ability.Shape!=AbilityShape.Self&&ability.Damage>0&&QueueWeaponDraw(slot))return true;
 
-  Resource=Mathf.Max(0,Resource-ability.Cost);Ready[slot]=now+AbilityCooldown(slot,ability);GlobalReady=now+ability.Recovery;
+  Resource=Mathf.Max(0,Resource-cost);Ready[slot]=now+AbilityCooldown(slot,ability);GlobalReady=now+ability.Recovery;
 
   castWeaponRoll=ability.Shape!=AbilityShape.Self&&ability.Damage>0?RollWeaponDamage():0;castWearToken=ability.Shape!=AbilityShape.Self&&ability.Damage>0?BeginWearAction():null;castWearConnected=false;attackTarget=TargetNetId;Casting=slot;pending=ability;strikeTicks=0;CastEnd=now+ability.CastDuration;hitAt=now+ability.HitTime;applied=false;
 
@@ -116,7 +121,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
  }
 
- [Server]public void Cancel(){CancelWeaponDraw();Casting=-1;pending=null;CastEnd=0;}
+ [Server]public void Cancel(){CancelWeaponDraw();hasGroundLeap=false;Casting=-1;pending=null;CastEnd=0;}
 
  void Update(){
 
@@ -138,7 +143,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
  }
 
- public void Request(int slot){if(!isLocalPlayer||slot<1||slot>=Ready.Count)return;if(!IsAbilityLearned(slot)){LocalNotice(AbilityUnavailableReason(slot));return;}if(NetworkTime.time<Ready[slot]||NetworkTime.time<GlobalReady){LocalNotice("Habilidad en recarga");return;}var ability=Definition(slot);if(ability&&ability.Shape!=AbilityShape.Self)RiftMMOController.Instance?.TryAutoTarget(ability,this);if(ability&&ability.Implemented&&ability.Allows(Specialization.Id)&&ability.Shape!=AbilityShape.Self&&Resource>=ability.Cost)RiftMMOController.Instance?.StartAutoAttack();if(NetworkTime.time<CastEnd&&CastEnd-NetworkTime.time<=.18){queued=slot;queueUntil=Time.unscaledTime+.18f;}else CmdUseAbility(ability.Id);}
+ public void Request(int slot){if(!isLocalPlayer||slot<1||slot>=Ready.Count)return;if(!IsAbilityLearned(slot)){LocalNotice(AbilityUnavailableReason(slot));return;}if(NetworkTime.time<Ready[slot]||NetworkTime.time<GlobalReady){LocalNotice("Habilidad en recarga");return;}var ability=Definition(slot);if(slot==4){BeginGroundAim();return;}if(ability&&ability.Shape!=AbilityShape.Self)RiftMMOController.Instance?.TryAutoTarget(ability,this);if(ability&&ability.Implemented&&ability.Allows(Specialization.Id)&&ability.Shape!=AbilityShape.Self&&Resource>=AbilityCost(slot,ability))RiftMMOController.Instance?.StartAutoAttack();if(NetworkTime.time<CastEnd&&CastEnd-NetworkTime.time<=.18){queued=slot;queueUntil=Time.unscaledTime+.18f;}else CmdUseAbility(ability.Id);}
 
 
  [Server]void TickRageDecay(float elapsed){if(!Class||Class.Resource!=CombatResourceKind.Rage)return;Resource=Mathf.Clamp(Resource,0,Class.MaximumResource);if(Casting>=0||autoPending||NetworkTime.time-Player.LastCombatAt<Class.RageDecayDelay)return;Resource=Mathf.Max(0,Resource-Mathf.Max(0,Class.RageDecayPerSecond)*Mathf.Max(0,elapsed));}
@@ -155,11 +160,56 @@ public sealed partial class AbilityController:NetworkBehaviour {
   candidates.Sort((a,b)=>{int order=AreaDistanceSquared(a,origin).CompareTo(AreaDistanceSquared(b,origin));return order!=0?order:a.netId.CompareTo(b.netId);});int limit=ability.MaximumTargets>0?ability.MaximumTargets:int.MaxValue;foreach(var candidate in candidates){if(selected.Count>=limit)break;selected.Add(candidate);}return selected;
  }
 
+ // Find a supported, empty capsule on the approach side; never teleport into a target.
+ // No controller/cast state is disabled here: failure leaves the actor at its origin.
+ public static bool TryLeapLanding(CharacterController body,Transform target,Vector3 origin,Vector3 forward,int groundMask,out Vector3 landing)=>FindLeapLanding(body,target,origin,target?target.position:origin+forward*8,groundMask,out landing);
+ static bool FindLeapLanding(CharacterController body,Transform target,Vector3 origin,Vector3 destination,int groundMask,out Vector3 landing){
+  landing=origin;if(!body)return false;
+  var scale=body.transform.lossyScale;float radius=body.radius*Mathf.Max(Mathf.Abs(scale.x),Mathf.Abs(scale.z));
+  float height=Mathf.Max(radius*2,body.height*Mathf.Abs(scale.y));
+  Vector3 center=body.transform.TransformVector(body.center);float bottom=center.y-height*.5f;
+  var delta=destination-origin;delta.y=0;float distance=delta.magnitude;if(distance<.05f)return false;
+  Vector3 direction=delta/distance;float travel=Mathf.Min(12,distance);
+  if(target){
+   // AABB support includes large and offset solid colliders, rather than an assumed enemy radius.
+   float near=distance;
+   foreach(var collider in target.GetComponentsInChildren<Collider>())if(collider.enabled&&!collider.isTrigger){
+    var bounds=collider.bounds;float extent=Mathf.Abs(direction.x)*bounds.extents.x+Mathf.Abs(direction.z)*bounds.extents.z;
+    near=Mathf.Min(near,Vector3.Dot(bounds.center-origin,direction)-extent);
+   }
+   travel=Mathf.Min(travel,near-radius-.2f);
+  }
+  Physics.SyncTransforms();
+  for(float step=travel;step>=.25f;step-=.3f){
+   var candidate=origin+direction*step;
+   // Ground is sampled around the feet too: do not balance the capsule on a ledge.
+   if(!Physics.Raycast(candidate+Vector3.up*4,Vector3.down,out var ground,12,groundMask,QueryTriggerInteraction.Ignore)||Vector3.Angle(ground.normal,Vector3.up)>body.slopeLimit)continue;
+   if(ground.collider.GetComponentInParent<Health>()||ground.collider.GetComponentInParent<CharacterController>())continue;
+   candidate.y=ground.point.y-bottom+.12f;
+   bool supported=true;
+   foreach(var offset in new[]{Vector3.right,Vector3.left,Vector3.forward,Vector3.back}){
+    if(!Physics.Raycast(candidate+offset*radius*.8f+Vector3.up*(bottom+.5f),Vector3.down,out var support,1,groundMask,QueryTriggerInteraction.Ignore)||Mathf.Abs(support.point.y-ground.point.y)>.3f||Vector3.Angle(support.normal,Vector3.up)>body.slopeLimit){supported=false;break;}
+   }
+   if(!supported)continue;
+   Vector3 low=candidate+center+Vector3.up*(-height*.5f+radius),high=candidate+center+Vector3.up*(height*.5f-radius);
+   bool blocked=false;
+   foreach(var collider in Physics.OverlapCapsule(low,high,radius+.05f,~0,QueryTriggerInteraction.Ignore))if(!collider.transform.IsChildOf(body.transform)){blocked=true;break;}
+   if(blocked)continue;
+   // Prevent crossing walls/hidden level bounds. Ignore only the actor's own colliders.
+   Vector3 fromLow=origin+center+Vector3.up*(-height*.5f+radius),fromHigh=origin+center+Vector3.up*(height*.5f-radius);
+   var move=candidate-origin;float length=move.magnitude;
+   foreach(var hit in Physics.CapsuleCastAll(fromLow,fromHigh,radius,move.normalized,length,~0,QueryTriggerInteraction.Ignore))if(!hit.collider.transform.IsChildOf(body.transform)&&hit.distance>.02f){blocked=true;break;}
+   if(blocked)continue;
+   landing=candidate;return true;
+  }
+  return false;
+ }
+
  [Server]void Apply(AbilityDefinition ability){
 
   if(!Actor||Actor.Health.CurrentHealth<=0)return;int hits=0;var origin=Actor.transform.position;
 
-  if(Casting==4){var desired=CombatTarget?CombatTarget.transform.position:origin+facing*8;var delta=Vector3.ClampMagnitude(desired-origin,12);delta.y=0;if(Physics.Raycast(origin+delta+Vector3.up*8,Vector3.down,out var ground,18,GameManager.environmentLayer,QueryTriggerInteraction.Ignore)){Actor.ServerTeleport(ground.point+Vector3.up*.1f,Actor.Input.LookY);origin=Actor.transform.position;}}
+  if(Casting==4&&hasGroundLeap&&TryGroundLeapLanding(Actor.GetComponent<CharacterController>(),origin,leapDestination,GameManager.environmentLayer,out var landing)){LastGroundLeapOrigin=origin;Actor.ServerTeleport(landing,Actor.Input.LookY);origin=Actor.transform.position;LastGroundLeapLanding=origin;GroundLeapSequence++;}
 
   if(ability.Shape==AbilityShape.Self&&Casting==6){DefensiveUntil=NetworkTime.time+ability.BuffDuration;RpcImpact(Casting,origin,facing);return;}
 
@@ -205,3 +255,4 @@ public sealed partial class AbilityController:NetworkBehaviour {
  [ClientRpc]void RpcImpact(int slot,Vector3 origin,Vector3 forward){var a=Definition(slot);if(a&&a.ImpactVfx)CombatVfxPool.Spawn(a.ImpactVfx,origin+Vector3.up*.1f,Quaternion.LookRotation(forward),3);}
 
 }}
+

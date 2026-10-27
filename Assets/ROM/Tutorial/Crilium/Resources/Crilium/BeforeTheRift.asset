@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae601eb47e202149b5c8b932c3897a9, type: 3}
+  m_Name: BeforeTheRift
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Progression.RiftQuestDefinition
+  Id: crilium-before-the-rift
+  Title: Antes de la grieta
+  Description: "Primero practicás con ecos inmortales: no se derrotan ni sueltan botín. El hacha está en el suelo del refugio (paso 9). El Centinela de la grieta es el combate final (paso 14). Seguí el objetivo ACTUAL de la guía."
+  Giver: crelium-guide
+  TurnIn: crilium-portal
+  Prerequisite: 
+  Gold: 0
+  Experience: 0
+  AdditionalPrerequisites: []
+  Objectives:
+  - Event: 0
+    Filter: dummy
+    Label: "Conect\xE1 un ataque"
+    Required: 1
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: 
+  - Event: 9
+    Filter: crilium-axe
+    Label: "Recog\xE9 el hacha de Crilium"
+    Required: 1
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: 
+  - Event: 2
+    Filter: crilium-sentinel
+    Label: "Derrot\xE1 al centinela"
+    Required: 1
+    Unique: 0
+    CreditPriorCompletion: 0
+    EncounterFilter: 

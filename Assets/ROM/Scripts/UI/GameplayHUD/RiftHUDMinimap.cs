@@ -10,7 +10,7 @@ namespace ROM.UI.Gameplay {
   public void Refresh(CharacterInstance actor,bool force=false){
    if(!actor||!Map||!Theme)return;
    if(Arrow)Arrow.localRotation=Quaternion.Euler(0,0,-actor.Input.LookY);
-   if(!loaded){loaded=true;atlas=Resources.Load<RiftMinimapAtlas>("RiftMinimapAtlas");if(atlas)Map.texture=atlas.Map;}
+   if(!loaded){loaded=true;atlas=ROM.Tutorial.Crilium.CriliumSession.Active&&ROM.Tutorial.Crilium.CriliumDefinition.Load?ROM.Tutorial.Crilium.CriliumDefinition.Load.Atlas:Resources.Load<RiftMinimapAtlas>("RiftMinimapAtlas");if(atlas)Map.texture=atlas.Map;}
    if(atlas&&atlas.Map)Map.uvRect=atlas.View(actor.transform.position,Theme.MinimapRange);
   }
  }

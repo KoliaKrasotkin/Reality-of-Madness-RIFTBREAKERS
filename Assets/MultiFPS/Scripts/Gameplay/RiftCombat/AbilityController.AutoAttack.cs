@@ -4,7 +4,7 @@ using UnityEngine;
 namespace MultiFPS.Gameplay.RiftCombat {
 public sealed partial class AbilityController {
  public static event Action<Vector3,int,bool> DamageNumber;
- public AutoAttackProfile AutoProfile=>RiftCombatTuning.Load.Find(Prototype?"warrior":Player?((RiftClassId)Player.ClassId).ToString().ToLowerInvariant():"warrior");
+ public AutoAttackProfile AutoProfile=>IsPaladin&&PaladinPrototypeSettings.Load?PaladinPrototypeSettings.Load.AutoAttack:RiftCombatTuning.Load.Find(Prototype?"warrior":Player?((RiftClassId)Player.ClassId).ToString().ToLowerInvariant():"warrior");
  [SyncVar]public double AutoReady;uint autoVictim;double autoHitAt;bool autoPending;
  [Command]public void CmdAutoAttack(){ServerAutoAttack();}
  public void RequestAutoAttack(){if(isLocalPlayer&&NetworkTime.time>=AutoReady)CmdAutoAttack();}

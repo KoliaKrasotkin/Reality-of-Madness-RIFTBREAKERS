@@ -43,19 +43,19 @@ namespace ROM.UI.Sprint01
         }
         public static string PlayedLabel(string characterId)
         {
-            var data = Read(characterId); if (data.FirstRecordedUtc == 0) return "Tiempo jugado: sin registro previo";
+            var data = Read(characterId); if (data.FirstRecordedUtc == 0) return "";
             long minutes = (long)(data.PlayedSeconds / 60);
             string value = minutes == 0 ? "menos de 1 min" : minutes < 60 ? minutes + " min" : minutes / 60 + " h " + minutes % 60 + " min";
-            return "Tiempo jugado: " + value + " · desde este parche";
+            return "Tiempo jugado: " + value;
         }
         public static string LevelLabel(string characterId)
         {
-            if (!PlayerPrefs.HasKey(RiftJournalView.Key(characterId))) return "Nivel sin datos locales";
+            if (!PlayerPrefs.HasKey(RiftJournalView.Key(characterId))) return "Nivel —";
             JournalState state;
             try { state = JsonUtility.FromJson<JournalState>(PlayerPrefs.GetString(RiftJournalView.Key(characterId), "")); } catch { state = null; }
-            if (state == null || state.CharacterId != characterId || state.Experience < 0) return "Nivel sin datos locales";
+            if (state == null || state.CharacterId != characterId || state.Experience < 0) return "Nivel —";
             var progression = WarriorProgressionDefinition.Load;
-            return progression ? "Nv. " + progression.Level(state.Experience) : "Nivel no disponible";
+            return progression ? "Nivel " + progression.Level(state.Experience) : "Nivel no disponible";
         }
     }
 

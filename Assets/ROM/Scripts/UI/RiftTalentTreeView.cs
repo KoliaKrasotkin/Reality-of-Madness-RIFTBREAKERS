@@ -67,7 +67,7 @@ public sealed class RiftTalentTreeView:MonoBehaviour {
   foreach(var link in links){bool invested=combat.Rank(link.ChildIndex)>0;bool unlocked=combat.Rank(link.ParentIndex)>=tuning.Talents[link.ParentIndex].MaximumRank;link.color=invested?new Color(.8f,.32f,.13f):unlocked?new Color(.62f,.47f,.25f):new Color(.28f,.26f,.22f);var size=link.Segment.rectTransform.sizeDelta;link.Segment.rectTransform.sizeDelta=new Vector2(size.x,invested?7:unlocked?5:3);link.SetVerticesDirty();}
  }
 }
-public sealed class RiftTalentGraphInput:MonoBehaviour,IScrollHandler {public RiftTalentTreeView Tree;public void OnScroll(PointerEventData e){Tree.SetZoom(Tree.Zoom*Mathf.Pow(1.18f,e.scrollDelta.y),e.position);e.Use();}}
+public sealed class RiftTalentGraphInput:MonoBehaviour,IScrollHandler {public RiftTalentTreeView Tree;public void OnScroll(PointerEventData e){var module=e.currentInputModule;float ticks=module?module.ConvertPointerEventScrollDeltaToTicks(e.scrollDelta).y:Mathf.Clamp(e.scrollDelta.y,-1,1);Tree.SetZoom(Tree.Zoom*Mathf.Pow(1.18f,Mathf.Clamp(ticks,-2,2)),e.position);e.Use();}}
 public sealed class RiftTalentNodeView:MonoBehaviour,ISelectHandler,IPointerEnterHandler {public RiftTalentTreeView Tree;public void OnPointerEnter(PointerEventData e){Tree.SelectNode(Index);}
  public void OnSelect(BaseEventData e){Tree.SelectNode(Index);if(!(e is PointerEventData))Tree.CenterNode(Index);}public int Index;public Text RankLabel;public Image Icon;public Image[] Pips;public Outline Edge;public RiftTooltipTrigger Tooltip;}
 }

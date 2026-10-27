@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Mirror;
 using MultiFPS.UI;
 using ROM.Horde;
@@ -82,7 +82,7 @@ namespace ROM.UI.Sprint01
             balance=W.Label(dialog,"",0,0,1,1,12);balance.gameObject.SetActive(false);
             notice=W.Label(dialog,"",20,134,820,18,13,W.Muted);
             var close=W.Button(dialog,"CERRAR · ESC",960,10,180,28,Close);close.GetComponentInChildren<Text>().fontSize=14;
-            ShowDialogueGreeting(npc);RefreshDialogueHUD();LayoutDialogue();
+            dialogueQuest=null;ShowQuests(npc);RefreshDialogueHUD();LayoutDialogue();
 
         }
         public void ShowGoods(RiftVillageNpc npc)

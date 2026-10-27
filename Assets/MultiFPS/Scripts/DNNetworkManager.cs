@@ -28,6 +28,7 @@ namespace MultiFPS
         public override void Awake()
         {
             base.Awake();
+            var paladin=Gameplay.RiftCombat.PaladinPrototypeSettings.Load;if(paladin&&paladin.PlayerPrefab&&!spawnPrefabs.Contains(paladin.PlayerPrefab))spawnPrefabs.Add(paladin.PlayerPrefab);
             Debug.Log("MultiFPS | desNetware.net | discord.gg/REnFR3wXNY");
 
             headlessStartMode = HeadlessStartOptions.DoNothing;
@@ -128,13 +129,10 @@ namespace MultiFPS
         #region gameplay synchronization handlers
         void OnReceivedPlayerPositionMessage(NetworkConnectionToClient conn, ClientSendPositionMessage pos)
         {
-            if (!GameManager.GetPlayerByConnID(conn.connectionId))
-                return;
-            
-            if (!GameManager.GetPlayerByConnID(conn.connectionId).CurrentlyControlledCharacter)
-                return;
-
-            CharacterInstance characterInstance = GameManager.GetPlayerByConnID(conn.connectionId).CurrentlyControlledCharacter;
+            if(conn==null||!conn.isReady||NetworkServer.isLoadingScene)return;
+            var player=GameManager.GetPlayerByConnID(conn.connectionId);
+            if(!player||player.connectionToClient!=conn||conn.identity!=player.netIdentity)return;
+            CharacterInstance characterInstance=player.CurrentlyControlledCharacter;
 
             if (!characterInstance) return;
             if (characterInstance.Health.CurrentHealth <= 0) return;
@@ -146,12 +144,11 @@ namespace MultiFPS
         }
         void OnReceivedPlayerInputMessage(NetworkConnectionToClient conn, ClientSendInputMessage pos)
         {
-            if (!GameManager.GetPlayerByConnID(conn.connectionId))
-                return;
-            if (!GameManager.GetPlayerByConnID(conn.connectionId).CurrentlyControlledCharacter)
-                return;
-
-            GameManager.GetPlayerByConnID(conn.connectionId).CurrentlyControlledCharacter.ReadAndApplyInputFromMessage(pos);
+            if(conn==null||!conn.isReady||NetworkServer.isLoadingScene)return;
+            var player=GameManager.GetPlayerByConnID(conn.connectionId);
+            if(!player||player.connectionToClient!=conn||conn.identity!=player.netIdentity)return;
+            var actor=player.CurrentlyControlledCharacter;
+            if(actor&&actor.Health&&actor.Health.CurrentHealth>0)actor.ReadAndApplyInputFromMessage(pos);
         }
 
         void OnClientReceivedCharactersInputs(CharactersInputMessage msg)

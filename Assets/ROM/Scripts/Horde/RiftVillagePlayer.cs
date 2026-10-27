@@ -46,6 +46,7 @@ namespace ROM.Horde
         {return ServerDrinkPotion(RiftVillageSupplies.Count(0)>0?0:1,out message);}
         [Server] public bool ServerDrinkPotion(int id,out string message)
         {
+            message="Las provisiones de El Rift se conservan durante el prólogo.";if(ROM.Tutorial.Crilium.CriliumSession.Active)return false;
             message="Poción desconocida.";if(!RiftVillageSupplies.Valid(id))return false;
             message = "Las pociones de esta cartera local no están habilitadas para clientes remotos.";
             if (!LocalVillageWallet) return false;

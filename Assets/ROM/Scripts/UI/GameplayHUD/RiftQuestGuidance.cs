@@ -13,9 +13,11 @@ using UnityEngine.UI;
 namespace ROM.UI.Gameplay {
 // All presentation belongs to the local journal. Source renderers/materials are never changed.
 public sealed class RiftQuestGuidance:MonoBehaviour {
+ public static bool SuitableCombatRange(int level,int min,int max)=>min<=level+2&&max<=level+3;
+ static int ActorLevel(CharacterInstance actor){var combat=actor&&actor.Health?AbilityController.For(actor.Health):null;return combat?combat.Level:1;}
  public Transform Destination {get;private set;}public string DestinationLabel {get;private set;}
  public bool Offscreen {get;private set;}public int HighlightCount=>glows.Count;
- RiftJournalHUD journal;RiftGameplayHUD hud;Text direction,caption;RectTransform marker;RiftHUDGraphic arrow;Material material;float next;
+ RiftJournalHUD journal;RiftGameplayHUD hud;Text direction,caption;RectTransform marker;RiftHUDGraphic arrow;Image trackedArt;Material material;float next;
  RiftEnemySpawnZone[] zones;RiftCheckpoint[] checkpoints;readonly Dictionary<Renderer,Renderer> glows=new Dictionary<Renderer,Renderer>();readonly HashSet<Renderer> wanted=new HashSet<Renderer>();
  static readonly Color Gold=new Color(.95f,.76f,.32f);
  public static QuestRecord Tracked(JournalState state){var id=RiftJournalView.Tracked;if(id=="-")return null;var q=state.Quest(id);return q!=null&&q.Status!=QuestStatus.TurnedIn?q:state.Quests.FirstOrDefault(r=>r.Status!=QuestStatus.TurnedIn);}
@@ -24,6 +26,7 @@ public sealed class RiftQuestGuidance:MonoBehaviour {
   direction=RiftWidgets.Label(journal.Tracker,"",0,153,285,68,14,Gold);direction.name="Quest direction";direction.font=journal.Objectives.font;journal.Tracker.sizeDelta=new Vector2(journal.Tracker.sizeDelta.x,230);
   marker=RiftWidgets.Rect(hud.Design,"Quest destination marker",0,0,420,80);marker.anchorMin=marker.anchorMax=marker.pivot=new Vector2(.5f,.5f);
   arrow=RiftWidgets.Rect(marker,"Quest direction arrow",190,0,32,32).gameObject.AddComponent<RiftHUDGraphic>();arrow.Shape=HUDShape.Diamond;arrow.color=Gold;arrow.Border=Gold;arrow.raycastTarget=false;
+  trackedArt=RiftWidgets.Rect(arrow.rectTransform,"Tracked quest art",0,0,32,32).gameObject.AddComponent<Image>();trackedArt.sprite=RiftQuestMarkerArt.Icon(RiftQuestMarkerState.Tracked);trackedArt.preserveAspect=true;trackedArt.raycastTarget=false;
   caption=RiftWidgets.Label(marker,"",0,40,420,40,18,Gold);caption.alignment=TextAnchor.MiddleCenter;caption.font=journal.Objectives.font;var shadow=caption.gameObject.AddComponent<Shadow>();shadow.effectColor=Color.black;shadow.effectDistance=new Vector2(1,-1);marker.gameObject.SetActive(false);
   var shader=Resources.Load<Shader>("RiftQuestHighlight");if(shader)material=new Material(shader){name="Local quest rim",hideFlags=HideFlags.HideAndDontSave};
   zones=FindObjectsByType<RiftEnemySpawnZone>(FindObjectsSortMode.None);checkpoints=FindObjectsByType<RiftCheckpoint>(FindObjectsSortMode.None);
@@ -39,17 +42,23 @@ public sealed class RiftQuestGuidance:MonoBehaviour {
  bool Incomplete(QuestRecord q,RiftQuestDefinition def,int i)=>q.Status==QuestStatus.Active&&q.Progress!=null&&i<q.Progress.Length&&q.Progress[i]<def.Objectives[i].Required;
  public static bool EnemyMatches(Health health,JournalObjective objective,CharacterInstance actor){
   if(!health||!actor||health==actor.Health||health.TrainingTarget||health.CurrentHealth<=0||health.Team==actor.Health.Team||!health.gameObject.activeInHierarchy)return false;
-  var native=health.GetComponent<RiftEnemyAgent>();if(native){if(!native.Definition||native.Dead)return false;return objective.Matches(objective.Event,native.Definition.Id,native.QuestEncounter)&&(objective.Event==RiftProgressEvent.Kill&&!native.Definition.IsWildlife||objective.Event==RiftProgressEvent.MiniBoss&&native.Definition.IsBoss);}
+  var native=health.GetComponent<RiftEnemyAgent>();if(native){if(string.IsNullOrEmpty(objective.Filter)&&string.IsNullOrEmpty(objective.EncounterFilter)&&!SuitableCombatRange(ActorLevel(actor),native.Level,native.Level))return false;if(!native.Definition||native.Dead)return false;return objective.Matches(objective.Event,native.Definition.Id,native.QuestEncounter)&&(objective.Event==RiftProgressEvent.Kill&&!native.Definition.IsWildlife||objective.Event==RiftProgressEvent.MiniBoss&&native.Definition.IsBoss);}
   var legacy=health.GetComponent<RiftEnemyCombat>();return legacy&&legacy.ActiveCombat&&(objective.Event==RiftProgressEvent.Kill&&objective.Matches(RiftProgressEvent.Kill,"enemy")||objective.Event==RiftProgressEvent.MiniBoss&&legacy.ArchetypeIndex==2&&objective.Matches(RiftProgressEvent.MiniBoss,"boss"));
  }
  void Resolve(JournalState state,RiftJournalCatalog catalog,CharacterInstance actor){
   wanted.Clear();
-  foreach(var q in state.Quests){var def=catalog.Quest(q.Id);if(!def)continue;for(int i=0;i<def.Objectives.Length;i++){if(!Incomplete(q,def,i))continue;var o=def.Objectives[i];if(o.Event==RiftProgressEvent.Collect){foreach(var item in RiftQuestCollectible.Active)if(item&&item.Eligible(state,catalog)&&o.Matches(RiftProgressEvent.Collect,item.ItemKey)&&!q.Seen.Contains("collect:"+i+":"+item.StableId))Want(item.transform);}
+  foreach(var q in state.Quests){var def=catalog.Quest(q.Id);if(!def||!state.PrerequisitesMet(def))continue;for(int i=0;i<def.Objectives.Length;i++){if(!Incomplete(q,def,i))continue;var o=def.Objectives[i];if(o.Event==RiftProgressEvent.Collect){foreach(var item in RiftQuestCollectible.Active)if(item&&item.Eligible(state,catalog)&&o.Matches(RiftProgressEvent.Collect,item.ItemKey)&&!q.Seen.Contains("collect:"+i+":"+item.StableId))Want(item.transform);}
    else if(o.Event==RiftProgressEvent.Kill||o.Event==RiftProgressEvent.MiniBoss)foreach(var h in Health.All)if(EnemyMatches(h,o,actor))Want(h.transform);
   }}
   foreach(var source in glows.Keys.ToArray())if(!source||!wanted.Contains(source)){if(glows[source])Destroy(glows[source].gameObject);glows.Remove(source);}
   if(material)foreach(var source in wanted)if(source&&!glows.ContainsKey(source)&&glows.Count<64){var overlay=Overlay(source);if(overlay)glows.Add(source,overlay);}
   Destination=null;DestinationLabel="";var tracked=Tracked(state);var definition=tracked!=null?catalog.Quest(tracked.Id):null;if(!definition){if(direction)direction.text="";return;}
+  if(tracked.Status==QuestStatus.Active&&!state.PrerequisitesMet(definition)){
+   var continuation=state.Quests.Where(q=>q.Id!=tracked.Id&&q.Status!=QuestStatus.TurnedIn).Select(q=>new{Record=q,Definition=catalog.Quest(q.Id)}).Where(q=>q.Definition&&state.PrerequisitesMet(q.Definition)).OrderBy(q=>q.Record.Status==QuestStatus.Ready?0:1).FirstOrDefault();
+   if(continuation!=null){if(continuation.Record.Status==QuestStatus.Ready)ChooseNpc(continuation.Definition.TurnIn,actor);else for(int i=0;i<continuation.Definition.Objectives.Length;i++){if(!Incomplete(continuation.Record,continuation.Definition,i))continue;FindObjective(continuation.Definition.Objectives[i],continuation.Record,i,state,catalog,actor);if(Destination)break;}if(direction)direction.text="Continuar: "+continuation.Definition.Title+(Destination?"\n"+DestinationLabel:"\nRevis\u00e1 su objetivo en el Diario.");return;}
+   var candidates=RiftVillageNpc.Active.Where(n=>n&&catalog.Quests.Any(q=>q&&(q.TurnIn==n.Id&&state.Quest(q.Id)?.Status==QuestStatus.Ready||q.Giver==n.Id&&state.Available(q)))).OrderBy(n=>(n.transform.position-actor.transform.position).sqrMagnitude);var npc=candidates.FirstOrDefault();if(npc){Destination=npc.transform;DestinationLabel="Continuar preparación: "+npc.DisplayName;}if(direction)direction.text=npc?DestinationLabel+"\nEsta misión de guardián es posterior.":"Misión posterior: continuá la preparación con Alma, Iria y Bram; revisá el Diario.";return;
+  }
+  if(ROM.Tutorial.Crilium.CriliumSession.ObjectiveText(definition.Id)!=null){var tutorial=FindFirstObjectByType<ROM.Tutorial.Crilium.CriliumDirector>();if(direction)direction.text=tutorial?Vector3.Distance(actor.transform.position,tutorial.Goal).ToString("0")+" m · seguí la señal violeta":"";return;}
   if(tracked.Status==QuestStatus.Ready){ChooseNpc(definition.TurnIn,actor);DestinationLabel=Destination?"Entregar: "+RiftHub.NpcName(definition.TurnIn):"";}
   else for(int i=0;i<definition.Objectives.Length;i++){if(!Incomplete(tracked,definition,i))continue;FindObjective(definition.Objectives[i],tracked,i,state,catalog,actor);if(Destination)break;}
   if(direction)direction.text=Destination?DestinationLabel+"\n"+Vector3.Distance(actor.transform.position,Destination.position).ToString("0")+" m · seguí la marca dorada":"Sin ubicación disponible para este objetivo";
@@ -61,13 +70,14 @@ public sealed class RiftQuestGuidance:MonoBehaviour {
   else if(o.Event==RiftProgressEvent.Collect){foreach(var item in RiftQuestCollectible.Active)if(item&&item.Eligible(state,catalog)&&o.Matches(o.Event,item.ItemKey)&&!q.Seen.Contains("collect:"+index+":"+item.StableId))Choose(item.transform,item.DisplayName,actor);}
   else if(o.Event==RiftProgressEvent.TrainingHit&&o.Matches(o.Event,"dummy")){foreach(var h in Health.All)if(h&&h.TrainingTarget)Choose(h.transform,"Entrenamiento",actor);}
   else if(o.Event==RiftProgressEvent.PotionBought){foreach(var npc in RiftVillageNpc.Active)if(npc&&npc.Trades)Choose(npc.transform,npc.DisplayName,actor);}
-  else if(o.Event==RiftProgressEvent.Checkpoint){foreach(var crystal in checkpoints)if(crystal&&!crystal.StartingCamp&&o.Matches(o.Event,crystal.Title)&&(!o.Unique||!q.Seen.Contains(index+":"+crystal.Title)))Choose(crystal.transform,crystal.Title,actor);}
+  else if(o.Event==RiftProgressEvent.Checkpoint){foreach(var crystal in checkpoints.Where(c=>c&&!c.StartingCamp&&o.Matches(o.Event,c.Title)&&(!o.Unique||!q.Seen.Contains(index+":"+c.Title))).OrderBy(c=>string.IsNullOrEmpty(o.Filter)?MinimumRegionLevel(c.Title):0).ThenBy(c=>(c.transform.position-actor.transform.position).sqrMagnitude).Take(1))Choose(crystal.transform,crystal.Title,actor);}
   else if(o.Event==RiftProgressEvent.Encounter){var world=ROM.Horde.Horde.Instance;if(world&&world.Encounters!=null)foreach(var encounter in world.Encounters)if(encounter&&!encounter.Cleared&&o.Matches(o.Event,encounter.Title))Choose(encounter.transform,encounter.Title,actor);}
   else if(o.Event==RiftProgressEvent.Kill||o.Event==RiftProgressEvent.MiniBoss){foreach(var h in Health.All)if(EnemyMatches(h,o,actor))Choose(h.transform,h.CharacterName,actor);
-   if(!Destination)foreach(var zone in zones)if(zone&&!zone.Cleared&&zone.Enemies!=null&&zone.Enemies.Any(e=>e.Enemy&&o.Matches(o.Event,e.Enemy.Id,zone.Encounter?zone.Encounter.Title:zone.Title)&&(o.Event==RiftProgressEvent.Kill&&!e.Enemy.IsWildlife||o.Event==RiftProgressEvent.MiniBoss&&e.Enemy.IsBoss)))Choose(zone.transform,"Zona: "+zone.Title,actor);
-   if(!Destination&&o.Event==RiftProgressEvent.MiniBoss&&o.Matches(o.Event,"boss")){var world=ROM.Horde.Horde.Instance;if(world&&world.Encounters!=null)foreach(var encounter in world.Encounters)if(encounter&&encounter.MiniBoss&&!encounter.Cleared)Choose(encounter.transform,encounter.Title,actor);}
+   if(!Destination)foreach(var zone in zones)if(zone&&!zone.Cleared&&zone.Enemies!=null&&(!string.IsNullOrEmpty(o.Filter)||!string.IsNullOrEmpty(o.EncounterFilter)||SuitableCombatRange(ActorLevel(actor),zone.MinimumLevel,zone.MaximumLevel))&&zone.Enemies.Any(e=>e.Enemy&&o.Matches(o.Event,e.Enemy.Id,zone.Encounter?zone.Encounter.Title:zone.Title)&&(o.Event==RiftProgressEvent.Kill&&!e.Enemy.IsWildlife||o.Event==RiftProgressEvent.MiniBoss&&e.Enemy.IsBoss)))Choose(zone.transform,"Zona: "+zone.Title,actor);
+   if(!Destination&&!zones.Any(z=>z&&z.Encounter)&&o.Event==RiftProgressEvent.MiniBoss&&o.Matches(o.Event,"boss")){var world=ROM.Horde.Horde.Instance;if(world&&world.Encounters!=null)foreach(var encounter in world.Encounters)if(encounter&&encounter.MiniBoss&&!encounter.Cleared)Choose(encounter.transform,encounter.Title,actor);}
   }
  }
+ int MinimumRegionLevel(string region){var matches=zones.Where(z=>z&&z.RegionTitle==region).ToArray();return matches.Length==0?60:matches.Min(z=>z.MinimumLevel);}
  void Want(Transform target){foreach(var r in target.GetComponentsInChildren<Renderer>())if(r&&r.enabled&&r.name!="Quest rim (local)"&&(r is MeshRenderer||r is SkinnedMeshRenderer))wanted.Add(r);}
  Renderer Overlay(Renderer source){
   var skin=source as SkinnedMeshRenderer;var filter=source.GetComponent<MeshFilter>();if(!skin&&(!filter||!filter.sharedMesh))return null;
@@ -76,10 +86,10 @@ public sealed class RiftQuestGuidance:MonoBehaviour {
   int count=skin?skin.sharedMesh.subMeshCount:filter.sharedMesh.subMeshCount;result.sharedMaterials=Enumerable.Repeat(material,Mathf.Max(1,count)).ToArray();result.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;result.receiveShadows=false;return result;
  }
  void DrawMarker(CharacterInstance actor){
-  if(!marker)return;var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main;bool show=Destination&&camera&&journal.Tracker.gameObject.activeSelf&&!RiftHUDPanelDock.PreviewOverlayActive;marker.gameObject.SetActive(show);if(!show)return;
+  if(!marker)return;var camera=GameplayCamera._instance?GameplayCamera._instance.GetComponent<Camera>():Camera.main;bool show=Destination&&camera&&journal.Tracker.gameObject.activeSelf&&!RiftHUDPanelDock.PreviewOverlayActive&&!(UIPauseMenu._instance&&UIPauseMenu._instance.InterfaceShowing);marker.gameObject.SetActive(show);if(!show)return;
   var point=camera.WorldToScreenPoint(Destination.position+Vector3.up*1.8f);Offscreen=point.z<=0||point.x<100||point.x>Screen.width-100||point.y<100||point.y>Screen.height-100;
   Vector2 screen=point;if(Offscreen){var delta=screen-new Vector2(Screen.width*.5f,Screen.height*.5f);if(point.z<0)delta=-delta;if(delta.sqrMagnitude<1)delta=Vector2.down;screen=new Vector2(Screen.width*.5f,Screen.height*.78f);arrow.Shape=HUDShape.Arrow;arrow.rectTransform.localRotation=Quaternion.Euler(0,0,Mathf.Atan2(delta.y,delta.x)*Mathf.Rad2Deg-90);}else{arrow.Shape=HUDShape.Diamond;arrow.rectTransform.localRotation=Quaternion.identity;}
-  arrow.SetVerticesDirty();RectTransformUtility.ScreenPointToLocalPointInRectangle(hud.Design,screen,null,out var local);marker.anchoredPosition=local;caption.text=DestinationLabel+" · "+Vector3.Distance(actor.transform.position,Destination.position).ToString("0")+" m";
+  trackedArt.enabled=!Offscreen&&trackedArt.sprite;arrow.enabled=Offscreen||!trackedArt.sprite;arrow.SetVerticesDirty();RectTransformUtility.ScreenPointToLocalPointInRectangle(hud.Design,screen,null,out var local);marker.anchoredPosition=local;caption.text=DestinationLabel+" · "+Vector3.Distance(actor.transform.position,Destination.position).ToString("0")+" m";
  }
  void ClearGlows(){foreach(var pair in glows)if(pair.Value)Destroy(pair.Value.gameObject);glows.Clear();}
  void OnDisable(){ClearGlows();if(marker)marker.gameObject.SetActive(false);}

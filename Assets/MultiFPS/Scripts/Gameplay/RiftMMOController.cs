@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Mirror;
 using MultiFPS.UI;
 using MultiFPS.Gameplay.RiftCombat;
@@ -30,7 +30,7 @@ namespace MultiFPS.Gameplay
         int readFrame=-1;
         public static RiftMMOController Ensure(GameObject owner){if(!Instance)owner.AddComponent<RiftMMOController>();return Instance;}
         void Awake(){RiftInputUI.Ensure();Instance=this;pointerFrame=-1;var _=RiftControls.Entries;}
-        void Update(){if(EventSystem.current&&!(EventSystem.current.currentInputModule is UnityEngine.InputSystem.UI.InputSystemUIInputModule))RiftInputUI.Ensure();var actor=ClientFrontend.OwnedCharacterInstance;if(actor)ReadCharacter(actor);}
+        void Update(){RiftInputUI.Tick();if(EventSystem.current&&!(EventSystem.current.currentInputModule is UnityEngine.InputSystem.UI.InputSystemUIInputModule))RiftInputUI.Ensure();var actor=ClientFrontend.OwnedCharacterInstance;if(actor)ReadCharacter(actor);}
         void OnDestroy(){if(Instance==this)Instance=null;}
         void OnDisable(){ReleasePointer();if(Actor)Actor.Input.Movement=Vector2.zero;AutoAttack=Autorun=false;}
         void OnApplicationFocus(bool focused){if(!focused){ReleasePointer();AutoAttack=Autorun=false;}}
@@ -41,10 +41,10 @@ namespace MultiFPS.Gameplay
             if(readFrame==Time.frameCount)return;readFrame=Time.frameCount;
             if(Actor!=actor){Actor=actor;CameraYaw=actor.Input.LookY;CameraPitch=12;lastPosition=actor.transform.position;Select(null);Autorun=false;}
             if(EventSystem.current)EventSystem.current.sendNavigationEvents=!Available;
-            if(!Available){ReleasePointer();actor.Input.Movement=Vector2.zero;actor.Input.ActionCodes=0;orbit=steer=selectPending=steerPending=false;Hovered=null;HoveredWorld=null;HasHoverHit=false;Autorun=false;AutoAttack=false;return;}
+            if(!Available){var stopped=ClientFrontend.ClientPlayerInstance?ClientFrontend.ClientPlayerInstance.GetComponent<AbilityController>():null;if(stopped)stopped.CancelGroundAim();ReleasePointer();actor.Input.Movement=Vector2.zero;actor.Input.ActionCodes=0;orbit=steer=selectPending=steerPending=false;Hovered=null;HoveredWorld=null;HasHoverHit=false;Autorun=false;AutoAttack=false;return;}
             if(!ReferenceEquals(Selected,null)&&!Valid(Selected,false))Select(null);if(!ReferenceEquals(SelectedWorld,null)&&!ValidWorld(SelectedWorld))Select(null);
             if((actor.transform.position-lastPosition).sqrMagnitude>225){CameraYaw=actor.Input.LookY;CameraPitch=12;}lastPosition=actor.transform.position;
-            var mouse=Mouse.current;Vector2 pointer=mouse!=null?mouse.position.ReadValue():Vector2.zero;bool ui=PointerOnUI;bool wasDragging=Dragging;
+            var mouse=Mouse.current;Vector2 pointer=mouse!=null?mouse.position.ReadValue():Vector2.zero;bool ui=PointerOnUI;var leapPlayer=ClientFrontend.ClientPlayerInstance;var leapCombat=leapPlayer?leapPlayer.GetComponent<AbilityController>():null;bool groundAiming=leapCombat&&leapCombat.GroundAiming;if(groundAiming){leapCombat.TickGroundAim(ui);ui=true;orbit=steer=selectPending=steerPending=false;}bool wasDragging=Dragging;
             if(RiftControls.Pressed("Orbit")&&!ui)orbit=true;if(!RiftControls.Held("Orbit"))orbit=false;
             if(RiftControls.Pressed("Steer")&&!ui){steer=true;steerPending=true;steerStart=pointer;steerDistance=0;}if(!RiftControls.Held("Steer"))steer=false;
             if(RiftControls.Pressed("Select")&&!ui){selectPending=true;selectStart=pointer;selectDistance=0;}
@@ -69,12 +69,12 @@ namespace MultiFPS.Gameplay
             if(rollingWarrior){if(RiftControls.Pressed("Roll"))rollingWarrior.RequestRoll();if(rollingWarrior.IsRolling)actor.Input.LookY=rollingWarrior.RollFacing;}
             if(!ui){if(RiftControls.Pressed("ZoomIn"))CameraDistance=Mathf.Clamp(CameraDistance-.8f,2,14);if(RiftControls.Pressed("ZoomOut"))CameraDistance=Mathf.Clamp(CameraDistance+.8f,2,14);}
             if(RiftControls.Pressed("NextTarget"))Cycle(1);if(RiftControls.Pressed("PreviousTarget"))Cycle(-1);if(RiftControls.Pressed("SelfTarget"))Select(actor.Health);
-            if(RiftControls.EscapeConsumedFrame!=Time.frameCount&&!UICursorManager.NonModalOpen&&RiftControls.Pressed("ClearTarget")&&(HasSelection||AutoAttack)){Select(null);RiftControls.EscapeConsumedFrame=Time.frameCount;}
+            if(!groundAiming&&RiftControls.EscapeConsumedFrame!=Time.frameCount&&!UICursorManager.NonModalOpen&&RiftControls.Pressed("ClearTarget")&&(HasSelection||AutoAttack)){Select(null);RiftControls.EscapeConsumedFrame=Time.frameCount;}
             var player=ClientFrontend.ClientPlayerInstance;var combat=player?player.GetComponent<AbilityController>():null;
-            if(combat&&combat.Prototype){actor.SetActionKeyCode(ActionCodes.Trigger1,false);actor.SetActionKeyCode(ActionCodes.Trigger2,false);for(int i=0;i<7;i++)if(!RiftHotbar.Dragging&&RiftControls.Pressed("Ability"+i)){combat.Request(RiftHotbar.Resolve(i));} }
+            if(combat&&combat.Prototype){actor.SetActionKeyCode(ActionCodes.Trigger1,false);actor.SetActionKeyCode(ActionCodes.Trigger2,false);for(int i=0;i<7;i++)if(!groundAiming&&!RiftHotbar.Dragging&&RiftControls.Pressed("Ability"+i)){combat.Request(RiftHotbar.Resolve(i));} }
             else if(player){if(!RiftHotbar.Dragging)for(int i=0;i<7;i++)if(RiftControls.Pressed("Ability"+i)&&RiftHotbar.Resolve(i)<=2){StartAutoAttack();player.CmdUseClassAbility((byte)(RiftHotbar.Resolve(i)-1));}ReadWeapons(actor);}
             if(RiftControls.Pressed("AutoAttack")){if(AutoAttack)AutoAttack=false;else StartAutoAttack();}
-            if(combat&&AutoAttack&&Valid(Selected,true)&&Time.unscaledTime>=nextAuto){nextAuto=Time.unscaledTime+.15f;combat.RequestAutoAttack();}
+            if(!groundAiming&&combat&&AutoAttack&&Valid(Selected,true)&&Time.unscaledTime>=nextAuto){nextAuto=Time.unscaledTime+.15f;combat.RequestAutoAttack();}
             Cursor.visible=!Dragging;Cursor.lockState=Dragging?CursorLockMode.Locked:CursorLockMode.None;if(wasDragging&&!Dragging&&mouse!=null)mouse.WarpCursorPosition(savedPointer);
         }
         void ReadWeapons(CharacterInstance actor){var items=actor.CharacterItemManager;actor.SetActionKeyCode(ActionCodes.Trigger1,!PointerOnUI&&RiftControls.Held("WeaponFire"));actor.SetActionKeyCode(ActionCodes.Trigger2,!PointerOnUI&&RiftControls.Held("Aim"));if(RiftControls.Pressed("Reload"))items.Reload();if(RiftControls.Pressed("Drop"))items.TryDropItem();if(RiftControls.Pressed("PreviousWeapon"))items.TakePreviousItem();if(RiftControls.Pressed("Interact"))items.TryGrabItem();if(RiftControls.Pressed("Melee")&&items.CurrentlyUsedItem)items.CurrentlyUsedItem.PushMeele();for(int i=0;i<5;i++)if(RiftControls.Pressed("Weapon"+i))items.ClientTakeItem(i);}
