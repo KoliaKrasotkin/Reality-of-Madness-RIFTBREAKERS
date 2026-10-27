@@ -41,10 +41,18 @@ namespace ROM.UI.Sprint01
             var rect=RiftWidgets.Rect(parent,"ModelView",x,y,w,h);var raw=rect.gameObject.AddComponent<RawImage>();raw.color=Color.white;raw.raycastTarget=!isLobby;
             var instance=rect.gameObject.AddComponent<RiftModelView>();instance.image=raw;instance.lobby=isLobby;instance.Setup(catalog,(int)w,(int)h);return instance;
         }
+        // Attach rendering to the authored viewport without changing its RectTransform.
+        public static RiftModelView Attach(RawImage raw,FrontEndCatalog catalog,bool isLobby){
+            var instance=raw.GetComponent<RiftModelView>();if(!instance)instance=raw.gameObject.AddComponent<RiftModelView>();
+            instance.image=raw;instance.lobby=isLobby;raw.enabled=true;
+            if(!Application.isPlaying)instance.hideFlags=HideFlags.DontSaveInEditor;
+            if(!instance.view)instance.Setup(catalog,Mathf.Max(64,Mathf.RoundToInt(raw.rectTransform.rect.width)),Mathf.Max(64,Mathf.RoundToInt(raw.rectTransform.rect.height)));
+            return instance;
+        }
         void Setup(FrontEndCatalog catalog,int width,int height)
         {
             this.catalog=catalog;
-            world=new GameObject("ROM Isolated Preview");world.transform.position=new Vector3(nextWorld++*250,-5000,0);
+            world=new GameObject("ROM Isolated Preview");if(!Application.isPlaying)world.hideFlags=HideFlags.HideAndDontSave;world.transform.position=new Vector3(nextWorld++*250,-5000,0);
             if(lobby&&catalog&&catalog.StagePrefab){stageEnvironment=Instantiate(catalog.StagePrefab,world.transform);stageEnvironment.transform.localPosition=Vector3.zero;}
             var cameraObject=new GameObject("Preview Camera");cameraObject.transform.SetParent(world.transform,false);view=cameraObject.AddComponent<Camera>();
             view.cullingMask=1<<PreviewLayer;view.clearFlags=CameraClearFlags.SolidColor;view.backgroundColor=new Color(.035f,.045f,.07f);view.nearClipPlane=.03f;view.farClipPlane=100;view.allowHDR=true;view.fieldOfView=38;
@@ -145,6 +153,6 @@ namespace ROM.UI.Sprint01
         static void SetLayer(GameObject go){foreach(var t in go.GetComponentsInChildren<Transform>(true))t.gameObject.layer=PreviewLayer;}
         void OnEnable(){if(view)view.enabled=true;}
         void OnDisable(){if(view)view.enabled=false;}
-        void OnDestroy(){ResetEmote();if(view)view.targetTexture=null;if(texture){texture.Release();Destroy(texture);}if(world)Destroy(world);}
+        void OnDestroy(){ResetEmote();if(view)view.targetTexture=null;if(texture){texture.Release();if(Application.isPlaying)Destroy(texture);else DestroyImmediate(texture);}if(world){if(Application.isPlaying)Destroy(world);else DestroyImmediate(world);}}
     }
 }

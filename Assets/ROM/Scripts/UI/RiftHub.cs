@@ -75,6 +75,7 @@ namespace ROM.UI.Sprint01
         [ContextMenu("Reconstruir vista previa del menú")]
         public void Build()
         {
+            if(BuildAuthoredFrontEnd())return;
             Initialize();boundLabels.Clear();if(Design)DestroyImmediate(Design.gameObject);nav.Clear();productView=null;
             Design=W.Rect(transform,"SafeAreaDesign",0,0,1920,1080);
             fallback=W.Image(Design,"LoadingFallback",0,0,1920,1080,Color.white,Background);
@@ -140,6 +141,7 @@ namespace ROM.UI.Sprint01
         {
             CancelBinding();
             if(!content)return;
+            if(NavigateAuthoredHome(page))return;
             if(InGame&&page!=HubPage.Home&&page!=HubPage.Help&&page!=HubPage.News&&MultiFPS.UI.UIPauseMenu._instance&&!MultiFPS.UI.UIPauseMenu._instance.InterfaceShowing)MultiFPS.UI.UIPauseMenu._instance.ShowInterface(true);
             if(page!=HubPage.Home&&Stage)Stage.StopEmote();emoteStatus=null;
             if(page==HubPage.Lobby)page=HubPage.Home;

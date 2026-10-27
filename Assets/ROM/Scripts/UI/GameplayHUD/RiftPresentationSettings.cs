@@ -6,7 +6,11 @@ public sealed class RiftPresentationSettings:ScriptableObject {
  public Color Panel=new Color(.032f,.036f,.058f,.9f),Border=new Color(.46f,.36f,.65f,.9f),TextColor=new Color(.94f,.93f,.98f),Accent=new Color(.6f,.36f,.9f,.7f);
  [Header("Authored prefabs")][Tooltip("Keep positions/fonts authored in the HUD prefab instead of applying runtime modern layout.")]public bool KeepAuthoredHUDLayout;
  [Tooltip("Keep an authored map panel instead of generating the modern frame.")]public bool KeepAuthoredMapLayout;
- [Header("Map")][Range(1,4)]public float MinimumMapZoom=1.6f,TutorialMinimumMapZoom=1,MaximumMapZoom=4;
+ [Header("Map")][HideInInspector]public float MinimumMapZoom=1; // Legacy serialized value; the illustrated map always allows its full-bleed overview.
+ [Range(1,4)]public float TutorialMinimumMapZoom=1,MaximumMapZoom=4;
+ [Tooltip("Tutorial atlas inset only. The illustrated Rift map fills its viewport edge-to-edge.")][UnityEngine.Serialization.FormerlySerializedAs("MapOverviewPadding")][Range(0,80)]public float TutorialMapOverviewPadding=24;
+ [Tooltip("One combined island name/range card, kept readable independently of map zoom.")]public Vector2 MapRegionLabelSize=new Vector2(156,44);
+ [Range(11,20)]public int MapRegionLabelFontSize=13;
  [Range(10,24)]public int MapLabelFontSize=14;
  public Vector2 MapLabelSize=new Vector2(150,24);public bool HideMinimapWithWorldMap=true;
  public Vector2 MapAnchorMin=new Vector2(.04f,.06f),MapAnchorMax=new Vector2(.96f,.94f);

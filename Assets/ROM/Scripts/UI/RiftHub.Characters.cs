@@ -62,11 +62,11 @@ namespace ROM.UI.Sprint01
             if(use&&assets&&assets.NertorPortrait){var image=W.Rect(ring.transform,"Nertor chosen portrait",3,3,size-6,size-6).gameObject.AddComponent<Image>();image.sprite=assets.NertorPortrait;image.preserveAspect=true;image.raycastTarget=false;}
             else{var icon=W.Rect(ring.transform,"Warrior portrait symbol",size*.2f,size*.2f,size*.6f,size*.6f).gameObject.AddComponent<ROM.UI.Gameplay.RiftHUDGraphic>();icon.Shape=ROM.UI.Gameplay.HUDShape.Helmet;icon.color=new Color(.74f,.66f,.9f);icon.raycastTarget=false;}
         }
-        void CharacterHero(Transform root,int skin,RiftPlayerCharacter record=null)
+        void CharacterHero(Transform root,int skin,RiftPlayerCharacter record=null,bool classCreation=false)
         {
             var model=Catalog?Catalog.Characters.FirstOrDefault(c=>c.SkinIndex==skin):null;
             if(model==null||!model.Prefab){W.Label(root,"Vista de personaje no disponible",580,420,740,80,22,W.Muted);return;}
-            characterPreview=RiftModelView.Create(root,530,154,850,760,Catalog,false);characterPreview.name="Character hero 3D";characterPreview.Show(model);characterPreview.UseInspectionRendering();characterPreview.SetInspectionZoom(.9f);characterPreview.Turn(-15);
+            characterPreview=RiftModelView.Create(root,530,classCreation?244:154,850,classCreation?650:760,Catalog,false);characterPreview.name="Character hero 3D";characterPreview.Show(model);characterPreview.UseInspectionRendering();characterPreview.SetInspectionZoom(.9f);characterPreview.Turn(-15);
             ApplyCharacterPreviewEquipment(characterPreview,record);RiftLivingMenuAssets.Attach(characterPreview);
             W.Label(root,"Arrastrá para girar · Rueda para acercar",590,900,730,36,16,new Color(.7f,.66f,.8f)).alignment=TextAnchor.MiddleCenter;
         }
@@ -119,11 +119,13 @@ namespace ROM.UI.Sprint01
         {
             if(InGame){Notify("La creación está disponible desde el menú principal.");return;}
             var root=CharacterScreen("CREAR PERSONAJE");var assets=RiftCharacterPresentationAssets.Load;bool paladin=creationPaladin&&PaladinPrototypeSettings.Available;int skin=paladin?PaladinPrototypeSettings.Skin:1;
-            CharacterButton(root,"WARRIOR",600,180,270,44,()=>{creationPaladin=false;Navigate(HubPage.Home);});if(PaladinPrototypeSettings.Available)CharacterButton(root,"PALADÍN (PRUEBA)",890,180,320,44,()=>{creationPaladin=true;Navigate(HubPage.Home);});
             MenuSurface(root,"Class lore panel",70,180,450,650,new Color(.03f,.027f,.05f,.92f),new Color(.43f,.34f,.59f));
             W.Label(root,paladin?"PALADÍN":"WARRIOR",100,208,390,54,32,new Color(.9f,.8f,1));W.Label(root,RiftSkinIdentity.Name(skin),100,275,390,48,28,new Color(.96f,.94f,1));
             W.Label(root,paladin?PaladinPrototypeSettings.Load.Description:assets?assets.Lore:"El guerrero de Crelium.",100,360,390,300,22,new Color(.79f,.75f,.85f));W.Label(root,paladin?"PROTOTIPO JUGABLE":"CLASE DISPONIBLE",100,740,390,34,15,new Color(.68f,.51f,.91f));
-            CharacterHero(root,skin);
+            // Keep the interactive render texture below the class tabs. Its transparent
+            // pixels still receive raycasts, so drawing tabs behind it blocks selection.
+            CharacterHero(root,skin,null,true);
+            CharacterButton(root,"WARRIOR",600,180,270,44,()=>{creationPaladin=false;Navigate(HubPage.Home);},!paladin);if(PaladinPrototypeSettings.Available)CharacterButton(root,"PALADÍN (PRUEBA)",890,180,320,44,()=>{creationPaladin=true;Navigate(HubPage.Home);},paladin);
             MenuSurface(root,"Class playstyle panel",1400,180,440,650,new Color(.03f,.027f,.05f,.92f),new Color(.43f,.34f,.59f));
             W.Label(root,"ESTILO DE JUEGO",1430,208,380,46,26,new Color(.88f,.79f,1));W.Label(root,paladin?"Cuerpo a cuerpo\n\nReposo, caminar y ataque básico.\n\nSin habilidades ni talentos de clase todavía.":assets?assets.Style:"Cuerpo a cuerpo · Furia",1430,292,380,375,21,new Color(.79f,.75f,.85f));
             CharacterPortrait(root,new RiftPlayerCharacter{Skin=skin},1430,714,76);W.Label(root,RiftSkinIdentity.Name(skin),1530,730,275,40,22,new Color(.86f,.78f,1));
