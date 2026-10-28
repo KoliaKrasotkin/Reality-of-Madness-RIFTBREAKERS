@@ -12,6 +12,6 @@ public sealed partial class AbilityController {
  // One server roll is captured at action acceptance and reused for every victim/tick.
  float RollWeaponDamage()=>Mathf.Lerp(WeaponDamageMinimum,WeaponDamageMaximum,Random.value);
  public float AbilityDamageBasis(AbilityDefinition a,float weaponRoll)=>a.UsesWeaponDamage?Mathf.Max(0,weaponRoll*Mathf.Max(0,a.WeaponCoefficient)+a.WeaponBonus):a.Damage*WeaponMultiplier;
- public string AbilityDamageSummary(AbilityDefinition a){if(!a||a.Shape==AbilityShape.Self)return "Sin daño directo";return a.UsesWeaponDamage?"Daño: "+AbilityDamageBasis(a,WeaponDamageMinimum).ToString("0.##")+"–"+AbilityDamageBasis(a,WeaponDamageMaximum).ToString("0.##")+" por impacto\nArma ×"+a.WeaponCoefficient.ToString("0.##")+" + "+a.WeaponBonus.ToString("0.##")+" (antes de talentos, crítico y defensa)":"Daño base: "+a.Damage.ToString("0.##");}
+ public string AbilityDamageSummary(AbilityDefinition a){if(a&&a.PaladinEffect!=PaladinAbilityEffect.None&&a.PaladinEffect!=PaladinAbilityEffect.SacredStrike)return PaladinEffectSummary(a);if(!a||a.Shape==AbilityShape.Self)return "Sin daño directo";return a.UsesWeaponDamage?"Daño: "+AbilityDamageBasis(a,WeaponDamageMinimum).ToString("0.##")+"–"+AbilityDamageBasis(a,WeaponDamageMaximum).ToString("0.##")+" por impacto\nArma ×"+a.WeaponCoefficient.ToString("0.##")+" + "+a.WeaponBonus.ToString("0.##")+" (antes de talentos, crítico y defensa)":"Daño base: "+a.Damage.ToString("0.##");}
 }
 }

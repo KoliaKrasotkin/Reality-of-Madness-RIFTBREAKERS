@@ -65,7 +65,7 @@ public sealed class RiftFrontEndView : MonoBehaviour {
   Pages(false,false,true);paladin=paladin&&PaladinPrototypeSettings.Available;int skin=paladin?PaladinPrototypeSettings.Skin:1;
   WarriorSelected.SetActive(!paladin);PaladinSelected.SetActive(paladin);Paladin.gameObject.SetActive(PaladinPrototypeSettings.Available);
   var data=RiftCharacterPresentationAssets.Load;CreationClass.text=paladin?"PALADÍN":"WARRIOR";CreationName.text=RiftSkinIdentity.Name(skin);CreationPortraitName.text=CreationName.text;
-  Lore.text=paladin?PaladinPrototypeSettings.Load.Description:data?data.Lore:"El guerrero de Crelium.";Style.text=paladin?"Cuerpo a cuerpo\n\nReposo, caminar y ataque básico.\n\nSin habilidades ni talentos de clase todavía.":data?data.Style:"Cuerpo a cuerpo · Furia";Availability.text=paladin?"PROTOTIPO JUGABLE":"CLASE DISPONIBLE";
+  Lore.text=paladin?PaladinPrototypeSettings.Load.Description:data?data.Lore:"El guerrero de Crelium.";Style.text=paladin?"Cuerpo a cuerpo\n\nGastá Fe en Golpe Sagrado.\n\nLuz Sanadora cura y Defensa Radiante absorbe daño: vos o un aliado.\n\nRegeneración pasiva y Rezar.\n\nBalance de prueba; sin talentos todavía.":data?data.Style:"Cuerpo a cuerpo · Furia";Availability.text=paladin?"PROTOTIPO JUGABLE":"CLASE DISPONIBLE";
   Portrait(skin,CreationPortrait,CreationPlaceholder);Preview(CreationPreview,skin,ref creationModel,ref creationSkin,false);
  }
  static void Portrait(int skin,Image image,ROM.UI.Gameplay.RiftHUDGraphic placeholder){var data=RiftCharacterPresentationAssets.Load;bool use=skin==1&&data&&data.NertorPortrait;image.gameObject.SetActive(use);placeholder.gameObject.SetActive(!use);if(use)image.sprite=data.NertorPortrait;}

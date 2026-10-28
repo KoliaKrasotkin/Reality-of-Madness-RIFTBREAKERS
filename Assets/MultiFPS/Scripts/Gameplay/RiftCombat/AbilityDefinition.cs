@@ -1,10 +1,14 @@
 using UnityEngine;
 namespace MultiFPS.Gameplay.RiftCombat {
 public enum AbilityShape { Arc, Circle, Self, Ground, Projectile }
-public enum CombatResourceKind { Rage, Mana, Energy }
+public enum CombatResourceKind { Rage, Mana, Energy, Faith }
+public enum PaladinAbilityEffect { None, SacredStrike, HealingLight, RadiantShield, Prayer }
 public enum CombatDamageKind { Physical, Arcane }
 [CreateAssetMenu(menuName="ROM/Combat/Ability")]
 public sealed class AbilityDefinition:ScriptableObject {
+ [Header("Paladin MVP effect; None preserves existing abilities")]
+ public PaladinAbilityEffect PaladinEffect;
+ [Range(0,1),Tooltip("Fraction of recipient maximum health healed or absorbed.")]public float HealthFraction;
  public string Id,DisplayName; [TextArea] public string Description;
  public Sprite Icon; public AbilityShape Shape; public CombatDamageKind DamageKind;
  public float Damage=25,Range=3,Radius=3,Arc=120,Cooldown=1,Cost,ResourceGain,CastDuration=.6f,HitTime=.28f,Recovery=.15f,Stagger,ThreatMultiplier=1;

@@ -13,6 +13,11 @@ namespace MultiFPS.Gameplay
         public static readonly System.Collections.Generic.List<Health> All=new System.Collections.Generic.List<Health>();
         protected override void OnEnable(){base.OnEnable();All.Add(this);}
         protected override void OnDisable(){All.Remove(this);base.OnDisable();}
+        [SyncVar] public float RadiantAbsorption;
+        [SyncVar] public double RadiantExpires;
+        public float RadiantShieldRemaining => CurrentHealth>0&&NetworkTime.time<RadiantExpires?Mathf.Max(0,RadiantAbsorption):0;
+        [Server] public bool ServerGrantRadiantShield(int amount,float seconds){if(CurrentHealth<=0||_dead||amount<=0||seconds<=0||RadiantShieldRemaining>0)return false;RadiantAbsorption=amount;RadiantExpires=NetworkTime.time+seconds;return true;}
+        [Server] public int ServerAbsorbRadiant(int damage){if(damage<=0)return damage;int absorbed=Mathf.Min(damage,Mathf.CeilToInt(RadiantShieldRemaining));RadiantAbsorption=Mathf.Max(0,RadiantShieldRemaining-absorbed);return damage-absorbed;}
         [Header("Health")]
         /// <summary>
         /// character name, used for example for killfeed
@@ -98,7 +103,7 @@ namespace MultiFPS.Gameplay
         bool nativeRegistered;
         public void ReleaseNativeRegistration(){if(nativeRegistered&&GameSync.Singleton){GameSync.Singleton.Healths.ServerDeregisterDNSyncObj(this);nativeRegistered=false;}}
         public void RegisterNativeSpawn(){if(_targetPositionTracker&&isServer&&GameSync.Singleton&&!nativeRegistered){GameSync.Singleton.Healths.ServerRegisterDNSyncObj(this);nativeRegistered=true;}}
-        public void ResetNativeSpawn(){ServerLifeToken=Guid.NewGuid().ToString("N");_dead=_clientDead=false;CombatDamageMultiplier=1;CombatTransfer=false;VulnerableUntil=WeakenedUntil=0;_lastDamageMemory=0;if(_damageMemories!=null)System.Array.Clear(_damageMemories,0,_damageMemories.Length);}
+        public void ResetNativeSpawn(){RadiantAbsorption=0;RadiantExpires=0;ServerLifeToken=Guid.NewGuid().ToString("N");_dead=_clientDead=false;CombatDamageMultiplier=1;CombatTransfer=false;VulnerableUntil=WeakenedUntil=0;_lastDamageMemory=0;if(_damageMemories!=null)System.Array.Clear(_damageMemories,0,_damageMemories.Length);}
         void Start()
         {
             _damageMemories = new DamageMemory[6];
@@ -323,6 +328,7 @@ namespace MultiFPS.Gameplay
 
         public void ServerResurrect()
         {
+            RadiantAbsorption=0;RadiantExpires=0;
             if(_dead||CurrentHealth<=0||string.IsNullOrEmpty(ServerLifeToken))ServerLifeToken=Guid.NewGuid().ToString("N");
             //prepare client for resurrection
             RpcClientResurrect();

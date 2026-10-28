@@ -14,6 +14,7 @@ public static class CombatController {
   if(player&&player.Prototype&&!player.InCrilium&&!victim.TrainingTarget&&native&&native.Definition)damage=MultiFPS.Gameplay.RiftEnemies.RiftEnemyLevelTuning.Load.DamageAgainstPlayer(damage,native.Level,player.Level);
   if(player&&player.Prototype)damage=Mathf.Max(1,Mathf.RoundToInt(damage*(1-player.Specialization.Armor)*(player.BuffUntil>NetworkTime.time?1-player.BuffReduction:1)));
   if(player){damage=Mathf.Max(1,Mathf.RoundToInt(damage*(1-player.ExtraArmor)*(player.DefensiveUntil>NetworkTime.time?.5f:1)));}
+  if(victim)damage=victim.ServerAbsorbRadiant(damage);
   if(player&&damage>0)player.ReportIncomingThreat(attacker);Damaged?.Invoke(victim,attacker,damage);return damage;
  }
  static AbilityController ForDealer(Health health)=>health?AbilityController.For(health):null;

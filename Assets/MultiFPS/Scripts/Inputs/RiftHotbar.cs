@@ -11,7 +11,7 @@ public static class RiftHotbar {
  static string loadedKey;static string[] order;public static bool Dragging;public static event Action Changed;
  static AbilityController Combat {get{var player=ClientFrontend.ClientPlayerInstance;return player?player.GetComponent<AbilityController>():null;}}
  static string CharacterId=>PlayerPrefs.GetString("ROM.Character.ActiveId",UserSettings.UserNickname);
- static string ClassKey {get{var c=Combat;var p=ClientFrontend.ClientPlayerInstance;return c&&c.Prototype?"warrior":p?"class-"+p.ClassId:"default";}}
+ static string ClassKey {get{var c=Combat;var p=ClientFrontend.ClientPlayerInstance;return c&&c.IsPaladin?PaladinPrototypeSettings.ClassKey:c&&c.Prototype?"warrior":p?"class-"+p.ClassId:"default";}}
  public static string PreferenceKey=>Prologue?"Crilium.Session.Hotbar."+ClassKey:"ROM.Hotbar.v2."+CharacterId+"."+ClassKey;
  public static string LegacyPreferenceKey=>"ROM.Hotbar.v1."+CharacterId+"."+ClassKey;
  static string Id(int ability){var c=Combat;var a=c?c.Definition(ability):null;return a&&!string.IsNullOrEmpty(a.Id)?a.Id:"ability-"+ability;}
