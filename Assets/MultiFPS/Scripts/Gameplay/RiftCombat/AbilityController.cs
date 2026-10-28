@@ -37,7 +37,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
  void Awake(){Player=GetComponent<PlayerInstance>();Players.Add(this);}
 
- void OnDestroy(){Players.Remove(this);DisposeGroundAim();}
+ void OnDestroy(){if(isServer&&IsPaladin)StorePaladinFaith();Players.Remove(this);DisposeGroundAim();}
 
  public override void OnStartServer(){for(int i=0;i<8;i++)Ready.Add(0);for(int i=0;i<9;i++)Talents.Add(0);}
 
@@ -65,13 +65,13 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
   if(specialization>=0&&!Species.AllowsSkin(Player.PlayerInfo.CharacterSkinID))return false;
 
-  nextSelect=NetworkTime.time+.5;Prototype=specialization>=0;SpecIndex=Mathf.Max(0,specialization);Resource=0;Cancel();BuffUntil=0;configured=null;
+  nextSelect=NetworkTime.time+.5;Prototype=specialization>=0;SpecIndex=Mathf.Max(0,specialization);if(!IsPaladin)Resource=0;Cancel();BuffUntil=0;configured=null;
 
   if(Actor){if(Prototype)Configure();else Player.ServerConfigureClass();}return true;
 
  }
 
- void Configure(){if(!Actor||!Specialization)return;Resource=0;Actor.Health.ServerSetVitals(ProgressionHealth(Specialization.Health),ProgressionHealth(Specialization.Health));configured=Actor;}
+ void Configure(){if(!Actor||!Specialization)return;if(IsPaladin)ConfigurePaladinFaith();else Resource=0;Actor.Health.ServerSetVitals(ProgressionHealth(Specialization.Health),ProgressionHealth(Specialization.Health));configured=Actor;}
 
  public AbilityDefinition Definition(int slot)=>Class?(slot==0?Class.BasicAttack:slot>0&&slot<=Class.Abilities.Length?Class.Abilities[slot-1]:null):null;
 
@@ -99,6 +99,8 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
   if(now<CastEnd||now<GlobalReady||now<Ready[slot])return RejectAction("Habilidad en recarga");
 
+  if(IsPaladin)return ServerUsePaladin(slot,ability,now);
+
   if(slot==4&&(!hasGroundLeap||!TryGroundLeapLanding(Actor.GetComponent<CharacterController>(),Actor.transform.position,leapDestination,GameManager.environmentLayer,out _)))return RejectAction("Elegí un destino de salto válido");
 
   float cost=AbilityCost(slot,ability);if(Resource<cost)return RejectAction("Furia insuficiente");
@@ -121,7 +123,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
  }
 
- [Server]public void Cancel(){CancelWeaponDraw();hasGroundLeap=false;Casting=-1;pending=null;CastEnd=0;}
+ [Server]public void Cancel(){CancelPaladinCast();CancelWeaponDraw();hasGroundLeap=false;Casting=-1;pending=null;CastEnd=0;}
 
  void Update(){
 
@@ -133,7 +135,9 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
    if(!Species.AllowsSkin(Player.PlayerInfo.CharacterSkinID)){Prototype=false;Cancel();return;}
 
-   if(!Actor||Actor.Health.CurrentHealth<=0){if(Class&&Class.Resource==CombatResourceKind.Rage)Resource=0;TargetNetId=0;Cancel();configured=null;return;}if(TargetNetId!=0&&(!CombatTarget||CombatTarget.CurrentHealth<=0||Vector3.Distance(Actor.transform.position,CombatTarget.transform.position)>110))TargetNetId=0;if(configured!=Actor)Configure();TickRageDecay(Time.deltaTime);
+   if(!Actor||Actor.Health.CurrentHealth<=0){if(Class&&Class.Resource==CombatResourceKind.Rage)Resource=0;TargetNetId=0;Cancel();configured=null;if(IsPaladin)ServerPaladinDeath();return;}if(TargetNetId!=0&&(!CombatTarget||CombatTarget.CurrentHealth<=0||Vector3.Distance(Actor.transform.position,CombatTarget.transform.position)>110))TargetNetId=0;if(configured!=Actor)Configure();TickRageDecay(Time.deltaTime);
+
+   if(IsPaladin){TickPaladinCast();return;}
 
    while(pending&&!applied&&NetworkTime.time>=hitAt){Apply(pending);strikeTicks++;if(Casting==5&&strikeTicks<4)hitAt+=.4;else applied=true;}if(pending&&NetworkTime.time>=CastEnd)Cancel();
 
@@ -143,7 +147,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
  }
 
- public void Request(int slot){if(!isLocalPlayer||slot<1||slot>=Ready.Count)return;if(!IsAbilityLearned(slot)){LocalNotice(AbilityUnavailableReason(slot));return;}if(NetworkTime.time<Ready[slot]||NetworkTime.time<GlobalReady){LocalNotice("Habilidad en recarga");return;}var ability=Definition(slot);if(slot==4){BeginGroundAim();return;}if(ability&&ability.Shape!=AbilityShape.Self)RiftMMOController.Instance?.TryAutoTarget(ability,this);if(ability&&ability.Implemented&&ability.Allows(Specialization.Id)&&ability.Shape!=AbilityShape.Self&&Resource>=AbilityCost(slot,ability))RiftMMOController.Instance?.StartAutoAttack();if(NetworkTime.time<CastEnd&&CastEnd-NetworkTime.time<=.18){queued=slot;queueUntil=Time.unscaledTime+.18f;}else CmdUseAbility(ability.Id);}
+ public void Request(int slot){if(!isLocalPlayer||slot<1||slot>=Ready.Count)return;if(!IsAbilityLearned(slot)){LocalNotice(AbilityUnavailableReason(slot));return;}if(NetworkTime.time<Ready[slot]||NetworkTime.time<GlobalReady){LocalNotice("Habilidad en recarga");return;}var ability=Definition(slot);if(IsPaladin){RequestPaladin(slot,ability);return;}if(slot==4){BeginGroundAim();return;}if(ability&&ability.Shape!=AbilityShape.Self)RiftMMOController.Instance?.TryAutoTarget(ability,this);if(ability&&ability.Implemented&&ability.Allows(Specialization.Id)&&ability.Shape!=AbilityShape.Self&&Resource>=AbilityCost(slot,ability))RiftMMOController.Instance?.StartAutoAttack();if(NetworkTime.time<CastEnd&&CastEnd-NetworkTime.time<=.18){queued=slot;queueUntil=Time.unscaledTime+.18f;}else CmdUseAbility(ability.Id);}
 
 
  [Server]void TickRageDecay(float elapsed){if(!Class||Class.Resource!=CombatResourceKind.Rage)return;Resource=Mathf.Clamp(Resource,0,Class.MaximumResource);if(Casting>=0||autoPending||NetworkTime.time-Player.LastCombatAt<Class.RageDecayDelay)return;Resource=Mathf.Max(0,Resource-Mathf.Max(0,Class.RageDecayPerSecond)*Mathf.Max(0,elapsed));}
@@ -250,9 +254,8 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
  }
 
- [ClientRpc]void RpcPresentation(int slot,Vector3 origin,Vector3 forward){var a=Definition(slot);if(!a)return;if(a.CastVfx)CombatVfxPool.Spawn(a.CastVfx,origin,Quaternion.LookRotation(forward),3);if(Actor&&a.Animation){var native=Actor.GetComponent<WarriorAvatar>();if(native){native.PresentAttack(slot,a);return;}var pose=Actor.CharacterParent?Actor.CharacterParent.GetComponentInChildren<IDSGameplayPose>(true):null;if(pose){var motion=pose.gameObject.GetComponent<CombatMotion>();if(!motion)motion=pose.gameObject.AddComponent<CombatMotion>();motion.Play(pose.Target,a.Animation,a.CastDuration);}}}
+ [ClientRpc]void RpcPresentation(int slot,Vector3 origin,Vector3 forward){var a=Definition(slot);if(!a)return;if(a.CastVfx)CombatVfxPool.Spawn(a.CastVfx,origin,Quaternion.LookRotation(forward),3);if(IsPaladin){if(Actor&&a.PaladinEffect==PaladinAbilityEffect.SacredStrike)Actor.GetComponent<PaladinPrototypePresentation>()?.Attack();return;}if(Actor&&a.Animation){var native=Actor.GetComponent<WarriorAvatar>();if(native){native.PresentAttack(slot,a);return;}var pose=Actor.CharacterParent?Actor.CharacterParent.GetComponentInChildren<IDSGameplayPose>(true):null;if(pose){var motion=pose.gameObject.GetComponent<CombatMotion>();if(!motion)motion=pose.gameObject.AddComponent<CombatMotion>();motion.Play(pose.Target,a.Animation,a.CastDuration);}}}
 
  [ClientRpc]void RpcImpact(int slot,Vector3 origin,Vector3 forward){var a=Definition(slot);if(a&&a.ImpactVfx)CombatVfxPool.Spawn(a.ImpactVfx,origin+Vector3.up*.1f,Quaternion.LookRotation(forward),3);}
 
 }}
-

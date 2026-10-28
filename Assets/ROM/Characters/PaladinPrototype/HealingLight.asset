@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1775dcc59f7c8459cb90170d5c9b36, type: 3}
+  m_Name: "HealingLight"
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.AbilityDefinition
+  Id: "aldren-healing-light"
+  DisplayName: "Luz Sanadora"
+  Description: "Aliado vivo seleccionado o vos sin objetivo. No admite enemigos; alcance y visión validados por servidor."
+  Icon: {fileID: 21300000, guid: 51996239ed47aa24f8a6e7919642923d, type: 3}
+  Shape: 2
+  DamageKind: 0
+  Damage: 0
+  Range: 15
+  Radius: 15
+  Arc: 100
+  Cooldown: 6
+  Cost: 30
+  ResourceGain: 0
+  CastDuration: 0.8
+  HitTime: 0.32
+  Recovery: 0.15
+  Stagger: 0
+  ThreatMultiplier: 1
+  UsesWeaponDamage: 0
+  WeaponCoefficient: 1
+  WeaponBonus: 0
+  MaximumTargets: 1
+  RequiresPrimaryTarget: 0
+  Implemented: 1
+  Interruptible: 1
+  AllowsMovement: 1
+  Animation: {fileID: 0}
+  CastVfx: {fileID: 0}
+  ImpactVfx: {fileID: 0}
+  Audio: {fileID: 0}
+  Color: {r: 0.7, g: 0.2, b: 1, a: 1}
+  BuffDuration: 0
+  DamageReduction: 0
+  OffensiveBonus: 0
+  AllowedSpecializations: []
+  PaladinEffect: 2
+  HealthFraction: 0.25
