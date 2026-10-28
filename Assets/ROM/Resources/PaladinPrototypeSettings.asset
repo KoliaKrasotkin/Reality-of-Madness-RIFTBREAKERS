@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: PaladinPrototypeSettings
   m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.PaladinPrototypeSettings
   CharacterName: Aldren
-  Description: "Prototipo jugable: locomoci\xF3n y un ataque cuerpo a cuerpo. El
-    kit de apoyo y los talentos siguen en dise\xF1o."
+  Description: "Aldren, Paladín de Zhion. Usá Fe para atacar, curar y proteger. Regenerá Fe con el tiempo o recuperala con Rezar. Balance provisional."
   PlayerPrefab: {fileID: 6891463994730716289, guid: 6952f270712cf814a8bd8fed21c82f07,
     type: 3}
   VisualPrefab: {fileID: 1968318062744495272, guid: 515d8678b8677ba42b2807cd129467a6,
@@ -31,3 +30,6 @@ MonoBehaviour:
     ResourceGain: 0
     CriticalChance: 0.05
     CriticalMultiplier: 2
+
+  InitialFaith: 100
+  FaithRegenerationPerSecond: 5
