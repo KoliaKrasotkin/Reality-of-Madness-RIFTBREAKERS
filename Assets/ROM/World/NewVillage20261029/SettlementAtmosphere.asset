@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f14127d67ad6e4246b6386b7f645a07b, type: 3}
+  m_Name: SettlementAtmosphere
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Rendering.RiftAtmospherePilotSettings
+  SceneName: map_rom_horde
+  Radius: 170
+  BaseExposure: 0.65
+  SkyExposure: 0.58
+  AmbientIntensity: 1.85
+  AmbientSky: {r: 0.48, g: 0.55, b: 0.82, a: 1}
+  AmbientHorizon: {r: 0.36, g: 0.4, b: 0.65, a: 1}
+  AmbientGround: {r: 0.23, g: 0.27, b: 0.43, a: 1}
+  KeyIntensity: 1.3
+  KeyColor: {r: 0.5, g: 0.59, b: 1, a: 1}
+  ShadowStrength: 0.5
+  FillIntensity: 0.48
+  FillColor: {r: 0.63, g: 0.69, b: 0.9, a: 1}
+  FogStart: 35
+  FogEnd: 210
+  FogColor: {r: 0.15, g: 0.14, b: 0.27, a: 1}
+  CrystalEnergy: {r: 0.9, g: 0.14, b: 2.4, a: 1}
+  CrystalEdge: {r: 0.36, g: 0.1, b: 0.75, a: 1}
+  CrystalShader: {fileID: 4800000, guid: b33d99087afbb8d48a4aca49b9719767, type: 3}
+  SpillColor: {r: 0.62, g: 0.26, b: 1, a: 1}
+  SpillIntensity: 14
+  SpillRange: 27
+  BloomIntensity: 0.18
+  BloomThreshold: 1.25
+  Contrast: 6
+  Saturation: 2
+  Vignette: 0.09
+  ShadowTone: {r: 0.46, g: 0.47, b: 0.54, a: 1}
+  HighlightTone: {r: 0.53, g: 0.51, b: 0.48, a: 1}
+  MaterialRules:
+  - Source: {fileID: 2100000, guid: 6bcda5e851ff5694b974c1dce49b8f7a, type: 2}
+    Metallic: 0
+    Smoothness: 0.12
+  - Source: {fileID: 2100000, guid: 3c1ab8c0202bf7b4a9cb35ba28648eb6, type: 2}
+    Metallic: 0
+    Smoothness: 0.18

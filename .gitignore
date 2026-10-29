@@ -116,3 +116,30 @@ InitTestScene*.unity*
 # Editor/IDE local settings (no se comparten)
 /.vscode/
 /.idea/
+
+# Local QA sessions and generated recovery copies (preserved on the author workstation).
+/.death-tmp
+/Assets/_Recovery/
+/Assets/_Recovery.meta
+/Assets/ROM/Editor/AldrenGameplayReview.cs*
+/Assets/ROM/Editor/AldrenLegsReview.cs*
+/Assets/ROM/Editor/NewVillageAdaptation.cs*
+/Assets/ROM/Editor/NewVillageCorrections.cs*
+/Assets/ROM/Editor/NewVillageDoorMeshes.cs*
+/Assets/ROM/Editor/NewVillageFinalEntries.cs*
+/Assets/ROM/Editor/NewVillageFinalView.cs*
+/Assets/ROM/Editor/NewVillageGrounding.cs*
+/Assets/ROM/Editor/NewVillageHouseApplication.cs*
+/Assets/ROM/Editor/NewVillageInteriors.cs*
+/Assets/ROM/Editor/NewVillagePlayerRouting.cs*
+/Assets/ROM/Editor/NewVillageVisualQA.cs*
+/Assets/ROM/Editor/RefugeConceptDetailCatalog.cs*
+/Assets/ROM/Editor/RefugeConceptModules.cs*
+/Assets/ROM/Editor/RefugeConceptPilotBuilder.cs*
+/Assets/ROM/Editor/RefugeConceptStreets.cs*
+/Assets/ROM/Editor/RefugeRuralCatalog.cs*
+/Assets/ROM/Editor/RefugeTownPilotBuilder.cs*
+/Assets/ROM/Editor/RefugeTownRuralBuilder.cs*
+/Assets/ROM/Editor/RiftArtDirectionReview.cs*
+/Assets/ROM/Editor/RiftConceptReview.cs*
+/Assets/ROM/Editor/RiftRefugeSceneIntegration.cs*
