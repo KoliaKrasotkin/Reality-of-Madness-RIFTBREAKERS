@@ -1,0 +1,733 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d577877ea4f69444e904df7ce11a77fe, type: 3}
+  m_Name: RefugeTownLayout
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Rendering.RefugeTownPilotSettings
+  PlazaRadius: 8.5
+  RingRadius: 22
+  RingWidth: 5
+  RoadWidth: 4.2
+  OuterRoad: 63
+  PavingTint: {r: 0.76, g: 0.68, b: 0.52, a: 1}
+  CanopyTint: {r: 0.43, g: 0.22, b: 0.12, a: 1}
+  Pieces:
+  - kind: RuralGround
+    asset: 
+    label: Suelo - centro en cristal existente
+    position: {x: 9, y: 0, z: 6.5}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Cabin
+    asset: 
+    label: Casa comunal
+    position: {x: 9, y: 0, z: 20}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 9
+    depth: 7
+  - kind: Cabin
+    asset: 
+    label: Casa de exploradores
+    position: {x: -8, y: 0, z: 17}
+    height: 1
+    maxWidth: 8
+    yaw: -60
+    width: 7.5
+    depth: 6
+  - kind: Cabin
+    asset: 
+    label: Casa de descanso
+    position: {x: 19, y: 0, z: 11}
+    height: 1
+    maxWidth: 8
+    yaw: 60
+    width: 8
+    depth: 6.5
+  - kind: Cabin
+    asset: 
+    label: Casa de viajeros
+    position: {x: -2, y: 0, z: -12}
+    height: 1
+    maxWidth: 8
+    yaw: -120
+    width: 7.5
+    depth: 6
+  - kind: Cabin
+    asset: 
+    label: Casa de provisiones
+    position: {x: 19, y: 0, z: -7}
+    height: 1
+    maxWidth: 8
+    yaw: 120
+    width: 8
+    depth: 6.5
+  - kind: Asset
+    asset: Assets/LeartesStudios/PirateTavern/Art/Prefabs/SM_TradingTent_B.prefab
+    label: Toldo rustico 1
+    position: {x: -16, y: 0, z: -26}
+    height: 3
+    maxWidth: 5.5
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Asset
+    asset: Assets/LeartesStudios/PirateTavern/Art/Prefabs/SM_TradingTent_B.prefab
+    label: Toldo rustico 2
+    position: {x: 16, y: 0, z: -26}
+    height: 3
+    maxWidth: 5.5
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Asset
+    asset: Assets/LeartesStudios/PirateTavern/Art/Prefabs/SM_TradingTent_B.prefab
+    label: Toldo rustico 3
+    position: {x: -18, y: 0, z: -6}
+    height: 3
+    maxWidth: 5.5
+    yaw: 90
+    width: 5
+    depth: 4
+  - kind: Lamp
+    asset: 
+    label: Farol ambar 1
+    position: {x: 5, y: 0, z: 14}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Lamp
+    asset: 
+    label: Farol ambar 2
+    position: {x: 13, y: 0, z: 14}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Lamp
+    asset: 
+    label: Farol ambar 3
+    position: {x: -2, y: 0, z: 12}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Lamp
+    asset: 
+    label: Farol ambar 4
+    position: {x: 14, y: 0, z: 5}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Lamp
+    asset: 
+    label: Farol ambar 5
+    position: {x: 3, y: 0, z: -8}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Lamp
+    asset: 
+    label: Farol ambar 6
+    position: {x: 14, y: 0, z: -2}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Lamp
+    asset: 
+    label: Farol ambar 7
+    position: {x: 3, y: 0, z: 3}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Lamp
+    asset: 
+    label: Farol ambar 8
+    position: {x: 15, y: 0, z: 3}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Lamp
+    asset: 
+    label: Farol ambar 9
+    position: {x: -10, y: 0, z: -22}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Lamp
+    asset: 
+    label: Farol ambar 10
+    position: {x: 11, y: 0, z: -22}
+    height: 1
+    maxWidth: 8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Palisade
+    asset: 
+    label: Empalizada 1
+    position: {x: 6.2428904, y: 0, z: 31.385128}
+    height: 2.7
+    maxWidth: 8
+    yaw: 11.25
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 2
+    position: {x: 12.24587, y: 0, z: 29.564144}
+    height: 2.7
+    maxWidth: 8
+    yaw: 22.5
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 3
+    position: {x: 17.778248, y: 0, z: 26.607027}
+    height: 2.7
+    maxWidth: 8
+    yaw: 33.75
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 5
+    position: {x: 26.607027, y: 0, z: 17.778248}
+    height: 2.7
+    maxWidth: 8
+    yaw: 56.25
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 6
+    position: {x: 29.564144, y: 0, z: 12.24587}
+    height: 2.7
+    maxWidth: 8
+    yaw: 67.5
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 7
+    position: {x: 31.385128, y: 0, z: 6.2428904}
+    height: 2.7
+    maxWidth: 8
+    yaw: 78.75
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 9
+    position: {x: 31.385128, y: 0, z: -6.2428904}
+    height: 2.7
+    maxWidth: 8
+    yaw: 101.25
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 10
+    position: {x: 29.564144, y: 0, z: -12.24587}
+    height: 2.7
+    maxWidth: 8
+    yaw: 112.5
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 11
+    position: {x: 26.607027, y: 0, z: -17.778248}
+    height: 2.7
+    maxWidth: 8
+    yaw: 123.75
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 13
+    position: {x: 17.778248, y: 0, z: -26.607027}
+    height: 2.7
+    maxWidth: 8
+    yaw: 146.25
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 14
+    position: {x: 12.24587, y: 0, z: -29.564144}
+    height: 2.7
+    maxWidth: 8
+    yaw: 157.5
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 15
+    position: {x: 6.2428904, y: 0, z: -31.385128}
+    height: 2.7
+    maxWidth: 8
+    yaw: 168.75
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 17
+    position: {x: -6.2428904, y: 0, z: -31.385128}
+    height: 2.7
+    maxWidth: 8
+    yaw: 191.25
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 18
+    position: {x: -12.24587, y: 0, z: -29.564144}
+    height: 2.7
+    maxWidth: 8
+    yaw: 202.5
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 19
+    position: {x: -17.778248, y: 0, z: -26.607027}
+    height: 2.7
+    maxWidth: 8
+    yaw: 213.75
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 21
+    position: {x: -26.607027, y: 0, z: -17.778248}
+    height: 2.7
+    maxWidth: 8
+    yaw: 236.25
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 22
+    position: {x: -29.564144, y: 0, z: -12.24587}
+    height: 2.7
+    maxWidth: 8
+    yaw: 247.5
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 23
+    position: {x: -31.385128, y: 0, z: -6.2428904}
+    height: 2.7
+    maxWidth: 8
+    yaw: 258.75
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 25
+    position: {x: -31.385128, y: 0, z: 6.2428904}
+    height: 2.7
+    maxWidth: 8
+    yaw: 281.25
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 26
+    position: {x: -29.564144, y: 0, z: 12.24587}
+    height: 2.7
+    maxWidth: 8
+    yaw: 292.5
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 27
+    position: {x: -26.607027, y: 0, z: 17.778248}
+    height: 2.7
+    maxWidth: 8
+    yaw: 303.75
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 29
+    position: {x: -17.778248, y: 0, z: 26.607027}
+    height: 2.7
+    maxWidth: 8
+    yaw: 326.25
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 30
+    position: {x: -12.24587, y: 0, z: 29.564144}
+    height: 2.7
+    maxWidth: 8
+    yaw: 337.5
+    width: 5.75
+    depth: 0.3
+  - kind: Palisade
+    asset: 
+    label: Empalizada 31
+    position: {x: -6.2428904, y: 0, z: 31.385128}
+    height: 2.7
+    maxWidth: 8
+    yaw: 348.75
+    width: 5.75
+    depth: 0.3
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 1
+    position: {x: -15, y: 0, z: 23}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 2
+    position: {x: -16, y: 0, z: 26}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 41
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 3
+    position: {x: 31, y: 0, z: 23}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 82
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 4
+    position: {x: 34, y: 0, z: 20}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 123
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 5
+    position: {x: -14, y: 0, z: -16}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 164
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 6
+    position: {x: -16, y: 0, z: -19}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 205
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 7
+    position: {x: 31, y: 0, z: -18}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 246
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 8
+    position: {x: 34, y: 0, z: -16}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 287
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 9
+    position: {x: -24, y: 0, z: 5}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 328
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 10
+    position: {x: -25, y: 0, z: 8}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 369
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 11
+    position: {x: 23, y: 0, z: 32}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 410
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_01.prefab
+    label: Jardin bajo 12
+    position: {x: 26, y: 0, z: 31}
+    height: 0.8
+    maxWidth: 1.7
+    yaw: 451
+    width: 5
+    depth: 4
+  - kind: Garden
+    asset: 
+    label: Huerta del taller
+    position: {x: -18, y: 0, z: 6}
+    height: 1
+    maxWidth: 8
+    yaw: 8
+    width: 4
+    depth: 5
+  - kind: Garden
+    asset: 
+    label: Huerta de exploradores
+    position: {x: -14, y: 0, z: 24}
+    height: 1
+    maxWidth: 8
+    yaw: -12
+    width: 4
+    depth: 4
+  - kind: Garden
+    asset: 
+    label: Huerta de provisiones
+    position: {x: 21, y: 0, z: -18}
+    height: 1
+    maxWidth: 8
+    yaw: 14
+    width: 4
+    depth: 5
+  - kind: RefugeGate
+    asset: 
+    label: Entrada principal sur
+    position: {x: 0, y: 0, z: -32}
+    height: 4.2
+    maxWidth: 8
+    yaw: 0
+    width: 8
+    depth: 1
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Tree_01.prefab
+    label: Arbol perimetral 1
+    position: {x: 14.427, y: 0, z: 34.83}
+    height: 8
+    maxWidth: 7
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Tree_02.prefab
+    label: Arbol perimetral 2
+    position: {x: 36.031, y: 0, z: 14.925}
+    height: 8.7
+    maxWidth: 7
+    yaw: 137
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Tree_01.prefab
+    label: Arbol perimetral 3
+    position: {x: 37.232, y: 0, z: -15.422}
+    height: 9.4
+    maxWidth: 7
+    yaw: 274
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Tree_02.prefab
+    label: Arbol perimetral 4
+    position: {x: 14.427, y: 0, z: -34.83}
+    height: 8
+    maxWidth: 7
+    yaw: 51
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Tree_01.prefab
+    label: Arbol perimetral 5
+    position: {x: -14.925, y: 0, z: -36.031}
+    height: 8.7
+    maxWidth: 7
+    yaw: 188
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Tree_02.prefab
+    label: Arbol perimetral 6
+    position: {x: -37.232, y: 0, z: -15.422}
+    height: 9.4
+    maxWidth: 7
+    yaw: 325
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Tree_01.prefab
+    label: Arbol perimetral 7
+    position: {x: -34.83, y: 0, z: 14.427}
+    height: 8
+    maxWidth: 7
+    yaw: 102
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Tree_02.prefab
+    label: Arbol perimetral 8
+    position: {x: -14.925, y: 0, z: 36.031}
+    height: 8.7
+    maxWidth: 7
+    yaw: 239
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_02.prefab
+    label: Arbusto de borde 1
+    position: {x: -19, y: 0, z: 19}
+    height: 0.7
+    maxWidth: 1.8
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_03.prefab
+    label: Arbusto de borde 2
+    position: {x: 24, y: 0, z: 18}
+    height: 0.82
+    maxWidth: 1.8
+    yaw: 79
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_02.prefab
+    label: Arbusto de borde 3
+    position: {x: 23, y: 0, z: -13}
+    height: 0.94
+    maxWidth: 1.8
+    yaw: 158
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_03.prefab
+    label: Arbusto de borde 4
+    position: {x: -10, y: 0, z: -17}
+    height: 0.7
+    maxWidth: 1.8
+    yaw: 237
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_02.prefab
+    label: Arbusto de borde 5
+    position: {x: -23, y: 0, z: 11}
+    height: 0.82
+    maxWidth: 1.8
+    yaw: 316
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Bush_03.prefab
+    label: Arbusto de borde 6
+    position: {x: 15, y: 0, z: 27}
+    height: 0.94
+    maxWidth: 1.8
+    yaw: 35
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Grass_03.prefab
+    label: Hierbas discretas 1
+    position: {x: -21, y: 0, z: 21}
+    height: 0.4
+    maxWidth: 1.4
+    yaw: 0
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Grass_05.prefab
+    label: Hierbas discretas 2
+    position: {x: 26, y: 0, z: 19}
+    height: 0.46
+    maxWidth: 1.4
+    yaw: 103
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Grass_03.prefab
+    label: Hierbas discretas 3
+    position: {x: 25, y: 0, z: -15}
+    height: 0.52
+    maxWidth: 1.4
+    yaw: 206
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Grass_05.prefab
+    label: Hierbas discretas 4
+    position: {x: -12, y: 0, z: -18}
+    height: 0.4
+    maxWidth: 1.4
+    yaw: 309
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Grass_03.prefab
+    label: Hierbas discretas 5
+    position: {x: -25, y: 0, z: 12}
+    height: 0.46
+    maxWidth: 1.4
+    yaw: 52
+    width: 5
+    depth: 4
+  - kind: Foliage
+    asset: Assets/Standard Assets/Eternal Temple/Prefabs/Flora/Grass_05.prefab
+    label: Hierbas discretas 6
+    position: {x: 18, y: 0, z: 28}
+    height: 0.52
+    maxWidth: 1.4
+    yaw: 155
+    width: 5
+    depth: 4
