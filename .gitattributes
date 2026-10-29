@@ -158,3 +158,11 @@ Assets/ROM/Levels/FracturedForest/NavMesh*.asset binary
 Assets/ROM/Levels/SunTempleURP/NavMesh*.asset binary
 # Git shell hooks must retain LF endings on Windows too.
 .githooks/* text eol=lf
+
+# Large serialized mesh data: retain complete content in LFS, without YAML merging.
+Assets/ROM/World/NewVillage20261029/Interiors/*.asset filter=lfs diff=lfs merge=binary -text !eol
+Assets/3DForge/Blueprints/BPVIK_VEK/ThunderHammer.asset filter=lfs diff=lfs merge=binary -text !eol
+"Assets/Viking Village/Animations/build_crane_01.anim" filter=lfs diff=lfs merge=binary -text !eol
+# Artist-supplied PNG references retain their original extensionless filenames.
+Assets/ROM/fotoperfilnertor lfs
+"Assets/ROM/skybox crelium" lfs
