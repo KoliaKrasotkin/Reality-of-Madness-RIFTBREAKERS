@@ -604,6 +604,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1366070893162448126}
   - component: {fileID: 2510674231521563759}
+  - component: {fileID: 3999895039416996091}
   m_Layer: 0
   m_Name: Paladin trial skinned mesh - fused base limits
   m_TagString: Untagged
@@ -750,6 +751,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00011783838, y: 0.88838696, z: 0.030939013}
     m_Extent: {x: 0.5650229, y: 1.0116128, z: 0.3519583}
   m_DirtyAABB: 0
+--- !u!114 &3999895039416996091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 512893178338350216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a74f4e8332b70c94ab17659b9422957c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Presentation.AldrenProvisionalCloth
+  Target: {fileID: 2510674231521563759}
+  OriginalMesh: {fileID: 4295602868547328406, guid: c12bc9a8795b4224683ff2a607144af1,
+    type: 3}
+  Data: {fileID: 11400000, guid: 32381c9e122491842b1655baf767e61f, type: 2}
+  UseProvisionalVisual: 1
+  UseCloth: 1
 --- !u!1 &546428491243242495
 GameObject:
   m_ObjectHideFlags: 0
@@ -2758,6 +2777,7 @@ GameObject:
   - component: {fileID: 176612310816267837}
   - component: {fileID: 606184460532778328}
   - component: {fileID: 2864631604667973452}
+  - component: {fileID: 8909174196300923976}
   m_Layer: 0
   m_Name: Paladin actual skinned model
   m_TagString: Untagged
@@ -2878,6 +2898,23 @@ MonoBehaviour:
   - Joint: {fileID: 1424011308310436595}
     LocalRotation: {x: -0.04361838, y: -0.00000006093617, z: 0.00000017865428, w: 0.9990483}
   GripWeight: 1
+--- !u!114 &8909174196300923976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3270903998396893634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cfab15ea89f15f4783e7683a6d2a277, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.Presentation.AldrenAccuRigProvisional
+  UseAccuRig: 1
+  AccuRigModel: {fileID: 919132149155446097, guid: 74ee5623b27856446933a36fe3f492eb,
+    type: 3}
+  BodyMaterial: {fileID: 2100000, guid: 58e1d92f2e0324944a6a212330e468ae, type: 2}
+  HandMaterial: {fileID: 2100000, guid: 3c1ab8c0202bf7b4a9cb35ba28648eb6, type: 2}
 --- !u!1 &3365085815633021313
 GameObject:
   m_ObjectHideFlags: 0
