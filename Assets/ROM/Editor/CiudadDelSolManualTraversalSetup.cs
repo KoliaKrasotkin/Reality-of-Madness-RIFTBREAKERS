@@ -25,6 +25,9 @@ namespace ROM.EditorTools
         const string Warrior = "Assets/ROM/Characters/Warrior/WarriorPlayer.prefab";
         const string Key = "ROM.CiudadDelSol.ManualQA.";
         const string RuntimeName = "TEMP_Nucleo_Manual_Warrior_NO_GUARDAR";
+        const string ApprovedPrefabGuid = "450b132d8394ca54f86ff67fca648d8a";
+        const string ApprovedPrefabHash = "5C0B4E4E8D0888EACD18A677AAC1CEB1425DEAAC49D8E34717A87E5DCC435154";
+        const string ApprovedSourceHash = "0E96A4D334A7A6FECCF75AF0124D8DDF5F8641B57620920264EFC20852314506";
         static Scene runtime;
         static GameObject environment;
         static Vector3 offset, returnPosition;
@@ -50,10 +53,69 @@ namespace ROM.EditorTools
             t.GetInstanceID() + "|" + t.gameObject.activeSelf + "|" + t.localToWorldMatrix.ToString("F6") + "|" +
             string.Join(",", t.GetComponents<Collider>().Select(c => c.enabled + ":" + c.isTrigger))));
 
+        static string SavedGuidKey => Key + Application.dataPath + ".PrefabGUID";
+        static string ExistingPath()
+        {
+            var session = SessionState.GetString(Key + "Prefab", "");
+            if (!string.IsNullOrEmpty(session) && File.Exists(session)) return session;
+            var saved = AssetDatabase.GUIDToAssetPath(EditorPrefs.GetString(SavedGuidKey, ApprovedPrefabGuid));
+            return File.Exists(saved) ? saved : AssetDatabase.GUIDToAssetPath(ApprovedPrefabGuid);
+        }
+        static bool ActiveInPrefab(Transform t, Transform root)
+        {
+            for (; t; t = t.parent) { if (!t.gameObject.activeSelf) return false; if (t == root) return true; }
+            return false;
+        }
+        static GameObject ValidateExisting(string path)
+        {
+            Require(!EditorApplication.isCompiling, "Esperar a que termine la compilacion.");
+            Require(!string.IsNullOrEmpty(path) && path.StartsWith("Assets/", StringComparison.Ordinal) && path.EndsWith(".prefab", StringComparison.OrdinalIgnoreCase) && File.Exists(path), "Seleccionar el Environment.prefab existente dentro de Assets.");
+            Require(Hash(path).Replace("-", "") == ApprovedPrefabHash, "El archivo no coincide con la copia aprobada. No se regenera ni se acepta otra geometria automaticamente.");
+            Require(Hash(Original).Replace("-", "") == ApprovedSourceHash, "La escena original difiere del origen aprobado; revisar antes de recuperar.");
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            Require(prefab && EditorUtility.IsPersistent(prefab) && prefab.name == "Environment", "Prefab de ensayo no reconocido.");
+            var generated = prefab.transform.Find("Nucleo_Monumental_Conjunto_TEMPORAL");
+            Require(prefab.transform.childCount == 2 && prefab.transform.Find("Contexto_UNICO_por_identidad") && generated && generated.childCount == 3, "Jerarquia conjunta incompleta.");
+            foreach (var name in new[]{"01 - Centro Oriental aprobado", "02 - Sureste arcadas aprobadas", "03 - El Sol Invertido V3"})
+                Require(generated.Find(name), "Falta sector aprobado: " + name);
+            Require(generated.GetComponentsInChildren<Renderer>(true).Count(r => ActiveInPrefab(r.transform, prefab.transform)) == 1979 && generated.GetComponentsInChildren<Collider>(true).Count(c => ActiveInPrefab(c.transform, prefab.transform)) == 1965, "Conteos activos distintos de los aprobados.");
+            int meshes = 0, colliders = 0;
+            foreach (var t in prefab.GetComponentsInChildren<Transform>(true))
+            {
+                Require(t.GetComponents<Component>().All(c => c), "Referencia a componente ausente: " + t.name);
+                Require(t.GetComponents<MonoBehaviour>().Length == 0, "El entorno contiene scripts no previstos: " + t.name);
+                foreach (var f in t.GetComponents<MeshFilter>()) { Require(f.sharedMesh && AssetDatabase.Contains(f.sharedMesh) && f.sharedMesh.vertexCount > 0, "Malla ausente o no persistente: " + t.name); meshes++; }
+                foreach (var r in t.GetComponents<Renderer>())
+                    Require(r is MeshRenderer && t.GetComponent<MeshFilter>() && r.sharedMaterials.Length > 0 && r.sharedMaterials.All(m => m && AssetDatabase.Contains(m) && m.shader), "Renderer/material/shader incompleto: " + t.name);
+                foreach (var c in t.GetComponents<Collider>())
+                {
+                    if (c is MeshCollider mc) Require(mc.sharedMesh && AssetDatabase.Contains(mc.sharedMesh) && mc.sharedMesh.vertexCount > 0, "MeshCollider sin malla persistente: " + t.name);
+                    colliders++;
+                }
+                foreach (var lod in t.GetComponents<LODGroup>())
+                    Require(lod.GetLODs().All(l => l.renderers.All(r => r && r.transform.IsChildOf(prefab.transform))), "LOD con referencias ausentes o externas: " + t.name);
+            }
+            SessionState.SetString(Key + "Prefab", path); SessionState.SetString(Key + "SourceHash", Hash(Original));
+            EditorPrefs.SetString(SavedGuidKey, AssetDatabase.AssetPathToGUID(path));
+            Debug.Log("NUCLEO_MANUAL_RECUPERADO_OK: " + path + "; huella SHA256 aprobada;3 sectores;1979 renderers/1965 colliders activos del nucleo; mallas verificadas=" + meshes + "; colliders totales verificados=" + colliders + ". Solo validacion de copia existente; sin generar ni guardar escenas.");
+            return prefab;
+        }
+        [MenuItem(Menu + "0. Recuperar y validar Environment existente")]
+        public static void Recover() => Run(() =>
+        {
+            Require(!EditorApplication.isPlayingOrWillChangePlaymode, "Recuperar fuera de Play.");
+            var selected = AssetDatabase.GetAssetPath(Selection.activeObject);
+            var path = string.IsNullOrEmpty(selected) || !selected.EndsWith(".prefab", StringComparison.OrdinalIgnoreCase) ? ExistingPath() : selected;
+            Require(!string.IsNullOrEmpty(path), "Seleccionar Environment.prefab en Project y ejecutar otra vez esta opcion.");
+            ValidateExisting(path);
+        });
+
         [MenuItem(Menu + "1. Conservar copia jugable desde preview aprobada")]
         public static void Prepare() => Run(() =>
         {
             Require(!EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isCompiling, "Preparar fuera de Play y de compilacion.");
+            var existing = ExistingPath();
+            if (!string.IsNullOrEmpty(existing) && File.Exists(existing)) { ValidateExisting(existing); return; }
             Require(StageUtility.GetCurrentStage().GetType().FullName.Contains("CiudadDelSolNucleoConjuntoPreviewGenerator+JointStage"), "Mantener abierta la copia conjunta aprobada.");
             // Locate native scene objects, independent of managed builder references after a domain reload.
             var candidates = Resources.FindObjectsOfTypeAll<Transform>().Where(t => !t.parent && t.name == "Nucleo_Monumental_Conjunto_TEMPORAL" && EditorSceneManager.IsPreviewScene(t.gameObject.scene)).ToArray();
@@ -124,8 +186,7 @@ namespace ROM.EditorTools
         {
             var actor = HostWarrior();
             Require(!runtime.IsValid() && !SceneManager.GetSceneByName(RuntimeName).IsValid(), "El ensayo ya esta cargado; no se duplica.");
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(SessionState.GetString(Key + "Prefab", ""));
-            Require(prefab, "Primero conservar la copia desde la previsualizacion (opcion1).");
+            var prefab = ValidateExisting(ExistingPath());
             runtimeSourceHash = SessionState.GetString(Key + "SourceHash", ""); OriginalIntact();
             var active = SceneManager.GetActiveScene();
             var obstacles = Object.FindObjectsByType<Collider>(FindObjectsSortMode.None).Where(c => c.enabled && c.gameObject.activeInHierarchy && !EditorSceneManager.IsPreviewScene(c.gameObject.scene)).ToArray();

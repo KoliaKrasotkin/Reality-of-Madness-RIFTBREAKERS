@@ -1,0 +1,572 @@
+{
+    "sourcePrefab": "Assets/ROM/QA/Temporary/NucleoManual_e6866f9198a24b6aa6c5b212726fabe7/Environment.prefab",
+    "sourceSHA256": "5C0B4E4E8D0888EACD18A677AAC1CEB1425DEAAC49D8E34717A87E5DCC435154",
+    "coordinates": "Design coordinates, no QA runtime offset. North=+Z, east=+X. Surfaces from upward mesh triangles; obstacles sliced 1m above each floor. Static cartography, not runtime navigation certification.",
+    "center": {
+        "x": 81.0,
+        "y": 30.0
+    },
+    "worldSize": {
+        "x": 234.0,
+        "y": 180.0
+    },
+    "width": 2048,
+    "height": 1576,
+    "planes": [
+        {
+            "id": "01_Superior_Y16",
+            "texture": "Assets/ROM/Cartography/CiudadDelSol/Resources/CiudadDelSolNucleo/Revision_20261030_214538/01_Superior_Y16.png",
+            "atlas": "Assets/ROM/Cartography/CiudadDelSol/Resources/CiudadDelSolNucleo/Revision_20261030_214538/CiudadDelSol_01_Superior_Y16_Atlas.asset",
+            "heights": [
+                -16.0
+            ],
+            "floorModules": 181,
+            "stairs": 17,
+            "obstacleSections": 276,
+            "surfaceAreaApprox": 6792.890625
+        },
+        {
+            "id": "02_Intermedia_Y24",
+            "texture": "Assets/ROM/Cartography/CiudadDelSol/Resources/CiudadDelSolNucleo/Revision_20261030_214538/02_Intermedia_Y24.png",
+            "atlas": "Assets/ROM/Cartography/CiudadDelSol/Resources/CiudadDelSolNucleo/Revision_20261030_214538/CiudadDelSol_02_Intermedia_Y24_Atlas.asset",
+            "heights": [
+                -24.0
+            ],
+            "floorModules": 61,
+            "stairs": 21,
+            "obstacleSections": 201,
+            "surfaceAreaApprox": 2967.213134765625
+        },
+        {
+            "id": "03_Intermedia_Y30",
+            "texture": "Assets/ROM/Cartography/CiudadDelSol/Resources/CiudadDelSolNucleo/Revision_20261030_214538/03_Intermedia_Y30.png",
+            "atlas": "Assets/ROM/Cartography/CiudadDelSol/Resources/CiudadDelSolNucleo/Revision_20261030_214538/CiudadDelSol_03_Intermedia_Y30_Atlas.asset",
+            "heights": [
+                -30.0
+            ],
+            "floorModules": 49,
+            "stairs": 17,
+            "obstacleSections": 228,
+            "surfaceAreaApprox": 2244.45263671875
+        },
+        {
+            "id": "04_Profunda_Y34_Y38",
+            "texture": "Assets/ROM/Cartography/CiudadDelSol/Resources/CiudadDelSolNucleo/Revision_20261030_214538/04_Profunda_Y34_Y38.png",
+            "atlas": "Assets/ROM/Cartography/CiudadDelSol/Resources/CiudadDelSolNucleo/Revision_20261030_214538/CiudadDelSol_04_Profunda_Y34_Y38_Atlas.asset",
+            "heights": [
+                -34.0,
+                -38.0
+            ],
+            "floorModules": 430,
+            "stairs": 8,
+            "obstacleSections": 297,
+            "surfaceAreaApprox": 15475.3076171875
+        }
+    ],
+    "stairs": [
+        {
+            "path": "Contexto_UNICO_por_identidad/Dungeon_Ciudad_del_Sol_Generated/03-06 - Descenso al santuario - ancho util 12/Staircase_01",
+            "center": {
+                "x": 87.0,
+                "y": 6.0,
+                "z": -27.168066024780275
+            },
+            "bottom": 4.0,
+            "top": 8.0,
+            "planes": []
+        },
+        {
+            "path": "Contexto_UNICO_por_identidad/Dungeon_Ciudad_del_Sol_Generated/03-06 - Descenso al santuario - ancho util 12/Staircase_01",
+            "center": {
+                "x": 93.0,
+                "y": 6.0,
+                "z": -27.168066024780275
+            },
+            "bottom": 4.0,
+            "top": 8.0,
+            "planes": []
+        },
+        {
+            "path": "Contexto_UNICO_por_identidad/Umbral_De_Las_Profundidades/03 - Puente del Santuario/Staircase_01",
+            "center": {
+                "x": 129.0,
+                "y": 6.002458095550537,
+                "z": -39.093448638916019
+            },
+            "bottom": 4.002458095550537,
+            "top": 8.002458572387696,
+            "planes": []
+        },
+        {
+            "path": "Contexto_UNICO_por_identidad/Subsuelo_Acceso_Etapa01/02 - Cinco tramos descendentes/Staircase_01",
+            "center": {
+                "x": 150.0,
+                "y": 2.002458095550537,
+                "z": 39.093448638916019
+            },
+            "bottom": 0.0024580955505371095,
+            "top": 4.002458095550537,
+            "planes": [
+                "01_Superior_Y16"
+            ]
+        },
+        {
+            "path": "Contexto_UNICO_por_identidad/Subsuelo_Acceso_Etapa01/02 - Cinco tramos descendentes/Staircase_01",
+            "center": {
+                "x": 150.0,
+                "y": -1.997541904449463,
+                "z": 51.093448638916019
+            },
+            "bottom": -3.997541904449463,
+            "top": 0.0024580955505371095,
+            "planes": [
+                "01_Superior_Y16"
+            ]
+        },
+        {
+            "path": "Contexto_UNICO_por_identidad/Subsuelo_Acceso_Etapa01/02 - Cinco tramos descendentes/Staircase_01",
+            "center": {
+                "x": 150.0,
+                "y": -5.997541904449463,
+                "z": 63.093448638916019
+            },
+            "bottom": -7.997541904449463,
+            "top": -3.997541904449463,
+            "planes": [
+                "01_Superior_Y16"
+            ]
+        },
+        {
+            "path": "Contexto_UNICO_por_identidad/Subsuelo_Acceso_Etapa01/02 - Cinco tramos descendentes/Staircase_01",
+            "center": {
+                "x": 150.0,
+                "y": -9.997541427612305,
+                "z": 75.09344482421875
+            },
+            "bottom": -11.997541427612305,
+            "top": -7.997541427612305,
+            "planes": [
+                "01_Superior_Y16"
+            ]
+        },
+        {
+            "path": "Contexto_UNICO_por_identidad/Subsuelo_Acceso_Etapa01/02 - Cinco tramos descendentes/Staircase_01",
+            "center": {
+                "x": 150.0,
+                "y": -13.997541427612305,
+                "z": 87.09344482421875
+            },
+            "bottom": -15.997541427612305,
+            "top": -11.997541427612305,
+            "planes": [
+                "01_Superior_Y16"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/03 - El Sol Invertido V3/04 - Escaleras de enlace/Staircase_01",
+            "center": {
+                "x": 45.0,
+                "y": -16.99877166748047,
+                "z": -8.906554222106934
+            },
+            "bottom": -17.99877166748047,
+            "top": -15.998771667480469,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/03 - El Sol Invertido V3/04 - Escaleras de enlace/Staircase_01",
+            "center": {
+                "x": 45.0,
+                "y": -18.99877166748047,
+                "z": -2.9065537452697756
+            },
+            "bottom": -19.99877166748047,
+            "top": -17.99877166748047,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/03 - El Sol Invertido V3/04 - Escaleras de enlace/Staircase_01",
+            "center": {
+                "x": 45.0,
+                "y": -20.99877166748047,
+                "z": 3.0934464931488039
+            },
+            "bottom": -21.99877166748047,
+            "top": -19.99877166748047,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/03 - El Sol Invertido V3/04 - Escaleras de enlace/Staircase_01",
+            "center": {
+                "x": 45.0,
+                "y": -22.99877166748047,
+                "z": 9.093445777893067
+            },
+            "bottom": -23.99877166748047,
+            "top": -21.99877166748047,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/03 - El Sol Invertido V3/04 - Escaleras de enlace/Staircase_01",
+            "center": {
+                "x": 38.90655517578125,
+                "y": -24.99877166748047,
+                "z": 45.0
+            },
+            "bottom": -25.99877166748047,
+            "top": -23.99877166748047,
+            "planes": [
+                "02_Intermedia_Y24",
+                "03_Intermedia_Y30"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/03 - El Sol Invertido V3/04 - Escaleras de enlace/Staircase_01",
+            "center": {
+                "x": 32.90655517578125,
+                "y": -26.99877166748047,
+                "z": 45.0
+            },
+            "bottom": -27.99877166748047,
+            "top": -25.99877166748047,
+            "planes": [
+                "02_Intermedia_Y24",
+                "03_Intermedia_Y30"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/03 - El Sol Invertido V3/04 - Escaleras de enlace/Staircase_01",
+            "center": {
+                "x": 26.906553268432618,
+                "y": -28.99877166748047,
+                "z": 45.0
+            },
+            "bottom": -29.99877166748047,
+            "top": -27.99877166748047,
+            "planes": [
+                "02_Intermedia_Y24",
+                "03_Intermedia_Y30"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/03 - El Sol Invertido V3/04 - Escaleras de enlace/Staircase_01",
+            "center": {
+                "x": -9.0,
+                "y": -30.99877166748047,
+                "z": 32.906551361083987
+            },
+            "bottom": -31.99877166748047,
+            "top": -29.99877166748047,
+            "planes": [
+                "03_Intermedia_Y30",
+                "04_Profunda_Y34_Y38"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/03 - El Sol Invertido V3/04 - Escaleras de enlace/Staircase_01",
+            "center": {
+                "x": -9.0,
+                "y": -32.99877166748047,
+                "z": 26.906553268432618
+            },
+            "bottom": -33.99877166748047,
+            "top": -31.99877166748047,
+            "planes": [
+                "03_Intermedia_Y30",
+                "04_Profunda_Y34_Y38"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/03 - El Sol Invertido V3/04 - Escaleras de enlace/Staircase_01",
+            "center": {
+                "x": -9.0,
+                "y": -34.99877166748047,
+                "z": 20.906553268432618
+            },
+            "bottom": -35.99877166748047,
+            "top": -33.99877166748047,
+            "planes": [
+                "03_Intermedia_Y30",
+                "04_Profunda_Y34_Y38"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/03 - El Sol Invertido V3/04 - Escaleras de enlace/Staircase_01",
+            "center": {
+                "x": -9.0,
+                "y": -36.99877166748047,
+                "z": 14.906553268432618
+            },
+            "bottom": -37.99877166748047,
+            "top": -35.99877166748047,
+            "planes": [
+                "03_Intermedia_Y30",
+                "04_Profunda_Y34_Y38"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/01 - Centro Oriental aprobado/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 110.90655517578125,
+                "y": -16.99877166748047,
+                "z": 90.0
+            },
+            "bottom": -17.99877166748047,
+            "top": -15.998771667480469,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/01 - Centro Oriental aprobado/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 104.90655517578125,
+                "y": -18.99877166748047,
+                "z": 90.0
+            },
+            "bottom": -19.99877166748047,
+            "top": -17.99877166748047,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/01 - Centro Oriental aprobado/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 98.90655517578125,
+                "y": -20.99877166748047,
+                "z": 90.0
+            },
+            "bottom": -21.99877166748047,
+            "top": -19.99877166748047,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/01 - Centro Oriental aprobado/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 92.90655517578125,
+                "y": -22.99877166748047,
+                "z": 90.0
+            },
+            "bottom": -23.99877166748047,
+            "top": -21.99877166748047,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/01 - Centro Oriental aprobado/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 81.0,
+                "y": -24.99877166748047,
+                "z": 80.90655517578125
+            },
+            "bottom": -25.99877166748047,
+            "top": -23.99877166748047,
+            "planes": [
+                "02_Intermedia_Y24",
+                "03_Intermedia_Y30"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/01 - Centro Oriental aprobado/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 81.0,
+                "y": -26.99877166748047,
+                "z": 74.90655517578125
+            },
+            "bottom": -27.99877166748047,
+            "top": -25.99877166748047,
+            "planes": [
+                "02_Intermedia_Y24",
+                "03_Intermedia_Y30"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/01 - Centro Oriental aprobado/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 81.0,
+                "y": -28.99877166748047,
+                "z": 68.90655517578125
+            },
+            "bottom": -29.99877166748047,
+            "top": -27.99877166748047,
+            "planes": [
+                "02_Intermedia_Y24",
+                "03_Intermedia_Y30"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/01 - Centro Oriental aprobado/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 81.0,
+                "y": -30.99877166748047,
+                "z": 56.906551361083987
+            },
+            "bottom": -31.99877166748047,
+            "top": -29.99877166748047,
+            "planes": [
+                "03_Intermedia_Y30",
+                "04_Profunda_Y34_Y38"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/01 - Centro Oriental aprobado/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 81.0,
+                "y": -32.99877166748047,
+                "z": 50.906551361083987
+            },
+            "bottom": -33.99877166748047,
+            "top": -31.99877166748047,
+            "planes": [
+                "03_Intermedia_Y30",
+                "04_Profunda_Y34_Y38"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/02 - Sureste arcadas aprobadas/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 123.0,
+                "y": -16.99877166748047,
+                "z": 2.9065537452697756
+            },
+            "bottom": -17.99877166748047,
+            "top": -15.998771667480469,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/02 - Sureste arcadas aprobadas/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 123.0,
+                "y": -18.99877166748047,
+                "z": -3.0934462547302248
+            },
+            "bottom": -19.99877166748047,
+            "top": -17.99877166748047,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/02 - Sureste arcadas aprobadas/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 123.0,
+                "y": -20.99877166748047,
+                "z": -9.093445777893067
+            },
+            "bottom": -21.99877166748047,
+            "top": -19.99877166748047,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/02 - Sureste arcadas aprobadas/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 123.0,
+                "y": -22.99877166748047,
+                "z": -15.093445777893067
+            },
+            "bottom": -23.99877166748047,
+            "top": -21.99877166748047,
+            "planes": [
+                "01_Superior_Y16",
+                "02_Intermedia_Y24"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/02 - Sureste arcadas aprobadas/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 123.0,
+                "y": -24.99877166748047,
+                "z": -27.093446731567384
+            },
+            "bottom": -25.99877166748047,
+            "top": -23.99877166748047,
+            "planes": [
+                "02_Intermedia_Y24",
+                "03_Intermedia_Y30"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/02 - Sureste arcadas aprobadas/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 123.0,
+                "y": -26.99877166748047,
+                "z": -33.093448638916019
+            },
+            "bottom": -27.99877166748047,
+            "top": -25.99877166748047,
+            "planes": [
+                "02_Intermedia_Y24",
+                "03_Intermedia_Y30"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/02 - Sureste arcadas aprobadas/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 123.0,
+                "y": -28.99877166748047,
+                "z": -39.093448638916019
+            },
+            "bottom": -29.99877166748047,
+            "top": -27.99877166748047,
+            "planes": [
+                "02_Intermedia_Y24",
+                "03_Intermedia_Y30"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/02 - Sureste arcadas aprobadas/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 104.90655517578125,
+                "y": -30.99877166748047,
+                "z": -39.0
+            },
+            "bottom": -31.99877166748047,
+            "top": -29.99877166748047,
+            "planes": [
+                "03_Intermedia_Y30",
+                "04_Profunda_Y34_Y38"
+            ]
+        },
+        {
+            "path": "Nucleo_Monumental_Conjunto_TEMPORAL/02 - Sureste arcadas aprobadas/03 - Descenso en nueve tramos/Staircase_01",
+            "center": {
+                "x": 98.90655517578125,
+                "y": -32.99877166748047,
+                "z": -39.0
+            },
+            "bottom": -33.99877166748047,
+            "top": -31.99877166748047,
+            "planes": [
+                "03_Intermedia_Y30",
+                "04_Profunda_Y34_Y38"
+            ]
+        }
+    ]
+}
