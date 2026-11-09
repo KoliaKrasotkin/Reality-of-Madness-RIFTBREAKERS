@@ -9,10 +9,12 @@ namespace MultiFPS.Gameplay.RiftCombat
         public Animator Animator;
         public GameObject BuiltInWeapon;
         public WeaponDefinition CurrentWeapon { get; private set; }
+        public WeaponDefinition CurrentPresentation { get; private set; }
         readonly List<WeaponDefinition> parts = new List<WeaponDefinition>();
         readonly List<GameObject> models = new List<GameObject>();
         readonly List<AnimatorClipInfo> currentClips = new List<AnimatorClipInfo>();
         readonly List<AnimatorClipInfo> nextClips = new List<AnimatorClipInfo>();
+        readonly List<KeyValuePair<AnimationClip, AnimationClip>> clipOverrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
         EquipmentArmIK leftArm, rightArm;
         bool builtInPoseCaptured;
         Vector3 builtInPosition;
@@ -23,6 +25,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         struct FingerSnapshot { public Transform bone; public Quaternion rotation; }
         readonly List<FingerSnapshot> fingerSnapshots = new List<FingerSnapshot>();
         RuntimeAnimatorController originalController;
+        CharacterSkinController skin;
         static readonly int StoredWeight = UnityEngine.Animator.StringToHash("EquipmentBackWeight");
         public bool Alive { get; set; } = true;
         public struct IKSettings
@@ -37,6 +40,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         }
         void Awake()
         {
+            skin = GetComponent<CharacterSkinController>();
             if (!Animator) Animator = GetComponentInChildren<Animator>();
             if (Animator) originalController = Animator.runtimeAnimatorController;
         }
@@ -46,16 +50,21 @@ namespace MultiFPS.Gameplay.RiftCombat
             if (!originalController) originalController = Animator.runtimeAnimatorController;
             ClearModels();
             CurrentWeapon = weapon;
+            var binding = skin && skin.IsActive ? skin.Current.FindWeapon(weapon) : null;
+            var visual = binding != null && binding.Presentation ? binding.Presentation : weapon;
+            CurrentPresentation = visual;
             leftArm = new EquipmentArmIK(Animator, HumanBodyBones.LeftHand);
             rightArm = new EquipmentArmIK(Animator, HumanBodyBones.RightHand);
             leftThumb = Animator.GetBoneTransform(HumanBodyBones.LeftThumbProximal);
             rightThumb = Animator.GetBoneTransform(HumanBodyBones.RightThumbProximal);
-            Animator.runtimeAnimatorController = weapon.Controller ? weapon.Controller : originalController;
-            if (weapon.UsesBuiltInWeapon)
+            if (skin && skin.IsActive)
+                skin.SetController(binding != null && binding.Controller ? binding.Controller : skin.Current.Controller);
+            else Animator.runtimeAnimatorController = weapon.Controller ? weapon.Controller : originalController;
+            if (visual.UsesBuiltInWeapon)
             {
-                parts.Add(weapon); models.Add(BuiltInWeapon);
+                parts.Add(visual); models.Add(BuiltInWeapon);
             }
-            else foreach (var attachment in weapon.EquippedParts)
+            else foreach (var attachment in visual.EquippedParts)
             {
                 parts.Add(attachment);
                 var model = attachment.Model ? Instantiate(attachment.Model, transform) : null;
@@ -69,11 +78,35 @@ namespace MultiFPS.Gameplay.RiftCombat
                 models.Add(model);
             }
         }
+        WeaponDefinition skinWeapon;
+        public void UnbindSkin()
+        {
+            skinWeapon = CurrentWeapon;
+            ClearModels();
+            if (BuiltInWeapon) BuiltInWeapon.SetActive(false);
+            CurrentWeapon = null;
+            CurrentPresentation = null;
+            leftArm = rightArm = null;
+        }
+        public void BindSkin(Animator animator)
+        {
+            Animator = animator;
+            originalController = animator ? animator.runtimeAnimatorController : null;
+            skin = GetComponent<CharacterSkinController>();
+            if (skinWeapon) Equip(skinWeapon);
+            skinWeapon = null;
+        }
         public AnimationClip ResolveClip(AnimationClip source)
         {
             if (!source) return null;
             var overrides = Animator ? Animator.runtimeAnimatorController as AnimatorOverrideController : null;
-            return overrides && overrides[source] ? overrides[source] : source;
+            if (overrides)
+            {
+                overrides.GetOverrides(clipOverrides);
+                foreach (var pair in clipOverrides)
+                    if (pair.Key == source) return pair.Value ? pair.Value : source;
+            }
+            return source;
         }
         // Undo only our previous solve before Animator samples again, including
         // bones omitted by a clip. Manual preview calls the same boundary.
@@ -192,6 +225,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         }
         public GameObject ModelFor(WeaponDefinition data)
         {
+            if (data == CurrentWeapon && CurrentPresentation) data = CurrentPresentation;
             int index = parts.IndexOf(data);
             return index >= 0 ? models[index] : null;
         }
@@ -199,7 +233,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         {
             if (!CurrentWeapon || !Animator) return;
             BeginPoseEvaluation();
-            if (BuiltInWeapon) BuiltInWeapon.SetActive(Alive && CurrentWeapon.UsesBuiltInWeapon);
+            if (BuiltInWeapon) BuiltInWeapon.SetActive(Alive && CurrentPresentation && CurrentPresentation.UsesBuiltInWeapon);
             float stored = Mathf.Clamp01(storedWeight);
             var bodyRotation = WeaponGripSpace.BodyRotation(Animator);
             // Place every item before solving either arm. Attachment anchors come

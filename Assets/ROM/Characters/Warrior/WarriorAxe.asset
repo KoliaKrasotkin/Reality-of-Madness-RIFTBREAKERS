@@ -17,12 +17,12 @@ MonoBehaviour:
   WeaponType: HeavyAxe
   Role: 0
   DamageMultiplier: 1
+  AttackSpeed: 1
+  Reach: 3.4
   DamageModelVersion: 1
   DamageMinimum: 16
   DamageMaximum: 20
   SwingSeconds: 1.8
-  AttackSpeed: 1
-  Reach: 3.4
   Model: {fileID: 3482970760907855653, guid: a803e2814ac677f4dbe3ebfc620cda0a, type: 3}
   Socket: 18
   Position: {x: 0.0000003800229, y: -0.000000029322113, z: -0.000000069111714}
@@ -7018,6 +7018,7 @@ MonoBehaviour:
     RightThumbRotation: {x: 0, y: 0, z: 0}
     LeftThumbRotation: {x: 0, y: 0, z: 0}
     PoseKeys: []
+  FingerPoses: []
   UseApprovedCarryGrip: 1
   CarryGripPosition: {x: -0.12213097, y: -0.014166107, z: -0.57553405}
   CarryGripRotation: {x: 22.586227, y: 352.06625, z: 24.904251}

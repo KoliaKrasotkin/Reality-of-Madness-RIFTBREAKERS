@@ -42,6 +42,8 @@ public class WeaponIKControllerEditor : Editor
     private bool showValidation;
     private PoseSnapshot[] previewPose;
     private WeaponDefinition previewWeapon;
+    private CharacterSkinDefinition previewSkin;
+    private AnimatorCullingMode originalCullingMode;
     private RuntimeAnimatorController originalController;
     private GameObject previewEquipmentRoot;
     private CharacterWeaponPresentation equipmentPreview;
@@ -61,7 +63,16 @@ public class WeaponIKControllerEditor : Editor
     {
         RefreshReferences();
         var equipment = animator ? animator.GetComponentInParent<RiftWarriorEquipment>() : null;
-        if (equipment) previewWeapon = equipment.AxeWeapon;
+        var skins = ((WeaponIKController)target).GetComponentInParent<CharacterSkinController>();
+        if (skins)
+        {
+            foreach (var slot in skins.Skins)
+                if (slot != null && slot.ExistingAnimator == animator) { previewSkin = slot.Definition; break; }
+            if (!previewSkin && skins.InitialIndex >= 0 && skins.InitialIndex < skins.Skins.Length)
+                previewSkin = skins.Skins[skins.InitialIndex]?.Definition;
+        }
+        if (previewSkin) previewWeapon = VisualDefinition(previewSkin.DefaultWeapon);
+        else if (equipment) previewWeapon = equipment.AxeWeapon;
         EditorApplication.update += UpdatePreview;
         AssemblyReloadEvents.beforeAssemblyReload += StopPreview;
         EditorApplication.playModeStateChanged += OnPlayModeChanged;
@@ -100,12 +111,12 @@ public class WeaponIKControllerEditor : Editor
             previewClip = null;
         }
 
-        if (animator == null || rigBuilder == null || gripConstraint == null)
+        if (animator == null || !animator.isHuman)
         {
-            EditorGUILayout.HelpBox("Assign an Animator with a RigBuilder and an Animated Weapon Grip constraint.", MessageType.Warning);
+            EditorGUILayout.HelpBox("Assign a Humanoid Animator. Skin equipment previews do not require the axe RigBuilder or Animated Weapon Grip constraint.", MessageType.Warning);
             return;
         }
-        EditorGUILayout.ObjectField("Grip Constraint", gripConstraint, typeof(AnimatedWeaponGripConstraint), true);
+        if (gripConstraint) EditorGUILayout.ObjectField("Grip Constraint", gripConstraint, typeof(AnimatedWeaponGripConstraint), true);
 
         bool persistentAsset = EditorUtility.IsPersistent(animator);
         if (persistentAsset && !Application.isPlaying)
@@ -123,7 +134,7 @@ public class WeaponIKControllerEditor : Editor
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Animation Preview", EditorStyles.boldLabel);
             DrawEquipmentSelector();
-            using (new EditorGUI.DisabledScope(previewWeapon && !previewWeapon.UsesBuiltInWeapon))
+            using (new EditorGUI.DisabledScope(!gripConstraint || !rigBuilder || (previewWeapon && !previewWeapon.UsesBuiltInWeapon)))
                 if (GUILayout.Button("Validate Axe Animation Grips")) ValidateAnimationGrips();
             if (!string.IsNullOrEmpty(validationReport))
             {
@@ -158,7 +169,25 @@ public class WeaponIKControllerEditor : Editor
     private void DrawEquipmentSelector()
     {
         var equipment = animator.GetComponentInParent<RiftWarriorEquipment>();
-        if (equipment)
+        if (previewSkin)
+        {
+            EditorGUILayout.ObjectField("Skin Profile", previewSkin, typeof(CharacterSkinDefinition), false);
+            var choices = new System.Collections.Generic.List<WeaponDefinition>();
+            var labels = new System.Collections.Generic.List<string>();
+            if (previewSkin.DefaultWeapon) { choices.Add(VisualDefinition(previewSkin.DefaultWeapon)); labels.Add(previewSkin.DefaultWeapon.DisplayName); }
+            foreach (var entry in previewSkin.Weapons)
+            {
+                if (entry == null || !entry.Weapon) continue;
+                var visual = VisualDefinition(entry.Weapon);
+                if (!choices.Contains(visual)) { choices.Add(visual); labels.Add(entry.Weapon.DisplayName); }
+            }
+            choices.Add(null); labels.Add("Custom definition");
+            int current = choices.IndexOf(previewWeapon);
+            if (current < 0) current = choices.Count - 1;
+            int next = EditorGUILayout.Popup("Equipment", current, labels.ToArray());
+            if (next != current) SetPreviewWeapon(choices[next]);
+        }
+        else if (equipment)
         {
             int current = previewWeapon == equipment.AxeWeapon ? 0 : previewWeapon == equipment.SwordShieldWeapon ? 1 : 2;
             int next = EditorGUILayout.Popup("Equipment", current, new[] { "Axe", "Sword and shield", "Custom definition" });
@@ -180,16 +209,39 @@ public class WeaponIKControllerEditor : Editor
         if (restart) StartPreview();
     }
 
+    private WeaponDefinition VisualDefinition(WeaponDefinition weapon)
+    {
+        var entry = previewSkin ? previewSkin.FindWeapon(weapon) : null;
+        return entry != null && entry.Presentation ? entry.Presentation : weapon;
+    }
+
+    private RuntimeAnimatorController PreviewController()
+    {
+        if (previewSkin)
+        {
+            foreach (var entry in previewSkin.Weapons)
+                if (entry != null && (entry.Weapon == previewWeapon || entry.Presentation == previewWeapon) && entry.Controller) return entry.Controller;
+            return previewSkin.Controller;
+        }
+        return previewWeapon && previewWeapon.Controller ? previewWeapon.Controller : originalController ? originalController : animator.runtimeAnimatorController;
+    }
+
     private AnimationClip ResolveEquipmentClip(AnimationClip clip)
     {
-        var overrides = previewWeapon ? previewWeapon.Controller as AnimatorOverrideController : null;
-        return clip && overrides && overrides[clip] ? overrides[clip] : clip;
+        if (!clip) return null;
+        var overrides = PreviewController() as AnimatorOverrideController;
+        if (overrides)
+        {
+            var pairs = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<AnimationClip, AnimationClip>>();
+            overrides.GetOverrides(pairs);
+            foreach (var pair in pairs) if (pair.Key == clip) return pair.Value ? pair.Value : clip;
+        }
+        return clip;
     }
 
     private AnimationClip FindClip(string name)
     {
-        var controller = originalController ? originalController : animator.runtimeAnimatorController;
-        if (previewWeapon && previewWeapon.Controller) controller = previewWeapon.Controller;
+        var controller = PreviewController();
         while (controller is AnimatorOverrideController overrides) controller = overrides.runtimeAnimatorController;
         if (!controller) return null;
         return ResolveEquipmentClip(Array.Find(controller.animationClips, clip => clip.name ==
@@ -271,9 +323,11 @@ public class WeaponIKControllerEditor : Editor
 
     private void StartPreview()
     {
-        if (Application.isPlaying || animator == null || EditorUtility.IsPersistent(animator) || rigBuilder == null || previewClip == null) return;
+        if (Application.isPlaying || animator == null || EditorUtility.IsPersistent(animator) || !animator.isHuman || previewClip == null) return;
         StopPreview();
         originalController = animator.runtimeAnimatorController;
+        originalCullingMode = animator.cullingMode;
+        animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
         var avatar = animator.GetComponentInParent<WarriorAvatar>();
         builtInWeapon = avatar ? avatar.EquippedWeapon : null;
         builtInWasActive = builtInWeapon && builtInWeapon.activeSelf;
@@ -283,8 +337,8 @@ public class WeaponIKControllerEditor : Editor
         previewArmWeights = Array.ConvertAll(previewArms, arm => arm.weight);
         previewRenderers = animator.GetComponentsInChildren<Renderer>(true);
         previewRendererEnabled = Array.ConvertAll(previewRenderers, renderer => renderer.enabled);
-        previewHandFollow = gripConstraint.data.rightHandFollow;
-        previewBackWeight = gripConstraint.data.backWeight;
+        previewHandFollow = gripConstraint ? gripConstraint.data.rightHandFollow : 0;
+        previewBackWeight = gripConstraint ? gripConstraint.data.backWeight : 0;
         Transform[] transforms = animator.GetComponentsInChildren<Transform>(true);
         previewPose = new PoseSnapshot[transforms.Length];
         for (int i = 0; i < transforms.Length; i++)
@@ -298,7 +352,7 @@ public class WeaponIKControllerEditor : Editor
         }
         try
         {
-            rigBuilder.Clear();
+            if (rigBuilder) rigBuilder.Clear();
             if (previewWeapon)
             {
                 previewEquipmentRoot = new GameObject("Weapon equipment preview") { hideFlags = HideFlags.HideAndDontSave };
@@ -307,6 +361,7 @@ public class WeaponIKControllerEditor : Editor
                 equipmentPreview.Animator = animator;
                 equipmentPreview.BuiltInWeapon = builtInWeapon;
                 equipmentPreview.Equip(previewWeapon);
+                animator.runtimeAnimatorController = PreviewController();
                 foreach (var item in previewEquipmentRoot.GetComponentsInChildren<Transform>(true))
                     item.gameObject.hideFlags = HideFlags.HideAndDontSave;
             }
@@ -331,7 +386,7 @@ public class WeaponIKControllerEditor : Editor
                 source = mixer;
             }
             var output = AnimationPlayableOutput.Create(previewGraph, "Animation", animator);
-            output.SetSourcePlayable(rigBuilder.BuildPreviewGraph(previewGraph, source));
+            output.SetSourcePlayable(rigBuilder ? rigBuilder.BuildPreviewGraph(previewGraph, source) : source);
             previewGraph.Play();
             previewActive = true;
             SamplePreview();
@@ -349,7 +404,7 @@ public class WeaponIKControllerEditor : Editor
         if (equipmentPreview) equipmentPreview.BeginPoseEvaluation();
         clipPlayable.SetTime(previewTime);
         if (presentationPlayable.IsValid()) presentationPlayable.SetTime(Mathf.Min(previewTime, presentationClip.length));
-        rigBuilder.UpdatePreviewGraph(previewGraph);
+        if (rigBuilder) rigBuilder.UpdatePreviewGraph(previewGraph);
         previewGraph.Evaluate(0f);
         if (equipmentPreview)
         {
@@ -371,7 +426,11 @@ public class WeaponIKControllerEditor : Editor
         if (previewEquipmentRoot) DestroyImmediate(previewEquipmentRoot);
         previewEquipmentRoot = null;
         equipmentPreview = null;
-        if (originalController && animator) animator.runtimeAnimatorController = originalController;
+        if (hadPreview && animator)
+        {
+            animator.runtimeAnimatorController = originalController;
+            animator.cullingMode = originalCullingMode;
+        }
         originalController = null;
         if (builtInWeapon) builtInWeapon.SetActive(builtInWasActive);
         builtInWeapon = null;
@@ -408,7 +467,7 @@ public class WeaponIKControllerEditor : Editor
 
     public string ValidateAnimationGrips()
     {
-        if (!animator.isHuman || !gripConstraint.data.IsValid())
+        if (!animator || !animator.isHuman || !gripConstraint || !gripConstraint.data.IsValid())
         {
             validationReport = "A Humanoid Animator and valid grip references are required.";
             return validationReport;
