@@ -18,7 +18,9 @@ namespace MultiFPS.Gameplay.RiftCombat
         [SerializeField] private bool weaponDrawn=true;
         [SyncVar] private double weaponReadyAt;
         public bool WeaponDrawn => weaponDrawn;
-        public bool CanUseWeapon => GetComponent<PaladinPrototypePresentation>()||weaponDrawn&&!IsRolling&&NetworkTime.time>=weaponReadyAt;
+        CharacterSkinController Skin => GetComponent<CharacterSkinController>();
+        public bool HasActiveSkin => Skin && Skin.IsActive;
+        public bool CanUseWeapon => (!HasActiveSkin && GetComponent<PaladinPrototypePresentation>())||weaponDrawn&&!IsRolling&&NetworkTime.time>=weaponReadyAt;
         CharacterInstance actor;
         CharacterController capsule;
         Vector3 planar,previous;
@@ -60,7 +62,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         private void OnWeaponDrawnChanged(bool previousValue,bool newValue)=>ApplyWeaponDrawn();
         private void ApplyWeaponDrawn()
         {
-            if(GetComponent<PaladinPrototypePresentation>())return;
+            if(GetComponent<PaladinPrototypePresentation>()&&!HasActiveSkin)return;
             if(Animator)Animator.SetBool("WeaponDrawn",weaponDrawn);
             if(!weaponDrawn){activeAttackSlot=-1;if(Animator)Animator.SetBool("DefensiveHold",false);}
         }
@@ -69,7 +71,7 @@ namespace MultiFPS.Gameplay.RiftCombat
             if(actor.PlayerRecoil)actor.PlayerRecoil.enabled=false;
             foreach(var hit in actor.CharacterParent.GetComponentsInChildren<Collider>())Physics.IgnoreCollision(capsule,hit,true);
         }
-        public void SetSkin(int skin){ /* The first Warrior body is native Lizardman; no legacy retargeting. */ }
+        public void SetSkin(int skin){ if(Skin)Skin.SelectSkinId(skin); }
         public void ReadInput(){if(isOwned&&actor)RiftMMOController.Ensure(gameObject).ReadCharacter(actor);}
         public void RequestJump(){if(!IsRolling)jumpRequested=Time.time;}
         void FixedUpdate()
@@ -97,7 +99,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         }
         void LateUpdate()
         {
-            if(GetComponent<PaladinPrototypePresentation>())return;
+            if(GetComponent<PaladinPrototypePresentation>()&&!HasActiveSkin)return;
             UpdateRollPresentation();
             if(!Animator||!actor||!actor.Health)return;
             bool alive=actor.Health.CurrentHealth>0;
@@ -127,6 +129,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         }
         public bool PresentAutoAttack(AbilityDefinition ability)
         {
+            if(HasActiveSkin){bool played=PresentAttack(0,ability);if(played)activeAttackSlot=-1;return played;}
             var paladin=GetComponent<PaladinPrototypePresentation>();if(paladin)return paladin.Attack();
             if(!PresentAttack(0,ability))return false;
             // Auto swings have their own server timer, not an AbilityController.Casting slot.
@@ -136,6 +139,13 @@ namespace MultiFPS.Gameplay.RiftCombat
         }
         public bool PresentAttack(int slot,AbilityDefinition ability)
         {
+            if(HasActiveSkin)
+            {
+                if(!CanUseWeapon||!ability||!Skin.TryPlayAction(ability.Id,ability.CastDuration))return false;
+                var motion=GetComponent<WarriorSpecialMotion>();if(motion)motion.Stop();
+                activeAttackSlot=slot;presentationStarted=Time.time;presentationUntil=Time.time+ability.CastDuration;
+                return true;
+            }
             if(!Animator||!ability||!CanUseWeapon)return false;
             string state="Base Layer.Attack"+slot;
             if(slot<0||!ability.Animation||!Animator.HasState(0,Animator.StringToHash(state)))return false;
