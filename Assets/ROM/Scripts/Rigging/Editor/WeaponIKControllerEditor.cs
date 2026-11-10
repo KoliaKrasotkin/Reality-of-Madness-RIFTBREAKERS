@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -143,11 +144,14 @@ public class WeaponIKControllerEditor : Editor
             }
 
             EditorGUI.BeginChangeCheck();
-            int next = EditorGUILayout.Popup("Animation", selectedPreview, ClipNames);
+            var actions = PreviewActions();
+            var options = ClipNames.Concat(actions.Select(action => action.State + " / " + action.Id)).ToArray();
+            selectedPreview = Mathf.Clamp(selectedPreview, 0, options.Length - 1);
+            int next = EditorGUILayout.Popup("Animation", selectedPreview, options);
             if (EditorGUI.EndChangeCheck() || previewClip == null)
             {
                 selectedPreview = next;
-                SelectClip(FindClip(ClipNames[next]));
+                SelectClip(FindPreviewClip(next, actions));
             }
             EditorGUI.BeginChangeCheck();
             var clip = (AnimationClip)EditorGUILayout.ObjectField("Animation Clip", previewClip, typeof(AnimationClip), false);
@@ -204,7 +208,7 @@ public class WeaponIKControllerEditor : Editor
         bool restart = previewActive;
         StopPreview();
         previewWeapon = weapon;
-        previewClip = FindClip(ClipNames[selectedPreview]);
+        previewClip = FindPreviewClip(selectedPreview, PreviewActions());
         previewTime = 0;
         if (restart) StartPreview();
     }
@@ -248,6 +252,17 @@ public class WeaponIKControllerEditor : Editor
             (name.StartsWith("Unarmed/") ? name.Replace("Unarmed/", "Unarmed-") : "2Hand-Sword-" + name)));
     }
 
+    private SkinAction[] PreviewActions() => previewSkin
+        ? previewSkin.Actions.Where(action => action != null && action.TimingClip).ToArray()
+        : Array.Empty<SkinAction>();
+
+    private AnimationClip FindPreviewClip(int index, SkinAction[] actions)
+    {
+        if (index < ClipNames.Length) return FindClip(ClipNames[index]);
+        int actionIndex = index - ClipNames.Length;
+        return actionIndex < actions.Length ? ResolveEquipmentClip(actions[actionIndex].TimingClip) : null;
+    }
+
     private void DrawEquipmentOffsets()
     {
         if (!previewWeapon || previewWeapon.UsesBuiltInWeapon) return;
@@ -261,7 +276,7 @@ public class WeaponIKControllerEditor : Editor
             var settings = new SerializedObject(part);
             settings.Update();
             EditorGUI.BeginChangeCheck();
-            foreach (string name in new[] { "Position", "Rotation", "Scale", "StoredBone", "StoredPosition", "StoredRotation" })
+            foreach (string name in new[] { "Socket", "UseGripFrame", "Position", "Rotation", "Scale", "StoredBone", "StoredPosition", "StoredRotation" })
                 EditorGUILayout.PropertyField(settings.FindProperty(name));
             if (EditorGUI.EndChangeCheck())
             {
@@ -287,6 +302,7 @@ public class WeaponIKControllerEditor : Editor
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(settings.FindProperty("EnableHandIK"));
             EditorGUILayout.PropertyField(settings.FindProperty("HandGrips"), true);
+            EditorGUILayout.PropertyField(settings.FindProperty("UseFixedFingerPoses"));
             EditorGUILayout.PropertyField(settings.FindProperty("FingerPoses"), true);
             var entries = settings.FindProperty("AnimationIK");
             int index = Array.FindIndex(part.AnimationIK, item => item != null && item.Clip == previewClip);
@@ -369,13 +385,19 @@ public class WeaponIKControllerEditor : Editor
             previewGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
             clipPlayable = AnimationClipPlayable.Create(previewGraph, previewClip);
             clipPlayable.SetApplyFootIK(false);
-            string presentationName = previewClip.name.StartsWith("Unarmed-") ? "WeaponHolstered"
-                : previewClip.name.Contains("Unsheath-") ? "WeaponDrawing"
-                : previewClip.name.Contains("Sheath-") ? "WeaponSheathing" : "WeaponDrawn";
+            // An override can reuse an unarmed clip in a drawn locomotion slot.
+            var actions = PreviewActions();
+            string motionName = previewClip == FindPreviewClip(selectedPreview, actions)
+                ? (selectedPreview < ClipNames.Length ? ClipNames[selectedPreview] : actions[selectedPreview - ClipNames.Length].State)
+                : previewClip.name;
+            string presentationName = motionName.StartsWith("Unarmed/") || motionName.StartsWith("Unarmed-") ? "WeaponHolstered"
+                : motionName.Contains("Unsheath-") ? "WeaponDrawing"
+                : motionName.Contains("Sheath-") ? "WeaponSheathing" : "WeaponDrawn";
             presentationClip = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/ROM/Animation/WarriorWeaponStates/" + presentationName + ".anim");
             presentationClip = ResolveEquipmentClip(presentationClip);
             Playable source = clipPlayable;
-            if (presentationClip != null)
+            // Socket equipment only needs the stored-weight curve sampled below.
+            if (presentationClip != null && gripConstraint)
             {
                 presentationPlayable = AnimationClipPlayable.Create(previewGraph, presentationClip);
                 var mixer = AnimationLayerMixerPlayable.Create(previewGraph, 2);

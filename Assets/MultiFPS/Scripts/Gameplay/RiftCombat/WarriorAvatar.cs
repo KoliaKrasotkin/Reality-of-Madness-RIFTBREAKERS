@@ -11,6 +11,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         public Animator Animator;
         public GameObject EquippedWeapon;
         public WeaponDefinition Weapon;
+        [SerializeField] private bool useWarriorEquipment = true;
         public float WalkSpeed=2.8f, SprintSpeed=5.7f, Acceleration=22, Braking=30, Gravity=23, JumpHeight=1.2f;
         public Vector3 Velocity {get;private set;}
         public bool Grounded {get;private set;}
@@ -67,7 +68,7 @@ namespace MultiFPS.Gameplay.RiftCombat
             if(!weaponDrawn){activeAttackSlot=-1;if(Animator)Animator.SetBool("DefensiveHold",false);}
         }
         void Start(){
-            if(!GetComponent<PaladinPrototypePresentation>()&&!GetComponent<RiftWarriorEquipment>())gameObject.AddComponent<RiftWarriorEquipment>();
+            if(useWarriorEquipment&&!GetComponent<PaladinPrototypePresentation>()&&!GetComponent<RiftWarriorEquipment>())gameObject.AddComponent<RiftWarriorEquipment>();
             if(actor.PlayerRecoil)actor.PlayerRecoil.enabled=false;
             foreach(var hit in actor.CharacterParent.GetComponentsInChildren<Collider>())Physics.IgnoreCollision(capsule,hit,true);
         }
