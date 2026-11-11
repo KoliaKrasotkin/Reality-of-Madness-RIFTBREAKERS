@@ -33,6 +33,12 @@ namespace MultiFPS.Gameplay.RiftCombat
     }
 
     [Serializable]
+    public struct EquipmentBoneRotation
+    {
+        public HumanBodyBones Bone;
+        public Quaternion Rotation;
+    }
+    [Serializable]
     public sealed class EquipmentAnimationIK
     {
         public AnimationClip Clip;
@@ -47,6 +53,16 @@ namespace MultiFPS.Gameplay.RiftCombat
         [Range(0, 1)]
         [Tooltip("Straighten lateral bend of the free left wrist while retaining the cast's palm tilt.")]
         public float FreeLeftWristAlignment;
+        public float LeftArmSmoothStart, LeftArmSmoothEnd;
+        [Range(0, 1)] public float LeftForwardRelease;
+        public float CastPoseArrival;
+        [Tooltip("Optional continuous local wrist arc over the end of a cast, in clip seconds.")]
+        public float LeftWristArcStart, LeftWristArcEnd;
+        public Quaternion LeftWristArcFrom = Quaternion.identity, LeftWristArcTo = Quaternion.identity;
+        public EquipmentBoneRotation[] CastPose = Array.Empty<EquipmentBoneRotation>();
+        public Quaternion LeftUpperArmStart, LeftUpperArmEnd, LeftForearmStart, LeftForearmEnd;
+        [Range(0, 1)] public float RightWristAlignment;
+        [Range(0, 1)] public float UprightLeftPalm;
         [Range(0, 1)]
         [Tooltip("Blend the right arm into a low carry using the animated left arm as reference.")]
         public float LowRightCarry;
@@ -105,7 +121,8 @@ namespace MultiFPS.Gameplay.RiftCombat
             float distance = offset.magnitude;
             return distance > reach ? offset * (reach / distance - 1) : Vector3.zero;
         }
-        public void Solve(Vector3 target, Quaternion rotation, Vector3 hintOffset, float weight, bool preserveLocalHandRotation = false)
+        public void Solve(Vector3 target, Quaternion rotation, Vector3 hintOffset, float weight,
+            bool preserveLocalHandRotation = false, bool useFixedPole = false)
         {
             if (!upper || !lower || !hand || weight <= 0) return;
             upperPose = upper.localRotation; lowerPose = lower.localRotation; handPose = hand.localRotation;
@@ -118,11 +135,12 @@ namespace MultiFPS.Gameplay.RiftCombat
             if (a < .00001f || b < .00001f || delta.sqrMagnitude < .00000001f) return;
             var direction = delta.normalized;
             float distance = Mathf.Clamp(delta.magnitude, Mathf.Abs(a - b) + .00001f, a + b - .00001f);
-            var pole = Vector3.ProjectOnPlane(lower.position + hintOffset * weight - origin, direction);
+            var pole = Vector3.ProjectOnPlane(useFixedPole ? hintOffset : lower.position + hintOffset * weight - origin, direction);
             if (pole.sqrMagnitude < .00000001f) pole = Vector3.ProjectOnPlane(upper.up, direction);
             if (pole.sqrMagnitude < .00000001f) pole = Vector3.Cross(direction, Vector3.right);
             float along = (a * a - b * b + distance * distance) / (2 * distance);
             var elbow = origin + direction * along + pole.normalized * Mathf.Sqrt(Mathf.Max(0, a * a - along * along));
+            if (useFixedPole) target = origin + direction * distance;
             upper.rotation = Quaternion.FromToRotation(lower.position - origin, elbow - origin) * upper.rotation;
             lower.rotation = Quaternion.FromToRotation(hand.position - lower.position, target - lower.position) * lower.rotation;
             if (!preserveLocalHandRotation) hand.rotation = rotation;
