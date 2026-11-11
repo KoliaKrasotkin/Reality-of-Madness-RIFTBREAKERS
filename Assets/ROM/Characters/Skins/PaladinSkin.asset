@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.CharacterSkinDefinition
   Id: paladin
   SkinId: 2
-  VisualPrefab: {fileID: 1968318062744495272, guid: 515d8678b8677ba42b2807cd129467a6,
+  VisualPrefab: {fileID: 919132149155446097, guid: 95ca2488bfb27b9478157aceb0735840,
     type: 3}
   Controller: {fileID: 22100000, guid: 0a1717294469d7547bdeaf438cd40195, type: 2}
   DefaultWeapon: {fileID: 11400000, guid: 2faf26f781e45184dbcb8e4607d7acb1, type: 2}
   SpeedParameter: Speed
+  PreviewAssignedAttacksOnly: 0
   Actions:
   - Id: paladin-prototype-melee
     State: Base Layer.Attack0
@@ -49,7 +50,8 @@ MonoBehaviour:
     Layer: 0
     Fade: 0.09
     SpeedParameter: AttackRate
-    TimingClip: {fileID: 1827226128182048838, guid: f51ba5568bc20c64390e215e384c6101, type: 3}
+    TimingClip: {fileID: 1827226128182048838, guid: f51ba5568bc20c64390e215e384c6101,
+      type: 3}
   Weapons:
   - Weapon: {fileID: 11400000, guid: 2faf26f781e45184dbcb8e4607d7acb1, type: 2}
     Presentation: {fileID: 11400000, guid: 998fb6f6891fe4a4d8edbc01f11a3656, type: 2}

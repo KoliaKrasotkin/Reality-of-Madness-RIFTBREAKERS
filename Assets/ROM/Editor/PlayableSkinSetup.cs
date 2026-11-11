@@ -13,7 +13,8 @@ namespace ROM.EditorTools
     public static class PlayableSkinSetup
     {
         const string Warrior = "Assets/ROM/Characters/Warrior/WarriorPlayer.prefab";
-        const string Paladin = "Assets/ROM/Characters/PaladinPrototype/PaladinPrototypePlayer.prefab";
+        const string Paladin = "Assets/ROM/Characters/PaladinPrototype/PaladinPlayer.prefab";
+        const string PaladinModel = "Assets/ROM/Characters/PaladinPrototype/Models/Paladin.fbx";
         const string Folder = CharacterSkinAuthoring.Folder;
 
         [MenuItem("ROM/Characters/Configure Warrior and Paladin Skins")]
@@ -39,7 +40,7 @@ namespace ROM.EditorTools
         {
             var skin = AssetDatabase.LoadAssetAtPath<CharacterSkinDefinition>(Folder + "/PaladinSkin.asset");
             if (!skin.VisualPrefab || skin.VisualPrefab.GetComponent<WarriorAvatar>())
-                skin.VisualPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ROM/Characters/PaladinPrototype/PaladinVisual.prefab");
+                skin.VisualPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(PaladinModel);
             var sword = AssetDatabase.LoadAssetAtPath<WeaponDefinition>("Assets/ROM/Characters/PaladinPrototype/PaladinPracticeSword.asset");
             string visualPath = Folder + "/PaladinSwordPresentation.asset";
             var visual = AssetDatabase.LoadAssetAtPath<WeaponDefinition>(visualPath);

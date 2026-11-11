@@ -25,8 +25,8 @@ MonoBehaviour:
   SwingSeconds: 1.8
   Model: {fileID: 3827787081366005573, guid: b08d7eb9b7fe3124d90f5e24d55c710b, type: 3}
   Socket: 18
-  Position: {x: 0.043692864, y: 0.046120983, z: -0.043469116}
-  Rotation: {x: 0.00008537737, y: 253.29836, z: 90}
+  Position: {x: 0.041750472, y: 0.019782221, z: 0.09416499}
+  Rotation: {x: -0.000084096704, y: 87.60876, z: 182.40648}
   Scale: {x: 1, y: 1, z: 1}
   AllowedClasses:
   - paladin-prototype
@@ -35,15 +35,64 @@ MonoBehaviour:
   ImpactVfx: {fileID: 0}
   Controller: {fileID: 0}
   UsesBuiltInWeapon: 0
-  UseGripFrame: 0
+  UseGripFrame: 1
   StoredBone: 8
   StoredPosition: {x: 0, y: 0, z: 0}
   StoredRotation: {x: 0, y: 0, z: 0}
-  EnableHandIK: 0
+  EnableHandIK: 1
   KeepGripsReachable: 0
   HandGrips: []
   AnimationIK: []
-  FingerPoses: []
+  FingerPoses:
+  - Bone: 42
+    Rotation: {x: 35.12726, y: 168.81439, z: 352.1609}
+    RelaxedRotation: {x: 7.4403644, y: 168.69121, z: 8.318513}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 43
+    Rotation: {x: 35.303417, y: 323.65826, z: 298.71216}
+    RelaxedRotation: {x: 5.7959957, y: 343.20386, z: 330.10333}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 44
+    Rotation: {x: 348.56775, y: 347.59973, z: 8.876666}
+    RelaxedRotation: {x: 4.7862387, y: 352.95572, z: 353.09225}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 45
+    Rotation: {x: 32.19529, y: 145.32603, z: 330.5833}
+    RelaxedRotation: {x: 10.302021, y: 152.38074, z: 355.75146}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 46
+    Rotation: {x: 28.461147, y: 346.80078, z: 313.65405}
+    RelaxedRotation: {x: 358.4171, y: 357.90872, z: 344.04407}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 47
+    Rotation: {x: 349.9902, y: 347.211, z: 8.535341}
+    RelaxedRotation: {x: 4.375434, y: 351.53384, z: 350.849}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 48
+    Rotation: {x: 22.45796, y: 147.68343, z: 327.85892}
+    RelaxedRotation: {x: 358.58752, y: 157.19316, z: 348.9889}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 49
+    Rotation: {x: 27.606209, y: 334.92673, z: 307.44183}
+    RelaxedRotation: {x: 6.976365, y: 343.75, z: 345.9557}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 50
+    Rotation: {x: 355.25208, y: 349.27277, z: 14.092185}
+    RelaxedRotation: {x: 4.15886, y: 351.76566, z: 352.99768}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 51
+    Rotation: {x: 10.972387, y: 145.79402, z: 326.59332}
+    RelaxedRotation: {x: 348.0374, y: 155.59584, z: 346.74765}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 52
+    Rotation: {x: 22.068722, y: 330.4117, z: 300.77988}
+    RelaxedRotation: {x: 11.289937, y: 334.70435, z: 342.47223}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 53
+    Rotation: {x: 0.5467301, y: 348.93143, z: 13.145025}
+    RelaxedRotation: {x: 2.6359596, y: 350.24936, z: 350.31284}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  UseFixedFingerPoses: 0
   UseApprovedCarryGrip: 0
   CarryGripPosition: {x: 0, y: 0, z: 0}
   CarryGripRotation: {x: 0, y: 0, z: 0}
