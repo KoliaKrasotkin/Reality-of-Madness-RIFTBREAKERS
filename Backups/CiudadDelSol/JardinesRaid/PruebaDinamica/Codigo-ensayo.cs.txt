@@ -1,0 +1,167 @@
+using System;
+using System.IO;
+using System.Linq;
+using MultiFPS.Gameplay.RiftEnemies;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.AI;
+using Object = UnityEngine.Object;
+
+[InitializeOnLoad]
+internal static class GardenDynamicOneShot
+{
+    const string Phase = "ROM.GardenDynamicOneShot.Phase";
+    const string Output = "Backups/CiudadDelSol/JardinesRaid/PruebaDinamica/Resultado.txt";
+    const string ScenePath = "Assets/Scenes/Dungeon_Isla_del_Sol.unity";
+    static readonly int[] Order = { 0, 1, 0, 2, 0, 3, 1, 2, 1, 3, 2, 3, 0 };
+    static readonly Bounds Court = new Bounds(new Vector3(-119.5f, 4.8f, -49.5f), new Vector3(20, 2.5f, 16));
+    static NavMeshAgent agent;
+    static Transform[] points;
+    static int leg;
+    static double legStart, lastProgress, nextSample;
+    static float closestEdge, closestCourt, globalEdge, globalCourt, peakSpeed, travelled;
+    static Vector3 previousPosition, progressPosition;
+
+    static GardenDynamicOneShot()
+    {
+        EditorApplication.playModeStateChanged += OnPlayState;
+    }
+
+    public static void Run()
+    {
+        if (!Application.isBatchMode || EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new InvalidOperationException("Ejecutar desde modo edición en batch.");
+        File.WriteAllText(Output, "");
+        EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+        SessionState.SetInt(Phase, 1);
+        EditorApplication.EnterPlaymode();
+    }
+
+    static void OnPlayState(PlayModeStateChange state)
+    {
+        int phase = SessionState.GetInt(Phase, 0);
+        if (state == PlayModeStateChange.EnteredPlayMode && phase == 1)
+        {
+            try { Begin(); }
+            catch (Exception ex) { Finish(false, ex.ToString()); }
+        }
+        if (state == PlayModeStateChange.EnteredEditMode && phase >= 2)
+        {
+            SessionState.EraseInt(Phase);
+            Log("Play Mode cerrado. Objetos temporales activos: " +
+                Object.FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None).Count(a => a.name == "Sondeo temporal Jardines"));
+            EditorApplication.Exit(phase == 2 ? 0 : 1);
+        }
+    }
+
+    static void Begin()
+    {
+        var source = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ROM/Enemies/LittleDemon/LittleDemon_Enemy.prefab");
+        var config = source.GetComponentInChildren<NavMeshAgent>(true);
+        var definition = AssetDatabase.LoadAssetAtPath<RiftEnemyDefinition>("Assets/ROM/Enemies/LittleDemon/LittleDemon.asset");
+        var root = GameObject.Find("Raid · Jardines Dorados · Encuentro 01");
+        points = root.transform.Cast<Transform>().OrderBy(t => t.name, StringComparer.Ordinal).ToArray();
+        if (points.Length != 4) throw new InvalidOperationException("Se esperaban cuatro referencias.");
+        var settings = NavMesh.GetSettingsByID(config.agentTypeID);
+        if (settings.agentTypeID != config.agentTypeID || settings.agentRadius < config.radius || settings.agentHeight < config.height)
+            throw new InvalidOperationException("El agente supera las dimensiones usadas en el bake.");
+        var go = new GameObject("Sondeo temporal Jardines");
+        go.SetActive(false);
+        go.transform.position = points[0].position;
+        agent = go.AddComponent<NavMeshAgent>();
+        agent.agentTypeID = config.agentTypeID;
+        agent.radius = config.radius;
+        agent.height = config.height;
+        agent.baseOffset = config.baseOffset;
+        agent.areaMask = config.areaMask;
+        agent.speed = definition.MoveSpeed;
+        agent.acceleration = config.acceleration;
+        agent.angularSpeed = config.angularSpeed;
+        agent.autoBraking = config.autoBraking;
+        agent.autoTraverseOffMeshLink = config.autoTraverseOffMeshLink;
+        agent.autoRepath = false;
+        agent.stoppingDistance = .35f;
+        agent.obstacleAvoidanceType = config.obstacleAvoidanceType;
+        agent.avoidancePriority = 20;
+        go.SetActive(true);
+        if (!agent.Warp(points[0].position) || !agent.isOnNavMesh) throw new InvalidOperationException("El agente no se vinculó al NavMesh.");
+        Log($"Play Mode activo={Application.isPlaying}; agente tipo={agent.agentTypeID}; radio={agent.radius:F2}; altura={agent.height:F2}; " +
+            $"velocidad={agent.speed:F2}; aceleración={agent.acceleration:F2}; giro={agent.angularSpeed:F0}; parada={agent.stoppingDistance:F2}. " +
+            $"Bake radio={settings.agentRadius:F2}; altura={settings.agentHeight:F2}.");
+        leg = 1;
+        globalEdge = globalCourt = float.PositiveInfinity;
+        Depart();
+        EditorApplication.update += Tick;
+    }
+
+    static void Depart()
+    {
+        var to = points[Order[leg]];
+        var path = new NavMeshPath();
+        if (!agent.CalculatePath(to.position, path) || path.status != NavMeshPathStatus.PathComplete ||
+            !agent.SetDestination(to.position)) throw new InvalidOperationException("Destino inaccesible: " + to.name);
+        legStart = lastProgress = nextSample = Time.timeAsDouble;
+        previousPosition = progressPosition = agent.transform.position;
+        closestEdge = closestCourt = float.PositiveInfinity;
+        peakSpeed = travelled = 0;
+        Log($"INICIO {leg}/12 {points[Order[leg-1]].name} → {to.name}: {previousPosition:F3} → {to.position:F3}");
+    }
+
+    static void Tick()
+    {
+        try
+        {
+            double now = Time.timeAsDouble;
+            var p = agent.transform.position;
+            if (!agent.isOnNavMesh || !Court.Contains(p) || agent.isOnOffMeshLink)
+                throw new InvalidOperationException($"Tramo {leg}: agente fuera de superficie o patio en {p:F3}.");
+            if (!agent.FindClosestEdge(out var edge))
+                throw new InvalidOperationException($"Tramo {leg}: no se pudo medir el borde.");
+            float courtDistance = Mathf.Min(p.x - Court.min.x, Court.max.x - p.x, p.z - Court.min.z, Court.max.z - p.z);
+            closestEdge = Mathf.Min(closestEdge, edge.distance);
+            closestCourt = Mathf.Min(closestCourt, courtDistance);
+            if (Mathf.Min(closestEdge, closestCourt) < agent.radius)
+                throw new InvalidOperationException($"Tramo {leg}: margen menor al radio en {p:F3}. Borde {closestEdge:F3} m, patio {closestCourt:F3} m.");
+            travelled += Vector3.Distance(previousPosition, p);
+            previousPosition = p;
+            peakSpeed = Mathf.Max(peakSpeed, agent.velocity.magnitude);
+            if (Vector3.Distance(progressPosition, p) > .045f) { progressPosition = p; lastProgress = now; }
+            if (now >= nextSample)
+            {
+                Log($"MUESTRA {leg} t={now-legStart:F2} pos={p:F3} velocidad={agent.velocity.magnitude:F2} borde={edge.distance:F3}");
+                nextSample = now + .25;
+            }
+            if (now - legStart > 18 || now - lastProgress > 2.5)
+                throw new InvalidOperationException($"Tramo {leg} detenido o sin progreso en {p:F3}.");
+            if (agent.pathPending) return;
+            if (agent.pathStatus != NavMeshPathStatus.PathComplete)
+                throw new InvalidOperationException($"Tramo {leg}: {agent.pathStatus} en {p:F3}.");
+            float error = Vector3.Distance(p, points[Order[leg]].position);
+            if (error > agent.stoppingDistance + .06f || agent.velocity.magnitude > .18f) return;
+            if (travelled < 1 || peakSpeed < .25f) throw new InvalidOperationException($"Tramo {leg}: no hubo desplazamiento real.");
+            Log($"OK {leg}/12 pos={p:F3}; tiempo={now-legStart:F2} s; recorrido={travelled:F2} m; error final={error:F3} m; " +
+                $"borde mín={closestEdge:F3} m; límite del patio mín={closestCourt:F3} m; velocidad pico={peakSpeed:F2} m/s.");
+            globalEdge = Mathf.Min(globalEdge, closestEdge);
+            globalCourt = Mathf.Min(globalCourt, closestCourt);
+            if (++leg == Order.Length) Finish(true, $"12/12 tramos. Distancia mínima al borde NavMesh={globalEdge:F3} m y al límite del patio={globalCourt:F3} m.");
+            else Depart();
+        }
+        catch (Exception ex) { Finish(false, ex.ToString()); }
+    }
+
+    static void Finish(bool pass, string text)
+    {
+        EditorApplication.update -= Tick;
+        Log((pass ? "JARDINES_DINAMICA_OK " : "JARDINES_DINAMICA_ERROR ") + text);
+        if (agent) Object.Destroy(agent.gameObject);
+        SessionState.SetInt(Phase, pass ? 2 : 3);
+        EditorApplication.ExitPlaymode();
+    }
+
+    static void Log(string line)
+    {
+        File.AppendAllText(Output, line + Environment.NewLine);
+    }
+}
+

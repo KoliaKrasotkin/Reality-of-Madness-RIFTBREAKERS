@@ -222,6 +222,104 @@ namespace ROM.EditorTools
             var center = point + cc.center; float half = Mathf.Max(0, cc.height / 2 - cc.radius);
             Require(!Physics.OverlapCapsule(center - Vector3.up * half + Vector3.up * .1f, center + Vector3.up * half, cc.radius - cc.skinWidth, ~0, QueryTriggerInteraction.Ignore).Any(c => !c.transform.IsChildOf(actor.transform)), "Llegada ocupada por geometria; no se teletransporta.");
         }
+
+        const string HallTour = "ROM/Dungeon Ciudad del Sol/Finalizacion subsuelo/Recorrer salas en Host/";
+
+        [MenuItem(HallTour + "1. Jardines Dorados")]
+        static void VisitGardens() => VisitHall(new Vector3(-81,-15.94f,-42));
+        [MenuItem(HallTour + "2. Santuario Profano")]
+        static void VisitSanctuary() => VisitHall(new Vector3(147,-15.94f,-90));
+        [MenuItem(HallTour + "3. Claustro del Eclipse")]
+        static void VisitCloister() => VisitHall(new Vector3(24,-15.94f,138));
+        [MenuItem(HallTour + "4. El Sol Corrompido")]
+        static void VisitSun() => VisitHall(new Vector3(189,-15.94f,150));
+
+        static void VisitHall(Vector3 point) => Run(() =>
+        {
+            var actor = HostWarrior();
+            var city = SceneManager.GetSceneByPath(Original);
+            Require(city.IsValid() && city.isLoaded && city.GetRootGameObjects().Any(g => g.name=="Subsuelo_Salas_Monumentales"),
+                "Cargar primero Ciudad del Sol definitiva desde el Host local.");
+            Physics.SyncTransforms();
+            Landing(actor,point);
+            actor.ServerTeleport(point,0);
+        });
+
+        [MenuItem(Menu + "5. Probar Ciudad del Sol definitiva sin desplazamiento")]
+        public static void EnterDefinitive() => Run(() =>
+        {
+            var actor = HostWarrior();
+            Require(!runtime.IsValid() && !SceneManager.GetSceneByPath(Original).IsValid(),
+                "Salir de Play si hay una copia de prueba o Ciudad del Sol cargada.");
+            Require(Hash(Original).Replace("-", "") == "59448B459F7DEAB271CC61D1B228F495FF12BA8C21B05493386D949B27EF752B",
+                "La escena definitiva difiere de la integracion validada.");
+            var hostMap = SceneManager.GetSceneByPath("Assets/ROM/Levels/map_rom_horde.unity");
+            Require(hostMap.IsValid() && hostMap.isLoaded, "Iniciar primero el Host local habitual y aparecer con Warrior.");
+
+            void OnLoaded(Scene city, LoadSceneMode mode)
+            {
+                if (city.path != Original) return;
+                SceneManager.sceneLoaded -= OnLoaded;
+                var disabledColliders = new List<Collider>();
+                var disabledRenderers = new List<Renderer>();
+                var disabledPlanes = new List<HordeVoidKillPlane>();
+                try
+                {
+                    Require(HostWarrior() == actor, "El Warrior del Host cambio durante la carga.");
+                    var roots = city.GetRootGameObjects();
+                    Require(roots.Count(g => g.name == "Nucleo_Monumental_Conjunto") == 1,
+                        "La escena definitiva debe contener un unico nucleo integrado.");
+                    var planes = roots.SelectMany(g => g.GetComponentsInChildren<HordeVoidKillPlane>()).ToArray();
+                    Require(planes.Length == 1 && planes[0].enabled && planes[0].KillHeight <= -46,
+                        "El plano de muerte de Ciudad del Sol no deja margen bajo V3.");
+                    foreach (var root in roots)
+                    {
+                        foreach (var camera in root.GetComponentsInChildren<Camera>()) camera.enabled = false;
+                        foreach (var listener in root.GetComponentsInChildren<AudioListener>()) listener.enabled = false;
+                    }
+
+                    var cityColliders = roots.SelectMany(g => g.GetComponentsInChildren<Collider>())
+                        .Where(c => c.enabled && !c.isTrigger).ToArray();
+                    Require(cityColliders.Length > 0, "Ciudad del Sol no tiene colliders activos.");
+                    var footprint = cityColliders[0].bounds;
+                    foreach (var collider in cityColliders) footprint.Encapsulate(collider.bounds);
+                    footprint.Expand(4);
+                    foreach (var root in hostMap.GetRootGameObjects())
+                    {
+                        disabledColliders.AddRange(root.GetComponentsInChildren<Collider>()
+                            .Where(c => c.enabled && footprint.Intersects(c.bounds) && !c.GetComponentInParent<Health>()));
+                        disabledRenderers.AddRange(root.GetComponentsInChildren<Renderer>()
+                            .Where(r => r.enabled && footprint.Intersects(r.bounds) && !r.GetComponentInParent<Health>()));
+                        disabledPlanes.AddRange(root.GetComponentsInChildren<HordeVoidKillPlane>().Where(p => p.enabled));
+                    }
+                    foreach (var collider in disabledColliders) collider.enabled = false;
+                    foreach (var renderer in disabledRenderers) renderer.enabled = false;
+                    foreach (var plane in disabledPlanes) plane.enabled = false;
+                    Require(!Object.FindObjectsByType<HordeVoidKillPlane>(FindObjectsSortMode.None)
+                        .Any(p => p.isActiveAndEnabled && p != planes[0] && p.KillHeight > -46),
+                        "Otro plano de muerte activo invade el nivel profundo.");
+                    Physics.SyncTransforms();
+                    var point = new Vector3(162, 4.06f, 12);
+                    Landing(actor, point);
+                    actor.ServerTeleport(point, 0);
+                    Debug.Log("CIUDAD_DEL_SOL_DEFINITIVA_QA: Warrior en " + point +
+                        ", sin offset. Salir de Play para restaurar el mapa anfitrion.");
+                }
+                catch (Exception e)
+                {
+                    foreach (var collider in disabledColliders) if (collider) collider.enabled = true;
+                    foreach (var renderer in disabledRenderers) if (renderer) renderer.enabled = true;
+                    foreach (var plane in disabledPlanes) if (plane) plane.enabled = true;
+                    SceneManager.UnloadSceneAsync(city);
+                    Debug.LogException(e);
+                }
+            }
+
+            SceneManager.sceneLoaded += OnLoaded;
+            try { EditorSceneManager.LoadSceneInPlayMode(Original, new LoadSceneParameters(LoadSceneMode.Additive)); }
+            catch { SceneManager.sceneLoaded -= OnLoaded; throw; }
+        });
+
         [MenuItem(Menu + "3. Entrar al acceso original Y4")]
         public static void Enter() => Run(() =>
         {

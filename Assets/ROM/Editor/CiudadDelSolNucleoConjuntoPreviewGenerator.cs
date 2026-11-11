@@ -13,7 +13,7 @@ using Object=UnityEngine.Object;
 namespace ROM.EditorTools
 {
     // Disposable composition only. No integration, scene save, asset save or gameplay entry point.
-    public static class CiudadDelSolNucleoConjuntoPreviewGenerator
+    public static partial class CiudadDelSolNucleoConjuntoPreviewGenerator
     {
         const string Menu="ROM/Dungeon Ciudad del Sol/Nucleo monumental conjunto/";
         const string Target="Assets/Scenes/Dungeon_Isla_del_Sol.unity";
@@ -44,11 +44,11 @@ namespace ROM.EditorTools
         [MenuItem(Menu+"7. Comprobar ruta superior sin generar")] public static void CheckUpper(){try{if(StageUtility.GetCurrentStage()!=StageUtility.GetMainStage())throw new InvalidOperationException("Cerrar primero la copia temporal");var scene=SceneManager.GetActiveScene();if(scene.path!=Target)throw new InvalidOperationException("Escena original requerida");var probe=ScriptableObject.CreateInstance<JointStage>();try{probe.CheckUpper(scene);}finally{Object.DestroyImmediate(probe);}}catch(Exception e){Debug.LogException(e);}}
         [MenuItem(Menu+"9. Cerrar sin guardar")] public static void Close(){if(StageUtility.GetCurrentStage() is JointStage)StageUtility.GoToMainStage();}
 
-        sealed class JointStage:PreviewSceneStage
+        sealed partial class JointStage:PreviewSceneStage
         {
             public Scene Source;public object Original;public bool Ready;
             Transform context,generated;
-            readonly List<ScriptableObject> builders=new List<ScriptableObject>();
+            internal readonly List<ScriptableObject> builders=new List<ScriptableObject>();
             readonly Dictionary<GameObject,GameObject> identities=new Dictionary<GameObject,GameObject>();
             readonly Dictionary<GameObject,string> initial=new Dictionary<GameObject,string>();
             readonly HashSet<GameObject> approvedFloors=new HashSet<GameObject>();
@@ -57,6 +57,9 @@ namespace ROM.EditorTools
             readonly List<GameObject> originalChanged=new List<GameObject>();
             readonly List<string> manifest=new List<string>();
             int samples;
+            float minimumClearance = float.PositiveInfinity;
+            internal Scene auditScene;
+            Scene WorkScene => auditScene.IsValid() ? auditScene : scene;
             protected override GUIContent CreateHeaderContent()=>new GUIContent("NUCLEO CONJUNTO - COPIA TEMPORAL - NO INTEGRAR");
             static Bounds BoundsOf(GameObject g){var r=g.GetComponentsInChildren<Renderer>(true).Where(x=>x.enabled).ToArray();if(r.Length==0)throw new InvalidOperationException("Sin malla: "+g.name);var b=r[0].bounds;foreach(var x in r.Skip(1))b.Encapsulate(x.bounds);return b;}
             static string Snapshot(GameObject g)=>g.activeSelf+"|"+g.transform.position.ToString("F5")+g.transform.rotation.ToString("F5")+g.transform.localScale.ToString("F5")+"|"+string.Join(";",g.GetComponents<MeshFilter>().Select(f=>f.sharedMesh?f.sharedMesh.GetInstanceID():0))+"|"+string.Join(";",g.GetComponents<Renderer>().Select(r=>r.enabled+":"+string.Join(",",r.sharedMaterials.Select(m=>m?m.GetInstanceID():0))))+"|"+string.Join(";",g.GetComponents<Collider>().Select(c=>c.GetType().Name+":"+c.enabled+":"+c.isTrigger+":"+(c is MeshCollider mc&&mc.sharedMesh?mc.sharedMesh.GetInstanceID():0)));
@@ -66,14 +69,22 @@ namespace ROM.EditorTools
                 if(!base.OnOpenStage())return false;
                 try
                 {
-                    var preview=scene;preview.name="TEMP_CiudadDelSol_NucleoConjunto";
+                    Compose();
+                    Ready=true;EditorApplication.delayCall+=()=>{if(this&&StageUtility.GetCurrentStage()==this){Selection.activeGameObject=null;View(1);}};
+                }
+                catch(Exception e){Debug.LogException(e);Debug.LogError("NUCLEO_CONJUNTO_NO_VALIDADO: copia descartada; no integrar. Original protegido.");EditorApplication.delayCall+=()=>{if(this&&StageUtility.GetCurrentStage()==this)StageUtility.GoToMainStage();};}
+                return true;
+            }
+            internal void Compose()
+            {
+                    var preview=WorkScene;preview.name="TEMP_CiudadDelSol_NucleoConjunto";
                     foreach(var type in new[]{typeof(CiudadDelSolCentroOrientalPreviewGenerator),typeof(CiudadDelSolArticulacionSurestePreviewGenerator)})Call(type,"Audit",Source,Call(type,"Load"));
                     Call(typeof(CiudadDelSolSolInvertidoPreviewGenerator),"Audit",Source);
-                    var h=new GameObject("Contexto_UNICO_por_identidad");SceneManager.MoveGameObjectToScene(h,scene);context=h.transform;h.SetActive(false);
+                    var h=new GameObject("Contexto_UNICO_por_identidad");SceneManager.MoveGameObjectToScene(h,WorkScene);context=h.transform;h.SetActive(false);
                     foreach(var original in Source.GetRootGameObjects().Where(Root)){var c=Object.Instantiate(original,context);c.name=original.name;c.transform.SetPositionAndRotation(original.transform.position,original.transform.rotation);c.transform.localScale=original.transform.lossyScale;Map(original.transform,c.transform);}
                     Call(typeof(CiudadDelSolCentroOrientalPreviewGenerator),"Quiet",h);h.SetActive(true);Physics.SyncTransforms();
                     foreach(var copy in identities.Keys)initial.Add(copy,Snapshot(copy));
-                    var root=new GameObject("Nucleo_Monumental_Conjunto_TEMPORAL");SceneManager.MoveGameObjectToScene(root,scene);generated=root.transform;
+                    var root=new GameObject("Nucleo_Monumental_Conjunto_TEMPORAL");SceneManager.MoveGameObjectToScene(root,WorkScene);generated=root.transform;
                     // Freeze the authorised floor identities before any generator reparents them.
                     foreach(var t in new[]{typeof(CiudadDelSolCentroOrientalPreviewGenerator),typeof(CiudadDelSolArticulacionSurestePreviewGenerator)})foreach(GameObject f in (IEnumerable)Call(t,"Floors",context.Cast<Transform>().Select(x=>x.gameObject)))if(!(bool)Call(t,"Gallery",f))if(!approvedFloors.Add(f))throw new InvalidOperationException("Piso solicitado por dos sectores: "+identities[f].GetInstanceID());
                     if(approvedFloors.Count!=194)throw new InvalidOperationException("Se esperaban194 pisos trasladables distintos.");
@@ -96,15 +107,12 @@ namespace ROM.EditorTools
                     foreach(var wall in portal)wall.SetActive(false);
                     DeduplicateApprovedRails(co,se);
                     DeduplicateComposition();
-                    AuditIdentities();ValidateJoint();Ready=true;EditorApplication.delayCall+=()=>{if(this&&StageUtility.GetCurrentStage()==this){Selection.activeGameObject=null;View(1);}};
+                    AuditIdentities();ValidateJoint();
                     Debug.Log("NUCLEO_CONJUNTO_LISTO: un contexto; CO aprobado, Sureste arcadas y V3 corregida.12 muros temporales y"+duplicateRails.Count+" duplicados exactos desactivados. No guardar ni integrar.");
-                }
-                catch(Exception e){Debug.LogException(e);Debug.LogError("NUCLEO_CONJUNTO_NO_VALIDADO: copia descartada; no integrar. Original protegido.");EditorApplication.delayCall+=()=>{if(this&&StageUtility.GetCurrentStage()==this)StageUtility.GoToMainStage();};}
-                return true;
             }
             ScriptableObject Builder(Type outer,string nested,string label)
             {
-                var b=ScriptableObject.CreateInstance(outer.GetNestedType(nested,Flags));builders.Add(b);Set(b,"JointScene",scene);Set(b,"Source",Source);Set(b,"Assets",Call(outer,"Load"));
+                var b=ScriptableObject.CreateInstance(outer.GetNestedType(nested,Flags));builders.Add(b);Set(b,"JointScene",WorkScene);Set(b,"Source",Source);Set(b,"Assets",Call(outer,"Load"));
                 var guard=Activator.CreateInstance(outer.GetNestedType("Guard",Flags),Flags,null,new object[]{Source},null);Set(b,"Original",guard);Set(b,"context",context);
                 var r=new GameObject(label);r.transform.SetParent(generated,false);Set(b,"generated",r.transform);return b;
             }
@@ -196,14 +204,19 @@ namespace ROM.EditorTools
             public void CheckUpper(Scene source){Physics.SyncTransforms();var all=source.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Collider>()).Where(c=>c.enabled&&!c.isTrigger&&c.gameObject.activeInHierarchy).ToArray();var route=UpperRoute();for(int i=1;i<route.Length;i++)Segment(route[i-1],route[i],all,false,source.GetPhysicsScene());Debug.Log("NUCLEO_RUTA_SUPERIOR_OK: fuente solo lectura; abertura existente, rodeo Z63, G04/G03 y llegada V3 a Y-16; "+samples+" muestras. Sin geometria ni cambios de escena.");}
             void Segment(Vector3 a,Vector3 b,Collider[] colliders,bool stair=false,PhysicsScene? query=null)
             {
-                var side=Vector3.Cross(Vector3.up,b-a).normalized;var physics=query??scene.GetPhysicsScene();var hits=new Collider[256];var allowed=new HashSet<Collider>(colliders);int count=Mathf.CeilToInt(Vector3.Distance(a,b)/.4f);var near=colliders.Select(c=>(c,b:c.bounds)).ToArray();
+                var side=Vector3.Cross(Vector3.up,b-a).normalized;var physics=query??WorkScene.GetPhysicsScene();var hits=new Collider[256];var allowed=new HashSet<Collider>(colliders);int count=Mathf.CeilToInt(Vector3.Distance(a,b)/.4f);var near=colliders.Select(c=>(c,b:c.bounds)).ToArray();
                 for(int i=0;i<=count;i++)foreach(float lane in new[]{-1.2f,-.4f,.4f,1.2f})
                 {
                     var p=Vector3.Lerp(a,b,i/(float)count)+side*lane;var ray=new Ray(p+Vector3.up*1.15f,Vector3.down);var ground=new List<RaycastHit>();
                     foreach(var t in near)if(t.b.min.x<=p.x&&t.b.max.x>=p.x&&t.b.min.z<=p.z&&t.b.max.z>=p.z&&t.c.Raycast(ray,out var h,2.4f)&&h.normal.y>.5f)ground.Add(h);
                     if(ground.Count==0)throw new InvalidOperationException("CONJUNTO_SIN_SUELO: "+p);var foot=ground.OrderBy(h=>Mathf.Abs(h.point.y-p.y)).First().point;if(Mathf.Abs(foot.y-p.y)>(stair?.55f:.08f))throw new InvalidOperationException("CONJUNTO_DESNIVEL: "+p+" suelo="+foot);
                     int n=physics.OverlapCapsule(foot+Vector3.up*.69f,foot+Vector3.up*1.68f,.32f,hits,~0,QueryTriggerInteraction.Ignore);if(n==hits.Length)throw new InvalidOperationException("Consulta saturada");for(int k=0;k<n;k++)if(allowed.Contains(hits[k]))throw new InvalidOperationException("CONJUNTO_BLOQUEADO: "+foot+" / "+hits[k].name+" / "+hits[k].transform.position);
-                    foreach(var t in near)if(t.b.min.x<=foot.x&&t.b.max.x>=foot.x&&t.b.min.z<=foot.z&&t.b.max.z>=foot.z&&t.c.Raycast(new Ray(foot+Vector3.up*.69f,Vector3.up),out var head,50)&&head.point.y-foot.y<2.1f)throw new InvalidOperationException("CONJUNTO_ALTURA_LIBRE: "+foot+" / "+t.c.name);
+                    foreach(var t in near)if(t.b.min.x<=foot.x&&t.b.max.x>=foot.x&&t.b.min.z<=foot.z&&t.b.max.z>=foot.z&&t.c.Raycast(new Ray(foot+Vector3.up*.69f,Vector3.up),out var head,50))
+                    {
+                        float clearance = head.point.y - foot.y;
+                        minimumClearance = Mathf.Min(minimumClearance, clearance);
+                        if(clearance<2.1f)throw new InvalidOperationException("CONJUNTO_ALTURA_LIBRE: "+foot+" / "+t.c.name);
+                    }
                     samples++;
                 }
             }
@@ -217,20 +230,34 @@ namespace ROM.EditorTools
                 try{foreach(var w in portal.Concat(duplicateRails))w.SetActive(true);Physics.SyncTransforms();foreach(var b in builders)Call(b,b.GetType().Name=="SolPreview"?"ValidateGeometry":"Validate");}
                 finally{foreach(var w in portal.Concat(duplicateRails))w.SetActive(false);Physics.SyncTransforms();}
                 var all=context.GetComponentsInChildren<Collider>().Concat(generated.GetComponentsInChildren<Collider>()).Where(c=>c.enabled&&!c.isTrigger&&c.gameObject.activeInHierarchy).ToArray();
-                foreach(var b in builders)foreach(var w in (IEnumerable)Read(b,"walks"))Segment((Vector3)Read(w,"A"),(Vector3)Read(w,"B"),all,(bool)Read(w,"Stair"));
+                ValidateRoutes(all, WorkScene.GetPhysicsScene());
+                ValidateDuplicates(context.GetComponentsInChildren<MeshFilter>().Concat(generated.GetComponentsInChildren<MeshFilter>()), f=>identities.ContainsKey(f.gameObject));
+                int triangles=generated.GetComponentsInChildren<MeshFilter>().Where(f=>f.sharedMesh).Sum(f=>Enumerable.Range(0,f.sharedMesh.subMeshCount).Sum(n=>(int)f.sharedMesh.GetIndexCount(n)/3));
+                WritePreviewReport(triangles);
+            }
+            void ValidateRoutes(Collider[] all, PhysicsScene physics)
+            {
+                samples=0;
+                minimumClearance=float.PositiveInfinity;
+                foreach(var b in builders)foreach(var w in (IEnumerable)Read(b,"walks"))Segment((Vector3)Read(w,"A"),(Vector3)Read(w,"B"),all,(bool)Read(w,"Stair"),physics);
                 var routes=new[]{new[]{new Vector3(96,-34,27),new Vector3(96,-34,33),new Vector3(99,-34,39)},UpperRoute()};
-                foreach(var route in routes)for(int i=1;i<route.Length;i++)Segment(route[i-1],route[i],all);
+                foreach(var route in routes)for(int i=1;i<route.Length;i++)Segment(route[i-1],route[i],all,false,physics);
                 // Include the complete original access, using its established sampled segments.
                 var access=new[]{new Vector3(162,4,7),new Vector3(162,4,33.45f),new Vector3(150,4,33.45f),new Vector3(150,4,36)};
-                for(int i=1;i<access.Length;i++)Segment(access[i-1],access[i],all);
-                for(int i=0;i<5;i++){var a=new Vector3(150,4-i*4,36+i*12);var z=a+new Vector3(0,-4,6);Segment(a,z,all,true);if(i<4)Segment(z,z+Vector3.forward*6,all);}
-                Segment(new Vector3(150,-16,90),new Vector3(150,-16,93),all);Segment(new Vector3(150,-16,93),new Vector3(156,-16,93),all);Segment(new Vector3(156,-16,93),new Vector3(156,-16,99),all);
-                var seen=new Dictionary<string,MeshFilter>();int triangles=0;foreach(var f in context.GetComponentsInChildren<MeshFilter>().Concat(generated.GetComponentsInChildren<MeshFilter>()))
+                for(int i=1;i<access.Length;i++)Segment(access[i-1],access[i],all,false,physics);
+                for(int i=0;i<5;i++){var a=new Vector3(150,4-i*4,36+i*12);var z=a+new Vector3(0,-4,6);Segment(a,z,all,true,physics);if(i<4)Segment(z,z+Vector3.forward*6,all,false,physics);}
+                Segment(new Vector3(150,-16,90),new Vector3(150,-16,93),all,false,physics);Segment(new Vector3(150,-16,93),new Vector3(156,-16,93),all,false,physics);Segment(new Vector3(156,-16,93),new Vector3(156,-16,99),all,false,physics);
+            }
+            static void ValidateDuplicates(IEnumerable<MeshFilter> filters, Func<MeshFilter,bool> original)
+            {
+                var seen=new Dictionary<string,MeshFilter>();foreach(var f in filters)
                 {
                     if(!f.gameObject.activeInHierarchy||!f.sharedMesh)continue;var key=f.sharedMesh.GetInstanceID()+"|"+f.transform.localToWorldMatrix.ToString("F4");
-                    if(seen.TryGetValue(key,out var old)&&(!identities.ContainsKey(f.gameObject)||!identities.ContainsKey(old.gameObject)))throw new InvalidOperationException("MALLA_DUPLICADA_NUEVA: "+AnimationUtility.CalculateTransformPath(f.transform,null)+" / "+AnimationUtility.CalculateTransformPath(old.transform,null)+" / "+f.transform.position);seen[key]=f;
-                    if(f.transform.IsChildOf(generated))for(int n=0;n<f.sharedMesh.subMeshCount;n++)triangles+=(int)f.sharedMesh.GetIndexCount(n)/3;
+                    if(seen.TryGetValue(key,out var old)&&(!original(f)||!original(old)))throw new InvalidOperationException("MALLA_DUPLICADA_NUEVA: "+AnimationUtility.CalculateTransformPath(f.transform,null)+" / "+AnimationUtility.CalculateTransformPath(old.transform,null)+" / "+f.transform.position);seen[key]=f;
                 }
+            }
+            void WritePreviewReport(int triangles)
+            {
                 if(context.childCount!=Source.GetRootGameObjects().Count(Root))throw new InvalidOperationException("Contexto duplicado o incompleto");
                 var line="NUCLEO_CONJUNTO_VALIDACION_OK: contexto unico;194 pisos trasladados;144 abiertos V3;12 muros temporales desactivados;CO+Sureste arcadas+V3 corregida; muestras="+samples+"; renderers activos sectores="+generated.GetComponentsInChildren<Renderer>().Length+"; colliders activos sectores="+generated.GetComponentsInChildren<Collider>().Length+"; triangulos sectores="+triangles+". Acceso Y4/-16, G04/G03 y recorrido hasta V3 Y-38 comprobados estaticamente. Personaje real pendiente. L-E y contencion profunda V3 intactos. Sin guardar/integrar.";
                 manifest.Clear();manifest.Add(line);foreach(var g in originalChanged){var o=identities[g];manifest.Add("ORIGINAL_COPIADO|"+GlobalObjectId.GetGlobalObjectIdSlow(o)+"|"+AnimationUtility.CalculateTransformPath(o.transform,null)+"|"+o.transform.position.ToString("F4")+" -> "+g.transform.position.ToString("F4")+"|activo="+g.activeSelf);}
