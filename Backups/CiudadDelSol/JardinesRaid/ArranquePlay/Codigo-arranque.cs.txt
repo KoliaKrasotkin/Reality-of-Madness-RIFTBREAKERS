@@ -1,0 +1,113 @@
+using System;
+using System.IO;
+using System.Linq;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+[InitializeOnLoad]
+internal static class GardenPlayStartupProbe
+{
+    const string Phase = "ROM.GardenPlayStartupProbe.Phase";
+    const string Saved = "ROM.GardenPlayStartupProbe.StartScene";
+    const string Path = "Assets/Scenes/Dungeon_Isla_del_Sol.unity";
+    const string Output = "Backups/CiudadDelSol/JardinesRaid/ArranquePlay/Resultado.txt";
+    const string Root = "Raid · Jardines Dorados · Encuentro 01";
+
+    static GardenPlayStartupProbe()
+    {
+        EditorApplication.playModeStateChanged += Changed;
+        EditorApplication.quitting += Restore;
+    }
+
+    public static void Run()
+    {
+        if (!Application.isBatchMode || EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new InvalidOperationException("Requiere un editor batch en modo edición.");
+        File.WriteAllText(Output, "");
+        var original = EditorSceneManager.playModeStartScene;
+        SessionState.SetString(Saved, original ? AssetDatabase.GetAssetPath(original) : "");
+        SessionState.SetInt(Phase, 1);
+        try
+        {
+            Log("Escena de arranque previa: " + Describe(original));
+            EditorSceneManager.OpenScene(Path, OpenSceneMode.Single);
+            LogScenes("Antes de Play");
+            var target = AssetDatabase.LoadAssetAtPath<SceneAsset>(Path);
+            if (!target) throw new InvalidOperationException("No se encuentra el SceneAsset de Ciudad del Sol.");
+            EditorSceneManager.playModeStartScene = target;
+            Log("Escena de arranque temporal: " + Describe(EditorSceneManager.playModeStartScene));
+            EditorApplication.EnterPlaymode();
+        }
+        catch
+        {
+            Restore();
+            SessionState.EraseInt(Phase);
+            throw;
+        }
+    }
+
+    static void Changed(PlayModeStateChange state)
+    {
+        int phase = SessionState.GetInt(Phase, 0);
+        if (phase == 1 && state == PlayModeStateChange.EnteredPlayMode)
+        {
+            bool pass = false;
+            try
+            {
+                LogScenes("Play Mode");
+                var scene = SceneManager.GetSceneByPath(Path);
+                if (!Application.isPlaying || !scene.IsValid() || !scene.isLoaded || SceneManager.GetActiveScene() != scene)
+                    throw new InvalidOperationException("Ciudad del Sol no es la escena activa de Play Mode.");
+                var root = scene.GetRootGameObjects().SingleOrDefault(g => g.name == Root && g.activeInHierarchy);
+                if (!root) throw new InvalidOperationException("No se encontró la raíz activa del encuentro.");
+                var points = root.transform.Cast<Transform>().OrderBy(t => t.name, StringComparer.Ordinal).ToArray();
+                foreach (var p in points) Log($"Referencia: {p.name} {p.position:F3}");
+                string[] expected = { "01 Frontal", "02 Distancia", "03 Patrulla A", "04 Patrulla B" };
+                if (!points.Select(p => p.name).SequenceEqual(expected))
+                    throw new InvalidOperationException("Las referencias no coinciden con las cuatro aprobadas.");
+                Log("JARDINES_ARRANQUE_OK Play Mode activo y 4/4 referencias.");
+                pass = true;
+            }
+            catch (Exception ex) { Log(ex.ToString()); }
+            finally
+            {
+                Restore();
+                SessionState.SetInt(Phase, pass ? 2 : 3);
+                EditorApplication.ExitPlaymode();
+            }
+        }
+        if (phase >= 2 && state == PlayModeStateChange.EnteredEditMode)
+        {
+            Restore();
+            string actual = Describe(EditorSceneManager.playModeStartScene);
+            string saved = SessionState.GetString(Saved, "");
+            bool restored = actual == (saved.Length == 0 ? "<ninguna>" : saved);
+            Log("Editor restaurado: " + restored + " · escena de arranque: " + actual);
+            SessionState.EraseString(Saved);
+            SessionState.EraseInt(Phase);
+            EditorApplication.Exit(phase == 2 && restored ? 0 : 1);
+        }
+    }
+
+    static void Restore()
+    {
+        if (SessionState.GetInt(Phase, 0) == 0) return;
+        string path = SessionState.GetString(Saved, "");
+        EditorSceneManager.playModeStartScene = path.Length == 0 ? null : AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+    }
+
+    static string Describe(SceneAsset scene) => scene ? AssetDatabase.GetAssetPath(scene) : "<ninguna>";
+    static void LogScenes(string phase)
+    {
+        Log($"{phase}: isPlaying={Application.isPlaying}; activa={SceneManager.GetActiveScene().path}");
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            var scene = SceneManager.GetSceneAt(i);
+            Log($"Escena {i}: {scene.path}; cargada={scene.isLoaded}");
+        }
+    }
+    static void Log(string line) => File.AppendAllText(Output, line + Environment.NewLine);
+}
+

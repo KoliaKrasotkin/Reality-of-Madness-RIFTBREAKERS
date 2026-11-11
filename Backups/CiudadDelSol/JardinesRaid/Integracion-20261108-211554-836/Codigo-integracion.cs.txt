@@ -1,0 +1,161 @@
+using System;
+using System.IO;
+using System.Linq;
+using Unity.AI.Navigation;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+
+namespace ROM.EditorTools
+{
+    public static partial class CiudadDelSolNaveJardinesPreview
+    {
+        const string GardenOriginalHash = "4192D89D77FA3BA97201D39124FE0B574AB2BF49031738A534C3BC241774F2BD";
+        const string GardenFolder = "Assets/ROM/CiudadDelSolJardinesRaid";
+        const string GardenAsset = GardenFolder + "/Jardines_Encuentro01_NavMesh.asset";
+        const string GardenCandidate = GardenFolder + "/Candidata.unity";
+        const string GardenRoot = "Raid · Jardines Dorados · Encuentro 01";
+        static readonly Bounds GardenCourt = new Bounds(new Vector3(-119.5f, 4.8f, -49.5f), new Vector3(20, 2.5f, 16));
+        static readonly Vector3 GardenBake = new Vector3(20 - 2 * .35f, 2.5f, 16 - 2 * .35f);
+        static readonly (string name, Vector3 point)[] GardenMarkers =
+        {
+            ("01 Frontal", new Vector3(-122.3f, 4.025f, -52)),
+            ("02 Distancia", new Vector3(-115.7f, 4.025f, -46.5f)),
+            ("03 Patrulla A", new Vector3(-124, 4.025f, -47)),
+            ("04 Patrulla B", new Vector3(-115, 4.025f, -47))
+        };
+
+        public static void IntegrateGardenNavigationInBatch()
+        {
+            Require(Application.isBatchMode && Hash() == GardenOriginalHash && !Directory.Exists(GardenFolder),
+                "Origen distinto del auditado o destino ocupado.");
+            string output = "Backups/CiudadDelSol/JardinesRaid/Integracion-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff");
+            Directory.CreateDirectory(output);
+            string backup = Path.Combine(output, Path.GetFileName(Original));
+            string meta = SceneFileHash(Original + ".meta");
+            File.Copy(Original, backup);
+            File.Copy(Original + ".meta", backup + ".meta");
+            Require(SceneFileHash(backup) == GardenOriginalHash && SceneFileHash(backup + ".meta") == meta,
+                "Falló el respaldo.");
+            File.WriteAllLines(Path.Combine(output, "SHA256.txt"), new[] { GardenOriginalHash + "  " + Path.GetFileName(Original),
+                meta + "  " + Path.GetFileName(Original) + ".meta" });
+            Debug.Log("JARDINES_RESPALDO_OK " + output);
+            bool created = false, promoted = false;
+            NavMeshData temporary = null;
+            try
+            {
+                var scene = EditorSceneManager.OpenScene(Original, OpenSceneMode.Single);
+                Require(!scene.isDirty && scene.GetRootGameObjects().All(g => g.name != GardenRoot) &&
+                    NavMesh.CalculateTriangulation().indices.Length == 0, "Ya existe navegación o la escena está modificada.");
+                var root = new GameObject(GardenRoot);
+                root.transform.position = GardenCourt.center;
+                var surface = root.AddComponent<NavMeshSurface>();
+                surface.agentTypeID = 0;
+                surface.collectObjects = CollectObjects.Volume;
+                surface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+                surface.center = Vector3.zero;
+                surface.size = GardenBake;
+                surface.BuildNavMesh();
+                temporary = surface.navMeshData;
+                foreach (var entry in GardenMarkers)
+                {
+                    var marker = new GameObject(entry.name);
+                    marker.transform.SetParent(root.transform, false);
+                    marker.transform.position = entry.point;
+                }
+                string report = ValidateGardenNavigation(scene, false);
+                Require(!string.IsNullOrEmpty(AssetDatabase.CreateFolder("Assets/ROM", "CiudadDelSolJardinesRaid")),
+                    "No se pudo crear el destino.");
+                created = true;
+                AssetDatabase.CreateAsset(temporary, GardenAsset);
+                AssetDatabase.SaveAssets();
+                Require(ValidateGardenNavigation(scene, true) == report &&
+                    EditorSceneManager.SaveScene(scene, GardenCandidate, true), "No se pudo preparar la candidata.");
+                ValidateIslandSceneDelta(backup, GardenCandidate, 11);
+
+                var candidate = EditorSceneManager.OpenScene(GardenCandidate, OpenSceneMode.Single);
+                Require(!candidate.isDirty && ValidateGardenNavigation(candidate, true) == report &&
+                    Hash() == GardenOriginalHash && SceneFileHash(backup) == GardenOriginalHash,
+                    "La candidata o el respaldo cambió.");
+                string expected = SceneFileHash(GardenCandidate);
+                string swap = Path.Combine(output, "Promocion.tmp");
+                File.Copy(GardenCandidate, swap);
+                File.Replace(swap, Original, null);
+                promoted = true;
+                AssetDatabase.ImportAsset(Original, ImportAssetOptions.ForceSynchronousImport);
+                var reopened = EditorSceneManager.OpenScene(Original, OpenSceneMode.Single);
+                Require(!reopened.isDirty && ValidateGardenNavigation(reopened, true) == report && Hash() == expected &&
+                    SceneFileHash(Original + ".meta") == meta, "Falló la reapertura de la escena definitiva.");
+                Require(AssetDatabase.DeleteAsset(GardenCandidate), "No se pudo retirar la candidata.");
+                File.WriteAllText(Path.Combine(output, "Integracion.txt"), report +
+                    $"\nEscena reabierta SHA-256: {expected}\nRespaldo: {backup}\nAsset: {GardenAsset}\n");
+                Debug.Log("JARDINES_NAVMESH_INTEGRADO_OK " + output);
+            }
+            catch
+            {
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+                if (promoted)
+                {
+                    File.Copy(backup, Original, true);
+                    Require(Hash() == GardenOriginalHash, "Falló la restauración del respaldo.");
+                    AssetDatabase.ImportAsset(Original, ImportAssetOptions.ForceSynchronousImport);
+                }
+                if (created) AssetDatabase.DeleteAsset(GardenFolder);
+                throw;
+            }
+            finally
+            {
+                if (temporary && !EditorUtility.IsPersistent(temporary)) UnityEngine.Object.DestroyImmediate(temporary);
+            }
+        }
+
+        static string ValidateGardenNavigation(Scene scene, bool persistent)
+        {
+            var roots = scene.GetRootGameObjects();
+            var root = roots.Single(r => r.name == GardenRoot);
+            var surface = roots.SelectMany(r => r.GetComponentsInChildren<NavMeshSurface>(true)).Single();
+            Require(surface.gameObject == root && surface.isActiveAndEnabled && surface.navMeshData && surface.agentTypeID == 0 &&
+                surface.collectObjects == CollectObjects.Volume && surface.useGeometry == NavMeshCollectGeometry.PhysicsColliders &&
+                surface.size == GardenBake && surface.center == Vector3.zero && root.transform.position == GardenCourt.center &&
+                (!persistent || AssetDatabase.GetAssetPath(surface.navMeshData) == GardenAsset) &&
+                roots.All(r => r.GetComponentsInChildren<NavMeshLink>(true).Length == 0), "Configuración o referencias no válidas.");
+            var mesh = NavMesh.CalculateTriangulation();
+            float area = 0;
+            for (int i = 0; i < mesh.indices.Length; i += 3)
+            {
+                var a = mesh.vertices[mesh.indices[i]];
+                area += Mathf.Abs(Vector3.Cross(mesh.vertices[mesh.indices[i + 1]] - a,
+                    mesh.vertices[mesh.indices[i + 2]] - a).y) * .5f;
+            }
+            Require(mesh.vertices.Length == 22 && mesh.indices.Length == 30 && Mathf.Abs(area - 298.51f) < .02f &&
+                mesh.vertices.All(p => GardenCourt.Contains(p) && Mathf.Abs(p.y - 4) < .2f),
+                $"Horneado distinto del aprobado: {mesh.vertices.Length} vértices, {mesh.indices.Length / 3} triángulos, {area:F3} m².");
+            var routes = roots.Single(r => r.name == "Dungeon_Ciudad_del_Sol_Generated").GetComponentsInChildren<Transform>()
+                .Where(t => t.name.Contains("ancho util")).ToArray();
+            Require(routes.Length == 9 && !routes.SelectMany(t => t.GetComponentsInChildren<Collider>())
+                .Any(c => c.enabled && !c.isTrigger && c.bounds.Intersects(GardenCourt)), "El patio invade un recorrido.");
+            var filter = new NavMeshQueryFilter { agentTypeID = 0, areaMask = NavMesh.AllAreas };
+            Require(root.transform.childCount == 4 && root.GetComponentsInChildren<Collider>(true).Length == 0,
+                "La jerarquía no coincide con las cuatro referencias aprobadas.");
+            var positions = GardenMarkers.Select(entry =>
+            {
+                var marker = root.transform.Find(entry.name);
+                Require(marker && (marker.position - entry.point).sqrMagnitude < .00001f &&
+                    NavMesh.SamplePosition(marker.position, out var hit, .02f, filter) &&
+                    (hit.position - marker.position).sqrMagnitude < .0001f, "Referencia inválida: " + entry.name);
+                return marker.position;
+            }).ToArray();
+            var path = new NavMeshPath();
+            foreach (var from in positions)
+            foreach (var to in positions.Where(p => p != from))
+                Require(NavMesh.CalculatePath(from, to, filter, path) && path.status == NavMeshPathStatus.PathComplete &&
+                    path.corners.All(GardenCourt.Contains), "Recorrido incompleto o fuera del patio.");
+            return $"Patio 20 × 16 m, margen interior 0,35 m por lado, área navegable {area:F2} m².\n" +
+                "22 vértices dentro del volumen, 10 triángulos, 4 referencias, 12 trayectos completos, 9 rutas preservadas.\n" +
+                string.Join("\n", GardenMarkers.Select(m => $"{m.name}: {m.point:F3}"));
+        }
+    }
+}
+
