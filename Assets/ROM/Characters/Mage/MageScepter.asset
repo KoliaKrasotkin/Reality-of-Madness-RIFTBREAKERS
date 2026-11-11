@@ -60,6 +60,17 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
     LowRightCarry: 0
     CounterSwingRightCarry: 0
     ForwardScepterAim: 0
@@ -78,28 +89,21 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 1
+    LeftArmSmoothStart: 0.061
+    LeftArmSmoothEnd: 0.122
+    LeftForwardRelease: 1
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: -0.08115185, y: -0.06842535, z: 0.0068695815, w: 0.99432653}
+    LeftUpperArmEnd: {x: 0.060552143, y: 0.21231207, z: 0.18722698, w: 0.957185}
+    LeftForearmStart: {x: -0.0051723863, y: 0.51333344, z: -0.022379102, w: 0.85788184}
+    LeftForearmEnd: {x: 0.12292968, y: 0.24945782, z: 0.38711867, w: 0.8790895}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
     LowRightCarry: 0
     CounterSwingRightCarry: 0
     ForwardScepterAim: 0
     LeftCastFingerExtension: 1
-    RightThumbRotation: {x: 0, y: 0, z: 0}
-    LeftThumbRotation: {x: 0, y: 0, z: 0}
-    PoseKeys: []
-  - Clip: {fileID: 3094330708855449807, guid: c817d2bc0a7ac96498d32fa36a62bd88, type: 3}
-    Weight: 1
-    WeaponPosition: {x: 0, y: 0, z: 0}
-    WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: 0, y: 0, z: 0}
-    HandRotation: {x: 0, y: 0, z: 0}
-    ElbowOffset: {x: 0, y: 0, z: 0}
-    LeftHandPosition: {x: 0, y: 0, z: 0}
-    LeftHandRotation: {x: 0, y: 0, z: 0}
-    LeftElbowOffset: {x: 0, y: 0, z: 0}
-    FreeLeftWristAlignment: 0.85
-    LowRightCarry: 0
-    CounterSwingRightCarry: 0
-    ForwardScepterAim: 0
-    LeftCastFingerExtension: 0
     RightThumbRotation: {x: 0, y: 0, z: 0}
     LeftThumbRotation: {x: 0, y: 0, z: 0}
     PoseKeys: []
@@ -114,10 +118,37 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0.85
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0.13333334
+    LeftWristArcStart: 0.8
+    LeftWristArcEnd: 1.3
+    LeftWristArcFrom: {x: 0.4107345, y: 0.377665669, z: 0.172820732, w: 0.8116642}
+    LeftWristArcTo: {x: 0.0419653654, y: 0.523136735, z: 0.05830219, w: 0.8492159}
+    CastPose:
+    - Bone: 13
+      Rotation: {x: 0.061874326, y: 0.003567143, z: 0.045264322, w: 0.99705064}
+    - Bone: 15
+      Rotation: {x: -0.011294965, y: 0.25740603, z: -0.0004515946, w: 0.9662373}
+    - Bone: 17
+      Rotation: {x: 0.5290948, y: 0.15305017, z: -0.19808133, w: 0.8108009}
+    - Bone: 14
+      Rotation: {x: 0.058055762, y: -0.09364166, z: -0.30053708, w: 0.947385}
+    - Bone: 16
+      Rotation: {x: -0.002990134, y: -0.27713472, z: 0.00089347735, w: 0.9608261}
+    - Bone: 18
+      Rotation: {x: 0.5722662, y: -0.1230457, z: 0.07476859, w: 0.8073295}
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0.85
+    UprightLeftPalm: 1
     LowRightCarry: 0
     CounterSwingRightCarry: 0
     ForwardScepterAim: 0
-    LeftCastFingerExtension: 0
+    LeftCastFingerExtension: 1
     RightThumbRotation: {x: 0, y: 0, z: 0}
     LeftThumbRotation: {x: 0, y: 0, z: 0}
     PoseKeys: []
@@ -132,42 +163,17 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0.85
-    LowRightCarry: 0
-    CounterSwingRightCarry: 0
-    ForwardScepterAim: 0
-    LeftCastFingerExtension: 0
-    RightThumbRotation: {x: 0, y: 0, z: 0}
-    LeftThumbRotation: {x: 0, y: 0, z: 0}
-    PoseKeys: []
-  - Clip: {fileID: 3094330708855449807, guid: b98582042c1292a4e81193a2e417a4d2, type: 3}
-    Weight: 1
-    WeaponPosition: {x: 0, y: 0, z: 0}
-    WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: 0, y: 0, z: 0}
-    HandRotation: {x: 0, y: 0, z: 0}
-    ElbowOffset: {x: 0, y: 0, z: 0}
-    LeftHandPosition: {x: 0, y: 0, z: 0}
-    LeftHandRotation: {x: 0, y: 0, z: 0}
-    LeftElbowOffset: {x: 0, y: 0, z: 0}
-    FreeLeftWristAlignment: 0.85
-    LowRightCarry: 0
-    CounterSwingRightCarry: 0
-    ForwardScepterAim: 0
-    LeftCastFingerExtension: 1
-    RightThumbRotation: {x: 0, y: 0, z: 0}
-    LeftThumbRotation: {x: 0, y: 0, z: 0}
-    PoseKeys: []
-  - Clip: {fileID: 3094330708855449807, guid: 8d3c95e724e453047940371ad39c4153, type: 3}
-    Weight: 1
-    WeaponPosition: {x: 0, y: 0, z: 0}
-    WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: 0, y: 0, z: 0}
-    HandRotation: {x: 0, y: 0, z: 0}
-    ElbowOffset: {x: 0, y: 0, z: 0}
-    LeftHandPosition: {x: 0, y: 0, z: 0}
-    LeftHandRotation: {x: 0, y: 0, z: 0}
-    LeftElbowOffset: {x: 0, y: 0, z: 0}
-    FreeLeftWristAlignment: 0.85
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
     LowRightCarry: 0
     CounterSwingRightCarry: 0
     ForwardScepterAim: 0
@@ -186,8 +192,19 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0
-    LowRightCarry: 0.88
-    CounterSwingRightCarry: 0
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 1
+    CounterSwingRightCarry: 1
     ForwardScepterAim: 0
     LeftCastFingerExtension: 0
     RightThumbRotation: {x: 0, y: 0, z: 0}
@@ -204,7 +221,18 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0
-    LowRightCarry: 0.88
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 1
     CounterSwingRightCarry: 1
     ForwardScepterAim: 0
     LeftCastFingerExtension: 0
@@ -222,7 +250,18 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0
-    LowRightCarry: 0.8
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 1
     CounterSwingRightCarry: 1
     ForwardScepterAim: 0
     LeftCastFingerExtension: 0
@@ -240,7 +279,18 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0
-    LowRightCarry: 0.8
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 1
     CounterSwingRightCarry: 1
     ForwardScepterAim: 0
     LeftCastFingerExtension: 0
@@ -258,7 +308,18 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0
-    LowRightCarry: 0.82
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 1
     CounterSwingRightCarry: 0
     ForwardScepterAim: 0
     LeftCastFingerExtension: 0
@@ -276,7 +337,18 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0
-    LowRightCarry: 0.73
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 1
     CounterSwingRightCarry: 0
     ForwardScepterAim: 0
     LeftCastFingerExtension: 0
@@ -294,7 +366,18 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0
-    LowRightCarry: 0.73
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 1
     CounterSwingRightCarry: 0
     ForwardScepterAim: 0
     LeftCastFingerExtension: 0
@@ -312,24 +395,46 @@ MonoBehaviour:
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0
-    LowRightCarry: 0.73
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 1
     CounterSwingRightCarry: 0
     ForwardScepterAim: 0
     LeftCastFingerExtension: 0
     RightThumbRotation: {x: 0, y: 0, z: 0}
     LeftThumbRotation: {x: 0, y: 0, z: 0}
     PoseKeys: []
-  - Clip: {fileID: 3094330708855449807, guid: 0ec27b2ee6dda6d459311de3c0df0adb, type: 3}
+  - Clip: {fileID: 3094330708855449807, guid: c2160d1a58a158543817a3f1c504dc91, type: 3}
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0}
-    WeaponRotation: {x: 13.41, y: 0, z: 0}
-    HandPosition: {x: 67.02, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
     HandRotation: {x: 0, y: 0, z: 0}
     ElbowOffset: {x: 0, y: 0, z: 0}
     LeftHandPosition: {x: 0, y: 0, z: 0}
     LeftHandRotation: {x: 0, y: 0, z: 0}
     LeftElbowOffset: {x: 0, y: 0, z: 0}
     FreeLeftWristAlignment: 0
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
     LowRightCarry: 0
     CounterSwingRightCarry: 0
     ForwardScepterAim: 1

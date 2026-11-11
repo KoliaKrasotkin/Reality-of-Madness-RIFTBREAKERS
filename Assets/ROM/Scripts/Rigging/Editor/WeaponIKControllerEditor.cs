@@ -248,8 +248,11 @@ public class WeaponIKControllerEditor : Editor
         var controller = PreviewController();
         while (controller is AnimatorOverrideController overrides) controller = overrides.runtimeAnimatorController;
         if (!controller) return null;
-        return ResolveEquipmentClip(Array.Find(controller.animationClips, clip => clip.name ==
-            (name.StartsWith("Unarmed/") ? name.Replace("Unarmed/", "Unarmed-") : "2Hand-Sword-" + name)));
+        var source = Array.Find(controller.animationClips, clip => clip.name ==
+            (name.StartsWith("Unarmed/") ? name.Replace("Unarmed/", "Unarmed-") : "2Hand-Sword-" + name));
+        if (previewSkin && previewSkin.PreviewAssignedAttacksOnly && name.StartsWith("Attack", StringComparison.Ordinal)
+            && !PreviewActions().Any(action => action.TimingClip == source)) return null;
+        return ResolveEquipmentClip(source);
     }
 
     private SkinAction[] PreviewActions() => previewSkin
