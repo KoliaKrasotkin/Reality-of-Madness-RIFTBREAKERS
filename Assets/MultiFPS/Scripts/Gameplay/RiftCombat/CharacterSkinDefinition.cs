@@ -15,6 +15,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         public WeaponDefinition DefaultWeapon;
         [Tooltip("Optional extra locomotion speed parameter. The shared motor owns the standard movement/jump/roll parameters.")]
         public string SpeedParameter = "Speed";
+        public bool PreviewAssignedAttacksOnly;
         public SkinAction[] Actions = Array.Empty<SkinAction>();
         public SkinWeaponPresentation[] Weapons = Array.Empty<SkinWeaponPresentation>();
 

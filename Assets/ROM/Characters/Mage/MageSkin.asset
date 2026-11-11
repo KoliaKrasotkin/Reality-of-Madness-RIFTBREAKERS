@@ -18,6 +18,7 @@ MonoBehaviour:
   Controller: {fileID: 22100000, guid: 369e5ee9b37a4738be93f91bcd28a19a, type: 2}
   DefaultWeapon: {fileID: 11400000, guid: 15227504e71a480e988ae4b2306dc9bf, type: 2}
   SpeedParameter: Speed
+  PreviewAssignedAttacksOnly: 1
   Actions:
   - Id: BasicAttack
     State: Base Layer.Attack0
@@ -25,12 +26,6 @@ MonoBehaviour:
     Fade: 0.09
     SpeedParameter: AttackRate
     TimingClip: {fileID: 7400000, guid: dce280ced5e006c4cb0eb0fab2f51b75, type: 3}
-  - Id: CleavingFury
-    State: Base Layer.Attack1
-    Layer: 0
-    Fade: 0.09
-    SpeedParameter: AttackRate
-    TimingClip: {fileID: 7400000, guid: 7b5b17e2d42e0424f9c36012595dc9b6, type: 3}
   - Id: Earthbreaker
     State: Base Layer.Attack2
     Layer: 0
@@ -43,18 +38,6 @@ MonoBehaviour:
     Fade: 0.09
     SpeedParameter: AttackRate
     TimingClip: {fileID: 7400000, guid: cdd2643e8053d5b419629acf98510a71, type: 3}
-  - Id: warborn-leap
-    State: Base Layer.Attack4
-    Layer: 0
-    Fade: 0.09
-    SpeedParameter: AttackRate
-    TimingClip: {fileID: 1827226128182048838, guid: f51ba5568bc20c64390e215e384c6101, type: 3}
-  - Id: whirling-execution
-    State: Base Layer.Attack5
-    Layer: 0
-    Fade: 0.09
-    SpeedParameter: AttackRate
-    TimingClip: {fileID: 7400000, guid: c9cdccfb9d6cfef4d9992105a94b5d86, type: 3}
   - Id: last-stand
     State: Base Layer.Attack6
     Layer: 0
