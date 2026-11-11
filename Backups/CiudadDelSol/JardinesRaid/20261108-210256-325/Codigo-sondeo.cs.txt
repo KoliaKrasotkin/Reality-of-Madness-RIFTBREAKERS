@@ -1,0 +1,210 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Unity.AI.Navigation;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+
+namespace ROM.EditorTools
+{
+    public static partial class CiudadDelSolNaveJardinesPreview
+    {
+        const string GardenNavRoot = "Raid · Jardines Dorados · Encuentro 01";
+        const string GardenNavFolder = "Assets/ROM/CiudadDelSolJardinesRaid";
+        const string GardenNavOutput = "Backups/CiudadDelSol/JardinesRaid";
+        const string GardenNavSource = "4192D89D77FA3BA97201D39124FE0B574AB2BF49031738A534C3BC241774F2BD";
+
+        public static void ProbeGardenRaidReadOnlyInBatch()
+        {
+            Require(Application.isBatchMode && Hash() == GardenNavSource,
+                "Escena distinta de la auditada o ya existe el destino de navegación.");
+            string output = Path.Combine(GardenNavOutput, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff"));
+            Directory.CreateDirectory(output);
+            string prior = File.ReadAllText(Path.Combine(GardenNavOutput, "UltimaRuta.txt")).Trim();
+            string backup = Path.Combine(prior, Path.GetFileName(Original));
+
+
+            Require(SceneFileHash(backup) == GardenNavSource &&
+                SceneFileHash(backup + ".meta") == SceneFileHash(Original + ".meta"), "Respaldo inválido.");
+            File.WriteAllText(Path.Combine(GardenNavOutput, "UltimaPruebaLectura.txt"), output);
+            var scene = EditorSceneManager.OpenScene(Original, OpenSceneMode.Single);
+            Require(!scene.isDirty && scene.GetRootGameObjects().All(g => g.name != GardenNavRoot) &&
+                scene.GetRootGameObjects().All(g => g.GetComponentsInChildren<NavMeshSurface>(true).Length == 0) &&
+                NavMesh.CalculateTriangulation().indices.Length == 0, "Ya existe una superficie de navegación.");
+            var city = scene.GetRootGameObjects().Single(g => g.name == "Dungeon_Ciudad_del_Sol_Generated");
+            var routes = city.GetComponentsInChildren<Transform>().Where(t => t.name.Contains("ancho util")).ToArray();
+            Require(routes.Length == 9, "No se encontraron los nueve recorridos.");
+            var geometry = city.GetComponentsInChildren<Collider>().Where(c => c.enabled && !c.isTrigger).ToHashSet();
+            var warrior = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ROM/Characters/Warrior/WarriorPlayer.prefab")
+                .GetComponent<CharacterController>();
+            var agent = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ROM/Enemies/LittleDemon/LittleDemon_Enemy.prefab")
+                .GetComponentInChildren<NavMeshAgent>();
+            Require(warrior && agent && agent.agentTypeID == 0, "Configuración de personajes inesperada.");
+            Physics.SyncTransforms();
+
+            const float minX = -155, minZ = -119, spacing = .25f;
+            const int nx = 391, nz = 713;
+            var floor = new float[nx, nz];
+            var valid = new bool[nx, nz];
+            var distance = new int[nx, nz];
+            var solids = new Collider[16];
+            for (int x = 0; x < nx; x++)
+            for (int z = 0; z < nz; z++)
+            {
+                distance[x, z] = -1;
+                var position = Point(x, z, 7);
+                if (!Physics.Raycast(position, Vector3.down, out var hit, 7.5f, ~0, QueryTriggerInteraction.Ignore) ||
+                    !geometry.Contains(hit.collider) || Vector3.Angle(hit.normal, Vector3.up) > warrior.slopeLimit)
+                    continue;
+                floor[x, z] = hit.point.y;
+                var center = hit.point + warrior.center;
+                float half = warrior.height * .5f - warrior.radius;
+                valid[x, z] = Physics.OverlapCapsuleNonAlloc(center - Vector3.up * (half - warrior.skinWidth),
+                    center + Vector3.up * half, warrior.radius, solids, ~0, QueryTriggerInteraction.Ignore) == 0;
+            }
+
+            var start = Grid(-126, -105);
+            if (!valid[start.x, start.y])
+                start = Enumerable.Range(0, 21).SelectMany(x => Enumerable.Range(0, 21).Select(z =>
+                    start + new Vector2Int(x - 10, z - 10))).Where(p => valid[p.x, p.y] && Mathf.Abs(floor[p.x, p.y]) < .15f)
+                    .OrderBy(p => (p - start).sqrMagnitude).First();
+            Require(Mathf.Abs(floor[start.x, start.y]) < .15f, "La referencia de llegada no está en el Pórtico.");
+            var previous = new Vector2Int[nx,nz];
+            var pending = new Queue<Vector2Int>();
+            pending.Enqueue(start);
+            distance[start.x, start.y] = 0;
+            var offsets = new[] { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
+            while (pending.Count > 0)
+            {
+                var p = pending.Dequeue();
+                foreach (var step in offsets)
+                {
+                    var next = p + step;
+                    if (next.x < 0 || next.y < 0 || next.x >= nx || next.y >= nz ||
+                        !valid[next.x, next.y] || distance[next.x, next.y] >= 0 ||
+                        Mathf.Abs(floor[next.x, next.y] - floor[p.x, p.y]) > warrior.stepOffset + .035f) continue;
+                    var a = Point(p.x, p.y, floor[p.x, p.y] + warrior.radius + warrior.stepOffset + .035f);
+                    var b = Point(next.x, next.y, floor[next.x, next.y] + warrior.radius + warrior.stepOffset + .035f);
+                    if (Physics.SphereCast(a, warrior.radius, (b - a).normalized, out _, Vector3.Distance(a, b),
+                        ~0, QueryTriggerInteraction.Ignore)) continue;
+                    distance[next.x, next.y] = distance[p.x, p.y] + 1;
+                    previous[next.x,next.y] = p;
+                    pending.Enqueue(next);
+                }
+            }
+            var routeBounds = routes.SelectMany(t => t.GetComponentsInChildren<Collider>())
+                .Where(c => c.enabled && !c.isTrigger).Select(c => c.bounds).ToArray();
+            Bounds court = default;
+            Vector2Int centerCell = default;
+            int[] widths = { 20, 18, 16, 14 };
+            foreach (int width in widths)
+            {
+                int halfX = Mathf.RoundToInt(width / (2 * spacing)), halfZ = Mathf.RoundToInt((width - 4) / (2 * spacing));
+                var choices = new List<Vector2Int>();
+                for (int x = 46; x < nx - 46; x += 4)
+                for (int z = 270; z < nz - 46; z += 4)
+                {
+                    var p = Point(x, z, 4);
+                    if (p.x < -141 || p.x > -71 || p.z < -51 || p.z > 18 ||
+                        distance[x, z] < 0 || Mathf.Abs(floor[x, z] - 4) > .12f) continue;
+                    var box = new Bounds(p + Vector3.up, new Vector3(width + 4, 3, width));
+                    if (routeBounds.Any(b => b.Intersects(box))) continue;
+                    bool clear = true;
+                    for (int dx = -halfX; dx <= halfX && clear; dx++)
+                    for (int dz = -halfZ; dz <= halfZ && clear; dz++)
+                        clear = valid[x + dx, z + dz] && distance[x + dx, z + dz] >= 0 &&
+                            Mathf.Abs(floor[x + dx, z + dz] - 4) <= .12f;
+                    if (clear) choices.Add(new Vector2Int(x, z));
+                }
+                if (choices.Count == 0) continue;
+                centerCell = choices.OrderBy(p => distance[p.x, p.y]).First();
+                court = new Bounds(Point(centerCell.x, centerCell.y, 4.8f), new Vector3(width, 2.5f, width - 4));
+                break;
+            }
+            int reachableGarden = 0, clearGarden = 0;
+            for (int x = 0; x < nx; x++)
+            for (int z = 0; z < nz; z++)
+                if (Point(x, z, 0).z >= -65 && valid[x,z] && Mathf.Abs(floor[x,z] - 4) < .15f)
+                {
+                    clearGarden++;
+                    if (distance[x,z] >= 0) reachableGarden++;
+                }
+            File.WriteAllText(Path.Combine(output, "Sondeo.txt"),
+                $"Muestras limpias a Y4: {clearGarden}; alcanzables desde Pórtico: {reachableGarden}; " +
+                $"máxima Z alcanzada: {Enumerable.Range(0,nz).Where(z => Enumerable.Range(0,nx).Any(x => distance[x,z] >= 0)).Max()*spacing+minZ:F2}.");
+            Require(court.size.x >= 14, "No se encontró un patio lateral continuo desde el Pórtico sin invadir rutas. " +
+                $"Y4 libre={clearGarden}; alcanzable={reachableGarden}.");
+
+            var steps = new List<Vector2Int>();
+            for (var p = centerCell; p != start; p = previous[p.x,p.y]) steps.Add(p);
+            steps.Add(start);
+            steps.Reverse();
+            float maxStep = steps.Zip(steps.Skip(1), (a,b) => Mathf.Abs(floor[a.x,a.y] - floor[b.x,b.y])).Max();
+            File.WriteAllLines(Path.Combine(output, "Recorrido.csv"), new[] { "x,y,z" }.Concat(steps.Select(p =>
+                FormattableString.Invariant($"{Point(p.x,p.y,0).x:F2},{floor[p.x,p.y]:F3},{Point(p.x,p.y,0).z:F2}"))));
+            var report = new List<string> {
+                $"Escena y respaldo SHA-256: {Hash()}",
+                $"Patio X={court.min.x:F2}…{court.max.x:F2}, Z={court.min.z:F2}…{court.max.z:F2}, piso Y=4.",
+                $"Warrior: radio {warrior.radius:F2}, altura {warrior.height:F2}, escalón {warrior.stepOffset:F2}, pendiente {warrior.slopeLimit:F0}°.",
+                $"Camino estático completo: {steps.Count} muestras a {spacing:F2} m, longitud {(steps.Count-1)*spacing:F2} m, máximo desnivel por enlace {maxStep:F3} m.",
+                $"Inicio {Point(start.x,start.y,floor[start.x,start.y]):F3}, llegada {Point(centerCell.x,centerCell.y,4):F3}."
+            };
+
+            var probe = new GameObject("Sondeo temporal NavMesh");
+            try
+            {
+                probe.transform.position = court.center;
+                var surface = probe.AddComponent<NavMeshSurface>();
+                surface.agentTypeID = agent.agentTypeID;
+                surface.collectObjects = CollectObjects.Volume;
+                surface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+                surface.center = Vector3.zero;
+                surface.size = court.size;
+                surface.BuildNavMesh();
+                var data = NavMesh.CalculateTriangulation();
+                var below = data.vertices.Where(v => Mathf.Abs(v.y-4) >= .2f).ToArray();
+                var outside = data.vertices.Where(v => !court.Contains(v)).ToArray();
+                report.Add($"NavMesh solo en memoria: {data.indices.Length / 3} triángulos; {outside.Length} vértices fuera del volumen; " +
+                    $"{below.Length} vértices fuera de Y=4±0.2; {routeBounds.Count(b => b.Intersects(court))} colliders de ruta dentro del volumen.");
+                foreach (var p in outside.Concat(below).Distinct().Take(18)) report.Add($"Vértice rechazado: {p:F3}");
+                Vector3 center = court.center; center.y=4;
+                var anchors = new[] { center + new Vector3(-2.8f,0,-2.5f), center + new Vector3(3.8f,0,3),
+                    center + new Vector3(-4.5f,0,2.5f), center + new Vector3(4.5f,0,2.5f) };
+                var filter = new NavMeshQueryFilter { agentTypeID=agent.agentTypeID, areaMask=agent.areaMask };
+                int complete=0;
+                var points = new List<Vector3>();
+                foreach (var p in anchors)
+                    if (NavMesh.SamplePosition(p,out var hit,.85f,filter)) points.Add(hit.position);
+                foreach (var a in points)
+                foreach (var b in points.Where(v => v != a))
+                {
+                    var path = new NavMeshPath();
+                    if (NavMesh.CalculatePath(a,b,filter,path) && path.status == NavMeshPathStatus.PathComplete) complete++;
+                }
+                report.Add($"Marcadores proyectables {points.Count}/4; trayectos completos {complete}/12.");
+                report.Add("Puntos proyectados: " + string.Join("; ", points.Select(p => p.ToString("F3"))));
+                report.Add($"Enlaces existentes en escena: {scene.GetRootGameObjects().Sum(g => g.GetComponentsInChildren<NavMeshLink>(true).Length)}.");
+                if (data.vertices.Length > 0) report.Add($"Extremos de malla X={data.vertices.Min(v=>v.x):F3}…{data.vertices.Max(v=>v.x):F3}, " +
+                    $"Y={data.vertices.Min(v=>v.y):F3}…{data.vertices.Max(v=>v.y):F3}, Z={data.vertices.Min(v=>v.z):F3}…{data.vertices.Max(v=>v.z):F3}.");
+                UnityEngine.Object.DestroyImmediate(probe);
+                if (surface) throw new InvalidOperationException("El objeto temporal sigue activo.");
+            }
+            finally
+            {
+                if (probe) UnityEngine.Object.DestroyImmediate(probe);
+                Require(Hash() == GardenNavSource, "La escena original cambió.");
+                File.WriteAllLines(Path.Combine(output, "Resultado.txt"), report);
+            }
+            Debug.Log("JARDINES_SOLO_LECTURA_OK");
+
+            Vector3 Point(int x, int z, float y) => new Vector3(minX + x * spacing, y, minZ + z * spacing);
+            Vector2Int Grid(float x, float z) => new Vector2Int(Mathf.RoundToInt((x - minX) / spacing),
+                Mathf.RoundToInt((z - minZ) / spacing));
+        }
+
+    }
+}

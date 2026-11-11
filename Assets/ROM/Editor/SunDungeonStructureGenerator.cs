@@ -274,6 +274,54 @@ namespace ROM.EditorTools
         static float RunLength(Vector3 a, Vector3 b) => new Vector2(b.x-a.x, b.z-a.z).magnitude;
         static int RestCount(int flights) => Mathf.Max(0, (flights - 1) / 2);
 
+        // Read-only route profile for the exterior NavMesh validator.
+        internal static Vector3[] GetExteriorRouteCheckpoints(string routeId)
+        {
+            var route = Routes.Single(item => item.Name.StartsWith(routeId + " - ", StringComparison.Ordinal));
+            var points = new List<Vector3> { route.Points[0] };
+            for (int i = 0; i < route.Points.Length - 1; i++)
+            {
+                var a = route.Points[i];
+                var b = route.Points[i + 1];
+                bool reverse = a.y > b.y;
+                var low = reverse ? b : a;
+                var high = reverse ? a : b;
+                int flights = Flights(a, b);
+                var direction = new Vector3(high.x - low.x, 0, high.z - low.z).normalized;
+                var segment = new List<Vector3>();
+                if (flights == 0) segment.Add((a + b) * .5f);
+                else
+                {
+                    float start = FlightStart(route, i, flights, reverse);
+                    if (start > .01f) segment.Add(low + direction * (start * .5f));
+                    var cursor = low + direction * start;
+                    for (int flight = 0; flight < flights; flight++)
+                    {
+                        segment.Add(cursor + direction * 3f + Vector3.up * 2f);
+                        cursor += direction * 6f + Vector3.up * 4f;
+                        if ((flight + 1) % 2 == 0 && flight < flights - 1)
+                        {
+                            segment.Add(cursor + direction * 3f);
+                            cursor += direction * 6f;
+                        }
+                    }
+                    if (RunLength(cursor, high) > .01f) segment.Add((cursor + high) * .5f);
+                }
+                if (reverse) segment.Reverse();
+                points.AddRange(segment);
+                points.Add(b);
+            }
+            return points.ToArray();
+        }
+
+        static float FlightStart(Route route, int index, int flights, bool reverse)
+        {
+            float free = RunLength(route.Points[index], route.Points[index + 1]) - flights * 6 - RestCount(flights) * 6;
+            float startClear = (reverse ? index < route.Points.Length - 2 : index > 0) ? route.Width * .5f : 0;
+            float endClear = (reverse ? index > 0 : index < route.Points.Length - 2) ? route.Width * .5f : 0;
+            return Mathf.Clamp(Mathf.Floor(free * .5f / 6) * 6, startClear, free - endClear);
+        }
+
         static void ValidatePlan()
         {
             foreach (var zone in Zones)
@@ -562,10 +610,7 @@ namespace ROM.EditorTools
                 int flights=Flights(a,b);
                 if (flights==0) { Deck(a,direction,length,r.Width,r,group); return; }
                 float free=length-flights*6-RestCount(flights)*6;
-                float startClear=(reverse ? index<r.Points.Length-2 : index>0)?r.Width*.5f:0;
-                float endClear=(reverse ? index>0 : index<r.Points.Length-2)?r.Width*.5f:0;
-                float start=Mathf.Floor(free*.5f/6)*6;
-                start=Mathf.Clamp(start,startClear,free-endClear);
+                float start=FlightStart(r,index,flights,reverse);
                 Deck(low,direction,start,r.Width,r,group);
                 Vector3 cursor=low+direction*start;
                 for (int step=0; step<flights; step++)
