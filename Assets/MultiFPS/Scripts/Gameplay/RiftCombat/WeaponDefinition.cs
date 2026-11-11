@@ -34,6 +34,8 @@ public sealed class WeaponDefinition : ScriptableObject
  public EquipmentHandGrip[] HandGrips=System.Array.Empty<EquipmentHandGrip>();
  public EquipmentAnimationIK[] AnimationIK=System.Array.Empty<EquipmentAnimationIK>();
  public EquipmentFingerPose[] FingerPoses=System.Array.Empty<EquipmentFingerPose>();
+ [Tooltip("Use calibrated finger poses across clips, blending to the relaxed pose when the weapon is stored.")]
+ public bool UseFixedFingerPoses;
  [Header("Single-hand carry grip")]
  public bool UseApprovedCarryGrip;
  public Vector3 CarryGripPosition,CarryGripRotation;

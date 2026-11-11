@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1780bd6aa7a847e2838e98b158347dd3, type: 3}
+  m_Name: WarriorSkin
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.CharacterSkinDefinition
+  Id: warrior
+  SkinId: 1
+  VisualPrefab: {fileID: 6763029804279699219, guid: 39d4746fc08c9ac43a92d317a934032e,
+    type: 3}
+  Controller: {fileID: 22100000, guid: 3f04e677dcfb5804e8d6dc75994463d2, type: 2}
+  DefaultWeapon: {fileID: 11400000, guid: 7a07ada057d70da4596ab67ccc268bcb, type: 2}
+  SpeedParameter: Speed
+  Actions:
+  - Id: BasicAttack
+    State: Base Layer.Attack0
+    Layer: 0
+    Fade: 0.09
+    SpeedParameter: AttackRate
+    TimingClip: {fileID: 7400000, guid: dce280ced5e006c4cb0eb0fab2f51b75, type: 3}
+  - Id: CleavingFury
+    State: Base Layer.Attack1
+    Layer: 0
+    Fade: 0.09
+    SpeedParameter: AttackRate
+    TimingClip: {fileID: 7400000, guid: 7b5b17e2d42e0424f9c36012595dc9b6, type: 3}
+  - Id: Earthbreaker
+    State: Base Layer.Attack2
+    Layer: 0
+    Fade: 0.09
+    SpeedParameter: AttackRate
+    TimingClip: {fileID: 7400000, guid: 018ce46eeecfeae4abb8016f2c6841ca, type: 3}
+  - Id: HonoredRoar
+    State: Base Layer.Attack3
+    Layer: 0
+    Fade: 0.09
+    SpeedParameter: AttackRate
+    TimingClip: {fileID: 7400000, guid: cdd2643e8053d5b419629acf98510a71, type: 3}
+  - Id: warborn-leap
+    State: Base Layer.Attack4
+    Layer: 0
+    Fade: 0.09
+    SpeedParameter: AttackRate
+    TimingClip: {fileID: 1827226128182048838, guid: f51ba5568bc20c64390e215e384c6101, type: 3}
+  - Id: whirling-execution
+    State: Base Layer.Attack5
+    Layer: 0
+    Fade: 0.09
+    SpeedParameter: AttackRate
+    TimingClip: {fileID: 7400000, guid: c9cdccfb9d6cfef4d9992105a94b5d86, type: 3}
+  - Id: last-stand
+    State: Base Layer.Attack6
+    Layer: 0
+    Fade: 0.09
+    SpeedParameter: AttackRate
+    TimingClip: {fileID: 7400000, guid: 96ed5e4a6dc56fe4c9c2de75fc8a077c, type: 3}
+  - Id: cleaving-sweep
+    State: Base Layer.Attack7
+    Layer: 0
+    Fade: 0.09
+    SpeedParameter: AttackRate
+    TimingClip: {fileID: 7400000, guid: 05576006da3e02b49b96abc065d9f607, type: 3}
+  Weapons:
+  - Weapon: {fileID: 11400000, guid: d711be3fecef42b43bfbfafef42fb4fb, type: 2}
+    Presentation: {fileID: 0}
+    Controller: {fileID: 22100000, guid: ecc3fb6bad4737a41bfa805fe5c04510, type: 2}

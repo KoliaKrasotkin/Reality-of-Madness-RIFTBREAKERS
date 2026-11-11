@@ -2526,7 +2526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnimatedWeaponGripConstraint
   m_Weight: 1
   m_Data:
-    weapon: {fileID: 4472825586558039389}
+    weapon: {fileID: 0}
     leftHand: {fileID: 5572045484414157974}
     rightHand: {fileID: 521701692918313410}
     leftTarget: {fileID: 109450773678843236}
@@ -2812,7 +2812,7 @@ Animator:
   m_GameObject: {fileID: 3270903998396893634}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: c12bc9a8795b4224683ff2a607144af1, type: 3}
-  m_Controller: {fileID: 9100000, guid: 687c1c4366f9cb34581bd97710f96148, type: 2}
+  m_Controller: {fileID: 22100000, guid: 0a1717294469d7547bdeaf438cd40195, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4282,96 +4282,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6164471897737572103}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4893735064797539522
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4472825586558039389}
-  - component: {fileID: 6248925904005141609}
-  - component: {fileID: 8364907924831053746}
-  m_Layer: 0
-  m_Name: Equipped Warrior Axe
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4472825586558039389
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4893735064797539522}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.6398033, y: 0.38174808, z: 0.53245956, w: -0.40175498}
-  m_LocalPosition: {x: 0.10606344, y: 1.0536689, z: 0.27087402}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6542842277821460882}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6248925904005141609
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4893735064797539522}
-  m_Mesh: {fileID: 4300006, guid: 9aee63a8fb5917e479df7d2311f3bd99, type: 3}
---- !u!23 &8364907924831053746
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4893735064797539522}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 4294967295
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: ad889d8cd9cce0847aa123677d719d0a, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &4937367108328609497
 GameObject:
   m_ObjectHideFlags: 0
@@ -5785,8 +5695,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4472825586558039389}
+  m_Children: []
   m_Father: {fileID: 6413754757274050278}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6497595293810717159
@@ -6423,6 +6332,8 @@ GameObject:
   - component: {fileID: 9015610642521488366}
   - component: {fileID: 7233541190630436966}
   - component: {fileID: 6715419608096473294}
+  - component: {fileID: 4238679113094908382}
+  - component: {fileID: 4911611860466730848}
   m_Layer: 0
   m_Name: PaladinPrototypePlayer
   m_TagString: Untagged
@@ -6460,7 +6371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mirror::Mirror.NetworkIdentity
   sceneId: 0
-  _assetId: 0
+  _assetId: 2078734037
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
@@ -6601,8 +6512,9 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  RollAnimation: {fileID: 0}
-  UnarmedRollAnimation: {fileID: 0}
+  RollAnimation: {fileID: 7400000, guid: 6c53184d9a4fe38429cf4aac4a3979d2, type: 3}
+  UnarmedRollAnimation: {fileID: 7400000, guid: d05e1e87bea596f49b01fedb8c7da04c,
+    type: 3}
   RollPlaybackSpeed: 1
   RollExitNormalizedTime: 0.85
   RollTravelMultiplier: 1.2
@@ -6747,7 +6659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 499e7beb1e6b0a641810a502112e70fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponIKController
-  animator: {fileID: 7705014523133315223}
+  animator: {fileID: 606184460532778328}
 --- !u!114 &6715419608096473294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6765,6 +6677,39 @@ MonoBehaviour:
   GripPosition: {x: 0.043692864, y: 0.046120983, z: -0.043469116}
   GripRotation: {x: 0.00008537737, y: 253.29836, z: 90}
   GripScale: {x: 1, y: 1, z: 1}
+--- !u!114 &4238679113094908382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6891463994730716289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ab8be9377b94dbe8b3d2ae8d655ddf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.CharacterSkinController
+  Skins:
+  - Definition: {fileID: 11400000, guid: 3f7f1fe2d1c3f10469c902aeae2a57f2, type: 2}
+    ExistingAnimator: {fileID: 606184460532778328}
+    ExistingVisualRoot: {fileID: 3270903998396893634}
+    BuiltInWeapon: {fileID: 0}
+  InitialIndex: 0
+  VisualParent: {fileID: 0}
+--- !u!114 &4911611860466730848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6891463994730716289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94996559277ad5444b4adf17fd974c5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.CharacterWeaponPresentation
+  Animator: {fileID: 606184460532778328}
+  BuiltInWeapon: {fileID: 0}
 --- !u!1 &6988401931755305993
 GameObject:
   m_ObjectHideFlags: 0

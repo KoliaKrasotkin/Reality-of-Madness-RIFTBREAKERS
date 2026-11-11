@@ -1,0 +1,465 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d013899c5a3bd234eb017d04a50b1005, type: 3}
+  m_Name: MageScepter
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.WeaponDefinition
+  Id: mage-scepter
+  DisplayName: Cetro del Mage
+  WeaponType: Scepter
+  Role: 0
+  DamageMultiplier: 1
+  AttackSpeed: 1
+  Reach: 2.8
+  DamageModelVersion: 1
+  DamageMinimum: 16
+  DamageMaximum: 20
+  SwingSeconds: 1.8
+  Model: {fileID: 100000, guid: 131fe8cd3ac8452998042f10d19a578d, type: 3}
+  Socket: 18
+  Position: {x: 0, y: 0, z: 0}
+  Rotation: {x: 0, y: 0, z: 0}
+  Scale: {x: 1, y: 1, z: 1}
+  AllowedClasses:
+  - mage
+  AllowedSpecializations: []
+  Attack: {fileID: 3094330708855449807, guid: 8ab57abc06f7ffd47ae8d91e99f41fa2, type: 3}
+  ImpactVfx: {fileID: 0}
+  Controller: {fileID: 0}
+  UsesBuiltInWeapon: 0
+  UseGripFrame: 1
+  StoredBone: 8
+  StoredPosition: {x: 0.23, y: -0.16, z: -0.18}
+  StoredRotation: {x: 0, y: 0, z: -25}
+  EnableHandIK: 1
+  KeepGripsReachable: 0
+  HandGrips:
+  - Hand: 18
+    DrivesSocket: 1
+    Position: {x: 0.03, y: 0, z: -0.082}
+    Rotation: {x: -11.73, y: 0, z: 86.4}
+    PreservePalmContact: 0
+    PalmOffset: {x: 0, y: 0, z: 0}
+  AnimationIK:
+  - Clip: {fileID: 3094330708855449807, guid: e3e6bf58062e7b142a3ac6cda8eda124, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 3094330708855449807, guid: 8ab57abc06f7ffd47ae8d91e99f41fa2, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 1
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 1
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 3094330708855449807, guid: c817d2bc0a7ac96498d32fa36a62bd88, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0.85
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 3094330708855449807, guid: 39e2b573902399d4fbd58117e24ea1d2, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0.85
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 3094330708855449807, guid: 35f6feb4c51bae84c97cc9a8d0b991dd, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0.85
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 3094330708855449807, guid: b98582042c1292a4e81193a2e417a4d2, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0.85
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 1
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 3094330708855449807, guid: 8d3c95e724e453047940371ad39c4153, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0.85
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: -6848113619949682186, guid: 77cbe76379436db42afc0e47ff625926, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0
+    LowRightCarry: 0.88
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 4652405258948259123, guid: 59100aaa8ef773344b3f4d9dcbf02f30, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0
+    LowRightCarry: 0.88
+    CounterSwingRightCarry: 1
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: -5303603398493974716, guid: 9b3ba34966fe7f245bb196ef786aca19, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0
+    LowRightCarry: 0.8
+    CounterSwingRightCarry: 1
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 5347449113087073954, guid: 1bccf959ce389ef459ee2fff8d6f6bf6, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0
+    LowRightCarry: 0.8
+    CounterSwingRightCarry: 1
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 7804281696320516629, guid: 99ba2dab2137f0445992b3992d994bfe, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0
+    LowRightCarry: 0.82
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 7361425867615798983, guid: 7fa71a2a64ce448da4de95bfdd57a664, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0
+    LowRightCarry: 0.73
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 7361425867615798984, guid: 7fa71a2a64ce448da4de95bfdd57a664, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0
+    LowRightCarry: 0.73
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 7361425867615798985, guid: 7fa71a2a64ce448da4de95bfdd57a664, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0
+    LowRightCarry: 0.73
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 3094330708855449807, guid: 0ec27b2ee6dda6d459311de3c0df0adb, type: 3}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 13.41, y: 0, z: 0}
+    HandPosition: {x: 67.02, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    FreeLeftWristAlignment: 0
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 1
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  FingerPoses:
+  - Bone: 24
+    Rotation: {x: 35.34204, y: -137.73811, z: 12.41269}
+    RelaxedRotation: {x: 41.90017, y: -135.96146, z: 11.50486}
+    ExtendedRotation: {x: 44.71698, y: -135.18535, z: 11.17304}
+  - Bone: 25
+    Rotation: {x: -12.16833, y: -2.96118, z: 15.54703}
+    RelaxedRotation: {x: -3.76419, y: -0.81849, z: 12.82288}
+    ExtendedRotation: {x: 0.00028, y: 0.00055, z: 11.71923}
+  - Bone: 26
+    Rotation: {x: -8.67064, y: 0.33985, z: -1.05946}
+    RelaxedRotation: {x: -2.88867, y: 0.15264, z: -2.63318}
+    ExtendedRotation: {x: -0.00016, y: -0.00023, z: -3.42511}
+  - Bone: 27
+    Rotation: {x: 20.68999, y: -156.39812, z: 38.37996}
+    RelaxedRotation: {x: 15.66497, y: -159.78394, z: 26.9057}
+    ExtendedRotation: {x: 12.47521, y: -161.2267, z: 20.482}
+  - Bone: 28
+    Rotation: {x: 12.57512, y: 2.17407, z: 21.24133}
+    RelaxedRotation: {x: 5.90781, y: 0.36501, z: 8.76249}
+    ExtendedRotation: {x: 0.00007, y: 0.00011, z: -1.69966}
+  - Bone: 29
+    Rotation: {x: 7.86219, y: 1.26336, z: 16.10323}
+    RelaxedRotation: {x: 3.47629, y: 0.31439, z: 8.20533}
+    ExtendedRotation: {x: 0, y: 0, z: 2.12718}
+  - Bone: 30
+    Rotation: {x: 11.86694, y: -161.84805, z: 36.13681}
+    RelaxedRotation: {x: 6.08287, y: -165.34953, z: 25.65455}
+    ExtendedRotation: {x: 2.45346, y: -166.87181, z: 19.75009}
+  - Bone: 31
+    Rotation: {x: 14.27263, y: 2.55194, z: 21.06863}
+    RelaxedRotation: {x: 6.70391, y: 0.48036, z: 9.08109}
+    ExtendedRotation: {x: 0.00001, y: 0, z: -0.89399}
+  - Bone: 32
+    Rotation: {x: 8.89499, y: 1.11366, z: 13.79977}
+    RelaxedRotation: {x: 3.92203, y: 0.22938, z: 6.24886}
+    ExtendedRotation: {x: -0.0001, y: -0.00013, z: 0.4464}
+  - Bone: 33
+    Rotation: {x: 0.66786, y: -166.11948, z: 43.64277}
+    RelaxedRotation: {x: -5.1288, y: -170.81773, z: 34.41839}
+    ExtendedRotation: {x: -8.82879, y: -173.12991, z: 29.21687}
+  - Bone: 34
+    Rotation: {x: 15.83621, y: 2.49365, z: 19.33712}
+    RelaxedRotation: {x: 7.41654, y: 0.41252, z: 7.90774}
+    ExtendedRotation: {x: -0.00002, y: 0, z: -1.55033}
+  - Bone: 35
+    Rotation: {x: 9.83209, y: 1.00541, z: 12.16862}
+    RelaxedRotation: {x: 4.32749, y: 0.16903, z: 4.99078}
+    ExtendedRotation: {x: -0.00001, y: 0.00001, z: -0.51638}
+  - Bone: 36
+    Rotation: {x: -13.93583, y: -172.0135, z: 52.17855}
+    RelaxedRotation: {x: -19.08813, y: -178.07191, z: 44.74538}
+    ExtendedRotation: {x: -22.42132, y: 178.64485, z: 40.57269}
+  - Bone: 37
+    Rotation: {x: 16.54774, y: 1.8441, z: 16.47053}
+    RelaxedRotation: {x: 7.71361, y: 0.10297, z: 5.36555}
+    ExtendedRotation: {x: 0.0002, y: 0.00015, z: -3.84033}
+  - Bone: 38
+    Rotation: {x: 10.22058, y: 0.99679, z: 11.74604}
+    RelaxedRotation: {x: 4.49634, y: 0.16106, z: 4.74052}
+    ExtendedRotation: {x: -0.00042, y: -0.00035, z: -0.62939}
+  - Bone: 39
+    Rotation: {x: 33.3, y: 139.9, z: -40.4}
+    RelaxedRotation: {x: 41.90019, y: 135.96149, z: -11.50482}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 40
+    Rotation: {x: -41.09, y: 6.9, z: -38.1}
+    RelaxedRotation: {x: -3.76421, y: 0.81845, z: -12.82287}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 41
+    Rotation: {x: -14.45555, y: -0.36735, z: -0.52759}
+    RelaxedRotation: {x: -2.88868, y: -0.15265, z: 2.63319}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 42
+    Rotation: {x: 20.29703, y: 156.72437, z: -49.6}
+    RelaxedRotation: {x: 15.66494, y: 159.78389, z: -26.9057}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 43
+    Rotation: {x: 21.04101, y: -7.4205, z: -40.7}
+    RelaxedRotation: {x: 5.90778, y: -0.36499, z: -8.76255}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 44
+    Rotation: {x: 14.3067, y: -3.9734, z: -58.2}
+    RelaxedRotation: {x: 3.47628, y: -0.31441, z: -8.20531}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 45
+    Rotation: {x: 15.96342, y: 158.24037, z: -44.94349}
+    RelaxedRotation: {x: 6.08287, y: 165.34953, z: -25.65456}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 46
+    Rotation: {x: 24.11443, y: -8.6946, z: -40.07533}
+    RelaxedRotation: {x: 6.70387, y: -0.48036, z: -9.08113}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 47
+    Rotation: {x: 27.51235, y: -13.43174, z: -50.9277}
+    RelaxedRotation: {x: 3.92203, y: -0.22943, z: -6.24887}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 48
+    Rotation: {x: 4.36274, y: 162.13426, z: -50.66072}
+    RelaxedRotation: {x: -5.12884, y: 170.8177, z: -34.41845}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 49
+    Rotation: {x: 26.24631, y: -8.38514, z: -36.46286}
+    RelaxedRotation: {x: 7.4165, y: -0.41226, z: -7.90774}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 50
+    Rotation: {x: 30.15427, y: -13.08035, z: -46.62184}
+    RelaxedRotation: {x: 4.32749, y: -0.16918, z: -4.99079}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 51
+    Rotation: {x: -11.0903, y: 167.91039, z: -57.07678}
+    RelaxedRotation: {x: -19.0881, y: 178.07199, z: -44.74545}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 52
+    Rotation: {x: 26.63921, y: -6.6572, z: -31.44595}
+    RelaxedRotation: {x: 7.71357, y: -0.10281, z: -5.36557}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 53
+    Rotation: {x: 30.46408, y: -12.18884, z: -43.45459}
+    RelaxedRotation: {x: 4.49632, y: -0.16101, z: -4.74054}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  UseFixedFingerPoses: 1
+  UseApprovedCarryGrip: 0
+  CarryGripPosition: {x: 0, y: 0, z: 0}
+  CarryGripRotation: {x: 0, y: 0, z: 0}
+  AdditionalEquipment: []

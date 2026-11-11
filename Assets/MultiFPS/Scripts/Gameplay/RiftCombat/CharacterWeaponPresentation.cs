@@ -9,10 +9,12 @@ namespace MultiFPS.Gameplay.RiftCombat
         public Animator Animator;
         public GameObject BuiltInWeapon;
         public WeaponDefinition CurrentWeapon { get; private set; }
+        public WeaponDefinition CurrentPresentation { get; private set; }
         readonly List<WeaponDefinition> parts = new List<WeaponDefinition>();
         readonly List<GameObject> models = new List<GameObject>();
         readonly List<AnimatorClipInfo> currentClips = new List<AnimatorClipInfo>();
         readonly List<AnimatorClipInfo> nextClips = new List<AnimatorClipInfo>();
+        readonly List<KeyValuePair<AnimationClip, AnimationClip>> clipOverrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
         EquipmentArmIK leftArm, rightArm;
         bool builtInPoseCaptured;
         Vector3 builtInPosition;
@@ -23,6 +25,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         struct FingerSnapshot { public Transform bone; public Quaternion rotation; }
         readonly List<FingerSnapshot> fingerSnapshots = new List<FingerSnapshot>();
         RuntimeAnimatorController originalController;
+        CharacterSkinController skin;
         static readonly int StoredWeight = UnityEngine.Animator.StringToHash("EquipmentBackWeight");
         public bool Alive { get; set; } = true;
         public struct IKSettings
@@ -31,12 +34,16 @@ namespace MultiFPS.Gameplay.RiftCombat
             public Vector3 LeftHandPosition, LeftHandRotation, LeftElbowOffset;
             public Vector3 RightThumbRotation, LeftThumbRotation;
             public float Weight;
+            internal float freeLeftWristAlignment;
+            internal float lowRightCarry, counterSwingRightCarry;
+            internal float forwardScepterAim, leftCastFingerExtension;
             internal Quaternion rightBlend, leftBlend;
             internal float blendWeight;
             internal Vector3 rightContactDelta, leftContactDelta;
         }
         void Awake()
         {
+            skin = GetComponent<CharacterSkinController>();
             if (!Animator) Animator = GetComponentInChildren<Animator>();
             if (Animator) originalController = Animator.runtimeAnimatorController;
         }
@@ -46,16 +53,21 @@ namespace MultiFPS.Gameplay.RiftCombat
             if (!originalController) originalController = Animator.runtimeAnimatorController;
             ClearModels();
             CurrentWeapon = weapon;
+            var binding = skin && skin.IsActive ? skin.Current.FindWeapon(weapon) : null;
+            var visual = binding != null && binding.Presentation ? binding.Presentation : weapon;
+            CurrentPresentation = visual;
             leftArm = new EquipmentArmIK(Animator, HumanBodyBones.LeftHand);
             rightArm = new EquipmentArmIK(Animator, HumanBodyBones.RightHand);
             leftThumb = Animator.GetBoneTransform(HumanBodyBones.LeftThumbProximal);
             rightThumb = Animator.GetBoneTransform(HumanBodyBones.RightThumbProximal);
-            Animator.runtimeAnimatorController = weapon.Controller ? weapon.Controller : originalController;
-            if (weapon.UsesBuiltInWeapon)
+            if (skin && skin.IsActive)
+                skin.SetController(binding != null && binding.Controller ? binding.Controller : skin.Current.Controller);
+            else Animator.runtimeAnimatorController = weapon.Controller ? weapon.Controller : originalController;
+            if (visual.UsesBuiltInWeapon)
             {
-                parts.Add(weapon); models.Add(BuiltInWeapon);
+                parts.Add(visual); models.Add(BuiltInWeapon);
             }
-            else foreach (var attachment in weapon.EquippedParts)
+            else foreach (var attachment in visual.EquippedParts)
             {
                 parts.Add(attachment);
                 var model = attachment.Model ? Instantiate(attachment.Model, transform) : null;
@@ -69,11 +81,35 @@ namespace MultiFPS.Gameplay.RiftCombat
                 models.Add(model);
             }
         }
+        WeaponDefinition skinWeapon;
+        public void UnbindSkin()
+        {
+            skinWeapon = CurrentWeapon;
+            ClearModels();
+            if (BuiltInWeapon) BuiltInWeapon.SetActive(false);
+            CurrentWeapon = null;
+            CurrentPresentation = null;
+            leftArm = rightArm = null;
+        }
+        public void BindSkin(Animator animator)
+        {
+            Animator = animator;
+            originalController = animator ? animator.runtimeAnimatorController : null;
+            skin = GetComponent<CharacterSkinController>();
+            if (skinWeapon) Equip(skinWeapon);
+            skinWeapon = null;
+        }
         public AnimationClip ResolveClip(AnimationClip source)
         {
             if (!source) return null;
             var overrides = Animator ? Animator.runtimeAnimatorController as AnimatorOverrideController : null;
-            return overrides && overrides[source] ? overrides[source] : source;
+            if (overrides)
+            {
+                overrides.GetOverrides(clipOverrides);
+                foreach (var pair in clipOverrides)
+                    if (pair.Key == source) return pair.Value ? pair.Value : source;
+            }
+            return source;
         }
         // Undo only our previous solve before Animator samples again, including
         // bones omitted by a clip. Manual preview calls the same boundary.
@@ -161,6 +197,12 @@ namespace MultiFPS.Gameplay.RiftCombat
                 }
             }
             if (entry == null) return result;
+            result.freeLeftWristAlignment += entry.FreeLeftWristAlignment * blend;
+            result.lowRightCarry += entry.LowRightCarry * blend;
+            if (entry.CounterSwingRightCarry) result.counterSwingRightCarry += entry.LowRightCarry * blend;
+            float castWindow = Mathf.SmoothStep(0, 1, Mathf.Min(time, 1 - time) * 5);
+            result.forwardScepterAim += entry.ForwardScepterAim * blend * castWindow;
+            result.leftCastFingerExtension += entry.LeftCastFingerExtension * blend * castWindow;
             result.WeaponPosition += (entry.WeaponPosition + pose.WeaponPosition) * blend;
             result.WeaponRotation += (entry.WeaponRotation + pose.WeaponRotation) * blend;
             result.HandPosition += rightPosition * blend;
@@ -192,6 +234,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         }
         public GameObject ModelFor(WeaponDefinition data)
         {
+            if (data == CurrentWeapon && CurrentPresentation) data = CurrentPresentation;
             int index = parts.IndexOf(data);
             return index >= 0 ? models[index] : null;
         }
@@ -199,11 +242,11 @@ namespace MultiFPS.Gameplay.RiftCombat
         {
             if (!CurrentWeapon || !Animator) return;
             BeginPoseEvaluation();
-            if (BuiltInWeapon) BuiltInWeapon.SetActive(Alive && CurrentWeapon.UsesBuiltInWeapon);
+            if (BuiltInWeapon) BuiltInWeapon.SetActive(Alive && CurrentPresentation && CurrentPresentation.UsesBuiltInWeapon);
             float stored = Mathf.Clamp01(storedWeight);
             var bodyRotation = WeaponGripSpace.BodyRotation(Animator);
-            // Place every item before solving either arm. Attachment anchors come
-            // from the original animation (or the axe's existing stream rig).
+            // Resolve the carrying arm before attaching its weapon. Secondary
+            // grip targets are solved after all equipment has been placed.
             for (int i = 0; i < models.Count; i++)
             {
                 var model = models[i];
@@ -216,9 +259,29 @@ namespace MultiFPS.Gameplay.RiftCombat
                     var hand = Animator.GetBoneTransform(data.Socket);
                     var back = Animator.GetBoneTransform(data.StoredBone);
                     if (!hand || !back) { model.SetActive(false); continue; }
+                    EquipmentHandGrip socketGrip = null;
+                    foreach (var attachment in data.HandGrips)
+                    {
+                        if (attachment == null || !attachment.DrivesSocket || attachment.Hand != data.Socket) continue;
+                        socketGrip = attachment;
+                        break;
+                    }
+                    var socketRotation = Quaternion.Euler(data.Rotation);
+                    if (socketGrip != null) socketRotation *= Quaternion.Inverse(Quaternion.Euler(socketGrip.Rotation));
+                    if (data.Socket == HumanBodyBones.RightHand)
+                    {
+                        var localShaft = socketRotation * Vector3.up;
+                        if (settings.lowRightCarry > 0) ApplyLowRightCarry(hand, bodyRotation, settings, stored, localShaft);
+                        else if (settings.forwardScepterAim > 0) ApplyForwardScepterAim(hand, settings.forwardScepterAim * (1 - stored), localShaft);
+                    }
                     var grip = data.UseGripFrame ? WeaponGripSpace.Rotation(Animator, data.Socket) : hand.rotation;
                     var drawnPosition = hand.position + grip * data.Position;
-                    var drawnRotation = grip * Quaternion.Euler(data.Rotation);
+                    var drawnRotation = grip * socketRotation;
+                    if (socketGrip != null)
+                    {
+                        var scale = Vector3.Scale(transform.lossyScale, data.Scale);
+                        drawnPosition -= drawnRotation * Vector3.Scale(socketGrip.Position, scale);
+                    }
                     if(data.UseApprovedCarryGrip)
                     {
                         float carry=Mathf.Clamp01(1-settings.Weight);
@@ -252,18 +315,33 @@ namespace MultiFPS.Gameplay.RiftCombat
                 var settings = Settings(data, previewClip, normalizedTime);
                 if (data.KeepGripsReachable && settings.Weight > .999f && stored < .001f)
                     KeepWithinReach(data, model.transform, settings);
+                float castAlignment = Mathf.Clamp01(settings.freeLeftWristAlignment);
+                AlignFreeLeftWrist(castAlignment);
                 foreach (var pose in data.FingerPoses)
                 {
                     if (pose == null) continue;
                     var bone = Animator.GetBoneTransform(pose.Bone);
                     if (!bone) continue;
                     fingerSnapshots.Add(new FingerSnapshot { bone = bone, rotation = bone.localRotation });
-                    float fingerWeight=data.UseApprovedCarryGrip?1:Mathf.Clamp01(settings.Weight);
-                    bone.localRotation = Quaternion.Slerp(bone.localRotation, Quaternion.Euler(pose.Rotation), fingerWeight * (1 - stored));
+                    if (data.UseFixedFingerPoses)
+                    {
+                        bool leftFinger = pose.Bone >= HumanBodyBones.LeftThumbProximal && pose.Bone <= HumanBodyBones.LeftLittleDistal;
+                        float relaxedWeight = leftFinger ? Mathf.Max(stored, castAlignment) : stored;
+                        var rotation = Quaternion.Slerp(Quaternion.Euler(pose.Rotation), Quaternion.Euler(pose.RelaxedRotation), relaxedWeight);
+                        if (leftFinger && settings.leftCastFingerExtension > 0)
+                            rotation = Quaternion.Slerp(rotation, Quaternion.Euler(pose.ExtendedRotation),
+                                Mathf.Clamp01(settings.leftCastFingerExtension) * (1 - stored));
+                        bone.localRotation = rotation;
+                    }
+                    else
+                    {
+                        float fingerWeight=data.UseApprovedCarryGrip?1:Mathf.Clamp01(settings.Weight);
+                        bone.localRotation = Quaternion.Slerp(bone.localRotation, Quaternion.Euler(pose.Rotation), fingerWeight * (1 - stored));
+                    }
                 }
                 foreach (var grip in data.HandGrips)
                 {
-                    if (grip == null) continue;
+                    if (grip == null || grip.DrivesSocket) continue;
                     var arm = grip.Hand == HumanBodyBones.LeftHand ? leftArm : rightArm;
                     bool left = grip.Hand == HumanBodyBones.LeftHand;
                     arm?.Solve(model.transform.TransformPoint(grip.Position + (left ? settings.LeftHandPosition : settings.HandPosition)),
@@ -280,6 +358,65 @@ namespace MultiFPS.Gameplay.RiftCombat
                     }
                 }
             }
+        }
+        void ApplyLowRightCarry(Transform hand, Quaternion bodyRotation, IKSettings settings, float stored, Vector3 localShaft)
+        {
+            float weight = Mathf.Clamp01(settings.lowRightCarry) * (1 - stored);
+            if (weight <= 0) return;
+            var leftHand = Animator.GetBoneTransform(HumanBodyBones.LeftHand);
+            var leftShoulder = Animator.GetBoneTransform(HumanBodyBones.LeftUpperArm);
+            var rightShoulder = Animator.GetBoneTransform(HumanBodyBones.RightUpperArm);
+            if (!leftHand || !leftShoulder || !rightShoulder) return;
+            var offset = Quaternion.Inverse(bodyRotation) * (leftHand.position - leftShoulder.position);
+            offset.x = Mathf.Clamp(-offset.x, .035f, .14f);
+            offset.y = Mathf.Min(offset.y, -.30f);
+            float counterSwing = Mathf.Clamp01(settings.counterSwingRightCarry / settings.lowRightCarry);
+            offset.z = Mathf.Clamp(Mathf.Lerp(offset.z, -.8f * offset.z, counterSwing), -.07f, .26f);
+            var target = rightShoulder.position + bodyRotation * offset;
+            rightArm?.Solve(target, hand.rotation, bodyRotation * new Vector3(.08f, -.18f, -.13f),
+                weight, preserveLocalHandRotation: true);
+            var elbow = Animator.GetBoneTransform(HumanBodyBones.RightLowerArm);
+            if (!elbow) return;
+            var forearm = hand.position - elbow.position;
+            var shaft = Vector3.ProjectOnPlane(bodyRotation * new Vector3(.22f, 1, .25f), forearm);
+            OrientScepterPalm(hand, forearm, shaft, localShaft, weight);
+        }
+        void ApplyForwardScepterAim(Transform hand, float weight, Vector3 localShaft)
+        {
+            if (weight <= 0) return;
+            var shoulder = Animator.GetBoneTransform(HumanBodyBones.RightUpperArm);
+            var elbow = Animator.GetBoneTransform(HumanBodyBones.RightLowerArm);
+            if (!shoulder || !elbow) return;
+            var facing = Animator.transform.rotation;
+            var target = shoulder.position + facing * new Vector3(.025f, -.10f, .49f);
+            rightArm?.Solve(target, hand.rotation, facing * new Vector3(.18f, -.13f, 0),
+                Mathf.Clamp01(weight), preserveLocalHandRotation: true);
+            var shaft = facing * new Vector3(0, .72f, 1);
+            var palmForward = Vector3.ProjectOnPlane(hand.position - elbow.position, shaft);
+            OrientScepterPalm(hand, palmForward, shaft, localShaft, weight);
+        }
+        void OrientScepterPalm(Transform hand, Vector3 forward, Vector3 shaft, Vector3 localShaft, float weight)
+        {
+            if (forward.sqrMagnitude < .000001f || shaft.sqrMagnitude < .000001f) return;
+            var palm = WeaponGripSpace.Rotation(Animator, HumanBodyBones.RightHand);
+            var desired = Quaternion.LookRotation(forward, Vector3.Cross(forward, shaft))
+                * Quaternion.FromToRotation(localShaft, Vector3.right);
+            hand.rotation = Quaternion.Slerp(Quaternion.identity, desired * Quaternion.Inverse(palm),
+                Mathf.Clamp01(weight)) * hand.rotation;
+        }
+        void AlignFreeLeftWrist(float weight)
+        {
+            if (weight <= 0) return;
+            var wrist = Animator.GetBoneTransform(HumanBodyBones.LeftHand);
+            var elbow = Animator.GetBoneTransform(HumanBodyBones.LeftLowerArm);
+            if (!wrist || !elbow) return;
+            var palm = WeaponGripSpace.Rotation(Animator, HumanBodyBones.LeftHand);
+            var normal = palm * Vector3.up;
+            var forearm = Vector3.ProjectOnPlane(wrist.position - elbow.position, normal);
+            if (forearm.sqrMagnitude < .000001f) return;
+            float angle = Vector3.SignedAngle(palm * Vector3.forward, forearm, normal);
+            fingerSnapshots.Add(new FingerSnapshot { bone = wrist, rotation = wrist.localRotation });
+            wrist.rotation = Quaternion.AngleAxis(Mathf.Clamp(angle, -65f, 65f) * weight, normal) * wrist.rotation;
         }
         void KeepWithinReach(WeaponDefinition data, Transform model, IKSettings settings)
         {
