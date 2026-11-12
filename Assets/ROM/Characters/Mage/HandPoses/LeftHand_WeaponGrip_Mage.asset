@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1156ead35994fa1498f27771150d52a4, type: 3}
+  m_Name: LeftHand_WeaponGrip_Mage
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::HandPosePreset
+  SourceRig: Mage
+  SourceAvatar: {fileID: 9000000, guid: 40c267595dce0da4381ed6cf6fb28fba, type: 3}
+  Hand: 17
+  Fingers:
+  - Bone: 24
+    Rotation: {x: 0.02196655, y: -0.92952645, z: 0.16672345, w: 0.32817888}
+  - Bone: 25
+    Rotation: {x: -0.2958407, y: 0.02310499, z: 0.051648688, w: 0.9535601}
+  - Bone: 26
+    Rotation: {x: -0.25831968, y: 0.07231384, z: -0.072901525, w: 0.96058685}
+  - Bone: 27
+    Rotation: {x: -0.4508876, y: -0.8070516, z: 0.36397466, w: 0.11353698}
+  - Bone: 28
+    Rotation: {x: 0.2821798, y: 0.0007311773, z: 0.47881758, w: 0.8313289}
+  - Bone: 29
+    Rotation: {x: 0.17127816, y: 0.0015414992, z: 0.31342754, w: 0.9340368}
+  - Bone: 30
+    Rotation: {x: -0.452377, y: -0.8332632, z: 0.292583, w: 0.12418805}
+  - Bone: 31
+    Rotation: {x: 0.31874084, y: 0.0005081444, z: 0.46176016, w: 0.82775706}
+  - Bone: 32
+    Rotation: {x: 0.19287895, y: 0.0011829969, z: 0.28609964, w: 0.9385858}
+  - Bone: 33
+    Rotation: {x: -0.51540625, y: -0.8170821, z: 0.20838122, w: 0.15267785}
+  - Bone: 34
+    Rotation: {x: 0.35294947, y: 0.0009930874, z: 0.4317791, w: 0.83005565}
+  - Bone: 35
+    Rotation: {x: 0.21388286, y: 0.0027257246, z: 0.26261634, w: 0.9408928}
+  - Bone: 36
+    Rotation: {x: -0.57508564, y: -0.7898796, z: 0.08402639, w: 0.1957201}
+  - Bone: 37
+    Rotation: {x: 0.368458, y: 0.002807646, z: 0.40216377, w: 0.83814985}
+  - Bone: 38
+    Rotation: {x: 0.22442603, y: 0.007242812, z: 0.25268844, w: 0.94113183}

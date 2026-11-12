@@ -16,6 +16,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         [Tooltip("Optional extra locomotion speed parameter. The shared motor owns the standard movement/jump/roll parameters.")]
         public string SpeedParameter = "Speed";
         public bool PreviewAssignedAttacksOnly;
+        public BackSocketPose[] BackSocketPoses = Array.Empty<BackSocketPose>();
         public SkinAction[] Actions = Array.Empty<SkinAction>();
         public SkinWeaponPresentation[] Weapons = Array.Empty<SkinWeaponPresentation>();
 
@@ -30,6 +31,14 @@ namespace MultiFPS.Gameplay.RiftCombat
             foreach (var entry in Weapons) if (entry != null && entry.Weapon == weapon) return entry;
             return null;
         }
+    }
+
+    [Serializable]
+    public sealed class BackSocketPose
+    {
+        public AnimationClip Clip;
+        public Vector3 Position;
+        public Vector3 Rotation;
     }
 
     [Serializable]

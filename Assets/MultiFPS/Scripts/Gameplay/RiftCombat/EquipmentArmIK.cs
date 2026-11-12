@@ -25,6 +25,8 @@ namespace MultiFPS.Gameplay.RiftCombat
         public HumanBodyBones Hand = HumanBodyBones.RightHand;
         [Tooltip("Attach the weapon to this animated hand using the grip's model-space pose.")]
         public bool DrivesSocket;
+        [Tooltip("Only solve this support hand when the current clip requests it.")]
+        public bool UseClipGripWeight;
         [Tooltip("Wrist position in model local coordinates, including model scale.")]
         public Vector3 Position, Rotation;
         [Tooltip("Preserve this palm contact when blending calibrated wrist poses between clips.")]
@@ -42,6 +44,8 @@ namespace MultiFPS.Gameplay.RiftCombat
     public sealed class EquipmentAnimationIK
     {
         public AnimationClip Clip;
+        [Tooltip("Finger rotations that override the equipment's default pose for this clip.")]
+        public EquipmentBoneRotation[] FingerOverrides = Array.Empty<EquipmentBoneRotation>();
         [Range(0, 1)] public float Weight = 1;
         [Tooltip("Model offset in the character body frame; independent of the solved hands.")]
         public Vector3 WeaponPosition, WeaponRotation;
@@ -50,6 +54,9 @@ namespace MultiFPS.Gameplay.RiftCombat
         [Tooltip("Elbow displacement in the character body frame.")]
         public Vector3 ElbowOffset;
         public Vector3 LeftHandPosition, LeftHandRotation, LeftElbowOffset;
+        [Tooltip("Support hand contact over normalized clip time.")]
+        public AnimationCurve LeftGripWeight = new AnimationCurve();
+        [Range(0, 1)] public float LeftFistWeight;
         [Range(0, 1)]
         [Tooltip("Straighten lateral bend of the free left wrist while retaining the cast's palm tilt.")]
         public float FreeLeftWristAlignment;
