@@ -11,7 +11,7 @@ namespace ROM.UI.Sprint01
         public int WalletVersion;
         public bool CreliumCompleted;public string CreliumResume="";
         public string DisplayName=>MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Name(Skin);
-        public bool Available=>(ClassKey=="warrior"&&Skin==1||ClassKey=="paladin-prototype"&&Skin==MultiFPS.Gameplay.RiftCombat.PaladinPrototypeSettings.Skin)&&MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(Skin);
+        public bool Available=>(ClassKey=="warrior"&&Skin==1||ClassKey=="paladin-prototype"&&Skin==MultiFPS.Gameplay.RiftCombat.PaladinPrototypeSettings.Skin||ClassKey=="mage-prototype"&&Skin==MultiFPS.Gameplay.RiftCombat.MagePrototypeSettings.Skin)&&MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(Skin);
     }
     [Serializable] public sealed class CharacterRosterData
     {
@@ -36,7 +36,7 @@ namespace ROM.UI.Sprint01
         public string Create(string name,string classKey,int skin)
         {
             name=MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Name(skin);
-            if(!((classKey=="warrior"&&skin==1)||(classKey=="paladin-prototype"&&skin==MultiFPS.Gameplay.RiftCombat.PaladinPrototypeSettings.Skin))||!MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(skin))return "Solo Warrior está disponible.";
+            if(!((classKey=="warrior"&&skin==1)||(classKey=="paladin-prototype"&&skin==MultiFPS.Gameplay.RiftCombat.PaladinPrototypeSettings.Skin)||(classKey=="mage-prototype"&&skin==MultiFPS.Gameplay.RiftCombat.MagePrototypeSettings.Skin))||!MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(skin))return "Elegí una clase disponible.";
             if(name.Length<2||name.Length>24)return "Usá un nombre de 2 a 24 caracteres.";
             if(data.Characters.Count>=8)return "Ya tenés ocho personajes.";
             if(string.IsNullOrEmpty(classKey)||skin<0)return "Elegí una clase y un aspecto válidos.";
@@ -59,7 +59,7 @@ namespace ROM.UI.Sprint01
         }
         public bool Select(string id){if(!data.Characters.Any(c=>c.Id==id&&c.Available))return false;data.ActiveId=id;Save();return true;}
         public void SetClass(string id,int skin){/* Existing identities cannot be converted into another class. */}
-        public void SetSkin(int skin){if(Active==null||!Active.Available||!MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(skin)||Active.ClassKey=="warrior"&&skin!=1||Active.ClassKey=="paladin-prototype"&&skin!=MultiFPS.Gameplay.RiftCombat.PaladinPrototypeSettings.Skin)return;Active.Skin=skin;Save();}
+        public void SetSkin(int skin){if(Active==null||!Active.Available||!MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(skin)||Active.ClassKey=="warrior"&&skin!=1||Active.ClassKey=="paladin-prototype"&&skin!=MultiFPS.Gameplay.RiftCombat.PaladinPrototypeSettings.Skin||Active.ClassKey=="mage-prototype"&&skin!=MultiFPS.Gameplay.RiftCombat.MagePrototypeSettings.Skin)return;Active.Skin=skin;Save();}
         public void SaveIdentity(){Save();}
         public bool SaveCrelium(string id,string resume,bool completed){var c=data.Characters.Find(x=>x.Id==id);if(c==null||c.CreliumCompleted&&!completed)return false;var old=c.CreliumResume;bool was=c.CreliumCompleted;c.CreliumCompleted=completed;c.CreliumResume=completed?"":resume??"";try{Save();return true;}catch{c.CreliumResume=old;c.CreliumCompleted=was;throw;}}
         void Save(){PlayerPrefs.SetString(key,JsonUtility.ToJson(data));PlayerPrefs.Save();}

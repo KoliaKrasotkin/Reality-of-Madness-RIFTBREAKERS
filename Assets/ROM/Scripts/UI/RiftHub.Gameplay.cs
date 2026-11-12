@@ -27,6 +27,7 @@ namespace ROM.UI.Sprint01
             if(page==HubPage.Character){CompactCharacter(body,player,combat);return;}
             if(page==HubPage.Inventory){BuildInventory(body,player,combat);return;}
             if(combat&&combat.IsPaladin&&abilityTab=="Talents"){W.Label(body,"PALADÍN · PROTOTIPO",0,0,1000,60,30);W.Label(body,"Ataque cuerpo a cuerpo: "+RiftControls.ActionLabel("AutoAttack")+"\n\n"+PaladinPrototypeSettings.Load.Description+"\n\n"+combat.EquippedWeaponSummary,0,90,1000,400,23);return;}
+            if(combat&&combat.IsMage){W.Label(body,"MAGO - PROTOTIPO",0,0,1000,60,30);W.Label(body,"Descarga arcana a distancia: "+RiftControls.ActionLabel("AutoAttack")+"\n\n"+MagePrototypeSettings.Load.Description+"\n\n"+combat.EquippedWeaponSummary,0,90,1000,400,23);return;}
             if(abilityTab=="Talents"){TalentTree(body);return;}
             body.gameObject.AddComponent<RiftSpellbookView>().Build(player,combat,this);
         }

@@ -65,7 +65,7 @@ namespace ROM.UI.Gameplay
             Gold.text=crelium?"EL PODER DE NERTÖR":RiftExplorationProgress.Gold.ToString("N0")+" ORO LOCAL";
             Checkpoint.text=crelium?"Crelium":world?world.LocalCheckpoint:"El Rift";MapZone.text=Checkpoint.text;
             Coordinates.text=$"X: {pos.x:0}  Y: {pos.z:0}";
-            CharacterName.text=hp.CharacterName;ClassName.text=combat&&combat.IsPaladin?"Paladín (prototipo)":warrior?"Warrior":player.ClassDefinition?player.ClassDefinition.Name:"";
+            CharacterName.text=hp.CharacterName;ClassName.text=combat&&combat.IsMage?"Mago (prototipo)":combat&&combat.IsPaladin?"Paladín (prototipo)":warrior?"Warrior":player.ClassDefinition?player.ClassDefinition.Name:"";
             Level.text=(combat?combat.Level:Theme.InitialLevel).ToString();if(ExperienceLabel&&combat){bool cap=combat.Level>=combat.Progression.MaximumLevel;int xp=combat.Progression.InLevel(combat.Experience);ExperienceLabel.text=cap?"NIVEL MÁXIMO":"XP "+xp+" / "+combat.Progression.Required(combat.Level);ExperienceFill.fillAmount=cap?1:(float)xp/combat.Progression.Required(combat.Level);}Life.text=$"{hp.CurrentHealth:N0} / {hp.MaxHealth:N0}"+(hp.RadiantShieldRemaining>0?$" · Escudo {hp.RadiantShieldRemaining:0}":"");SetFill(LifeFill,(float)hp.CurrentHealth/Mathf.Max(1,hp.MaxHealth));
             float amount=warrior?combat.Resource:0,max=warrior?combat.Class.MaximumResource:100;
             Resource.text=$"{(combat?combat.ResourceName:"Furia")} {amount:0} / {max:0}";SetFill(ResourceFill,amount/Mathf.Max(1,max));

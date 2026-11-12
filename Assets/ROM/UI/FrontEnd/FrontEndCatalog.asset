@@ -29,22 +29,6 @@ MonoBehaviour:
     SkinIndex: 1
     ForSale: 1
     GoldPrice: 1000
-  - Key: ids-character-2
-    Name: Purplehead
-    Category: Personaje
-    Prefab: {fileID: 7097988499761441884, guid: 57b613d5cc03a6e479d68eb482a17b17,
-      type: 3}
-    SkinIndex: 2
-    ForSale: 1
-    GoldPrice: 1200
-  - Key: ids-character-3
-    Name: Redhead
-    Category: Personaje
-    Prefab: {fileID: 5469072177902730799, guid: 5d0fd9a88b8c32f44b06ba82f7686e7c,
-      type: 3}
-    SkinIndex: 3
-    ForSale: 1
-    GoldPrice: 1400
   - Key: ids-character-4
     Name: White Knight
     Category: Personaje
@@ -88,9 +72,16 @@ MonoBehaviour:
   - Key: paladin-prototype
     Name: Defensor de Zhion
     Category: Personaje
-    Prefab: {fileID: 919132149155446097, guid: 95ca2488bfb27b9478157aceb0735840,
+    Prefab: {fileID: 6891463994730716289, guid: 6952f270712cf814a8bd8fed21c82f07,
       type: 3}
     SkinIndex: 2
+    ForSale: 0
+    GoldPrice: 0
+  - Key: mage-prototype
+    Name: Mago
+    Category: Personaje
+    Prefab: {fileID: 2639312934693777023, guid: 87ceeda208f1a7646adda488756f7fb1, type: 3}
+    SkinIndex: 3
     ForSale: 0
     GoldPrice: 0
   StagePrefab: {fileID: 1908155484932674888, guid: a5198739f5eb54f42a8c5e570f647585,

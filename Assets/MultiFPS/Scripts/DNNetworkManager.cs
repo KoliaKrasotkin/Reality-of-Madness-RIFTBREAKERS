@@ -28,6 +28,7 @@ namespace MultiFPS
         public override void Awake()
         {
             base.Awake();
+            var mage=Gameplay.RiftCombat.MagePrototypeSettings.Load;if(mage&&mage.PlayerPrefab&&!spawnPrefabs.Contains(mage.PlayerPrefab))spawnPrefabs.Add(mage.PlayerPrefab);
             var paladin=Gameplay.RiftCombat.PaladinPrototypeSettings.Load;if(paladin&&paladin.PlayerPrefab&&!spawnPrefabs.Contains(paladin.PlayerPrefab))spawnPrefabs.Add(paladin.PlayerPrefab);
             Debug.Log("MultiFPS | desNetware.net | discord.gg/REnFR3wXNY");
 

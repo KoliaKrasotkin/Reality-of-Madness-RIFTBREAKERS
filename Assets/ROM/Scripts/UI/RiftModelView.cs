@@ -73,7 +73,7 @@ namespace ROM.UI.Sprint01
         {
             ResetEmote();
             if(subject)DestroyImmediate(subject);if(model==null||!model.Prefab){image.enabled=false;return;}
-            image.enabled=true;subject=new GameObject(model.Name);subject.transform.SetParent(world.transform,false);Instantiate(model.Prefab,subject.transform);subject.transform.localPosition=Vector3.zero;subject.transform.localRotation=Quaternion.identity;
+            image.enabled=true;subject=new GameObject(model.Name);subject.transform.SetParent(world.transform,false);InstantiatePreview(model.Prefab,subject.transform);subject.transform.localPosition=Vector3.zero;subject.transform.localRotation=Quaternion.identity;
             bounds=WorldBounds(subject);float target=model.Category=="Personaje"?2.15f:2.1f;
             subject.transform.localScale*=target/Mathf.Max(.001f,model.Category=="Personaje"?bounds.size.y:Mathf.Max(bounds.size.x,bounds.size.y,bounds.size.z));
             bounds=WorldBounds(subject);subject.transform.position+=world.transform.position-bounds.center+Vector3.up*(model.Category=="Personaje"?bounds.extents.y:1.25f);
@@ -101,15 +101,34 @@ namespace ROM.UI.Sprint01
         public void ShowItem(GameObject model){Show(new PreviewModel{Name=model.name,Category="Equipo",Prefab=model});subject.transform.localRotation=Quaternion.identity;var box=WorldBounds(subject);var size=box.size;Vector3 longest=size.x>=size.y&&size.x>=size.z?Vector3.right:size.y>=size.z?Vector3.up:Vector3.forward;Vector3 shortest=size.x<=size.y&&size.x<=size.z?Vector3.right:size.y<=size.z?Vector3.up:Vector3.forward;if(shortest==longest)shortest=longest==Vector3.up?Vector3.forward:Vector3.up;float maximum=Mathf.Max(size.x,size.y,size.z),minimum=Mathf.Min(size.x,size.y,size.z),middle=size.x+size.y+size.z-maximum-minimum;bool elongated=maximum/Mathf.Max(.001f,middle)>=1.6f;var face=Quaternion.LookRotation(Vector3.back,Vector3.up)*Quaternion.Inverse(Quaternion.LookRotation(shortest,longest));subject.transform.localRotation=(elongated?Quaternion.AngleAxis(-30,Vector3.forward):Quaternion.identity)*face;box=WorldBounds(subject);subject.transform.position+=world.transform.position+Vector3.up*1.2f-box.center;box=WorldBounds(subject);view.orthographic=true;view.orthographicSize=Mathf.Max(box.extents.x,box.extents.y)*1.1f;view.transform.localPosition=new Vector3(0,1.2f,-4);view.transform.localRotation=Quaternion.identity;}
         public void UseInspectionRendering(){if(!view)return;if(!view.GetComponent<RiftInspectionCamera>())view.gameObject.AddComponent<RiftInspectionCamera>();view.backgroundColor=Color.clear;var data=view.GetUniversalAdditionalCameraData();data.renderPostProcessing=false;data.antialiasing=AntialiasingMode.None;data.requiresColorOption=CameraOverrideOption.Off;data.requiresDepthOption=CameraOverrideOption.Off;data.volumeLayerMask=1<<PreviewLayer;view.allowHDR=false;foreach(var light in world.GetComponentsInChildren<Light>())light.shadows=LightShadows.None;}
         public void SetThumbnailResolution(int size){if(!view)return;view.targetTexture=null;if(texture){texture.Release();Destroy(texture);}texture=new RenderTexture(size,size,24,RenderTextureFormat.ARGB32);texture.Create();view.targetTexture=texture;image.texture=texture;}
+        static void InstantiatePreview(GameObject prefab,Transform parent){
+parent.gameObject.SetActive(false);var preview=Instantiate(prefab,parent);
+            // Native playable prefabs are also previews: never run gameplay/network logic in the menu.
+            if(preview.GetComponent<MultiFPS.Gameplay.CharacterInstance>()){
+                var skin=preview.GetComponent<MultiFPS.Gameplay.RiftCombat.CharacterSkinController>();
+                if(skin&&skin.Skins!=null)foreach(var slot in skin.Skins)if(slot!=null&&slot.Definition&&slot.ExistingAnimator){slot.ExistingAnimator.runtimeAnimatorController=slot.Definition.Controller;slot.ExistingAnimator.enabled=true;}
+                foreach(var script in preview.GetComponentsInChildren<MonoBehaviour>(true))script.enabled=false;
+                // Remove dependents before required Health/NetworkIdentity components.
+                DestroyImmediate(preview.GetComponent<MultiFPS.Gameplay.CharacterInstance>());
+                foreach(var script in preview.GetComponentsInChildren<MonoBehaviour>(true))if(!(script is Mirror.NetworkIdentity))DestroyImmediate(script);
+                foreach(var identity in preview.GetComponentsInChildren<Mirror.NetworkIdentity>(true))DestroyImmediate(identity);
+                foreach(var source in preview.GetComponentsInChildren<AudioSource>(true))DestroyImmediate(source);
+                foreach(var collider in preview.GetComponentsInChildren<Collider>(true))DestroyImmediate(collider);
+                foreach(var body in preview.GetComponentsInChildren<Rigidbody>(true))DestroyImmediate(body);
+                foreach(var camera in preview.GetComponentsInChildren<Camera>(true))DestroyImmediate(camera);
+                foreach(var light in preview.GetComponentsInChildren<Light>(true))DestroyImmediate(light);
+            }
+            parent.gameObject.SetActive(true);
+        }
         public void ShowParty(FrontEndCatalog catalog,ISocialService social)
         {
             for(int i=world.transform.childCount-1;i>=0;i--){var t=world.transform.GetChild(i);if(t.name.StartsWith("Party Avatar"))DestroyImmediate(t.gameObject);}
             var characters=catalog.Characters;if(characters.Length==0)return;
-            var hero=characters[Mathf.Clamp(social.Self.Skin,0,characters.Length-1)];if(mainMenuPresentation&&!MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(hero.SkinIndex)){foreach(var candidate in characters)if(MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(candidate.SkinIndex)){hero=candidate;break;}}Show(hero);
+            var hero=System.Array.Find(characters,c=>c.SkinIndex==social.Self.Skin)??characters[0];if(mainMenuPresentation&&!MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(hero.SkinIndex)){foreach(var candidate in characters)if(MultiFPS.Gameplay.RiftCombat.RiftSkinIdentity.Playable(candidate.SkinIndex)){hero=candidate;break;}}Show(hero);
             int slot=0;
             foreach(var member in social.Party){
                 if(member.ProfileId==social.Self.Id)continue;var profile=social.Find(member.ProfileId);if(profile==null)continue;
-                var model=characters[Mathf.Clamp(profile.Skin,0,characters.Length-1)];var go=new GameObject("Party Avatar "+slot);go.transform.SetParent(world.transform,false);Instantiate(model.Prefab,go.transform);
+                var model=System.Array.Find(characters,c=>c.SkinIndex==profile.Skin)??characters[0];var go=new GameObject("Party Avatar "+slot);go.transform.SetParent(world.transform,false);InstantiatePreview(model.Prefab,go.transform);
                 var box=WorldBounds(go);go.transform.localScale*=2.05f/Mathf.Max(.001f,box.size.y);box=WorldBounds(go);
                 Vector3 offset=new Vector3(slot==0?-2.3f:slot==1?2.3f:4.3f,box.extents.y,slot==2?1.8f:1);
                 go.transform.position+=world.transform.position+offset-box.center;go.transform.localRotation=Quaternion.Euler(0,180,0);SetLayer(go);if(mainMenuPresentation)go.SetActive(false);slot++;

@@ -227,7 +227,7 @@ namespace MultiFPS.Gameplay
             {
                 //despawn previous character if it exist
                 DespawnCharacterIfExist();
-                var characterPrefab=!BOT&&PlayerInfo.CharacterSkinID==RiftCombat.PaladinPrototypeSettings.Skin&&RiftCombat.PaladinPrototypeSettings.Available?RiftCombat.PaladinPrototypeSettings.Load.PlayerPrefab:!BOT&&PlayerInfo.Warrior&&WarriorCharacterPrefab?WarriorCharacterPrefab:NetworkManager.singleton.spawnPrefabs[0];
+                var characterPrefab=!BOT&&PlayerInfo.CharacterSkinID==RiftCombat.MagePrototypeSettings.Skin&&RiftCombat.MagePrototypeSettings.Available?RiftCombat.MagePrototypeSettings.Load.PlayerPrefab:!BOT&&PlayerInfo.CharacterSkinID==RiftCombat.PaladinPrototypeSettings.Skin&&RiftCombat.PaladinPrototypeSettings.Available?RiftCombat.PaladinPrototypeSettings.Load.PlayerPrefab:!BOT&&PlayerInfo.Warrior&&WarriorCharacterPrefab?WarriorCharacterPrefab:NetworkManager.singleton.spawnPrefabs[0];
                 MyCharacter = Instantiate(characterPrefab, spawnPoint.position, Quaternion.identity).GetComponent<CharacterInstance>();
 
                 MyCharacter.Health.Server_OnHealthDepleted += OnCharacterHealthDepleted;
@@ -422,7 +422,7 @@ namespace MultiFPS.Gameplay
             if(!BOT)clientData.Username=RiftCombat.RiftSkinIdentity.Name(clientData.CharacterSkinID);
             PlayerInfo = clientData;
             var combat=GetComponent<RiftCombat.AbilityController>();PlayerInfo.Warrior=clientData.Warrior&&combat&&combat.Species&&combat.Species.AllowsSkin(clientData.CharacterSkinID);
-            ClassId = BOT?Mathf.Clamp(clientData.ClassId,0,3):1; // Native Warrior baseline; ignore legacy client class preference.
+            ClassId = BOT?Mathf.Clamp(clientData.ClassId,0,3):clientData.CharacterSkinID==RiftCombat.MagePrototypeSettings.Skin?2:1; // Native Warrior baseline; ignore legacy client class preference.
             PlayerInfo.ClassId=ClassId;
 
             //is player did not set his nickmane, then set his nickname with some random number

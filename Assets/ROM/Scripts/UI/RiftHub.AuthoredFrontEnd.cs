@@ -16,7 +16,7 @@ public sealed partial class RiftHub {
   FrontEnd.HideScreens();content.gameObject.SetActive(true);
   if(page!=HubPage.Home)return false;
   Page=page;Clear(content);FrontEnd.Bind(this);
-  if(homePanel=="CreateCharacter")FrontEnd.ShowCreation(creationPaladin);
+  if(homePanel=="CreateCharacter")FrontEnd.ShowCreation(creationPaladin,creationMage);
   else if(homePanel=="Characters"||homePanel=="Class")FrontEnd.ShowSelection(Roster.Characters,Roster.Active,!string.IsNullOrEmpty(Roster.LastDeletedId)&&!Roster.Characters.Any(c=>c.Id==Roster.LastDeletedId),c=>ClassName(c.ClassKey));
   else if(string.IsNullOrEmpty(homePanel)||homePanel=="Menu"){
    FrontEnd.ShowHome(Roster.Active);
@@ -32,13 +32,13 @@ public sealed partial class RiftHub {
   switch(action){
    case "Play":Deploy();break;case "Home":homePanel="";Navigate(HubPage.Home);break;
    case "Characters":homePanel="Characters";Navigate(HubPage.Home);break;
-   case "Create":creationPaladin=false;homePanel="CreateCharacter";Navigate(HubPage.Home);break;
-   case "Warrior":creationPaladin=false;Navigate(HubPage.Home);break;case "Paladin":creationPaladin=true;Navigate(HubPage.Home);break;
+   case "Create":creationPaladin=false;creationMage=false;homePanel="CreateCharacter";Navigate(HubPage.Home);break;
+   case "Warrior":creationPaladin=false;creationMage=false;Navigate(HubPage.Home);break;case "Mage":creationMage=true;creationPaladin=false;Navigate(HubPage.Home);break;case "Paladin":creationMage=false;creationPaladin=true;Navigate(HubPage.Home);break;
    case "Settings":Navigate(HubPage.Settings);break;case "Exit":MenuExit();break;case "Connect":Connection();break;case "More":ToggleHomePanel("Menu");break;
-   case "Crelium":if(RequireWarrior())ROM.Tutorial.Crilium.CriliumSession.Enter(roster);break;
+   case "Crelium":if(RequireWarrior()&&Roster.Active.ClassKey=="warrior")ROM.Tutorial.Crilium.CriliumSession.Enter(roster);break;
    case "Delete":ConfirmDeleteCharacter();break;case "Undo":if(Roster.RestoreDeleted(Roster.LastDeletedId)){ApplyActiveCharacter();SocialChanged();}break;
-   case "Continue":if(!RequireWarrior())return;if(Roster.Active.ClassKey==PaladinPrototypeSettings.ClassKey||Roster.Active.CreliumCompleted)Deploy();else ROM.Tutorial.Crilium.CriliumSession.Enter(roster);break;
-   case "Confirm":bool paladin=creationPaladin&&PaladinPrototypeSettings.Available;int skin=paladin?PaladinPrototypeSettings.Skin:1;string error=Roster.Create(RiftSkinIdentity.Name(skin),paladin?PaladinPrototypeSettings.ClassKey:"warrior",skin);if(error!=null){Notify(error);return;}ApplyActiveCharacter();homePanel="Characters";SocialChanged();Notify("Personaje creado: "+Roster.Active.DisplayName);break;
+   case "Continue":if(!RequireWarrior())return;if(Roster.Active.ClassKey!="warrior"||Roster.Active.CreliumCompleted)Deploy();else ROM.Tutorial.Crilium.CriliumSession.Enter(roster);break;
+   case "Confirm":bool mage=creationMage&&MagePrototypeSettings.Available;bool paladin=!mage&&creationPaladin&&PaladinPrototypeSettings.Available;int skin=mage?MagePrototypeSettings.Skin:paladin?PaladinPrototypeSettings.Skin:1;string error=Roster.Create(RiftSkinIdentity.Name(skin),mage?MagePrototypeSettings.ClassKey:paladin?PaladinPrototypeSettings.ClassKey:"warrior",skin);if(error!=null){Notify(error);return;}ApplyActiveCharacter();homePanel="Characters";SocialChanged();Notify("Personaje creado: "+Roster.Active.DisplayName);break;
   }
  }));}
  public void FrontEndSelect(string id){StartCoroutine(DeferMainMenuAction(()=>{if(Roster.Select(id)){ApplyActiveCharacter();SocialChanged();}}));}
