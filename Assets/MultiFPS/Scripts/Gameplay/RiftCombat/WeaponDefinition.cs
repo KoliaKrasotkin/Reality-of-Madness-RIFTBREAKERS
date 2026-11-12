@@ -27,6 +27,7 @@ public sealed class WeaponDefinition : ScriptableObject
  public bool UsesBuiltInWeapon,UseGripFrame;
  public HumanBodyBones StoredBone=HumanBodyBones.Chest;
  public Vector3 StoredPosition,StoredRotation;
+ public bool CreateBackSocket;
  [Header("Hand IK")]
  public bool EnableHandIK;
  [Tooltip("Move the drawn model minimally so every enabled hand grip stays within arm reach.")]

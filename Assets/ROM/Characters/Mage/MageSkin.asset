@@ -19,6 +19,10 @@ MonoBehaviour:
   DefaultWeapon: {fileID: 11400000, guid: 15227504e71a480e988ae4b2306dc9bf, type: 2}
   SpeedParameter: Speed
   PreviewAssignedAttacksOnly: 1
+  BackSocketPoses:
+  - Clip: {fileID: 7400000, guid: 03153dadf9be84a4996fb6f6b9a399a2, type: 2}
+    Position: {x: 0, y: 0, z: -0.18}
+    Rotation: {x: 0, y: 0, z: 0}
   Actions:
   - Id: BasicAttack
     State: Base Layer.Attack0

@@ -16,6 +16,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         readonly List<AnimatorClipInfo> nextClips = new List<AnimatorClipInfo>();
         readonly List<KeyValuePair<AnimationClip, AnimationClip>> clipOverrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
         EquipmentArmIK leftArm, rightArm;
+        Transform weaponBackSocket;
         bool builtInPoseCaptured;
         Vector3 builtInPosition;
         Quaternion builtInRotation;
@@ -320,13 +321,17 @@ namespace MultiFPS.Gameplay.RiftCombat
             int index = parts.IndexOf(data);
             return index >= 0 ? models[index] : null;
         }
-        public void RefreshPose(float storedWeight, AnimationClip previewClip = null, float normalizedTime = 0)
+        public void RefreshPose(float storedWeight, AnimationClip previewClip = null, float normalizedTime = 0, CharacterSkinDefinition previewSkin = null)
         {
-            if (!CurrentWeapon || !Animator) return;
+            if (!Animator) return;
             BeginPoseEvaluation();
+            ApplyUnarmedRunLean(previewClip);
+            if (!CurrentWeapon) return;
             if (BuiltInWeapon) BuiltInWeapon.SetActive(Alive && CurrentPresentation && CurrentPresentation.UsesBuiltInWeapon);
             float stored = Mathf.Clamp01(storedWeight);
             var bodyRotation = WeaponGripSpace.BodyRotation(Animator);
+            var socketSkin = previewClip ? previewSkin : skin ? skin.Current : null;
+            var socketPose = GetBackSocketPose(socketSkin, previewClip);
             // Resolve the carrying arm before attaching its weapon. Secondary
             // grip targets are solved after all equipment has been placed.
             for (int i = 0; i < models.Count; i++)
@@ -377,9 +382,24 @@ namespace MultiFPS.Gameplay.RiftCombat
                         drawnPosition=Vector3.Lerp(drawnPosition,carryPosition,carry);
                         drawnRotation=Quaternion.Slerp(drawnRotation,carryRotation,carry);
                     }
+                    var storedPosition = back.position + bodyRotation * data.StoredPosition;
+                    var storedRotation = bodyRotation * Quaternion.Euler(data.StoredRotation);
+                    if (data.CreateBackSocket && data == CurrentPresentation)
+                    {
+                        storedPosition += bodyRotation * socketPose.position;
+                        storedRotation = bodyRotation * socketPose.rotation * Quaternion.Euler(data.StoredRotation);
+                        if (!weaponBackSocket)
+                        {
+                            weaponBackSocket = new GameObject("Weapon Back Socket").transform;
+                            weaponBackSocket.SetParent(back, false);
+                        }
+                        weaponBackSocket.SetPositionAndRotation(storedPosition, storedRotation);
+                        storedPosition = weaponBackSocket.position;
+                        storedRotation = weaponBackSocket.rotation;
+                    }
                     model.transform.SetPositionAndRotation(
-                        Vector3.Lerp(drawnPosition, back.position + bodyRotation * data.StoredPosition, stored),
-                        Quaternion.Slerp(drawnRotation, bodyRotation * Quaternion.Euler(data.StoredRotation), stored));
+                        Vector3.Lerp(drawnPosition, storedPosition, stored),
+                        Quaternion.Slerp(drawnRotation, storedRotation, stored));
                     model.transform.localScale = data.Scale;
                 }
                 if (data.EnableHandIK)
@@ -474,6 +494,80 @@ namespace MultiFPS.Gameplay.RiftCombat
                 }
             }
         }
+        static bool UsesUnarmedRunLean(AnimationClip clip)
+        {
+            return clip && clip.name is "Unarmed-Run-Left" or "Unarmed-Run-Right"
+                or "Unarmed-Run-Backward" or "Unarmed-Run-Forward-Left" or "Unarmed-Run-Forward-Right"
+                or "Unarmed-Run-Backward-Left" or "Unarmed-Run-Backward-Right";
+        }
+
+        (Vector3 position, Quaternion rotation) GetBackSocketPose(CharacterSkinDefinition profile, AnimationClip previewClip)
+        {
+            if (!profile || profile.BackSocketPoses.Length == 0)
+                return (Vector3.zero, Quaternion.identity);
+
+            Vector3 position = Vector3.zero;
+            Quaternion rotation = Quaternion.identity;
+            void Accumulate(AnimationClip clip, float weight)
+            {
+                foreach (var pose in profile.BackSocketPoses)
+                {
+                    if (pose == null || pose.Clip != clip) continue;
+                    position += pose.Position * weight;
+                    rotation *= Quaternion.Slerp(Quaternion.identity, Quaternion.Euler(pose.Rotation), weight);
+                    break;
+                }
+            }
+
+            if (previewClip) Accumulate(previewClip, 1);
+            else if (Animator.isInitialized)
+            {
+                bool transitioning = Animator.IsInTransition(0);
+                float transition = transitioning ? Mathf.Clamp01(Animator.GetAnimatorTransitionInfo(0).normalizedTime) : 0;
+                currentClips.Clear();
+                Animator.GetCurrentAnimatorClipInfo(0, currentClips);
+                foreach (var info in currentClips) Accumulate(info.clip, info.weight * (1 - transition));
+                if (transitioning)
+                {
+                    nextClips.Clear();
+                    Animator.GetNextAnimatorClipInfo(0, nextClips);
+                    foreach (var info in nextClips) Accumulate(info.clip, info.weight * transition);
+                }
+            }
+            return (position, rotation);
+        }
+
+        void ApplyUnarmedRunLean(AnimationClip previewClip)
+        {
+            float weight = 0;
+            if (previewClip)
+                weight = UsesUnarmedRunLean(previewClip) ? 1 : 0;
+            else if (Animator.isInitialized)
+            {
+                bool transitioning = Animator.IsInTransition(0);
+                float transition = transitioning ? Mathf.Clamp01(Animator.GetAnimatorTransitionInfo(0).normalizedTime) : 0;
+                currentClips.Clear();
+                Animator.GetCurrentAnimatorClipInfo(0, currentClips);
+                foreach (var info in currentClips)
+                    if (UsesUnarmedRunLean(info.clip)) weight += info.weight * (1 - transition);
+                if (transitioning)
+                {
+                    nextClips.Clear();
+                    Animator.GetNextAnimatorClipInfo(0, nextClips);
+                    foreach (var info in nextClips)
+                        if (UsesUnarmedRunLean(info.clip)) weight += info.weight * transition;
+                }
+            }
+
+            if (weight <= 0 || !Animator.isHuman) return;
+            var spine = Animator.GetBoneTransform(HumanBodyBones.Spine);
+            if (!spine) return;
+            const float leanDegrees = 6f;
+            fingerSnapshots.Add(new FingerSnapshot { bone = spine, rotation = spine.localRotation });
+            weight = Mathf.Clamp01(weight);
+            spine.rotation = Quaternion.AngleAxis(leanDegrees * weight, Animator.transform.right) * spine.rotation;
+        }
+
         void ApplyClipFingers(IKSettings settings, float stored)
         {
             if (settings.fingerOverrides == null || stored >= 1) return;
@@ -633,6 +727,13 @@ namespace MultiFPS.Gameplay.RiftCombat
             foreach (var model in models) if (model && model != BuiltInWeapon)
             { model.SetActive(false); if (Application.isPlaying) Destroy(model); else DestroyImmediate(model); }
             models.Clear(); parts.Clear();
+            if (weaponBackSocket)
+            {
+                weaponBackSocket.gameObject.SetActive(false);
+                if (Application.isPlaying) Destroy(weaponBackSocket.gameObject);
+                else DestroyImmediate(weaponBackSocket.gameObject);
+                weaponBackSocket = null;
+            }
         }
         void OnDisable() => BeginPoseEvaluation();
         void OnDestroy() => ClearModels();

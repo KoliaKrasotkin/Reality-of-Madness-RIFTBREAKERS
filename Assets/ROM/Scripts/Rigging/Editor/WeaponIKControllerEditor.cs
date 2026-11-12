@@ -19,6 +19,11 @@ public class WeaponIKControllerEditor : Editor
           "Unarmed/Idle", "Unarmed/Run-Forward", "Unarmed/Run-Backward", "Unarmed/Run-Left", "Unarmed/Run-Right",
           "Unarmed/Jump", "Unarmed/Fall", "Unarmed/DiveRoll-Forward1" };
     private const int SampleIntervals = 60;
+    private static readonly string[] DiagonalRunNames =
+        { "Run-Forward-Left", "Run-Forward-Right", "Run-Backward-Left", "Run-Backward-Right",
+          "Unarmed/Run-Forward-Left", "Unarmed/Run-Forward-Right", "Unarmed/Run-Backward-Left", "Unarmed/Run-Backward-Right" };
+
+    private static readonly string[] PreviewClipNames = ClipNames.Concat(DiagonalRunNames).ToArray();
 
     private Animator animator;
     private RigBuilder rigBuilder;
@@ -145,7 +150,7 @@ public class WeaponIKControllerEditor : Editor
 
             EditorGUI.BeginChangeCheck();
             var actions = PreviewActions();
-            var options = ClipNames.Concat(actions.Select(action => action.State + " / " + action.Id)).ToArray();
+            var options = PreviewClipNames.Concat(actions.Select(action => action.State + " / " + action.Id)).ToArray();
             selectedPreview = Mathf.Clamp(selectedPreview, 0, options.Length - 1);
             int next = EditorGUILayout.Popup("Animation", selectedPreview, options);
             if (EditorGUI.EndChangeCheck() || previewClip == null)
@@ -250,6 +255,16 @@ public class WeaponIKControllerEditor : Editor
         if (!controller) return null;
         var source = Array.Find(controller.animationClips, clip => clip.name ==
             (name.StartsWith("Unarmed/") ? name.Replace("Unarmed/", "Unarmed-") : "2Hand-Sword-" + name));
+        if (!source)
+        {
+            int diagonal = Array.IndexOf(DiagonalRunNames, name);
+            if (diagonal >= 0 && diagonal < 4)
+            {
+                string suffix = new[] { "frontL45", "frontR45", "backL45", "backR45" }[diagonal];
+                source = Array.Find(controller.animationClips, clip =>
+                    string.Equals(clip.name, "move_run_" + suffix, StringComparison.OrdinalIgnoreCase));
+            }
+        }
         if (previewSkin && previewSkin.PreviewAssignedAttacksOnly && name.StartsWith("Attack", StringComparison.Ordinal)
             && !PreviewActions().Any(action => action.TimingClip == source)) return null;
         return ResolveEquipmentClip(source);
@@ -261,8 +276,9 @@ public class WeaponIKControllerEditor : Editor
 
     private AnimationClip FindPreviewClip(int index, SkinAction[] actions)
     {
-        if (index < ClipNames.Length) return FindClip(ClipNames[index]);
-        int actionIndex = index - ClipNames.Length;
+        var clips = PreviewClipNames;
+        if (index < clips.Length) return FindClip(clips[index]);
+        int actionIndex = index - clips.Length;
         return actionIndex < actions.Length ? ResolveEquipmentClip(actions[actionIndex].TimingClip) : null;
     }
 
@@ -350,9 +366,34 @@ public class WeaponIKControllerEditor : Editor
             }
     }
 
+    private void DrawBackSocketPose()
+    {
+        if (!previewSkin || !previewWeapon.CreateBackSocket) return;
+        var pose = Array.Find(previewSkin.BackSocketPoses, entry => entry != null && entry.Clip == previewClip);
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Back Socket — selected animation", EditorStyles.boldLabel);
+        EditorGUI.BeginChangeCheck();
+        var position = EditorGUILayout.Vector3Field("Position Offset", pose?.Position ?? Vector3.zero);
+        var rotation = EditorGUILayout.Vector3Field("Rotation Offset", pose?.Rotation ?? Vector3.zero);
+        if (!EditorGUI.EndChangeCheck()) return;
+
+        Undo.RecordObject(previewSkin, "Edit Back Socket Pose");
+        if (pose == null)
+        {
+            pose = new BackSocketPose { Clip = previewClip };
+            previewSkin.BackSocketPoses = previewSkin.BackSocketPoses.Append(pose).ToArray();
+        }
+        pose.Position = position;
+        pose.Rotation = rotation;
+        EditorUtility.SetDirty(previewSkin);
+        AssetDatabase.SaveAssetIfDirty(previewSkin);
+        SamplePreview();
+    }
+
     private void DrawHandIK()
     {
         if (!previewWeapon || !previewClip) return;
+        DrawBackSocketPose();
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Hand IK — selected animation", EditorStyles.boldLabel);
         EditorGUILayout.HelpBox("Grip positions are wrist targets in weapon model space. Animation offsets only affect the selected clip. Weapon offsets move the item and its hands together; hand offsets adjust the wrist independently. Values are saved to the definition assets.", MessageType.Info);
@@ -451,8 +492,9 @@ public class WeaponIKControllerEditor : Editor
             clipPlayable.SetApplyFootIK(false);
             // An override can reuse an unarmed clip in a drawn locomotion slot.
             var actions = PreviewActions();
+            var clips = PreviewClipNames;
             string motionName = previewClip == FindPreviewClip(selectedPreview, actions)
-                ? (selectedPreview < ClipNames.Length ? ClipNames[selectedPreview] : actions[selectedPreview - ClipNames.Length].State)
+                ? (selectedPreview < clips.Length ? clips[selectedPreview] : actions[selectedPreview - clips.Length].State)
                 : previewClip.name;
             string presentationName = motionName.StartsWith("Unarmed/") || motionName.StartsWith("Unarmed-") ? "WeaponHolstered"
                 : motionName.Contains("Unsheath-") ? "WeaponDrawing"
@@ -499,7 +541,7 @@ public class WeaponIKControllerEditor : Editor
                 foreach (var binding in AnimationUtility.GetCurveBindings(presentationClip))
                     if (binding.type == typeof(Animator) && binding.propertyName == "EquipmentBackWeight")
                     { stored = AnimationUtility.GetEditorCurve(presentationClip, binding).Evaluate(previewTime); break; }
-            equipmentPreview.RefreshPose(stored, previewClip, previewTime / Mathf.Max(.0001f, previewClip.length));
+            equipmentPreview.RefreshPose(stored, previewClip, previewTime / Mathf.Max(.0001f, previewClip.length), previewSkin);
         }
         SceneView.RepaintAll();
     }
