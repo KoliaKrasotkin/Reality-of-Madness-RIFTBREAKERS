@@ -15,9 +15,9 @@ public class WeaponIKControllerEditor : Editor
     private static readonly string[] ClipNames =
         { "Idle", "Run-Forward", "Run-Backward", "Run-Left", "Run-Right",
           "Attack1", "Attack2", "Attack3", "Attack4", "Attack5", "Attack6", "Attack7", "Attack8", "Attack9",
-          "Jump", "Fall", "Land", "DiveRoll-Forward1", "Sheath-Back-Unarmed", "Unsheath-Back-Unarmed",
+          "Jump", "Fall", "Land", "Roll-Forward", "Roll-Backward", "Roll-Left", "Roll-Right", "Sheath-Back-Unarmed", "Unsheath-Back-Unarmed",
           "Unarmed/Idle", "Unarmed/Run-Forward", "Unarmed/Run-Backward", "Unarmed/Run-Left", "Unarmed/Run-Right",
-          "Unarmed/Jump", "Unarmed/Fall", "Unarmed/DiveRoll-Forward1" };
+          "Unarmed/Jump", "Unarmed/Fall", "Unarmed/Roll-Forward", "Unarmed/Roll-Backward", "Unarmed/Roll-Left", "Unarmed/Roll-Right" };
     private const int SampleIntervals = 60;
     private static readonly string[] DiagonalRunNames =
         { "Run-Forward-Left", "Run-Forward-Right", "Run-Backward-Left", "Run-Backward-Right",
@@ -255,6 +255,14 @@ public class WeaponIKControllerEditor : Editor
         if (!controller) return null;
         var source = Array.Find(controller.animationClips, clip => clip.name ==
             (name.StartsWith("Unarmed/") ? name.Replace("Unarmed/", "Unarmed-") : "2Hand-Sword-" + name));
+        string rollName = name.Replace("Unarmed/", "");
+        if (rollName.StartsWith("Roll-", StringComparison.Ordinal))
+        {
+            string direction = rollName.Substring(5).ToLowerInvariant();
+            if (direction == "forward") direction = "front";
+            if (direction == "backward") direction = "back";
+            source = Array.Find(controller.animationClips, clip => clip.name == "roll_" + direction);
+        }
         if (!source)
         {
             int diagonal = Array.IndexOf(DiagonalRunNames, name);
@@ -419,7 +427,12 @@ public class WeaponIKControllerEditor : Editor
                     var entry = entries.GetArrayElementAtIndex(index);
                     entry.FindPropertyRelative("Clip").objectReferenceValue = previewClip;
                     entry.FindPropertyRelative("Weight").floatValue = 1;
-                    foreach (string field in new[] { "WeaponPosition", "WeaponRotation", "HandPosition", "HandRotation", "ElbowOffset", "LeftHandPosition", "LeftHandRotation", "LeftElbowOffset", "RightThumbRotation", "LeftThumbRotation" })
+                    entry.FindPropertyRelative("FingerOverridesWhileStored").boolValue = false;
+                    entry.FindPropertyRelative("AnchorBuiltInWeaponToPrimaryHand").boolValue = false;
+                    entry.FindPropertyRelative("PrimaryCarryPitch").floatValue = 0f;
+                    entry.FindPropertyRelative("UseTorsoRelativeCarry").boolValue = false;
+                    entry.FindPropertyRelative("LeftGripPitch").floatValue = 0f;
+                    foreach (string field in new[] { "WeaponPosition", "WeaponRotation", "HandPosition", "HandRotation", "ElbowOffset", "LeftHandPosition", "LeftHandRotation", "LeftElbowOffset", "RightThumbRotation", "LeftThumbRotation", "PrimaryGripPosition", "PrimaryGripRotation", "PrimaryCarryOffset", "LeftGripPivotRotation" })
                         entry.FindPropertyRelative(field).vector3Value = Vector3.zero;
                 }
             }

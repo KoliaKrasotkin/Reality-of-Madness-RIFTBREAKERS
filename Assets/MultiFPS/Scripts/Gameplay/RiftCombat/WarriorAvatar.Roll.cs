@@ -5,7 +5,7 @@ namespace MultiFPS.Gameplay.RiftCombat
 {
     public sealed partial class WarriorAvatar
     {
-        [Header("Forward roll")]
+        [Header("Directional roll")]
         public AnimationClip RollAnimation;
         public AnimationClip UnarmedRollAnimation;
         [Range(.1f, 4f)] public float RollPlaybackSpeed = 1f;
@@ -15,6 +15,7 @@ namespace MultiFPS.Gameplay.RiftCombat
         [Range(1f, 2f)] public float RollTravelMultiplier = 1.2f;
         [Min(.05f)] public float RollRecovery = .15f;
         [SyncVar] private float rollFacing;
+        [SyncVar] private byte rollSector;
         [SyncVar] private bool rollArmed;
         [SyncVar] private double rollStartedAt = -1000;
         private double presentedRoll = -1000;
@@ -28,7 +29,8 @@ namespace MultiFPS.Gameplay.RiftCombat
         public float RollFacing => rollFacing;
         public bool RequestedWeaponDrawn => queuedWeaponState >= 0 ? queuedWeaponState != 0 : weaponDrawn;
         public bool IsRolling => ActiveRollAnimation && NetworkTime.time >= rollStartedAt && NetworkTime.time < rollStartedAt + RollDuration;
-        public Vector3 RollDirection => Quaternion.Euler(0, rollFacing, 0) * Vector3.forward;
+        private float RollAngle => rollSector * 45f;
+        public Vector3 RollDirection => Quaternion.Euler(0, rollFacing + RollAngle, 0) * Vector3.forward;
 
         // Integrated trapezoid: accelerate into the tumble, carry momentum, then
         // settle before standing. The integral is exactly one, regardless of tick rate.
@@ -65,15 +67,18 @@ namespace MultiFPS.Gameplay.RiftCombat
             bool offline = !NetworkClient.active && !NetworkServer.active;
             if (!offline && !isOwned && !isServer) return false;
             if (!CanBeginRoll()) return false;
-            if (offline || isServer) BeginRoll();
-            else CmdRequestRoll();
+            Vector2 input = actor.Input.Movement;
+            byte sector = input.sqrMagnitude < .01f ? (byte)0 :
+                (byte)(Mathf.RoundToInt(Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg / 45f) & 7);
+            if (offline || isServer) BeginRoll(sector);
+            else CmdRequestRoll(sector);
             return true;
         }
 
         [Command]
-        private void CmdRequestRoll()
+        private void CmdRequestRoll(byte sector)
         {
-            if (CanBeginRoll()) BeginRoll();
+            if (sector < 8 && CanBeginRoll()) BeginRoll(sector);
         }
 
         private bool CanBeginRoll()
@@ -100,9 +105,10 @@ namespace MultiFPS.Gameplay.RiftCombat
             return next.IsName(rollArmed ? "Locomotion" : "UnarmedLocomotion");
         }
 
-        private void BeginRoll()
+        private void BeginRoll(byte sector)
         {
             rollFacing = actor.Input.LookY;
+            rollSector = sector;
             rollArmed = weaponDrawn;
             rollStartedAt = NetworkTime.time;
             activeAttackSlot = -1;
@@ -119,6 +125,9 @@ namespace MultiFPS.Gameplay.RiftCombat
             if (rolling && presentedRoll != rollStartedAt)
             {
                 presentedRoll = rollStartedAt;
+                float angle = RollAngle * Mathf.Deg2Rad;
+                Animator.SetFloat("RollX", Mathf.Sin(angle));
+                Animator.SetFloat("RollY", Mathf.Cos(angle));
                 Animator.SetBool("RollArmed", rollArmed);
                 Animator.SetBool("DefensiveHold", false);
                 activeAttackSlot = -1;

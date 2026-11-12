@@ -46,14 +46,29 @@ namespace MultiFPS.Gameplay.RiftCombat
         public AnimationClip Clip;
         [Tooltip("Finger rotations that override the equipment's default pose for this clip.")]
         public EquipmentBoneRotation[] FingerOverrides = Array.Empty<EquipmentBoneRotation>();
+        [Tooltip("Blend these finger overrides in only while the weapon is stored. Useful when armed and unarmed share a clip.")]
+        public bool FingerOverridesWhileStored;
         [Range(0, 1)] public float Weight = 1;
         [Tooltip("Model offset in the character body frame; independent of the solved hands.")]
         public Vector3 WeaponPosition, WeaponRotation;
         [Tooltip("Right wrist offset in model space. Left wrist has separate fields below.")]
         public Vector3 HandPosition, HandRotation;
+        [Tooltip("Primary grip offsets in weapon model space for a grip with Drives Socket enabled.")]
+        public Vector3 PrimaryGripPosition, PrimaryGripRotation;
+        public bool AnchorBuiltInWeaponToPrimaryHand;
+        [Tooltip("Move the anchoring hand in character body space before attaching the weapon.")]
+        public Vector3 PrimaryCarryOffset;
+        public float PrimaryCarryPitch;
+        public bool UseTorsoRelativeCarry;
         [Tooltip("Elbow displacement in the character body frame.")]
         public Vector3 ElbowOffset;
-        public Vector3 LeftHandPosition, LeftHandRotation, LeftElbowOffset;
+        public Vector3 LeftHandPosition, LeftHandRotation;
+        [Tooltip("Left elbow IK guide in character body space, in meters. X is sideways, Y is up and Z is forward. The wrist target stays on the grip.")]
+        public Vector3 LeftElbowOffset;
+        [Tooltip("Rotate the support hand around its palm contact on the handle, in degrees.")]
+        public Vector3 LeftGripPivotRotation;
+        [Tooltip("Additional left wrist pitch in degrees around the palm contact.")]
+        public float LeftGripPitch;
         [Tooltip("Support hand contact over normalized clip time.")]
         public AnimationCurve LeftGripWeight = new AnimationCurve();
         [Range(0, 1)] public float LeftFistWeight;
@@ -103,6 +118,7 @@ namespace MultiFPS.Gameplay.RiftCombat
     public sealed class EquipmentArmIK
     {
         readonly Transform upper, lower, hand;
+        readonly Quaternion referenceWristRotation;
         Quaternion upperPose, lowerPose, handPose;
         bool captured;
         public EquipmentArmIK(Animator animator, HumanBodyBones bone)
@@ -111,6 +127,7 @@ namespace MultiFPS.Gameplay.RiftCombat
             upper = animator.GetBoneTransform(left ? HumanBodyBones.LeftUpperArm : HumanBodyBones.RightUpperArm);
             lower = animator.GetBoneTransform(left ? HumanBodyBones.LeftLowerArm : HumanBodyBones.RightLowerArm);
             hand = animator.GetBoneTransform(bone);
+            referenceWristRotation = hand ? hand.localRotation : Quaternion.identity;
         }
         public void Restore()
         {
@@ -120,16 +137,16 @@ namespace MultiFPS.Gameplay.RiftCombat
             if (hand) hand.localRotation = handPose;
             captured = false;
         }
-        public Vector3 ReachCorrection(Vector3 target)
+        public Vector3 ReachCorrection(Vector3 target, float reachFraction = .995f)
         {
             if (!upper || !lower || !hand) return Vector3.zero;
-            float reach = (Vector3.Distance(upper.position, lower.position) + Vector3.Distance(lower.position, hand.position)) * .995f;
+            float reach = (Vector3.Distance(upper.position, lower.position) + Vector3.Distance(lower.position, hand.position)) * reachFraction;
             var offset = target - upper.position;
             float distance = offset.magnitude;
             return distance > reach ? offset * (reach / distance - 1) : Vector3.zero;
         }
         public void Solve(Vector3 target, Quaternion rotation, Vector3 hintOffset, float weight,
-            bool preserveLocalHandRotation = false, bool useFixedPole = false)
+            bool preserveLocalHandRotation = false, bool useFixedPole = false, float distributeWristTwist = 0f)
         {
             if (!upper || !lower || !hand || weight <= 0) return;
             upperPose = upper.localRotation; lowerPose = lower.localRotation; handPose = hand.localRotation;
@@ -150,7 +167,20 @@ namespace MultiFPS.Gameplay.RiftCombat
             if (useFixedPole) target = origin + direction * distance;
             upper.rotation = Quaternion.FromToRotation(lower.position - origin, elbow - origin) * upper.rotation;
             lower.rotation = Quaternion.FromToRotation(hand.position - lower.position, target - lower.position) * lower.rotation;
-            if (!preserveLocalHandRotation) hand.rotation = rotation;
+            if (preserveLocalHandRotation) return;
+            if (distributeWristTwist > 0f)
+            {
+                var axis = (hand.position - lower.position).normalized;
+                var referenceRotation = hand.parent.rotation * referenceWristRotation;
+                var wristDelta = rotation * Quaternion.Inverse(referenceRotation);
+                float axial = Vector3.Dot(new Vector3(wristDelta.x, wristDelta.y, wristDelta.z), axis);
+                float twist = Mathf.DeltaAngle(0f, 2f * Mathf.Atan2(axial, wristDelta.w) * Mathf.Rad2Deg);
+                // Fade near the shortest-angle wrap to avoid a sudden forearm flip.
+                float fade = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(145f, 180f, Mathf.Abs(twist)));
+                float turn = Mathf.Clamp(twist * .8f, -85f, 85f) * fade * distributeWristTwist;
+                lower.rotation = Quaternion.AngleAxis(turn, axis) * lower.rotation;
+            }
+            hand.rotation = rotation;
         }
     }
 }
