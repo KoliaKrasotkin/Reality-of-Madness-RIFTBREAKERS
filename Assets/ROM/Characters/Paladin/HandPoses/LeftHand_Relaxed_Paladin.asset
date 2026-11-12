@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1156ead35994fa1498f27771150d52a4, type: 3}
+  m_Name: LeftHand_Relaxed_Paladin
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::HandPosePreset
+  SourceRig: Paladin
+  SourceAvatar: {fileID: 9000000, guid: 95ca2488bfb27b9478157aceb0735840, type: 3}
+  Hand: 17
+  Fingers:
+  - Bone: 24
+    Rotation: {x: -0.11971654, y: 0.6673432, z: -0.3700562, w: -0.6351215}
+  - Bone: 25
+    Rotation: {x: -0.12722264, y: -0.54817516, z: 0.096665904, w: 0.82095927}
+  - Bone: 26
+    Rotation: {x: 0.006403976, y: -0.0002440121, z: 0.05257421, w: 0.9985965}
+  - Bone: 27
+    Rotation: {x: -0.17805415, y: 0.94006693, z: 0.0328964, w: 0.28894413}
+  - Bone: 28
+    Rotation: {x: -0.13720836, y: -0.6240675, z: -0.22344354, w: -0.7360615}
+  - Bone: 29
+    Rotation: {x: -0.034480754, y: 0.11718656, z: -0.06458578, w: -0.9904076}
+  - Bone: 30
+    Rotation: {x: 0.08634628, y: -0.96672827, z: 0.08971619, w: 0.22345409}
+  - Bone: 31
+    Rotation: {x: 0.011144745, y: -0.019986896, z: -0.13900547, w: -0.9900271}
+  - Bone: 32
+    Rotation: {x: 0.043831814, y: 0.07048762, z: 0.07668817, w: 0.9935941}
+  - Bone: 33
+    Rotation: {x: -0.004527416, y: 0.9801279, z: 0.002659758, w: -0.19829664}
+  - Bone: 34
+    Rotation: {x: 0.07702592, y: 0.13264884, z: 0.11226684, w: 0.9817675}
+  - Bone: 35
+    Rotation: {x: 0.040506884, y: 0.06940695, z: 0.058271553, w: 0.9950609}
+  - Bone: 36
+    Rotation: {x: -0.033327088, y: -0.96901363, z: -0.083553374, w: 0.23004511}
+  - Bone: 37
+    Rotation: {x: 0.12805586, y: 0.200729, z: 0.12665859, w: 0.96294713}
+  - Bone: 38
+    Rotation: {x: 0.030009221, y: 0.08272569, z: 0.08215936, w: 0.9927265}

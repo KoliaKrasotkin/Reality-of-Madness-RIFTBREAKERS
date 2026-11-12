@@ -290,6 +290,66 @@ public class WeaponIKControllerEditor : Editor
         }
     }
 
+    private HandPosePreset handPosePreset;
+    private HumanBodyBones presetHand = HumanBodyBones.LeftHand;
+
+    private void DrawHandPosePreset(WeaponDefinition part)
+    {
+        handPosePreset = (HandPosePreset)EditorGUILayout.ObjectField("Hand Pose Preset", handPosePreset, typeof(HandPosePreset), false);
+        presetHand = EditorGUILayout.Popup("Capture Hand", presetHand == HumanBodyBones.LeftHand ? 0 : 1,
+            new[] { "Left", "Right" }) == 0 ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand;
+        using (new EditorGUI.DisabledScope(!previewActive || !animator))
+            if (GUILayout.Button("Save Current Hand Pose"))
+            {
+                var path = EditorUtility.SaveFilePanelInProject("Save Hand Pose", "HandPose", "asset", "Choose a location for the preset.");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    var preset = CreateInstance<HandPosePreset>();
+                    preset.Hand = presetHand;
+                    preset.SourceRig = animator.avatar ? animator.avatar.name : animator.name;
+                    preset.SourceAvatar = animator.avatar;
+                    var rotations = new System.Collections.Generic.List<EquipmentBoneRotation>();
+                    int first = (int)(presetHand == HumanBodyBones.LeftHand ? HumanBodyBones.LeftThumbProximal : HumanBodyBones.RightThumbProximal);
+                    for (int i = first; i < first + 15; i++)
+                    {
+                        var bone = animator.GetBoneTransform((HumanBodyBones)i);
+                        if (bone) rotations.Add(new EquipmentBoneRotation { Bone = (HumanBodyBones)i, Rotation = bone.localRotation });
+                    }
+                    preset.Fingers = rotations.ToArray();
+                    AssetDatabase.CreateAsset(preset, path);
+                    handPosePreset = preset;
+                }
+            }
+        if (!handPosePreset) return;
+        EditorGUILayout.LabelField("Source Rig", handPosePreset.SourceRig);
+        bool wrongRig = handPosePreset.SourceAvatar && (!animator || animator.avatar != handPosePreset.SourceAvatar);
+        if (wrongRig)
+            EditorGUILayout.HelpBox("Choose a preset made for this character's Avatar.", MessageType.Warning);
+        using (new EditorGUI.DisabledScope(handPosePreset.Fingers.Length == 0 || wrongRig))
+            if (GUILayout.Button("Apply Preset to Selected Animation"))
+            {
+                Undo.RecordObject(part, "Apply Hand Pose Preset");
+                var entry = Array.Find(part.AnimationIK, item => item != null && item.Clip == previewClip);
+                if (entry == null)
+                {
+                    entry = new EquipmentAnimationIK { Clip = previewClip };
+                    part.AnimationIK = part.AnimationIK.Append(entry).ToArray();
+                }
+                var poses = new System.Collections.Generic.List<EquipmentBoneRotation>(
+                    entry.FingerOverrides ?? Array.Empty<EquipmentBoneRotation>());
+                foreach (var rotation in handPosePreset.Fingers)
+                {
+                    int index = poses.FindIndex(item => item.Bone == rotation.Bone);
+                    if (index < 0) poses.Add(rotation);
+                    else poses[index] = rotation;
+                }
+                entry.FingerOverrides = poses.ToArray();
+                EditorUtility.SetDirty(part);
+                AssetDatabase.SaveAssetIfDirty(part);
+                SamplePreview();
+            }
+    }
+
     private void DrawHandIK()
     {
         if (!previewWeapon || !previewClip) return;
@@ -300,6 +360,7 @@ public class WeaponIKControllerEditor : Editor
         foreach (var part in parts)
         {
             EditorGUILayout.LabelField(part.DisplayName, EditorStyles.boldLabel);
+            DrawHandPosePreset(part);
             var settings = new SerializedObject(part);
             settings.Update();
             EditorGUI.BeginChangeCheck();

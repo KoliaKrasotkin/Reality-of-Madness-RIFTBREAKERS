@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1156ead35994fa1498f27771150d52a4, type: 3}
+  m_Name: LeftHand_Fist_Warrior
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::HandPosePreset
+  SourceRig: Warrior
+  SourceAvatar: {fileID: 9000000, guid: 066562e3a42d62a4e933c79ad7c0eb54, type: 3}
+  Hand: 17
+  Fingers:
+  - Bone: 24
+    Rotation: {x: 0.7109646, y: -0.24084339, z: -0.11004323, w: 0.6514709}
+  - Bone: 25
+    Rotation: {x: -0.0931208, y: 0.15510751, z: -0.5191989, w: 0.835286}
+  - Bone: 26
+    Rotation: {x: -0.15694577, y: 0.10340639, z: -0.24599795, w: 0.9508734}
+  - Bone: 27
+    Rotation: {x: 0.104730584, y: -0.22393931, z: -0.5924951, w: 0.7667023}
+  - Bone: 28
+    Rotation: {x: 0.07809695, y: -0.50017893, z: -0.85395813, w: 0.12032264}
+  - Bone: 29
+    Rotation: {x: 0.062336687, y: -0.23503254, z: -0.33935276, w: 0.9086879}
+  - Bone: 30
+    Rotation: {x: -0.0028848932, y: -0.16509485, z: -0.67308813, w: 0.7208937}
+  - Bone: 31
+    Rotation: {x: 0.08121217, y: -0.2887535, z: -0.94465214, w: 0.1328848}
+  - Bone: 32
+    Rotation: {x: 0.08358938, y: -0.0995837, z: -0.4888621, w: 0.86261797}
+  - Bone: 33
+    Rotation: {x: -0.14702535, y: -0.015543127, z: -0.6825318, w: 0.71574605}
+  - Bone: 34
+    Rotation: {x: 0.12997383, y: -0.101466686, z: -0.9725661, w: 0.16409272}
+  - Bone: 35
+    Rotation: {x: 0.1015229, y: -0.024594644, z: -0.44079763, w: 0.89150757}
+  - Bone: 36
+    Rotation: {x: -0.17077683, y: -0.0076332167, z: -0.70815945, w: 0.6850455}
+  - Bone: 37
+    Rotation: {x: 0.089232996, y: -0.006778565, z: -0.9582016, w: 0.27173758}
+  - Bone: 38
+    Rotation: {x: 0.08908645, y: -0.033519458, z: -0.47618958, w: 0.8741759}

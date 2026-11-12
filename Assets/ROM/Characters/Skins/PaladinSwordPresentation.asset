@@ -41,19 +41,521 @@ MonoBehaviour:
   StoredRotation: {x: 0, y: 0, z: 0}
   EnableHandIK: 1
   KeepGripsReachable: 0
-  HandGrips: []
-  AnimationIK: []
+  HandGrips:
+  - Hand: 17
+    DrivesSocket: 0
+    UseClipGripWeight: 1
+    Position: {x: -0.04450377, y: -0.036371697, z: -0.07933613}
+    Rotation: {x: 39.548866, y: 89.12394, z: 347.7611}
+    PreservePalmContact: 0
+    PalmOffset: {x: 0, y: 0, z: 0}
+  AnimationIK:
+  - Clip: {fileID: -5252816984213320552, guid: 276ed19a76505ab49bb124def1d5947a, type: 3}
+    FingerOverrides: []
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    LeftGripWeight:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    LeftFistWeight: 1
+    FreeLeftWristAlignment: 0
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    LeftWristArcStart: 0
+    LeftWristArcEnd: 0
+    LeftWristArcFrom: {x: 0, y: 0, z: 0, w: 0}
+    LeftWristArcTo: {x: 0, y: 0, z: 0, w: 0}
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: -4304836385353429653, guid: 7429f085ff8c8f647a0031b8e1888f93, type: 3}
+    FingerOverrides:
+    - Bone: 24
+      Rotation: {x: -0.11971654, y: 0.6673432, z: -0.3700562, w: -0.6351215}
+    - Bone: 25
+      Rotation: {x: -0.12722264, y: -0.54817516, z: 0.096665904, w: 0.82095927}
+    - Bone: 26
+      Rotation: {x: 0.006403976, y: -0.0002440121, z: 0.05257421, w: 0.9985965}
+    - Bone: 27
+      Rotation: {x: -0.17805415, y: 0.94006693, z: 0.0328964, w: 0.28894413}
+    - Bone: 28
+      Rotation: {x: -0.13720836, y: -0.6240675, z: -0.22344354, w: -0.7360615}
+    - Bone: 29
+      Rotation: {x: -0.034480754, y: 0.11718656, z: -0.06458578, w: -0.9904076}
+    - Bone: 30
+      Rotation: {x: 0.08634628, y: -0.96672827, z: 0.08971619, w: 0.22345409}
+    - Bone: 31
+      Rotation: {x: 0.011144745, y: -0.019986896, z: -0.13900547, w: -0.9900271}
+    - Bone: 32
+      Rotation: {x: 0.043831814, y: 0.07048762, z: 0.07668817, w: 0.9935941}
+    - Bone: 33
+      Rotation: {x: -0.004527416, y: 0.9801279, z: 0.002659758, w: -0.19829664}
+    - Bone: 34
+      Rotation: {x: 0.07702592, y: 0.13264884, z: 0.11226684, w: 0.9817675}
+    - Bone: 35
+      Rotation: {x: 0.040506884, y: 0.06940695, z: 0.058271553, w: 0.9950609}
+    - Bone: 36
+      Rotation: {x: -0.033327088, y: -0.96901363, z: -0.083553374, w: 0.23004511}
+    - Bone: 37
+      Rotation: {x: 0.12805586, y: 0.200729, z: 0.12665859, w: 0.96294713}
+    - Bone: 38
+      Rotation: {x: 0.030009221, y: 0.08272569, z: 0.08215936, w: 0.9927265}
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    LeftGripWeight:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.15
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.16666667
+        value: 0.76997817
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.18333334
+        value: 0.23558578
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.2
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.21666667
+        value: 0.10817425
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.23333333
+        value: 0.045171574
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.25
+        value: 0.72584736
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.26666668
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.28333333
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.45
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46666667
+        value: 0.89248675
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.48333332
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.5
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.51666665
+        value: 0.95354694
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.53333336
+        value: 0.90337646
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.55
+        value: 0.9919605
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.56666666
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    LeftFistWeight: 0
+    FreeLeftWristAlignment: 0
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    LeftWristArcStart: 0
+    LeftWristArcEnd: 0
+    LeftWristArcFrom: {x: 0, y: 0, z: 0, w: 1}
+    LeftWristArcTo: {x: 0, y: 0, z: 0, w: 1}
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 7400000, guid: 4ba4757443ea7244cb1eda8df0dd14ee, type: 2}
+    FingerOverrides: []
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0, z: 0}
+    HandRotation: {x: 0, y: 0, z: 0}
+    ElbowOffset: {x: 0, y: 0, z: 0}
+    LeftHandPosition: {x: 0, y: 0, z: 0}
+    LeftHandRotation: {x: 0, y: 0, z: 0}
+    LeftElbowOffset: {x: 0, y: 0, z: 0}
+    LeftGripWeight:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.15
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.16666667
+        value: 0.76997817
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.18333334
+        value: 0.23558578
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.2
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.21666667
+        value: 0.10817425
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.23333333
+        value: 0.045171574
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.25
+        value: 0.72584736
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.26666668
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.28333333
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.45
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46666667
+        value: 0.89248675
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.48333332
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.5
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.51666665
+        value: 0.95354694
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.53333336
+        value: 0.90337646
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.55
+        value: 0.9919605
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.56666666
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    LeftFistWeight: 0
+    FreeLeftWristAlignment: 0
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    LeftWristArcStart: 0
+    LeftWristArcEnd: 0
+    LeftWristArcFrom: {x: 0, y: 0, z: 0, w: 1}
+    LeftWristArcTo: {x: 0, y: 0, z: 0, w: 1}
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
   FingerPoses:
   - Bone: 42
     Rotation: {x: 35.12726, y: 168.81439, z: 352.1609}
     RelaxedRotation: {x: 7.4403644, y: 168.69121, z: 8.318513}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   - Bone: 43
-    Rotation: {x: 35.303417, y: 323.65826, z: 298.71216}
+    Rotation: {x: 30.81, y: 300.6, z: 262}
     RelaxedRotation: {x: 5.7959957, y: 343.20386, z: 330.10333}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   - Bone: 44
-    Rotation: {x: 348.56775, y: 347.59973, z: 8.876666}
+    Rotation: {x: 398.6, y: 330.5, z: -62.7}
     RelaxedRotation: {x: 4.7862387, y: 352.95572, z: 353.09225}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   - Bone: 45
@@ -61,11 +563,11 @@ MonoBehaviour:
     RelaxedRotation: {x: 10.302021, y: 152.38074, z: 355.75146}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   - Bone: 46
-    Rotation: {x: 28.461147, y: 346.80078, z: 313.65405}
+    Rotation: {x: 30, y: 317.5, z: 274.8}
     RelaxedRotation: {x: 358.4171, y: 357.90872, z: 344.04407}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   - Bone: 47
-    Rotation: {x: 349.9902, y: 347.211, z: 8.535341}
+    Rotation: {x: 404, y: 346.8, z: -59.1}
     RelaxedRotation: {x: 4.375434, y: 351.53384, z: 350.849}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   - Bone: 48
@@ -73,11 +575,11 @@ MonoBehaviour:
     RelaxedRotation: {x: 358.58752, y: 157.19316, z: 348.9889}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   - Bone: 49
-    Rotation: {x: 27.606209, y: 334.92673, z: 307.44183}
+    Rotation: {x: 31.4, y: 321.2, z: 283.7}
     RelaxedRotation: {x: 6.976365, y: 343.75, z: 345.9557}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   - Bone: 50
-    Rotation: {x: 355.25208, y: 349.27277, z: 14.092185}
+    Rotation: {x: 413, y: 349.27277, z: -53.8}
     RelaxedRotation: {x: 4.15886, y: 351.76566, z: 352.99768}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   - Bone: 51
@@ -85,12 +587,84 @@ MonoBehaviour:
     RelaxedRotation: {x: 348.0374, y: 155.59584, z: 346.74765}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   - Bone: 52
-    Rotation: {x: 22.068722, y: 330.4117, z: 300.77988}
+    Rotation: {x: 28.8, y: 316.2, z: 270.9}
     RelaxedRotation: {x: 11.289937, y: 334.70435, z: 342.47223}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   - Bone: 53
-    Rotation: {x: 0.5467301, y: 348.93143, z: 13.145025}
+    Rotation: {x: 0.5467301, y: 334.3, z: -56.2}
     RelaxedRotation: {x: 2.6359596, y: 350.24936, z: 350.31284}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 39
+    Rotation: {x: -11.3, y: 259.7, z: -310.5}
+    RelaxedRotation: {x: 2.6359596, y: 350.24936, z: 350.31284}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 40
+    Rotation: {x: 0.5467301, y: 328.1, z: -53.8}
+    RelaxedRotation: {x: 2.6359596, y: 350.24936, z: 350.31284}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 41
+    Rotation: {x: 16.6, y: 356.94, z: -27.5}
+    RelaxedRotation: {x: 2.6359596, y: 350.24936, z: 350.31284}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 27
+    Rotation: {x: 60.200012, y: 120.29999, z: 329.79996}
+    RelaxedRotation: {x: 350.51758, y: 147.39104, z: 341.32925}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 28
+    Rotation: {x: 23.663534, y: 101.100006, z: 121.5}
+    RelaxedRotation: {x: 355.5896, y: 79.398796, z: 30.110981}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 29
+    Rotation: {x: 69.100006, y: 139.6, z: 194.6}
+    RelaxedRotation: {x: 4.786162, y: 346.79312, z: 6.9077144}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 30
+    Rotation: {x: 54.100002, y: 212.92905, z: 35.899994}
+    RelaxedRotation: {x: 12.242586, y: 205.2291, z: 352.54175}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 31
+    Rotation: {x: 49.400013, y: 56.900013, z: 102.200005}
+    RelaxedRotation: {x: 358.41708, y: 2.0912275, z: 15.955925}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 32
+    Rotation: {x: 72.2, y: 199, z: 228.9}
+    RelaxedRotation: {x: 4.375399, y: 8.466087, z: 9.150976}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 33
+    Rotation: {x: 56.500008, y: 217.1, z: 34.400005}
+    RelaxedRotation: {x: 359.80414, y: 202.87604, z: 359.43106}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 34
+    Rotation: {x: 32.600002, y: 50.000008, z: 91.4}
+    RelaxedRotation: {x: 6.9763107, y: 16.249897, z: 14.044256}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 35
+    Rotation: {x: 83.40001, y: 192.69998, z: 224.2}
+    RelaxedRotation: {x: 4.1590133, y: 8.234579, z: 7.002431}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 36
+    Rotation: {x: 56.3, y: 216.2, z: 33.700012}
+    RelaxedRotation: {x: 349.78967, y: 206.57372, z: 1.5223817}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 37
+    Rotation: {x: 27.70331, y: 67.2, z: 96.90001}
+    RelaxedRotation: {x: 11.289937, y: 25.295702, z: 17.52777}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 38
+    Rotation: {x: 27.300003, y: 37.900005, z: 96.1}
+    RelaxedRotation: {x: 2.6358774, y: 9.750505, z: 9.687053}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 24
+    Rotation: {x: 24.899998, y: 242.6, z: 28.300001}
+    RelaxedRotation: {x: 40.239048, y: 276.06412, z: 23.98295}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 25
+    Rotation: {x: 343.9, y: 282.1, z: 72.3}
+    RelaxedRotation: {x: 354.09326, y: 291.6289, z: 17.444979}
+    ExtendedRotation: {x: 0, y: 0, z: 0}
+  - Bone: 26
+    Rotation: {x: 355.8, y: 1.4000005, z: 51.14}
+    RelaxedRotation: {x: 0.73430175, y: 0.010659532, z: 6.0275316}
     ExtendedRotation: {x: 0, y: 0, z: 0}
   UseFixedFingerPoses: 0
   UseApprovedCarryGrip: 0
