@@ -18,6 +18,7 @@ public sealed class RiftFrontEndView : MonoBehaviour {
  public Button SelectionBack,SelectionClose,Create,Delete,Undo,Continue;
  public Button CreationBack,CreationClose,Cancel,Warrior,Paladin,Confirm;
  public GameObject WarriorSelected,PaladinSelected;
+ Button mageButton;GameObject mageSelected;
  [Header("Dynamic roster: edit the row template for all records")]
  public RectTransform Rows;public RiftCharacterRowView RowTemplate;public GameObject Empty;
  public GameObject SelectedDetails;public Text SelectedName,SelectedClass,SelectedLevel,SelectedTime,SelectedDescription;
@@ -31,18 +32,32 @@ public sealed class RiftFrontEndView : MonoBehaviour {
  RiftModelView homeModel,selectionModel,creationModel;RiftHub owner;int homeSkin=-1,selectedSkin=-1,creationSkin=-1;
  bool bound;string selectedRecord;
  public void Bind(RiftHub hub){
-  owner=hub;if(bound)return;bound=true;RowTemplate.gameObject.SetActive(false);
+  owner=hub;if(bound)return;bound=true;EnsureMageTab();RowTemplate.gameObject.SetActive(false);
   Hook(Play,()=>owner.FrontEndAction("Play"));Hook(Characters,()=>owner.FrontEndAction("Characters"));Hook(Settings,()=>owner.FrontEndAction("Settings"));Hook(Exit,()=>owner.FrontEndAction("Exit"));
   Hook(Crelium,()=>owner.FrontEndAction("Crelium"));Hook(Connect,()=>owner.FrontEndAction("Connect"));Hook(More,()=>owner.FrontEndAction("More"));
   Hook(SelectionBack,()=>owner.FrontEndAction("Home"));Hook(SelectionClose,()=>owner.FrontEndAction("Home"));Hook(Create,()=>owner.FrontEndAction("Create"));Hook(Delete,()=>owner.FrontEndAction("Delete"));Hook(Undo,()=>owner.FrontEndAction("Undo"));Hook(Continue,()=>owner.FrontEndAction("Continue"));
-  Hook(CreationBack,()=>owner.FrontEndAction("Characters"));Hook(CreationClose,()=>owner.FrontEndAction("Home"));Hook(Cancel,()=>owner.FrontEndAction("Characters"));Hook(Warrior,()=>owner.FrontEndAction("Warrior"));Hook(Paladin,()=>owner.FrontEndAction("Paladin"));Hook(Confirm,()=>owner.FrontEndAction("Confirm"));
+  Hook(CreationBack,()=>owner.FrontEndAction("Characters"));Hook(CreationClose,()=>owner.FrontEndAction("Home"));Hook(Cancel,()=>owner.FrontEndAction("Characters"));Hook(Warrior,()=>owner.FrontEndAction("Warrior"));Hook(Paladin,()=>owner.FrontEndAction("Paladin"));Hook(mageButton,()=>owner.FrontEndAction("Mage"));Hook(Confirm,()=>owner.FrontEndAction("Confirm"));
+ }
+ // Preserve the authored prefab while adding the third class to the existing tab row.
+ void EnsureMageTab(){
+  if(!Application.isPlaying||mageButton||!Paladin||!Warrior)return;
+  mageButton=Instantiate(Paladin,Paladin.transform.parent);mageButton.name="Mage class";
+  mageButton.onClick=new Button.ButtonClickedEvent();
+  if(PaladinSelected){var marker=mageButton.GetComponentsInChildren<Transform>(true).FirstOrDefault(t=>t.name==PaladinSelected.name);if(marker)mageSelected=marker.gameObject;}
+  LayoutClassTab(Warrior,560,"WARRIOR");LayoutClassTab(Paladin,820,"PALADÍN");LayoutClassTab(mageButton,1080,"MAGO");
+  mageButton.gameObject.SetActive(MagePrototypeSettings.Available);
+ }
+ static void LayoutClassTab(Button button,float x,string label){
+  var rect=(RectTransform)button.transform;rect.anchoredPosition=new Vector2(x,rect.anchoredPosition.y);rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,240);
+  var text=button.GetComponentInChildren<Text>(true);if(text){text.text=label;text.rectTransform.anchorMin=Vector2.zero;text.rectTransform.anchorMax=Vector2.one;text.rectTransform.offsetMin=new Vector2(8,0);text.rectTransform.offsetMax=new Vector2(-8,0);}
+  foreach(var child in button.GetComponentsInChildren<RectTransform>(true))if(child.name=="Selected underline")child.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,220);
  }
  static void Hook(Button button,UnityEngine.Events.UnityAction action){if(button)button.onClick.AddListener(action);}
  void Pages(bool home,bool selection,bool creation){Home.SetActive(home);Selection.SetActive(selection);Creation.SetActive(creation);}
  public void HideScreens(){Pages(false,false,false);}
  public void ShowHome(RiftPlayerCharacter record){
   Pages(true,false,false);bool valid=record?.Available==true;Play.interactable=valid;Crelium.interactable=valid&&record.ClassKey=="warrior"&&!record.CreliumCompleted;
-  HomeName.text=valid?record.DisplayName:"Sin personaje";HomeClass.text=valid?(record.ClassKey==PaladinPrototypeSettings.ClassKey?"Paladín (prueba)":"Warrior"):"";
+  HomeName.text=valid?record.DisplayName:"Sin personaje";HomeClass.text=valid?(record.ClassKey==MagePrototypeSettings.ClassKey?"Mago (prueba)":record.ClassKey==PaladinPrototypeSettings.ClassKey?"Paladín (prueba)":"Warrior"):"";
   HomeStatus.text=valid?"Personaje seleccionado":"Elegí un personaje para jugar";Version.text=RiftReleaseInfo.Load.DisplayLabel;ReleaseStatus.text=RiftReleaseInfo.Load.StatusLabel;
   HomePreview.gameObject.SetActive(valid);if(valid)Preview(HomePreview,record.Skin,ref homeModel,ref homeSkin,true);
  }
@@ -56,16 +71,16 @@ public sealed class RiftFrontEndView : MonoBehaviour {
   }
   if(!valid)return;
   SelectedName.text=active.DisplayName;SelectedClass.text=className(active);SelectedLevel.text=RiftCharacterMetadata.LevelLabel(active.Id);SelectedTime.text=RiftCharacterMetadata.PlayedLabel(active.Id);
-  SelectedDescription.text=active.ClassKey==PaladinPrototypeSettings.ClassKey?PaladinPrototypeSettings.Load.Description:active.Available?"Guerrero · Furia\n\nHacha a dos manos\no espada y escudo\n\n"+(active.CreliumCompleted?"El Rift te espera.":"Antes del Rift: Crelium."):"Esta clase todavía no está disponible.";
+  SelectedDescription.text=active.ClassKey==MagePrototypeSettings.ClassKey?MagePrototypeSettings.Load.Description:active.ClassKey==PaladinPrototypeSettings.ClassKey?PaladinPrototypeSettings.Load.Description:active.Available?"Guerrero · Furia\n\nHacha a dos manos\no espada y escudo\n\n"+(active.CreliumCompleted?"El Rift te espera.":"Antes del Rift: Crelium."):"Esta clase todavía no está disponible.";
   Portrait(active.Skin,SelectedPortrait,SelectedPlaceholder);Continue.interactable=active.Available;
-  Continue.GetComponentInChildren<Text>().text=active.ClassKey==PaladinPrototypeSettings.ClassKey?"PROBAR EN EL RIFT":active.CreliumCompleted?"ENTRAR A EL RIFT":"CONTINUAR EN CRELIUM";
+  Continue.GetComponentInChildren<Text>().text=active.ClassKey!="warrior"?"PROBAR EN EL RIFT":active.CreliumCompleted?"ENTRAR A EL RIFT":"CONTINUAR EN CRELIUM";
   if(active.Available){bool changed=selectedRecord!=active.Id;selectedRecord=active.Id;if(changed)selectedSkin=-1;Preview(SelectionPreview,active.Skin,ref selectionModel,ref selectedSkin,false);if(changed)owner.FrontEndEquipment(selectionModel,active);}
  }
- public void ShowCreation(bool paladin){
-  Pages(false,false,true);paladin=paladin&&PaladinPrototypeSettings.Available;int skin=paladin?PaladinPrototypeSettings.Skin:1;
-  WarriorSelected.SetActive(!paladin);PaladinSelected.SetActive(paladin);Paladin.gameObject.SetActive(PaladinPrototypeSettings.Available);
-  var data=RiftCharacterPresentationAssets.Load;CreationClass.text=paladin?"PALADÍN":"WARRIOR";CreationName.text=RiftSkinIdentity.Name(skin);CreationPortraitName.text=CreationName.text;
-  Lore.text=paladin?PaladinPrototypeSettings.Load.Description:data?data.Lore:"El guerrero de Crelium.";Style.text=paladin?"Cuerpo a cuerpo\n\nGastá Fe en Golpe Sagrado.\n\nLuz Sanadora cura y Defensa Radiante absorbe daño: vos o un aliado.\n\nRegeneración pasiva y Rezar.\n\nBalance de prueba; sin talentos todavía.":data?data.Style:"Cuerpo a cuerpo · Furia";Availability.text=paladin?"PROTOTIPO JUGABLE":"CLASE DISPONIBLE";
+ public void ShowCreation(bool paladin,bool mage=false){
+  Pages(false,false,true);mage=mage&&MagePrototypeSettings.Available;paladin=!mage&&paladin&&PaladinPrototypeSettings.Available;int skin=mage?MagePrototypeSettings.Skin:paladin?PaladinPrototypeSettings.Skin:1;
+  WarriorSelected.SetActive(!paladin&&!mage);if(mageSelected)mageSelected.SetActive(mage);if(mageButton)mageButton.gameObject.SetActive(MagePrototypeSettings.Available);PaladinSelected.SetActive(paladin);Paladin.gameObject.SetActive(PaladinPrototypeSettings.Available);
+  var data=RiftCharacterPresentationAssets.Load;CreationClass.text=mage?"MAGO":paladin?"PALADÍN":"WARRIOR";CreationName.text=RiftSkinIdentity.Name(skin);CreationPortraitName.text=CreationName.text;
+  Lore.text=mage?MagePrototypeSettings.Load.Description:paladin?PaladinPrototypeSettings.Load.Description:data?data.Lore:"El guerrero de Crelium.";Style.text=mage?MagePrototypeSettings.Load.Description:paladin?"Cuerpo a cuerpo\n\nGastá Fe en Golpe Sagrado.\n\nLuz Sanadora cura y Defensa Radiante absorbe daño: vos o un aliado.\n\nRegeneración pasiva y Rezar.\n\nBalance de prueba; sin talentos todavía.":data?data.Style:"Cuerpo a cuerpo · Furia";Availability.text=paladin||mage?"PROTOTIPO JUGABLE":"CLASE DISPONIBLE";
   Portrait(skin,CreationPortrait,CreationPlaceholder);Preview(CreationPreview,skin,ref creationModel,ref creationSkin,false);
  }
  static void Portrait(int skin,Image image,ROM.UI.Gameplay.RiftHUDGraphic placeholder){var data=RiftCharacterPresentationAssets.Load;bool use=skin==1&&data&&data.NertorPortrait;image.gameObject.SetActive(use);placeholder.gameObject.SetActive(!use);if(use)image.sprite=data.NertorPortrait;}

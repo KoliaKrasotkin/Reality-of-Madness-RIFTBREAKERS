@@ -17,8 +17,8 @@ public sealed partial class AbilityController {
  void RegenerateFaith(){double now=NetworkTime.time;float elapsed=(float)System.Math.Max(0,now-lastFaithTick);lastFaithTick=now;Resource=Mathf.Clamp(Resource+elapsed*Mathf.Max(0,PaladinPrototypeSettings.Load.FaithRegenerationPerSecond),0,Class?Class.MaximumResource:100);StorePaladinFaith();}
  AbilityDefinition paladinPending;uint paladinVictim;bool paladinApplied;double paladinHitAt;Health paladinCaster;string paladinLife;float paladinWeaponRoll;
  public string AbilityRangeSummary(int slot,AbilityDefinition a)=>a&&a.PaladinEffect==PaladinAbilityEffect.Prayer?"Uso propio; sin objetivo":"Alcance/área: "+(IsPaladin?a.Range:AbilityRadius(slot,a)).ToString("0.0")+" m";
- public string ResourceName=>IsPaladin?"Fe":"Furia";
- public string ClassLabel=>IsPaladin?"Paladín":"Warrior";
+ public string ResourceName=>IsMage?"Maná":IsPaladin?"Fe":"Furia";
+ public string ClassLabel=>IsMage?"Mago":IsPaladin?"Paladín":"Warrior";
  public bool IsPaladinSupport(AbilityDefinition a)=>a&&(a.PaladinEffect==PaladinAbilityEffect.HealingLight||a.PaladinEffect==PaladinAbilityEffect.RadiantShield);
  public string PaladinEffectSummary(AbilityDefinition a){if(!a)return "";if(a.PaladinEffect==PaladinAbilityEffect.HealingLight)return "Cura: "+(a.HealthFraction*100).ToString("0.#")+"% de vida máxima del objetivo";if(a.PaladinEffect==PaladinAbilityEffect.RadiantShield)return "Absorbe: "+(a.HealthFraction*100).ToString("0.#")+"% de vida máxima durante "+a.BuffDuration.ToString("0.#")+" s; no acumula";if(a.PaladinEffect==PaladinAbilityEffect.Prayer)return "Restaura toda la Fe; recarga "+a.Cooldown.ToString("0.#")+" s";return "Consume "+a.Cost.ToString("0.#")+" Fe; sin generación por impacto";}
  void RequestPaladin(int slot,AbilityDefinition a){

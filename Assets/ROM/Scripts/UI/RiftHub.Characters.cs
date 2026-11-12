@@ -22,20 +22,20 @@ namespace ROM.UI.Sprint01
             }
         }
         string[] ClassKeys=>new[]{"warrior"};
-        string ClassName(string key){if(key=="warrior")return "Warrior";if(key==PaladinPrototypeSettings.ClassKey)return "Paladín (prototipo)";if(key!=null&&key.StartsWith("legacy:")&&int.TryParse(key.Substring(7),out int id))return RiftClassRules.Load()?.Find(id)?.Name??"Clase";return "Clase";}
+        string ClassName(string key){if(key==MagePrototypeSettings.ClassKey)return "Mago (prueba)";if(key=="warrior")return "Warrior";if(key==PaladinPrototypeSettings.ClassKey)return "Paladín (prototipo)";if(key!=null&&key.StartsWith("legacy:")&&int.TryParse(key.Substring(7),out int id))return RiftClassRules.Load()?.Find(id)?.Name??"Clase";return "Clase";}
         public void ApplyActiveCharacter()
         {
             var record=Roster.Active;if(record==null)return;RiftCharacterWallet.ImportLegacy(record);Roster.SaveIdentity();PlayerPrefs.SetString("ROM.Character.ActiveId",record.Id);
             if(record.ClassKey=="warrior"||record.ClassKey==PaladinPrototypeSettings.ClassKey){
                 // A class selection has one default balance profile; no specialization is selected by the player.
                 PlayerPrefs.SetInt(AbilityController.Preference,record.ClassKey==PaladinPrototypeSettings.ClassKey?1:2);PlayerPrefs.SetInt(PlayerInstance.ClassPreference,1);
-            }else{PlayerPrefs.SetInt(AbilityController.Preference,0);if(int.TryParse(record.ClassKey.Replace("legacy:",""),out int id))PlayerPrefs.SetInt(PlayerInstance.ClassPreference,id);}
+            }else if(record.ClassKey==MagePrototypeSettings.ClassKey){PlayerPrefs.SetInt(AbilityController.Preference,1);PlayerPrefs.SetInt(PlayerInstance.ClassPreference,2);}else{PlayerPrefs.SetInt(AbilityController.Preference,0);if(int.TryParse(record.ClassKey.Replace("legacy:",""),out int id))PlayerPrefs.SetInt(PlayerInstance.ClassPreference,id);}
             UserSettings.CharacterSkinID=record.Skin;PlayerPrefs.SetInt("_playerPrefs_CharacterSkinID",record.Skin);UserSettings.UserNickname=record.DisplayName;PlayerPrefs.SetString("_playerPrefs_Username",record.DisplayName);PlayerPrefs.Save();
             if(Social.Self.Skin!=record.Skin)Social.SetAppearance(record.Skin);
         }
-        bool RequireWarrior(){if(Roster.Active?.Available==true){ApplyActiveCharacter();return true;}homePanel="Characters";Navigate(HubPage.Home);Notify("Este personaje no está disponible. Creá o seleccioná un Warrior; sus datos se conservan.");return false;}
+        bool RequireWarrior(){if(Roster.Active?.Available==true){ApplyActiveCharacter();return true;}homePanel="Characters";Navigate(HubPage.Home);Notify("Este personaje no está disponible. Creá o seleccioná un personaje disponible; sus datos se conservan.");return false;}
         void DrawClassSelection(){DrawCharacters();}
-        bool creationPortrait;bool creationPaladin;
+        bool creationPortrait;bool creationPaladin;bool creationMage;
         RiftModelView characterPreview;
         RectTransform CharacterScreen(string title)
         {
@@ -100,15 +100,15 @@ namespace ROM.UI.Sprint01
             MenuSurface(root,"Selected character details",1400,180,440,640,new Color(.03f,.027f,.05f,.92f),new Color(.43f,.34f,.59f));
             CharacterPortrait(root,active,1430,210,92);W.Label(root,active.DisplayName,1540,215,275,45,29,new Color(.96f,.93f,1));W.Label(root,ClassName(active.ClassKey),1540,263,275,32,19,new Color(.74f,.68f,.86f));
             W.Label(root,RiftCharacterMetadata.LevelLabel(active.Id),1430,330,380,42,27,new Color(.85f,.77f,1));var played=RiftCharacterMetadata.PlayedLabel(active.Id);if(!string.IsNullOrEmpty(played))W.Label(root,played,1430,382,380,34,17,new Color(.73f,.7f,.81f));
-            W.Label(root,active.ClassKey==PaladinPrototypeSettings.ClassKey?PaladinPrototypeSettings.Load.Description:active.Available?"Guerrero · Furia\n\nHacha a dos manos\no espada y escudo\n\n"+(active.CreliumCompleted?"El Rift te espera.":"Antes del Rift: Crelium."):"Esta clase todavía no está disponible.",1430,445,380,220,21,new Color(.8f,.76f,.87f));
+            W.Label(root,active.ClassKey==MagePrototypeSettings.ClassKey?MagePrototypeSettings.Load.Description:active.ClassKey==PaladinPrototypeSettings.ClassKey?PaladinPrototypeSettings.Load.Description:active.Available?"Guerrero · Furia\n\nHacha a dos manos\no espada y escudo\n\n"+(active.CreliumCompleted?"El Rift te espera.":"Antes del Rift: Crelium."):"Esta clase todavía no está disponible.",1430,445,380,220,21,new Color(.8f,.76f,.87f));
             CharacterButton(root,"BORRAR PERSONAJE",1424,830,392,44,ConfirmDeleteCharacter);
             if(!string.IsNullOrEmpty(Roster.LastDeletedId)&&!Roster.Characters.Any(c=>c.Id==Roster.LastDeletedId))CharacterButton(root,"DESHACER BORRADO",70,850,450,40,()=>{if(Roster.RestoreDeleted(Roster.LastDeletedId)){ApplyActiveCharacter();SocialChanged();}});
             CharacterButton(root,"+ CREAR PERSONAJE",70,900,450,68,()=>{creationPortrait=false;homePanel="CreateCharacter";Navigate(HubPage.Home);});
-            var play=CharacterButton(root,active.ClassKey==PaladinPrototypeSettings.ClassKey?"PROBAR EN EL RIFT":active.CreliumCompleted?"ENTRAR A EL RIFT":"CONTINUAR EN CRELIUM",1400,900,440,68,()=>{if(!RequireWarrior())return;if(Roster.Active.ClassKey==PaladinPrototypeSettings.ClassKey||Roster.Active.CreliumCompleted)Deploy();else ROM.Tutorial.Crilium.CriliumSession.Enter(roster);},true);play.interactable=active.Available;
+            var play=CharacterButton(root,active.ClassKey!="warrior"?"PROBAR EN EL RIFT":active.CreliumCompleted?"ENTRAR A EL RIFT":"CONTINUAR EN CRELIUM",1400,900,440,68,()=>{if(!RequireWarrior())return;if(Roster.Active.ClassKey!="warrior"||Roster.Active.CreliumCompleted)Deploy();else ROM.Tutorial.Crilium.CriliumSession.Enter(roster);},true);play.interactable=active.Available;
             if(UnityEngine.EventSystems.EventSystem.current)UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(play.interactable?play.gameObject:root.GetComponentsInChildren<Button>().First(b=>b.interactable).gameObject);
             ROM.UI.Gameplay.RiftAbilityTooltip.HideAll();
         }
-        void DrawEmptyCharacters(){var root=CharacterScreen("TUS PERSONAJES");W.Label(root,"No tenés personajes",90,260,430,70,30,new Color(.9f,.83f,1));W.Label(root,"Creá un Warrior para comenzar.",90,350,430,100,23,W.Muted);CharacterButton(root,"+ CREAR PERSONAJE",70,900,450,68,()=>{homePanel="CreateCharacter";Navigate(HubPage.Home);},true);CharacterButton(root,"SALIR",1400,900,440,68,MenuExit);if(!string.IsNullOrEmpty(Roster.LastDeletedId)&&!Roster.Characters.Any(c=>c.Id==Roster.LastDeletedId))CharacterButton(root,"DESHACER BORRADO",70,820,450,50,()=>{if(Roster.RestoreDeleted(Roster.LastDeletedId)){ApplyActiveCharacter();SocialChanged();}});}
+        void DrawEmptyCharacters(){var root=CharacterScreen("TUS PERSONAJES");W.Label(root,"No tenés personajes",90,260,430,70,30,new Color(.9f,.83f,1));W.Label(root,"Creá un personaje para comenzar.",90,350,430,100,23,W.Muted);CharacterButton(root,"+ CREAR PERSONAJE",70,900,450,68,()=>{homePanel="CreateCharacter";Navigate(HubPage.Home);},true);CharacterButton(root,"SALIR",1400,900,440,68,MenuExit);if(!string.IsNullOrEmpty(Roster.LastDeletedId)&&!Roster.Characters.Any(c=>c.Id==Roster.LastDeletedId))CharacterButton(root,"DESHACER BORRADO",70,820,450,50,()=>{if(Roster.RestoreDeleted(Roster.LastDeletedId)){ApplyActiveCharacter();SocialChanged();}});}
         void ConfirmDeleteCharacter(){
             var record=Roster.Active;if(record==null)return;string id=record.Id,snapshot=JsonUtility.ToJson(record);
             string message=record.DisplayName+"\n"+ClassName(record.ClassKey)+" · "+RiftCharacterMetadata.LevelLabel(id)+"\n\n¿Borrar este personaje? Podés deshacerlo.";
@@ -118,19 +118,19 @@ namespace ROM.UI.Sprint01
         void DrawCharacterCreation()
         {
             if(InGame){Notify("La creación está disponible desde el menú principal.");return;}
-            var root=CharacterScreen("CREAR PERSONAJE");var assets=RiftCharacterPresentationAssets.Load;bool paladin=creationPaladin&&PaladinPrototypeSettings.Available;int skin=paladin?PaladinPrototypeSettings.Skin:1;
+            var root=CharacterScreen("CREAR PERSONAJE");var assets=RiftCharacterPresentationAssets.Load;bool mage=creationMage&&MagePrototypeSettings.Available;bool paladin=!mage&&creationPaladin&&PaladinPrototypeSettings.Available;int skin=mage?MagePrototypeSettings.Skin:paladin?PaladinPrototypeSettings.Skin:1;
             MenuSurface(root,"Class lore panel",70,180,450,650,new Color(.03f,.027f,.05f,.92f),new Color(.43f,.34f,.59f));
-            W.Label(root,paladin?"PALADÍN":"WARRIOR",100,208,390,54,32,new Color(.9f,.8f,1));W.Label(root,RiftSkinIdentity.Name(skin),100,275,390,48,28,new Color(.96f,.94f,1));
-            W.Label(root,paladin?PaladinPrototypeSettings.Load.Description:assets?assets.Lore:"El guerrero de Crelium.",100,360,390,300,22,new Color(.79f,.75f,.85f));W.Label(root,paladin?"PROTOTIPO JUGABLE":"CLASE DISPONIBLE",100,740,390,34,15,new Color(.68f,.51f,.91f));
+            W.Label(root,mage?"MAGO":paladin?"PALADÍN":"WARRIOR",100,208,390,54,32,new Color(.9f,.8f,1));W.Label(root,RiftSkinIdentity.Name(skin),100,275,390,48,28,new Color(.96f,.94f,1));
+            W.Label(root,mage?MagePrototypeSettings.Load.Description:paladin?PaladinPrototypeSettings.Load.Description:assets?assets.Lore:"El guerrero de Crelium.",100,360,390,300,22,new Color(.79f,.75f,.85f));W.Label(root,paladin||mage?"PROTOTIPO JUGABLE":"CLASE DISPONIBLE",100,740,390,34,15,new Color(.68f,.51f,.91f));
             // Keep the interactive render texture below the class tabs. Its transparent
             // pixels still receive raycasts, so drawing tabs behind it blocks selection.
             CharacterHero(root,skin,null,true);
-            CharacterButton(root,"WARRIOR",600,180,270,44,()=>{creationPaladin=false;Navigate(HubPage.Home);},!paladin);if(PaladinPrototypeSettings.Available)CharacterButton(root,"PALADÍN (PRUEBA)",890,180,320,44,()=>{creationPaladin=true;Navigate(HubPage.Home);},paladin);
+            CharacterButton(root,"WARRIOR",560,180,240,44,()=>{creationPaladin=false;creationMage=false;Navigate(HubPage.Home);},!paladin&&!mage);if(PaladinPrototypeSettings.Available)CharacterButton(root,"PALADÍN",820,180,240,44,()=>{creationPaladin=true;creationMage=false;Navigate(HubPage.Home);},paladin);if(MagePrototypeSettings.Available)CharacterButton(root,"MAGO",1080,180,240,44,()=>{creationMage=true;creationPaladin=false;Navigate(HubPage.Home);},mage);
             MenuSurface(root,"Class playstyle panel",1400,180,440,650,new Color(.03f,.027f,.05f,.92f),new Color(.43f,.34f,.59f));
-            W.Label(root,"ESTILO DE JUEGO",1430,208,380,46,26,new Color(.88f,.79f,1));W.Label(root,paladin?"Cuerpo a cuerpo\n\nReposo, caminar y ataque básico.\n\nSin habilidades ni talentos de clase todavía.":assets?assets.Style:"Cuerpo a cuerpo · Furia",1430,292,380,375,21,new Color(.79f,.75f,.85f));
+            W.Label(root,"ESTILO DE JUEGO",1430,208,380,46,26,new Color(.88f,.79f,1));W.Label(root,mage?MagePrototypeSettings.Load.Description:paladin?PaladinPrototypeSettings.Load.Description:assets?assets.Style:"Cuerpo a cuerpo · Furia",1430,292,380,375,21,new Color(.79f,.75f,.85f));
             CharacterPortrait(root,new RiftPlayerCharacter{Skin=skin},1430,714,76);W.Label(root,RiftSkinIdentity.Name(skin),1530,730,275,40,22,new Color(.86f,.78f,1));
             CharacterButton(root,"CANCELAR",70,900,450,68,()=>{creationPortrait=false;homePanel="Characters";Navigate(HubPage.Home);});
-            CharacterButton(root,"CREAR Y SELECCIONAR",1400,900,440,68,()=>{string error=Roster.Create(RiftSkinIdentity.Name(skin),paladin?PaladinPrototypeSettings.ClassKey:"warrior",skin);if(error!=null){Notify(error);return;}ApplyActiveCharacter();homePanel="Characters";SocialChanged();Notify("Personaje creado: "+Roster.Active.DisplayName);},true);
+            CharacterButton(root,"CREAR Y SELECCIONAR",1400,900,440,68,()=>{string error=Roster.Create(RiftSkinIdentity.Name(skin),mage?MagePrototypeSettings.ClassKey:paladin?PaladinPrototypeSettings.ClassKey:"warrior",skin);if(error!=null){Notify(error);return;}ApplyActiveCharacter();homePanel="Characters";SocialChanged();Notify("Personaje creado: "+Roster.Active.DisplayName);},true);
             ROM.UI.Gameplay.RiftAbilityTooltip.HideAll();
         }
 

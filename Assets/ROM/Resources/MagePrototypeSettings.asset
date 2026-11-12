@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8770b9dec34eabaa5a869640f3bdbf, type: 3}
+  m_Name: MagePrototypeSettings
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.MagePrototypeSettings
+  CharacterName: Mago
+  Description: "Mago de batalla. Movimiento, objetivos y descarga arcana a distancia. Kit inicial de prueba."
+  PlayerPrefab: {fileID: 2639312934693777023, guid: 87ceeda208f1a7646adda488756f7fb1, type: 3}
+  Species: {fileID: 11400000, guid: feffa45232dd4f87ba5dfc9f0f08f944, type: 2}
+  AutoAttack:
+    ClassKey: mage-prototype
+    DisplayName: Descarga arcana
+    Damage: 18
+    Interval: 1.8
+    Range: 25
+    Arc: 120
+    Windup: 0.32
+    ResourceGain: 0
+    CriticalChance: 0.05
+    CriticalMultiplier: 2

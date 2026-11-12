@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2012793a53bba3468a8c7b9470b5c57, type: 3}
+  m_Name: MagePrototypeClass
+  m_EditorClassIdentifier: MultiFPS::MultiFPS.Gameplay.RiftCombat.CombatClassDefinition
+  Id: mage-prototype
+  DisplayName: Mago (prototipo)
+  Resource: 1
+  MaximumResource: 100
+  RageDecayDelay: 8
+  RageDecayPerSecond: 5
+  BasicAttack: {fileID: 11400000, guid: 2ce22ba0816a4a31b4337138b53f1351, type: 2}
+  Abilities: []
+  Specializations:
+  - {fileID: 11400000, guid: b6bbc33401fb43048eb8b5e5b265a0e9, type: 2}

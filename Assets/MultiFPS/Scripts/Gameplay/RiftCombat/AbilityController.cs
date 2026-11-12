@@ -11,8 +11,9 @@ namespace MultiFPS.Gameplay.RiftCombat {
 public sealed partial class AbilityController:NetworkBehaviour {
 
  public const string Preference="ROM.Combat.Nertor";[UnityEngine.Serialization.FormerlySerializedAs("Species")][SerializeField]SpeciesDefinition defaultSpecies;
+ public bool IsMage=>Player&&Player.PlayerInfo.CharacterSkinID==MagePrototypeSettings.Skin;
  public bool IsPaladin=>Player&&Player.PlayerInfo.CharacterSkinID==PaladinPrototypeSettings.Skin;
- public SpeciesDefinition SpeciesForSkin(int skin)=>skin==PaladinPrototypeSettings.Skin&&PaladinPrototypeSettings.Available?PaladinPrototypeSettings.Load.Species:defaultSpecies;
+ public SpeciesDefinition SpeciesForSkin(int skin)=>skin==MagePrototypeSettings.Skin&&MagePrototypeSettings.Available?MagePrototypeSettings.Load.Species:skin==PaladinPrototypeSettings.Skin&&PaladinPrototypeSettings.Available?PaladinPrototypeSettings.Load.Species:defaultSpecies;
  public SpeciesDefinition Species{get=>SpeciesForSkin(Player?Player.PlayerInfo.CharacterSkinID:1);set=>defaultSpecies=value;}
 
  [SyncVar]public bool Prototype; [SyncVar]public int SpecIndex;[SyncVar]public float Resource;
@@ -61,7 +62,8 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
   if(Player.BOT||!Class||specialization < -1||specialization>=Class.Specializations.Length||NetworkTime.time<nextSelect)return false;
 
-  if(Actor&&(Actor.Health.CurrentHealth<=0||!GameManager.Gamemode.IsProtectedPosition(Actor.transform.position)))return false;
+  // Initial class binding must work at any legitimate spawn; subsequent respecs still require safety.
+  if(Actor&&(Actor.Health.CurrentHealth<=0||(Prototype&&!GameManager.Gamemode.IsProtectedPosition(Actor.transform.position))))return false;
 
   if(specialization>=0&&!Species.AllowsSkin(Player.PlayerInfo.CharacterSkinID))return false;
 
@@ -71,7 +73,7 @@ public sealed partial class AbilityController:NetworkBehaviour {
 
  }
 
- void Configure(){if(!Actor||!Specialization)return;if(IsPaladin)ConfigurePaladinFaith();else Resource=0;Actor.Health.ServerSetVitals(ProgressionHealth(Specialization.Health),ProgressionHealth(Specialization.Health));configured=Actor;}
+ void Configure(){if(!Actor||!Specialization)return;if(IsPaladin)ConfigurePaladinFaith();else Resource=IsMage&&Class?Class.MaximumResource:0;Actor.Health.ServerSetVitals(ProgressionHealth(Specialization.Health),ProgressionHealth(Specialization.Health));configured=Actor;}
 
  public AbilityDefinition Definition(int slot)=>Class?(slot==0?Class.BasicAttack:slot>0&&slot<=Class.Abilities.Length?Class.Abilities[slot-1]:null):null;
 
