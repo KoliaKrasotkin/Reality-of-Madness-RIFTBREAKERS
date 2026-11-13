@@ -1,5 +1,7 @@
 # Misiones, logros y selección — El Rift
 
+> Actualización 2026-11-13: [adaptación de misiones RPG y recibos de entrega para clientes](mission-adaptation.md). El catálogo actual conserva sus 35 misiones y agrega dos encargos. Las secciones siguientes documentan la implementación inicial.
+
 ## Cómo probarlo
 
 Abrí `Assets/ROM/Scenes/MainMenu.unity`, elegí tu personaje y entrá en El Rift.

@@ -17,8 +17,8 @@ namespace ROM.Progression
         public static JournalState Read(string id=null){id=id??ActiveId;if(ROM.Tutorial.Crilium.CriliumSession.Active)return transient??(transient=new JournalState{CharacterId=id});if(cached!=null&&cachedId==id)return cached;cachedId=id;try{cached=JsonUtility.FromJson<JournalState>(PlayerPrefs.GetString(Key(id),""));}catch{cached=null;}return cached??(cached=new JournalState{CharacterId=id});}
         public static void ApplyServerSnapshot(string json,string notice)
         {
-            var measured=MultiFPS.Gameplay.RiftFrameDiagnostics.Begin();var state=JsonUtility.FromJson<JournalState>(json);if(state==null)return;if(ROM.Tutorial.Crilium.CriliumSession.Active){transient=state;Changed?.Invoke();return;}cachedId=state.CharacterId;cached=state;PlayerPrefs.SetString(Key(cachedId),json);RiftLootWalletBridge.Apply(state);
-            // Completed legacy quests are not paid retroactively. Rewards are committed by the Host with the journal.
+            var measured=MultiFPS.Gameplay.RiftFrameDiagnostics.Begin();var state=JsonUtility.FromJson<JournalState>(json);if(state==null)return;if(ROM.Tutorial.Crilium.CriliumSession.Active){transient=state;Changed?.Invoke();return;}cachedId=state.CharacterId;cached=state;PlayerPrefs.SetString(Key(cachedId),json);RiftQuestRewardBridge.Apply(state);RiftLootWalletBridge.Apply(state);
+            // Legacy and host rewards are already paid; remote receipts redeem once in this character wallet.
             PlayerPrefs.Save();if(!string.IsNullOrEmpty(notice))Notify(notice);Changed?.Invoke();MultiFPS.Gameplay.RiftFrameDiagnostics.End(3,measured);
         }
         public static void Notify(string text){Notice=text;NoticeUntil=Time.unscaledTime+5;}

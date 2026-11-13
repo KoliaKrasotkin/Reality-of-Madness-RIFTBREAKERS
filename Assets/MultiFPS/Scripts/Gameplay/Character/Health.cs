@@ -27,6 +27,8 @@ namespace MultiFPS.Gameplay
         public string ServerLifeToken {get;private set;}=Guid.NewGuid().ToString("N");
         public static event Action<Health,string> ServerDied;
         public static event Action<Health,Health,int> ServerHealed;
+        public static event Action<Health,Health,int> ServerDamaged;
+        void NotifyEffectiveDamage(Health attacker,int before){int effective=Mathf.Max(0,before-Mathf.Max(0,CurrentHealth));if(NetworkServer.active&&effective>0)try{ServerDamaged?.Invoke(this,attacker,effective);}catch(Exception e){Debug.LogException(e);}}
         void NotifyServerDeath(){if(!NetworkServer.active)return;try{ServerDied?.Invoke(this,ServerLifeToken);}catch(Exception error){Debug.LogException(error);}}
         [SyncVar] public int MaxHealth = 100;
         [SyncVar(hook=nameof(TrainingChanged))] public bool TrainingTarget;
@@ -136,10 +138,12 @@ namespace MultiFPS.Gameplay
 
             finalDamage = RiftCombat.CombatController.Resolve(this,attacker,finalDamage,out bool critical);
             if(TrainingTarget){RecordTrainingHit(finalDamage,damagedPart,attackType,attacker,attackForce,critical);return;}
+            int journalHealthBefore=Mathf.Max(0,CurrentHealth);
             if (!(!GameManager.Gamemode.FriendyFire && attacker != this && attacker.Team == Team)) //avoid friendly fire
                 CurrentHealth -= finalDamage;
 
             RiftCombat.CombatController.Feedback(attacker,this,Mathf.Min(finalDamage,Mathf.Max(0,CurrentHealth+finalDamage)),critical);
+            NotifyEffectiveDamage(attacker,journalHealthBefore);
             RememberDamage(attacker, (short)finalDamage);
 
             CurrentHealth = Mathf.Clamp(CurrentHealth, 0, 100000);
@@ -163,10 +167,12 @@ namespace MultiFPS.Gameplay
             damage = RiftClassCombat.Resolve(this,attacker,damage);
             damage = RiftCombat.CombatController.Resolve(this,attacker,damage,out bool critical);
             if(TrainingTarget){RecordTrainingHit(damage,damagedPart,attackType,attacker,attackForce,critical);return;}
+            int journalHealthBefore=Mathf.Max(0,CurrentHealth);
             if (!(!GameManager.Gamemode.FriendyFire && attacker != this && attacker.Team == Team)) //avoid friendly fir
                 CurrentHealth -= damage;
 
             RiftCombat.CombatController.Feedback(attacker,this,Mathf.Min(damage,Mathf.Max(0,CurrentHealth+damage)),critical);
+            NotifyEffectiveDamage(attacker,journalHealthBefore);
             RememberDamage(attacker, (short)damage);
             CurrentHealth = Mathf.Clamp(CurrentHealth, 0, 100000);
 
