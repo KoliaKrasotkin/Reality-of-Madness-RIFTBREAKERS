@@ -96,14 +96,14 @@ namespace ROM.EditorTools
                 var model = catalog.Characters.Single(x => x.SkinIndex == skin);
                 var prefab = model.Prefab;
                 if (!AssetDatabase.GetAssetPath(prefab).StartsWith(Folder + "/")) throw new Exception("Preview is not isolated: " + skin);
-                if (prefab.GetComponentsInChildren<MonoBehaviour>(true).Length != 0) throw new Exception("Preview has gameplay scripts: " + skin);
+                if (prefab.GetComponentsInChildren<MonoBehaviour>(true).Any(script => !(script is MenuHandPose))) throw new Exception("Preview has gameplay scripts: " + skin);
                 if (prefab.GetComponentsInChildren<Renderer>(true).Length == 0) throw new Exception("Missing renderers: " + skin);
                 foreach (var a in prefab.GetComponentsInChildren<Animator>(true))
                     if (a.runtimeAnimatorController && !AssetDatabase.GetAssetPath(a.runtimeAnimatorController).StartsWith(Folder + "/")) throw new Exception("Shared controller: " + skin);
                 foreach (var r in prefab.GetComponentsInChildren<Renderer>(true))
                     foreach (var m in r.sharedMaterials)
                         if (m && !AssetDatabase.GetAssetPath(m).StartsWith(Folder + "/")) throw new Exception("Shared material: " + skin);
-                results.Add("PASS skin " + skin + ": isolated prefab, controllers and materials; renderers present; no behaviour scripts");
+                results.Add("PASS skin " + skin + ": isolated prefab, controllers and materials; renderers present; no gameplay scripts");
             }
             Debug.Log(string.Join("\n", results));
         }
