@@ -73,9 +73,9 @@ MonoBehaviour:
     PrimaryCarryPitch: 0
     UseTorsoRelativeCarry: 0
     ElbowOffset: {x: 0.035, y: -0.01, z: 0}
-    LeftHandPosition: {x: -0.08444453, y: -0.10079087, z: -0.01450935}
+    LeftHandPosition: {x: -0.08444453, y: -0.10079087, z: -0.09}
     LeftHandRotation: {x: 15.8, y: 19.29251, z: 75.79}
-    LeftElbowOffset: {x: -0.035, y: -0.01, z: 0}
+    LeftElbowOffset: {x: 0.03, y: -0.19, z: 0}
     LeftGripPivotRotation: {x: 0, y: 0, z: 0}
     LeftGripPitch: 0
     LeftGripWeight:
@@ -125,7 +125,7 @@ MonoBehaviour:
     ElbowOffset: {x: 0, y: -0.04, z: 0.1}
     LeftHandPosition: {x: -0.11759096, y: -0.10791501, z: -0.04339817}
     LeftHandRotation: {x: 13.627824, y: 26.754873, z: 90.66679}
-    LeftElbowOffset: {x: -0.08, y: -0.04, z: 0.03}
+    LeftElbowOffset: {x: -0.8, y: -1.64, z: -0.14}
     LeftGripPivotRotation: {x: 0, y: 0, z: 0}
     LeftGripPitch: 0
     LeftGripWeight:
@@ -724,7 +724,7 @@ MonoBehaviour:
     ElbowOffset: {x: 0, y: -0.04, z: 0.1}
     LeftHandPosition: {x: -0.2121951, y: -0.07741342, z: -0.09914753}
     LeftHandRotation: {x: -2.092041, y: 42.58959, z: 131.66548}
-    LeftElbowOffset: {x: -0.08, y: -0.04, z: 0.03}
+    LeftElbowOffset: {x: -0.23, y: -0.81, z: 0.03}
     LeftGripPivotRotation: {x: 0, y: 0, z: 0}
     LeftGripPitch: 0
     LeftGripWeight:
@@ -5505,7 +5505,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0.04, z: 0.06}
     WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: 0.017504014, y: -0.023926217, z: 0.000000052154064}
+    HandPosition: {x: 0.017504014, y: -0.023926217, z: 0.06000005}
     HandRotation: {x: 5.3790755, y: 9.401149, z: 30.468658}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -6104,7 +6104,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0}
     WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: 0, y: 0.03, z: 0}
+    HandPosition: {x: 0, y: 0.03, z: 0.06}
     HandRotation: {x: 5, y: 0, z: 8}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -6154,7 +6154,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0.12}
     WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: 0.017504014, y: -0.023926217, z: 0.000000052154064}
+    HandPosition: {x: 0.017504014, y: -0.023926217, z: 0.06000005}
     HandRotation: {x: 5.3790755, y: 9.401149, z: 30.468658}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -6753,7 +6753,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0.08}
     WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: 0.0034454986, y: 0.005473431, z: 0.000000052154064}
+    HandPosition: {x: 0.0034454986, y: 0.005473431, z: 0.06000005}
     HandRotation: {x: 3.4752436, y: 4.6152015, z: 16.001362}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -8102,7 +8102,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0}
     WeaponRotation: {x: 0, y: 0.78, z: 0}
-    HandPosition: {x: 0, y: 0.07, z: 0.21}
+    HandPosition: {x: 0, y: 0.07, z: 0.27}
     HandRotation: {x: -12.09, y: -2.8256836, z: -12.248413}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -8152,7 +8152,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0}
     WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: -0.0070796832, y: 0.06, z: 0.21}
+    HandPosition: {x: -0.0070796832, y: 0.06, z: 0.27}
     HandRotation: {x: -3.7834167, y: -3.0045776, z: -13.150269}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -8202,7 +8202,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0}
     WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: 0, y: 0.07, z: 0.21}
+    HandPosition: {x: 0, y: 0.07, z: 0.27}
     HandRotation: {x: -3.5013123, y: -2.8256836, z: -12.248413}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -8252,7 +8252,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0}
     WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: 0, y: 0.07, z: 0.21}
+    HandPosition: {x: 0, y: 0.07, z: 0.27}
     HandRotation: {x: -3.5013123, y: -2.8256836, z: -12.248413}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -8302,7 +8302,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0}
     WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: 0, y: 0.07, z: 0.000000029802322}
+    HandPosition: {x: 0, y: 0.07, z: 0.06000003}
     HandRotation: {x: -3.5013123, y: -2.8256836, z: -12.248413}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -8352,7 +8352,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0}
     WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: 0, y: 0.07, z: 0.000000029802322}
+    HandPosition: {x: 0, y: 0.07, z: 0.06000003}
     HandRotation: {x: -3.5013123, y: -2.8256836, z: -12.248413}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -8402,7 +8402,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0}
     WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: -0.0070796832, y: 0.06, z: 0.000000029802322}
+    HandPosition: {x: -0.0070796832, y: 0.06, z: 0.06000003}
     HandRotation: {x: -3.7834167, y: -3.0045776, z: -13.150269}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -8452,7 +8452,7 @@ MonoBehaviour:
     Weight: 1
     WeaponPosition: {x: 0, y: 0, z: 0}
     WeaponRotation: {x: 0, y: 0, z: 0}
-    HandPosition: {x: -0.0070796832, y: 0.06, z: 0.000000029802322}
+    HandPosition: {x: -0.0070796832, y: 0.06, z: 0.06000003}
     HandRotation: {x: -3.7834167, y: -3.0045776, z: -13.150269}
     PrimaryGripPosition: {x: 0, y: 0, z: 0}
     PrimaryGripRotation: {x: 0, y: 0, z: 0}
@@ -8466,6 +8466,266 @@ MonoBehaviour:
     LeftElbowOffset: {x: -5.51, y: -3.12, z: -2.38}
     LeftGripPivotRotation: {x: 14.46, y: 17.37, z: 48.62}
     LeftGripPitch: 32.7
+    LeftGripWeight:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    LeftFistWeight: 0
+    FreeLeftWristAlignment: 0
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    LeftWristArcStart: 0
+    LeftWristArcEnd: 0
+    LeftWristArcFrom: {x: 0, y: 0, z: 0, w: 1}
+    LeftWristArcTo: {x: 0, y: 0, z: 0, w: 1}
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 2771538212425445789, guid: 548f0ce1fda61d14f867f3eee6058a37, type: 3}
+    FingerOverrides: []
+    FingerOverridesWhileStored: 0
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0.07, z: 0.06000003}
+    HandRotation: {x: -3.5013123, y: -2.8256836, z: -12.248413}
+    PrimaryGripPosition: {x: 0, y: 0, z: 0}
+    PrimaryGripRotation: {x: 0, y: 0, z: 0}
+    AnchorBuiltInWeaponToPrimaryHand: 1
+    PrimaryCarryOffset: {x: 0, y: 0.06, z: 0.14}
+    PrimaryCarryPitch: -90
+    UseTorsoRelativeCarry: 0
+    ElbowOffset: {x: 0.035, y: -0.01, z: -0.04}
+    LeftHandPosition: {x: -0.25, y: -0.04, z: -0.06}
+    LeftHandRotation: {x: -21.69, y: 39.66, z: 149.1}
+    LeftElbowOffset: {x: -48.01, y: -119.8, z: 29.96}
+    LeftGripPivotRotation: {x: 9.1, y: 17.37, z: 52.19}
+    LeftGripPitch: 43.21
+    LeftGripWeight:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    LeftFistWeight: 0
+    FreeLeftWristAlignment: 0
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    LeftWristArcStart: 0
+    LeftWristArcEnd: 0
+    LeftWristArcFrom: {x: 0, y: 0, z: 0, w: 1}
+    LeftWristArcTo: {x: 0, y: 0, z: 0, w: 1}
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: -4083814714835636986, guid: 7a2d003c5f798d9419e49780448a6d86, type: 3}
+    FingerOverrides: []
+    FingerOverridesWhileStored: 0
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: -0.0070796832, y: 0.06, z: 0.06000003}
+    HandRotation: {x: -3.7834167, y: -3.0045776, z: -13.150269}
+    PrimaryGripPosition: {x: 0, y: 0, z: 0}
+    PrimaryGripRotation: {x: 0, y: 0, z: 0}
+    AnchorBuiltInWeaponToPrimaryHand: 1
+    PrimaryCarryOffset: {x: 0, y: 0.06, z: 0.14}
+    PrimaryCarryPitch: -90
+    UseTorsoRelativeCarry: 0
+    ElbowOffset: {x: 0.035, y: -0.01, z: -0.04}
+    LeftHandPosition: {x: -0.27, y: -0.04, z: -0.06}
+    LeftHandRotation: {x: -21.69, y: 39.8, z: 149.1}
+    LeftElbowOffset: {x: -5.51, y: -3.12, z: -2.38}
+    LeftGripPivotRotation: {x: 14.46, y: 17.37, z: 59.45}
+    LeftGripPitch: 0
+    LeftGripWeight:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    LeftFistWeight: 0
+    FreeLeftWristAlignment: 0
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    LeftWristArcStart: 0
+    LeftWristArcEnd: 0
+    LeftWristArcFrom: {x: 0, y: 0, z: 0, w: 1}
+    LeftWristArcTo: {x: 0, y: 0, z: 0, w: 1}
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: 8069876893736224668, guid: f676a672bbd36f148847535ac45d6702, type: 3}
+    FingerOverrides:
+    - Bone: 39
+      Rotation: {x: 0.5561463, y: -0.4449991, z: 0.15485747, w: 0.6846139}
+    - Bone: 40
+      Rotation: {x: -0.02452734, y: -0.00478549, z: -0.30672905, w: 0.95146877}
+    - Bone: 41
+      Rotation: {x: -0.0113881, y: 0.00826111, z: -0.17266333, w: 0.98488045}
+    - Bone: 42
+      Rotation: {x: 0.12930468, y: -0.2095945, z: -0.52115643, w: 0.8171575}
+    - Bone: 43
+      Rotation: {x: 0.02778497, y: -0.24755208, z: -0.49548215, w: 0.83213186}
+    - Bone: 44
+      Rotation: {x: 0.0120557, y: -0.26613408, z: -0.3855714, w: 0.883381}
+    - Bone: 45
+      Rotation: {x: 0.0271703, y: -0.1074072, z: -0.5519244, w: 0.8265016}
+    - Bone: 46
+      Rotation: {x: 0.00680059, y: -0.12857752, z: -0.54217786, w: 0.83034015}
+    - Bone: 47
+      Rotation: {x: 0.03129354, y: -0.08577734, z: -0.39263666, w: 0.9151499}
+    - Bone: 48
+      Rotation: {x: -0.10169429, y: 0.04680089, z: -0.56537277, w: 0.8172035}
+    - Bone: 49
+      Rotation: {x: 0.03277446, y: -0.00025484, z: -0.5564401, w: 0.830241}
+    - Bone: 50
+      Rotation: {x: 0.01696753, y: -0.03099167, z: -0.42666376, w: 0.9037199}
+    - Bone: 51
+      Rotation: {x: -0.14159653, y: 0.1262332, z: -0.5530617, w: 0.81125724}
+    - Bone: 52
+      Rotation: {x: 0.05104876, y: 0.03838477, z: -0.5546897, w: 0.8296023}
+    - Bone: 53
+      Rotation: {x: 0.02828503, y: 0.00062059, z: -0.5313618, w: 0.8466724}
+    - Bone: 24
+      Rotation: {x: 0.55614734, y: -0.44500002, z: 0.15485562, w: 0.68461305}
+    - Bone: 25
+      Rotation: {x: -0.024528526, y: -0.004784841, z: -0.30672923, w: 0.9514687}
+    - Bone: 26
+      Rotation: {x: -0.011388623, y: 0.008261692, z: -0.17266282, w: 0.9848805}
+    - Bone: 27
+      Rotation: {x: 0.12930468, y: -0.20959376, z: -0.5211537, w: 0.8171594}
+    - Bone: 28
+      Rotation: {x: 0.027784435, y: -0.2475518, z: -0.4954828, w: 0.83213156}
+    - Bone: 29
+      Rotation: {x: 0.012055386, y: -0.26613304, z: -0.38557196, w: 0.8833811}
+    - Bone: 30
+      Rotation: {x: 0.027170189, y: -0.10740699, z: -0.551924, w: 0.826502}
+    - Bone: 31
+      Rotation: {x: 0.006801459, y: -0.12857749, z: -0.54218054, w: 0.8303384}
+    - Bone: 32
+      Rotation: {x: 0.031294003, y: -0.08577716, z: -0.39263672, w: 0.91515}
+    - Bone: 33
+      Rotation: {x: -0.101691805, y: 0.046799578, z: -0.5653716, w: 0.8172047}
+    - Bone: 34
+      Rotation: {x: 0.032773327, y: -0.00025631976, z: -0.5564435, w: 0.8302389}
+    - Bone: 35
+      Rotation: {x: 0.016967077, y: -0.030991735, z: -0.42666388, w: 0.90371984}
+    - Bone: 36
+      Rotation: {x: -0.14159644, y: 0.12623377, z: -0.55305946, w: 0.81125873}
+    - Bone: 37
+      Rotation: {x: 0.050974786, y: 0.038273983, z: -0.5546936, w: 0.82960933}
+    - Bone: 38
+      Rotation: {x: 0.028214894, y: 0.00073408324, z: -0.53136563, w: 0.8466723}
+    FingerOverridesWhileStored: 0
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0.07, z: 0.06000003}
+    HandRotation: {x: -3.5013123, y: -2.8256836, z: -12.248413}
+    PrimaryGripPosition: {x: 0, y: 0, z: 0}
+    PrimaryGripRotation: {x: 0, y: 0, z: 0}
+    AnchorBuiltInWeaponToPrimaryHand: 1
+    PrimaryCarryOffset: {x: 0, y: 0.06, z: 0.14}
+    PrimaryCarryPitch: -90
+    UseTorsoRelativeCarry: 0
+    ElbowOffset: {x: 0.035, y: -0.01, z: -0.04}
+    LeftHandPosition: {x: -0.25, y: -0.04, z: -0.06}
+    LeftHandRotation: {x: -21.69, y: 39.66, z: 149.1}
+    LeftElbowOffset: {x: -48.01, y: -119.8, z: 29.96}
+    LeftGripPivotRotation: {x: 9.1, y: 17.37, z: 52.19}
+    LeftGripPitch: 43.21
+    LeftGripWeight:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    LeftFistWeight: 0
+    FreeLeftWristAlignment: 0
+    LeftArmSmoothStart: 0
+    LeftArmSmoothEnd: 0
+    LeftForwardRelease: 0
+    CastPoseArrival: 0
+    LeftWristArcStart: 0
+    LeftWristArcEnd: 0
+    LeftWristArcFrom: {x: 0, y: 0, z: 0, w: 1}
+    LeftWristArcTo: {x: 0, y: 0, z: 0, w: 1}
+    CastPose: []
+    LeftUpperArmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftUpperArmEnd: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmStart: {x: 0, y: 0, z: 0, w: 0}
+    LeftForearmEnd: {x: 0, y: 0, z: 0, w: 0}
+    RightWristAlignment: 0
+    UprightLeftPalm: 0
+    LowRightCarry: 0
+    CounterSwingRightCarry: 0
+    ForwardScepterAim: 0
+    LeftCastFingerExtension: 0
+    RightThumbRotation: {x: 0, y: 0, z: 0}
+    LeftThumbRotation: {x: 0, y: 0, z: 0}
+    PoseKeys: []
+  - Clip: {fileID: -4137572779537830732, guid: 4ddd9409b42978b44a2b8af646310c87, type: 3}
+    FingerOverrides: []
+    FingerOverridesWhileStored: 0
+    Weight: 1
+    WeaponPosition: {x: 0, y: 0, z: 0}
+    WeaponRotation: {x: 0, y: 0, z: 0}
+    HandPosition: {x: 0, y: 0.07, z: 0.06000003}
+    HandRotation: {x: -3.5013123, y: -2.8256836, z: -12.248413}
+    PrimaryGripPosition: {x: 0, y: 0, z: 0}
+    PrimaryGripRotation: {x: 0, y: 0, z: 0}
+    AnchorBuiltInWeaponToPrimaryHand: 1
+    PrimaryCarryOffset: {x: 0, y: 0.06, z: 0.14}
+    PrimaryCarryPitch: -90
+    UseTorsoRelativeCarry: 1
+    ElbowOffset: {x: 0.035, y: -0.01, z: -0.04}
+    LeftHandPosition: {x: -0.25, y: -0.04, z: -0.06}
+    LeftHandRotation: {x: -21.69, y: 39.66, z: 149.1}
+    LeftElbowOffset: {x: -0.12, y: -0.1, z: -0.04}
+    LeftGripPivotRotation: {x: 9.1, y: 17.37, z: 52.19}
+    LeftGripPitch: 0
     LeftGripWeight:
       serializedVersion: 2
       m_Curve: []
