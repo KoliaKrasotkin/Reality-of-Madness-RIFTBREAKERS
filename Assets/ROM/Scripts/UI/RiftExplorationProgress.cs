@@ -3,7 +3,7 @@ namespace ROM.UI.Sprint01 {
     // Offline prototype rewards, deliberately separate from purchasable currency.
     public static class RiftExplorationProgress {
         internal static string Key => RiftCharacterWallet.GoldKey;
-        public static int Gold => PlayerPrefs.GetInt(Key,0);
+        public static int Gold {get{ROM.Progression.RiftQuestRewardBridge.Recover();return PlayerPrefs.GetInt(Key,0);}}
         public static string Notice { get; private set; }
         public static float NoticeUntil { get; private set; }
         public static void Receive(int gold,string message) {

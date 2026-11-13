@@ -1,0 +1,19 @@
+PASS Existing quest catalog preserved and two unique RPG assignments appended
+PASS Authored damage/healing quests have explicit XP rewards
+PASS Saved event numbers preserved
+PASS Prerequisite enforced
+PASS Damage before acceptance gives no quest credit
+PASS Cannot accept twice
+PASS Zero and negative amounts cannot manufacture progress
+PASS Typed objectives do not cross-credit
+PASS Incomplete quest cannot turn in
+PASS Progress caps at authored target
+PASS Completed assignment is not repeatable
+PASS Other character remains independent
+PASS Identity and completion survive serialization
+PASS Remote committed receipt credits selected character wallet
+PASS Duplicate and replayed snapshots cannot pay twice
+PASS Already-paid host and legacy quests are not paid again
+PASS Snapshot for another character cannot credit active wallet
+PASS Interrupted wallet assignment recovers once to original character
+PASS Terrain recovery backup retained

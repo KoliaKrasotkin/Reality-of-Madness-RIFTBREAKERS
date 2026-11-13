@@ -1,0 +1,33 @@
+PASS Authored creation screen opens
+PASS Correct class preview identity
+PASS Menu previews have no network identities
+PASS UI creates/selects playable character
+PASS Selection returns after creation
+PASS Real Mirror host owns selected mage and character journal
+PASS Runtime uses full existing catalog with RPG assignments
+PASS Server rejects acceptance outside NPC radius
+PASS Accept command processed by server
+PASS Target snapshot reaches owned client journal
+PASS Healing assignment accepted separately
+PASS Training damage excluded
+PASS Allied damage excluded
+PASS Overkill credits exactly remaining enemy health
+PASS Dead target cannot generate damage progress
+PASS Real health events complete accepted damage objective
+PASS Only effective healing counted, not overheal
+PASS Full-health healing gives no objective progress
+PASS Actual healing completes assignment
+PASS Turn-in command commits authored XP and gold once
+PASS Repeated network turn-in does not duplicate rewards
+PASS Server reload restores delivered and ready quests from disk
+PASS Reload retains quest XP
+PASS Server loads separate empty journal for second character
+PASS Returning character reloads its own completion
+PASS Server accepts remote-path turn-in with persisted character receipt (synthetic connection)
+PASS Remote path grants server XP without modifying host wallet
+PASS Remote reward receipt version persisted
+PASS Remote-path receipt survives server journal reload
+PASS Client redeems replayed receipt exactly once
+PASS Full host logout and menu re-entry restore both delivered quests
+PASS Host reconnect restores XP and does not repeat receipt rewards
+LIMIT: real host disconnect/reconnect plus synthetic non-local server branch; no separate remote client process.

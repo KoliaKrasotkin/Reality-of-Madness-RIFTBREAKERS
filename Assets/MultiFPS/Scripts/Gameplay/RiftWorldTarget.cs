@@ -10,7 +10,7 @@ namespace MultiFPS.Gameplay
         public event Action InteractRequested;
         public void Interact(){InteractRequested?.Invoke();}
     }
-    public enum RiftProgressEvent { TrainingHit,Talk,Kill,Checkpoint,MiniBoss,Encounter,PotionBought,PotionUsed,QuestTurnedIn,Collect }
+    public enum RiftProgressEvent { TrainingHit,Talk,Kill,Checkpoint,MiniBoss,Encounter,PotionBought,PotionUsed,QuestTurnedIn,Collect,DamageDealt,HealthRestored }
     public static class RiftWorldEvents
     {
         public static event Action<Health> TrainingHit;
