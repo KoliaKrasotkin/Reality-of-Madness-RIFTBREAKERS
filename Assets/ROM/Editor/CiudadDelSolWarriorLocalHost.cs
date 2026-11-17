@@ -18,6 +18,7 @@ namespace ROM.EditorTools
         static readonly Vector3 BridgeSpawn = new Vector3(30f, -1.95f, -206f);
         const float BridgeYaw = 0f;
         static Action stopWarriorTrial;
+        static bool warriorTrialReady;
 
         [MenuItem("ROM/Dungeon Ciudad del Sol/Prueba directa Warrior/Iniciar Host local de ensayo")]
         static void StartWarriorTrial()
@@ -73,12 +74,18 @@ namespace ROM.EditorTools
             var oldAutoPlayer = manager.autoCreatePlayer;
             var oldListen = NetworkServer.listen;
             GameObject room = null;
+            Action releaseTrialHud = null;
             bool hostRequested = false;
             bool playerRequested = false;
+            bool finished = false;
+            warriorTrialReady = false;
             double deadline = EditorApplication.timeSinceStartup + 30;
 
             void Finish()
             {
+                if (finished) return;
+                finished = true;
+                warriorTrialReady = false;
                 EditorApplication.update -= WaitForWarrior;
                 EditorApplication.playModeStateChanged -= PlayChanged;
                 stopWarriorTrial = null;
@@ -89,6 +96,8 @@ namespace ROM.EditorTools
                 }
                 finally
                 {
+                    releaseTrialHud?.Invoke();
+                    releaseTrialHud = null;
                     if (room) Object.Destroy(room);
                     foreach (var camera in cameras) if (camera) camera.enabled = true;
                     foreach (var listener in listeners) if (listener) listener.enabled = true;
@@ -130,6 +139,8 @@ namespace ROM.EditorTools
                         actor.connectionToClient == NetworkServer.localConnection && actor.GetComponent<WarriorAvatar>() &&
                         UserSettings.CharacterSkinID == 1, "El personaje recibido no coincide con el Warrior local esperado.");
                     actor.ServerTeleport(spawn, BridgeYaw);
+                    releaseTrialHud = PrepareCityRaidHud();
+                    warriorTrialReady = true;
                     EditorApplication.update -= WaitForWarrior;
                     Debug.Log($"Ciudad del Sol. Warrior local controlable en {spawn:F3}, giro Y={BridgeYaw}°. Salí de Play para cerrar el ensayo.");
                 }

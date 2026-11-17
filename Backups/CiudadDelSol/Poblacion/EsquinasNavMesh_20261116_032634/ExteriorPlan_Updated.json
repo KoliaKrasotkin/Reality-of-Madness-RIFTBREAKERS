@@ -1,0 +1,608 @@
+{
+  "sectors": [
+    {
+      "id": "01-portico",
+      "name": "01 - Entrada Portico Solar",
+      "maximum": 4
+    },
+    {
+      "id": "02-jardines",
+      "name": "02 - Jardines Dorados",
+      "maximum": 7
+    },
+    {
+      "id": "03-plaza",
+      "name": "03 - Plaza del Eclipse",
+      "maximum": 5
+    },
+    {
+      "id": "04-archivos",
+      "name": "04 - Archivos Solares",
+      "maximum": 4
+    },
+    {
+      "id": "05-claustro",
+      "name": "05 - Claustro del Eclipse",
+      "maximum": 5
+    },
+    {
+      "id": "06-santuario",
+      "name": "06 - Santuario Profano",
+      "maximum": 4
+    },
+    {
+      "id": "07-sol",
+      "name": "07 - El Sol Corrompido",
+      "maximum": 5
+    }
+  ],
+  "posts": [
+    {
+      "id": "entrada-diablillo-01",
+      "sector": "01-portico",
+      "group": "entrada",
+      "enemy": "little-demon",
+      "p": [
+        30,
+        -2,
+        -170
+      ],
+      "root": "Salida_Meridional_Generated",
+      "ancestor": "03 - Descanso y puente inferior"
+    },
+    {
+      "id": "portico-oeste-demon",
+      "sector": "01-portico",
+      "group": "portico-oeste",
+      "enemy": "little-demon",
+      "p": [
+        -144,
+        0,
+        -145
+      ]
+    },
+    {
+      "id": "portico-oeste-oracle",
+      "sector": "01-portico",
+      "group": "portico-oeste",
+      "enemy": "broken-ember-oracle",
+      "p": [
+        -138,
+        0,
+        -146
+      ]
+    },
+    {
+      "id": "portico-patrulla",
+      "sector": "01-portico",
+      "group": "portico-patrulla",
+      "enemy": "little-demon",
+      "p": [
+        -120,
+        0,
+        -108
+      ],
+      "patrol": [
+        [
+          -120,
+          0,
+          -108
+        ],
+        [
+          -120,
+          0,
+          -96
+        ]
+      ]
+    },
+    {
+      "id": "jardines-oraculo-01",
+      "sector": "02-jardines",
+      "group": "jardines-encuentro-01",
+      "enemy": "broken-ember-oracle",
+      "p": [
+        -122.3,
+        4,
+        -52
+      ],
+      "anchor": "Raid · Jardines Dorados · Encuentro 01/01 Frontal"
+    },
+    {
+      "id": "jardines-norte-demon-a",
+      "sector": "02-jardines",
+      "group": "jardines-norte",
+      "enemy": "little-demon",
+      "p": [
+        -93,
+        4,
+        5
+      ],
+      "patrol": [
+        [
+          -93,
+          4,
+          5
+        ],
+        [
+          -86,
+          4,
+          5
+        ],
+        [
+          -86,
+          4,
+          11
+        ],
+        [
+          -93,
+          4,
+          11
+        ]
+      ]
+    },
+    {
+      "id": "jardines-norte-demon-b",
+      "sector": "02-jardines",
+      "group": "jardines-norte",
+      "enemy": "little-demon",
+      "p": [
+        -87,
+        4,
+        7
+      ]
+    },
+    {
+      "id": "jardines-jabali",
+      "sector": "02-jardines",
+      "group": "jardines-jabali",
+      "enemy": "wildlife-1",
+      "p": [
+        -118,
+        4,
+        18
+      ]
+    },
+    {
+      "id": "jardines-oso",
+      "sector": "02-jardines",
+      "group": "jardines-oso",
+      "enemy": "wildlife-0",
+      "p": [
+        -75,
+        4,
+        -36
+      ]
+    },
+    {
+      "id": "jardines-ciervo",
+      "sector": "02-jardines",
+      "group": "jardines-ciervo",
+      "enemy": "wildlife-2",
+      "p": [
+        -118,
+        4,
+        -4
+      ]
+    },
+    {
+      "id": "jardines-alce",
+      "sector": "02-jardines",
+      "group": "jardines-alce",
+      "enemy": "wildlife-5",
+      "p": [
+        -80,
+        4,
+        18
+      ]
+    },
+    {
+      "id": "plaza-sur-chain",
+      "sector": "03-plaza",
+      "group": "plaza-sur",
+      "enemy": "ash-chainbreaker",
+      "p": [
+        -7,
+        12,
+        -12
+      ]
+    },
+    {
+      "id": "plaza-sur-demon",
+      "sector": "03-plaza",
+      "group": "plaza-sur",
+      "enemy": "little-demon",
+      "p": [
+        -1,
+        12,
+        -14
+      ]
+    },
+    {
+      "id": "plaza-patrulla",
+      "sector": "03-plaza",
+      "group": "plaza-patrulla",
+      "enemy": "little-demon",
+      "p": [
+        44,
+        12,
+        -12
+      ],
+      "patrol": [
+        [
+          44,
+          12,
+          -12
+        ],
+        [
+          52,
+          12,
+          -12
+        ],
+        [
+          52,
+          12,
+          -3
+        ]
+      ]
+    },
+    {
+      "id": "plaza-norte-elite",
+      "sector": "03-plaza",
+      "group": "plaza-norte",
+      "enemy": "ash-chainbreaker",
+      "p": [
+        15,
+        12,
+        43
+      ],
+      "rank": 1,
+      "hp": 2,
+      "damage": 1.15
+    },
+    {
+      "id": "plaza-norte-oracle",
+      "sector": "03-plaza",
+      "group": "plaza-norte",
+      "enemy": "broken-ember-oracle",
+      "p": [
+        22,
+        12,
+        43
+      ]
+    },
+    {
+      "id": "archivos-lectura-oracle",
+      "sector": "04-archivos",
+      "group": "archivos-lectura",
+      "enemy": "broken-ember-oracle",
+      "p": [
+        -111,
+        20,
+        110
+      ]
+    },
+    {
+      "id": "archivos-lectura-jura",
+      "sector": "04-archivos",
+      "group": "archivos-lectura",
+      "enemy": "eclipse-sworn",
+      "p": [
+        -105,
+        20,
+        112
+      ],
+      "patrol": [
+        [
+          -105,
+          20,
+          112
+        ],
+        [
+          -105,
+          20,
+          102
+        ]
+      ]
+    },
+    {
+      "id": "archivos-norte-oracle",
+      "sector": "04-archivos",
+      "group": "archivos-norte",
+      "enemy": "broken-ember-oracle",
+      "p": [
+        -78,
+        20,
+        128
+      ]
+    },
+    {
+      "id": "archivos-norte-demon",
+      "sector": "04-archivos",
+      "group": "archivos-norte",
+      "enemy": "little-demon",
+      "p": [
+        -84,
+        20,
+        128
+      ]
+    },
+    {
+      "id": "claustro-patio-jura",
+      "sector": "05-claustro",
+      "group": "claustro-patio",
+      "enemy": "eclipse-sworn",
+      "p": [
+        10,
+        28,
+        136
+      ]
+    },
+    {
+      "id": "claustro-patio-herald",
+      "sector": "05-claustro",
+      "group": "claustro-patio",
+      "enemy": "fractured-heart-herald",
+      "p": [
+        17,
+        28,
+        139
+      ]
+    },
+    {
+      "id": "claustro-patrulla",
+      "sector": "05-claustro",
+      "group": "claustro-patrulla",
+      "enemy": "eclipse-sworn",
+      "p": [
+        31,
+        28,
+        112
+      ],
+      "patrol": [
+        [
+          31,
+          28,
+          112
+        ],
+        [
+          43,
+          28,
+          112
+        ]
+      ]
+    },
+    {
+      "id": "claustro-galeria-elite",
+      "sector": "05-claustro",
+      "group": "claustro-galeria",
+      "enemy": "ash-chainbreaker",
+      "p": [
+        12,
+        32,
+        165
+      ],
+      "rank": 1,
+      "hp": 2,
+      "damage": 1.15
+    },
+    {
+      "id": "claustro-galeria-oracle",
+      "sector": "05-claustro",
+      "group": "claustro-galeria",
+      "enemy": "broken-ember-oracle",
+      "p": [
+        24,
+        32,
+        165
+      ]
+    },
+    {
+      "id": "santuario-sur-herald",
+      "sector": "06-santuario",
+      "group": "santuario-sur",
+      "enemy": "fractured-heart-herald",
+      "p": [
+        134,
+        4,
+        -108
+      ],
+      "hp": 1.25
+    },
+    {
+      "id": "santuario-sur-oracle",
+      "sector": "06-santuario",
+      "group": "santuario-sur",
+      "enemy": "broken-ember-oracle",
+      "p": [
+        139,
+        4,
+        -104
+      ]
+    },
+    {
+      "id": "santuario-elite",
+      "sector": "06-santuario",
+      "group": "santuario-elite",
+      "enemy": "ash-chainbreaker",
+      "p": [
+        174,
+        4,
+        -56
+      ],
+      "rank": 1,
+      "hp": 2,
+      "damage": 1.15,
+      "patrol": [
+        [
+          174,
+          4,
+          -56
+        ],
+        [
+          168,
+          4,
+          -56
+        ]
+      ]
+    },
+    {
+      "id": "santuario-lobo",
+      "sector": "06-santuario",
+      "group": "santuario-lobo",
+      "enemy": "wildlife-6",
+      "p": [
+        120,
+        4,
+        -48
+      ]
+    },
+    {
+      "id": "sol-sur-herald",
+      "sector": "07-sol",
+      "group": "sol-sur",
+      "enemy": "fractured-heart-herald",
+      "p": [
+        151,
+        36,
+        133
+      ],
+      "hp": 1.25
+    },
+    {
+      "id": "sol-sur-oracle",
+      "sector": "07-sol",
+      "group": "sol-sur",
+      "enemy": "broken-ember-oracle",
+      "p": [
+        158,
+        36,
+        133
+      ]
+    },
+    {
+      "id": "sol-este-elite",
+      "sector": "07-sol",
+      "group": "sol-este",
+      "enemy": "eclipse-sworn",
+      "p": [
+        207,
+        36,
+        146
+      ],
+      "rank": 1,
+      "hp": 2,
+      "damage": 1.15,
+      "patrol": [
+        [
+          207,
+          36,
+          146
+        ],
+        [
+          214,
+          36,
+          146
+        ]
+      ]
+    },
+    {
+      "id": "sol-este-demon",
+      "sector": "07-sol",
+      "group": "sol-este",
+      "enemy": "little-demon",
+      "p": [
+        211,
+        36,
+        151
+      ]
+    },
+    {
+      "id": "sol-regente",
+      "sector": "07-sol",
+      "group": "sol-regente",
+      "enemy": "hollow-regent",
+      "p": [
+        180,
+        36,
+        173
+      ],
+      "rank": 2,
+      "hp": 1.5,
+      "damage": 1.1
+    }
+  ],
+  "recovery": [
+    {
+      "id": "entrada-segura",
+      "p": [
+        30,
+        -1.95,
+        -206
+      ],
+      "radius": 22
+    },
+    {
+      "id": "portico-descanso",
+      "p": [
+        -138,
+        0,
+        -103
+      ],
+      "radius": 6
+    },
+    {
+      "id": "jardines-descanso",
+      "p": [
+        -70,
+        4,
+        12
+      ],
+      "radius": 6
+    },
+    {
+      "id": "plaza-descanso",
+      "p": [
+        -24,
+        12,
+        23
+      ],
+      "radius": 6
+    },
+    {
+      "id": "archivos-descanso",
+      "p": [
+        -78,
+        20,
+        86
+      ],
+      "radius": 6
+    },
+    {
+      "id": "claustro-descanso",
+      "p": [
+        -22,
+        28,
+        115
+      ],
+      "radius": 6
+    },
+    {
+      "id": "santuario-descanso",
+      "p": [
+        150,
+        4,
+        -44
+      ],
+      "radius": 6
+    },
+    {
+      "id": "sol-descanso",
+      "p": [
+        138,
+        36,
+        159
+      ],
+      "radius": 6
+    }
+  ]
+}

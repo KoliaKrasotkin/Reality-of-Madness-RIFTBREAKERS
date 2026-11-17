@@ -1,0 +1,23 @@
+ETAPA 1 - Ciudad del Sol (2026-11-16)
+Estado: codigo compilado; 14 pruebas puras de temporizacion aprobadas. NO validado en Play Mode.
+Unity CLI 1.0.0 actualizada: sin Editor Pipeline conectado. Consulta de procesos Unity.exe: ninguna instancia.
+
+Auditoria: 13 definiciones/prefabs nativos registrados (6 combatientes + 7 animales).
+Excluidos: 3 variantes Crilium dependientes del tutorial y 5 arquetipos basados en CharacterInstance.
+Holgura pendiente: Zorro y Liebre tienen capsulas serializadas con altura menor que el diametro; validar en Unity antes de distribuirlos. No se corrigieron los prefabs.
+
+Configuracion persistente: Assets/ROM/Resources/CiudadDelSol/PopulationStage1.asset
+Diablillo: (30,-2,-170), suelo de Salida Meridional / 03 - Descanso y puente inferior; 90s.
+Oraculo: ancla existente Raid - Jardines Dorados - Encuentro 01 / 01 Frontal; 120s.
+Maximo global 2 (incluye cadaveres presentes); 1 por sector configurado.
+Sin respawn a menos de 25m de jugadores; 40m si combate en los ultimos 10s. Reintentos cada 5s; tick 0.5s.
+Activacion de aparicion: humano vivo a menos de 150m. No se retiran enemigos vivos por distancia.
+Recuperacion: centro (30,-1.95,-206), radio 22m. Evita adquirir objetivos protegidos, sin obstaculos fisicos.
+Respawn solo tras eliminarse el cadaver; nuevo NetworkIdentity con flujo original Mirror. Nunca mover al enemigo vivo para reponerlo.
+Jefes y definiciones IsBoss sin respawn automatico.
+Escalado al aparecer: reglas originales RiftClassRules, humanos cercanos 1-4; balance pendiente.
+Los actores iniciales se adoptan; no se duplican. Limpieza del gestor antes de detener el Host.
+Sin distribucion exterior nueva, patrullas ni plantas interiores todavia: primero validar esta etapa.
+
+Prueba requerida: Play automatico, confirmar INICIADA/ETAPA_1_PREPARADA; matar cada NPC; permanecer cerca para ver APLAZADO; retirarse mas de 25/40m sin salir de 150m; observar APARICION tras 90/120s. Verificar combate, regreso, recuperacion y plantas. Salir/reiniciar Play y confirmar solo dos actores.
+No se declara poblacion completa, validacion remota ni rendimiento de cuatro jugadores.

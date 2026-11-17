@@ -1,0 +1,685 @@
+{
+  "checks": [
+    {
+      "label": "Base de 38 puestos",
+      "pass": true
+    },
+    {
+      "label": "48 puestos finales",
+      "pass": true
+    },
+    {
+      "label": "IDs únicos",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: entrada-diablillo-01",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: portico-oeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: portico-oeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: portico-patrulla",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: jardines-oraculo-01",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: jardines-norte-demon-a",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: jardines-norte-demon-b",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: plaza-sur-chain",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: plaza-sur-demon",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: plaza-patrulla",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: plaza-norte-elite",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: plaza-norte-oracle",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: archivos-lectura-oracle",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: archivos-lectura-jura",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: archivos-norte-oracle",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: archivos-norte-demon",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: claustro-patio-jura",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: claustro-patio-herald",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: claustro-patrulla",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: claustro-galeria-elite",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: claustro-galeria-oracle",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: santuario-sur-herald",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: santuario-sur-oracle",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: santuario-elite",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: sol-sur-herald",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: sol-sur-oracle",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: sol-este-elite",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: sol-este-demon",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: sol-regente",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: portico-sureste-demon",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: portico-sureste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: portico-lateral-oeste-demon-a",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: portico-lateral-oeste-demon-b",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: jardines-sureste-demon",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: jardines-sureste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: jardines-central-demon",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: jardines-central-oracle",
+      "pass": true
+    },
+    {
+      "label": "Puesto existente intacto: jardines-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "28 encuentros finales",
+      "pass": true
+    },
+    {
+      "label": "Grupos dentro del máximo inicial",
+      "pass": true
+    },
+    {
+      "label": "Siete patrullas originales, ninguna nueva",
+      "pass": true
+    },
+    {
+      "label": "Cuatro élites intactos",
+      "pass": true
+    },
+    {
+      "label": "Un miniboss intacto",
+      "pass": true
+    },
+    {
+      "label": "Miniboss sin respawn",
+      "pass": true
+    },
+    {
+      "label": "Cabecera y catálogo intactos",
+      "pass": true
+    },
+    {
+      "label": "Recuperación y límites globales intactos",
+      "pass": true
+    },
+    {
+      "label": "Global 29 incluidos cadáveres",
+      "pass": true
+    },
+    {
+      "label": "Solo se ajustan los cupos de Plaza y Archivos",
+      "pass": true
+    },
+    {
+      "label": "Sector autorizado: plaza-sur-explanada-demon",
+      "pass": true
+    },
+    {
+      "label": "Normal de nivel 1 con respawn: plaza-sur-explanada-demon",
+      "pass": true
+    },
+    {
+      "label": "Multiplicadores normales: plaza-sur-explanada-demon",
+      "pass": true
+    },
+    {
+      "label": "Respawn original por tipo: plaza-sur-explanada-demon",
+      "pass": true
+    },
+    {
+      "label": "Sin patrulla nueva: plaza-sur-explanada-demon",
+      "pass": true
+    },
+    {
+      "label": "Referencia nativa original: plaza-sur-explanada-demon",
+      "pass": true
+    },
+    {
+      "label": "Atlas: 2 m de cobertura cenital a cota correcta: plaza-sur-explanada-demon",
+      "pass": true
+    },
+    {
+      "label": "Fuera de recuperación con reserva: plaza-sur-explanada-demon",
+      "pass": true
+    },
+    {
+      "label": "Dentro del sector: plaza-sur-explanada-demon",
+      "pass": true
+    },
+    {
+      "label": "Fuera de conexiones/entrada: plaza-sur-explanada-demon",
+      "pass": true
+    },
+    {
+      "label": "Sin puestos superpuestos en configuración: plaza-sur-explanada-demon",
+      "pass": true
+    },
+    {
+      "label": "Sector autorizado: plaza-sur-explanada-chain",
+      "pass": true
+    },
+    {
+      "label": "Normal de nivel 1 con respawn: plaza-sur-explanada-chain",
+      "pass": true
+    },
+    {
+      "label": "Multiplicadores normales: plaza-sur-explanada-chain",
+      "pass": true
+    },
+    {
+      "label": "Respawn original por tipo: plaza-sur-explanada-chain",
+      "pass": true
+    },
+    {
+      "label": "Sin patrulla nueva: plaza-sur-explanada-chain",
+      "pass": true
+    },
+    {
+      "label": "Referencia nativa original: plaza-sur-explanada-chain",
+      "pass": true
+    },
+    {
+      "label": "Atlas: 2 m de cobertura cenital a cota correcta: plaza-sur-explanada-chain",
+      "pass": true
+    },
+    {
+      "label": "Fuera de recuperación con reserva: plaza-sur-explanada-chain",
+      "pass": true
+    },
+    {
+      "label": "Dentro del sector: plaza-sur-explanada-chain",
+      "pass": true
+    },
+    {
+      "label": "Fuera de conexiones/entrada: plaza-sur-explanada-chain",
+      "pass": true
+    },
+    {
+      "label": "Sin puestos superpuestos en configuración: plaza-sur-explanada-chain",
+      "pass": true
+    },
+    {
+      "label": "Sector autorizado: plaza-sur-explanada-oracle",
+      "pass": true
+    },
+    {
+      "label": "Normal de nivel 1 con respawn: plaza-sur-explanada-oracle",
+      "pass": true
+    },
+    {
+      "label": "Multiplicadores normales: plaza-sur-explanada-oracle",
+      "pass": true
+    },
+    {
+      "label": "Respawn original por tipo: plaza-sur-explanada-oracle",
+      "pass": true
+    },
+    {
+      "label": "Sin patrulla nueva: plaza-sur-explanada-oracle",
+      "pass": true
+    },
+    {
+      "label": "Referencia nativa original: plaza-sur-explanada-oracle",
+      "pass": true
+    },
+    {
+      "label": "Atlas: 2 m de cobertura cenital a cota correcta: plaza-sur-explanada-oracle",
+      "pass": true
+    },
+    {
+      "label": "Fuera de recuperación con reserva: plaza-sur-explanada-oracle",
+      "pass": true
+    },
+    {
+      "label": "Dentro del sector: plaza-sur-explanada-oracle",
+      "pass": true
+    },
+    {
+      "label": "Fuera de conexiones/entrada: plaza-sur-explanada-oracle",
+      "pass": true
+    },
+    {
+      "label": "Sin puestos superpuestos en configuración: plaza-sur-explanada-oracle",
+      "pass": true
+    },
+    {
+      "label": "Sector autorizado: plaza-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Normal de nivel 1 con respawn: plaza-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Multiplicadores normales: plaza-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Respawn original por tipo: plaza-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Sin patrulla nueva: plaza-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Referencia nativa original: plaza-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Atlas: 2 m de cobertura cenital a cota correcta: plaza-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Fuera de recuperación con reserva: plaza-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Dentro del sector: plaza-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Fuera de conexiones/entrada: plaza-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Sin puestos superpuestos en configuración: plaza-noroeste-demon",
+      "pass": true
+    },
+    {
+      "label": "Sector autorizado: plaza-noroeste-chain",
+      "pass": true
+    },
+    {
+      "label": "Normal de nivel 1 con respawn: plaza-noroeste-chain",
+      "pass": true
+    },
+    {
+      "label": "Multiplicadores normales: plaza-noroeste-chain",
+      "pass": true
+    },
+    {
+      "label": "Respawn original por tipo: plaza-noroeste-chain",
+      "pass": true
+    },
+    {
+      "label": "Sin patrulla nueva: plaza-noroeste-chain",
+      "pass": true
+    },
+    {
+      "label": "Referencia nativa original: plaza-noroeste-chain",
+      "pass": true
+    },
+    {
+      "label": "Atlas: 2 m de cobertura cenital a cota correcta: plaza-noroeste-chain",
+      "pass": true
+    },
+    {
+      "label": "Fuera de recuperación con reserva: plaza-noroeste-chain",
+      "pass": true
+    },
+    {
+      "label": "Dentro del sector: plaza-noroeste-chain",
+      "pass": true
+    },
+    {
+      "label": "Fuera de conexiones/entrada: plaza-noroeste-chain",
+      "pass": true
+    },
+    {
+      "label": "Sin puestos superpuestos en configuración: plaza-noroeste-chain",
+      "pass": true
+    },
+    {
+      "label": "Sector autorizado: plaza-este-herald",
+      "pass": true
+    },
+    {
+      "label": "Normal de nivel 1 con respawn: plaza-este-herald",
+      "pass": true
+    },
+    {
+      "label": "Multiplicadores normales: plaza-este-herald",
+      "pass": true
+    },
+    {
+      "label": "Respawn original por tipo: plaza-este-herald",
+      "pass": true
+    },
+    {
+      "label": "Sin patrulla nueva: plaza-este-herald",
+      "pass": true
+    },
+    {
+      "label": "Referencia nativa original: plaza-este-herald",
+      "pass": true
+    },
+    {
+      "label": "Atlas: 2 m de cobertura cenital a cota correcta: plaza-este-herald",
+      "pass": true
+    },
+    {
+      "label": "Fuera de recuperación con reserva: plaza-este-herald",
+      "pass": true
+    },
+    {
+      "label": "Dentro del sector: plaza-este-herald",
+      "pass": true
+    },
+    {
+      "label": "Fuera de conexiones/entrada: plaza-este-herald",
+      "pass": true
+    },
+    {
+      "label": "Sin puestos superpuestos en configuración: plaza-este-herald",
+      "pass": true
+    },
+    {
+      "label": "Sector autorizado: archivos-suroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Normal de nivel 1 con respawn: archivos-suroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Multiplicadores normales: archivos-suroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Respawn original por tipo: archivos-suroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Sin patrulla nueva: archivos-suroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Referencia nativa original: archivos-suroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Atlas: 2 m de cobertura cenital a cota correcta: archivos-suroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Fuera de recuperación con reserva: archivos-suroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Dentro del sector: archivos-suroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Fuera de conexiones/entrada: archivos-suroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Sin puestos superpuestos en configuración: archivos-suroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Sector autorizado: archivos-suroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Normal de nivel 1 con respawn: archivos-suroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Multiplicadores normales: archivos-suroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Respawn original por tipo: archivos-suroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Sin patrulla nueva: archivos-suroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Referencia nativa original: archivos-suroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Atlas: 2 m de cobertura cenital a cota correcta: archivos-suroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Fuera de recuperación con reserva: archivos-suroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Dentro del sector: archivos-suroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Fuera de conexiones/entrada: archivos-suroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Sin puestos superpuestos en configuración: archivos-suroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Sector autorizado: archivos-noroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Normal de nivel 1 con respawn: archivos-noroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Multiplicadores normales: archivos-noroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Respawn original por tipo: archivos-noroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Sin patrulla nueva: archivos-noroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Referencia nativa original: archivos-noroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Atlas: 2 m de cobertura cenital a cota correcta: archivos-noroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Fuera de recuperación con reserva: archivos-noroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Dentro del sector: archivos-noroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Fuera de conexiones/entrada: archivos-noroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Sin puestos superpuestos en configuración: archivos-noroeste-oracle",
+      "pass": true
+    },
+    {
+      "label": "Sector autorizado: archivos-noroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Normal de nivel 1 con respawn: archivos-noroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Multiplicadores normales: archivos-noroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Respawn original por tipo: archivos-noroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Sin patrulla nueva: archivos-noroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Referencia nativa original: archivos-noroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Atlas: 2 m de cobertura cenital a cota correcta: archivos-noroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Fuera de recuperación con reserva: archivos-noroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Dentro del sector: archivos-noroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Fuera de conexiones/entrada: archivos-noroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Sin puestos superpuestos en configuración: archivos-noroeste-jura",
+      "pass": true
+    },
+    {
+      "label": "Tipos exactos de Plaza",
+      "pass": true
+    },
+    {
+      "label": "Tipos exactos de Archivos",
+      "pass": true
+    },
+    {
+      "label": "Plaza: grupos 3/2/1",
+      "pass": true
+    },
+    {
+      "label": "Archivos: grupos 2/2",
+      "pass": true
+    }
+  ],
+  "counts": {
+    "01-portico": 8,
+    "02-jardines": 8,
+    "03-plaza": 11,
+    "04-archivos": 8,
+    "05-claustro": 5,
+    "06-santuario": 3,
+    "07-sol": 5
+  },
+  "sectorCaps": {
+    "01-portico": 5,
+    "02-jardines": 5,
+    "03-plaza": 6,
+    "04-archivos": 5,
+    "05-claustro": 5,
+    "06-santuario": 3,
+    "07-sol": 5
+  },
+  "global": 29,
+  "nativeValidation": "PENDING; existing runtime preflight must approve each group",
+  "pipelineInstalled": false
+}

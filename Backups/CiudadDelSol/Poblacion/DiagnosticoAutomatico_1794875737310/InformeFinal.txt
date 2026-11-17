@@ -1,0 +1,24 @@
+CIUDAD DEL SOL — DIAGNÓSTICO AUTOMATIZADO
+
+RESULTADO REAL OBTENIDO
+Se accedió al Editor abierto mediante Computer Use después de esperar la recarga. Se ejecutó el menú automatizado sobre el NavMesh real, en Edit Mode, sin Play ni Host. Resultado inicial: 26/28 grupos, 2 bloqueados, 44/48 puestos; los otros26 conservaron la validación. Informe completo: C:/Users/juang/Desktop/Git/Reality-of-Madness-RIFTBREAKERS/Backups/CiudadDelSol/Poblacion/DiagnosticoNativo_20261117T021055095/Resultado.txt.
+La CLI carece de paquete Pipeline. El intento batch del sandbox terminó con código1 por IPC de licencias/WMI antes de ejecutar el método. El intento fuera del sandbox detectó el Editor abierto y NO inició otro. No se detuvo ningún proceso de Unity existente. Posteriormente el control de escritorio dejó de producir imágenes utilizables/activación/índices válidos; no se enviaron más acciones.
+
+EVIDENCIA
+Archivos: suelo plano con separación .025m; SamplePosition a1mm correcto; MapLocation y MoveLocation ida/vuelta alcanzan exactamente las posiciones y los polígonos esperados. FindClosestEdge encuentra límite exterior a4.200005m, no la esquina interna. La exigencia de borde exterior en una esquina interna es un falso positivo demostrado.
+Pórtico: MoveLocation ida llega al polígono de destino; la vuelta alcanza exactamente la esquina, reteniendo ese polígono, diferente al elegido por MapLocation. No existe portal directo entre ambos identificadores. Eso demuestra la ambigüedad que produce el rechazo, pero NO acredita por sí solo conectividad segura en el vértice.
+
+CAMBIOS
+Assets/ROM/Editor/CiudadDelSolNavMeshDiagnostics.Encounters.cs: un menú captura ocho rutas y consulta los28 grupos de solo lectura, con informe aBackups; incluye evidencia nativa detallada y entrada batch guardada (solo batch). Nunca cambia Approved ni el estado del gestor.
+Assets/ROM/Scripts/CiudadDelSol/CiudadDelSolEncounterValidation.cs: las esquinas originales no requieren borde exterior cuando los dos raycasts coinciden en esa misma esquina; continúan siendo obligatorios el suelo nativo, agente/nivel, movimiento ida/vuelta, caminos locales completos sin desvío y todas las comprobaciones físicas. Se contempla la dirección simétrica de llegada a la esquina. Si la vuelta conserva otro polígono, solo se permite una prueba adicional de vecindad por portales nativos recíprocos, no enlaces, todos incidentes en esa misma esquina dentro del1mm existente; máximo32 polígonos y64 vecinos por nodo; máscaras restringidas fallan de forma segura. Sin cambios de tolerancia ni enlaces/geométricos. Si esta prueba no demuestra continuidad, el puesto sigue bloqueado.
+
+VERIFICACIONES
+Respaldo previo de ambos scripts y metas, hashes previos/posteriores de recursos protegidos. Runtime+Editor compilan mediante Roslyn con referencias Unity del proyecto; advertencias de API experimental obsoleta ya utilizada.95 casos simulados del validador aprobados: huecos, clamps, mapas inválidos, áreas restringidas, otro agente, otra planta, enlaces, portal lejano, unidireccional, grafo desconectado y límites de consulta. Regresiones disponibles:84 progresión/XP,14 respawn y39 recuperación HP aprobadas. Son simuladas; no equivalen al preflight nativo final.
+La compilación de Unity de la herramienta inicial se verificó en Editor.log (Tundra+Mirror.Weaver correctos). La recarga/importación del ajuste final y su comprobación nativa siguen pendientes.
+IntegridadFinal.json confirma PopulationExterior.asset/meta, escena yNavMeshData intactos; solo cambió deliberadamente el hash del validador.48 puestos, máximo29 ocupantes y configuración original conservados.
+
+PENDIENTE SIN DECLARAR ÉXITO
+No se obtuvo preflight posterior a la corrección. No se confirma28/28 ni48/48.
+Única acción de diagnóstico: ROM/Dungeon Ciudad del Sol/Población/Diagnóstico automático de ambos encuentros y regresión. Esperar CONSULTo CONSULTA_COMPLETA y revisar nuevo Resultado.txt enBackups/CiudadDelSol/Poblacion/DiagnosticoNativo_*. Es consulta de solo lectura; después el Play habitual debe confirmar CIUDAD_EXTERIOR PREFLIGHT_TERMINADO, sin omitir protecciones. Si Pórtico no acredita la vecindad real, mantenerlo bloqueado y revisar la geometría/NavMesh sin editarlos hasta autorización.
+Documentación API6000.3 consultada: https://docs.unity.com/en-us/engine/6000.3/script-reference/unityengine/experimental/ai/navmeshquery/getedgesandneighbors; manual instalado NavInnerWorkings.md yAreasAndCosts.md.
+Sin commits ni pushes.

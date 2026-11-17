@@ -1,0 +1,20 @@
+Único archivo del proyecto modificado: Assets/ROM/Resources/CiudadDelSol/PopulationExterior.asset
+Configuración: 48 puestos, 28 encuentros, siete patrullas. Los 38 anteriores conservados sin cambios.
+GlobalMaximum=29, incluyendo cadáveres. Cupos: Pórtico 5, Jardines 5, Plaza 6, Archivos 5, Claustro 5, Santuario 3, Sol 5.
+165 comprobaciones estáticas aprobadas. No equivalen a apoyo/cápsula/recorridos nativos.
+No se inició Play Mode. No hay Unity Pipeline instalado; la validación nativa queda pendiente del preflight existente.
+Los diez nuevos puestos no pueden aparecer antes de aprobar su preflight (ValidateExteriorEncounters=1). Un fallo deja bloqueado el grupo.
+Prueba manual: Play habitual; esperar PREFLIGHT_TERMINADO. Objetivo, si todos pasan: 28 aprobados, 0 bloqueados y 48/48 habilitados.
+Conservar mensaje GRUPO_BLOQUEADO si falla; no relajar ni desplazar automáticamente.
+Recorrer Plaza y Archivos. Respetar distancias de exclusión y cupo global; habilitado no significa activo.
+Nuevas posiciones:
+plaza-sur-explanada / plaza-sur-explanada-demon / D / [10,12,-30]
+plaza-sur-explanada / plaza-sur-explanada-chain / Q / [18,12,-30]
+plaza-sur-explanada / plaza-sur-explanada-oracle / O / [14,12,-22]
+plaza-noroeste / plaza-noroeste-demon / D / [-24,12,48]
+plaza-noroeste / plaza-noroeste-chain / Q / [-16,12,48]
+plaza-este / plaza-este-herald / H / [54,12,26]
+archivos-suroeste / archivos-suroeste-oracle / O / [-132,20,86]
+archivos-suroeste / archivos-suroeste-jura / J / [-124,20,86]
+archivos-noroeste / archivos-noroeste-oracle / O / [-108,20,126]
+archivos-noroeste / archivos-noroeste-jura / J / [-100,20,126]

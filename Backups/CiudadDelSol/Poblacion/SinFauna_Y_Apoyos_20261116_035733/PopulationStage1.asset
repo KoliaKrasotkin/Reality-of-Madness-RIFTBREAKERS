@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23cc826b2f4840d190786bc60b18e52c, type: 3}
+  m_Name: PopulationStage1
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.CiudadDelSol.CiudadDelSolPopulationDefinition
+  Stage: Etapa 1 - infraestructura de respawn
+  CompatibleEnemies:
+  - {fileID: 11400000, guid: 9d42041f7fc057e4593c57e56b8b3969, type: 2}
+  - {fileID: 11400000, guid: 770c68e9bce04c54bab5b0d8fc519e8f, type: 2}
+  - {fileID: 11400000, guid: 73f3665fb4c401f4591dfefde6380fff, type: 2}
+  - {fileID: 11400000, guid: 3721eca948d120f48aec9659e4da0ebe, type: 2}
+  - {fileID: 11400000, guid: 7755dcb00314e194d8bcdfecb5e5ef35, type: 2}
+  - {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+  - {fileID: 11400000, guid: 4219d9d3b9f5f404fab7c7aba01d976b, type: 2}
+  - {fileID: 11400000, guid: 89841298923e63045a4b669d9fd00a0e, type: 2}
+  - {fileID: 11400000, guid: 5faedcdb4bde5664589327a097328d02, type: 2}
+  - {fileID: 11400000, guid: fd66cf3cc24aa7a489a849b877e1c703, type: 2}
+  - {fileID: 11400000, guid: 69ec905d7a9806d43a4aeca80b2a105a, type: 2}
+  - {fileID: 11400000, guid: 673f54bd07ea2fa4c99ad58cabf3ffe6, type: 2}
+  - {fileID: 11400000, guid: aa827cc6877692040a08fe3df43796c0, type: 2}
+  Posts:
+  - Id: entrada-diablillo-01
+    SectorId: 01-portico
+    EncounterId: entrada
+    Enemy: {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+    Rank: 0
+    Position: {x: 30, y: -2, z: -170}
+    AnchorPath: ""
+    PlayableRoot: Salida_Meridional_Generated
+    PlayableAncestor: 03 - Descanso y puente inferior
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 90
+    ActivationRadius: 150
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+  - Id: jardines-oraculo-01
+    SectorId: 02-jardines
+    EncounterId: jardines-encuentro-01
+    Enemy: {fileID: 11400000, guid: 770c68e9bce04c54bab5b0d8fc519e8f, type: 2}
+    Rank: 0
+    Position: {x: -122.3, y: 4, z: -52}
+    AnchorPath: "Raid · Jardines Dorados · Encuentro 01/01 Frontal"
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 02 - Jardines Dorados
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 120
+    ActivationRadius: 150
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+  Sectors:
+  - Id: 01-portico
+    Maximum: 1
+  - Id: 02-jardines
+    Maximum: 1
+  RecoveryAreas:
+  - Id: entrada-segura
+    Position: {x: 30, y: -1.95, z: -206}
+    Radius: 22
+  GlobalMaximum: 2
+  TickSeconds: 0.5
+  RetrySeconds: 5
+  PlayerExclusionRadius: 25
+  CombatExclusionRadius: 40
+  CombatQuietSeconds: 10
+  ScaleForHumanPlayers: 1

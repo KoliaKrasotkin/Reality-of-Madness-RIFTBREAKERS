@@ -24,9 +24,16 @@ namespace MultiFPS.Gameplay {
         }
         [TargetRpc] void TargetClassChoice(NetworkConnectionToClient connection,int id){PlayerPrefs.SetInt(ClassPreference,id);PlayerPrefs.Save();}
         [Server] public void ServerTickClass(){
-            if(BOT||!MyCharacter||!ClassDefinition||MyCharacter.Health.CurrentHealth<=0||Time.time<_nextRecovery)return;
-            _nextRecovery=Time.time+1;var rules=GameManager.Gamemode.ClassRules;
-            if(NetworkTime.time-LastCombatAt>=rules.RecoveryDelay)RiftClassCombat.Heal(this,MyCharacter.Health,rules.RecoveryPerSecond);
+            if(!isServer||BOT||!MyCharacter||MyCharacter.Health.CurrentHealth<=0||Time.time<_nextRecovery)return;
+            float delay,fraction;
+            if(ClassDefinition){
+                var rules=GameManager.Gamemode.ClassRules;delay=rules.RecoveryDelay;fraction=rules.RecoveryPerSecond;
+            }else{
+                var raid=GameManager.Gamemode as Gamemodes.Raid;
+                if(!raid||!raid.TryGetCityHealthRecovery(this,out delay,out fraction))return;
+            }
+            _nextRecovery=Time.time+1;
+            if(NetworkTime.time-LastCombatAt>=delay)RiftClassCombat.Heal(this,MyCharacter.Health,fraction);
         }
         [Command] public void CmdUseClassAbility(byte slot){ServerUseClassAbility(slot);}
         [Server] public bool ServerUseClassAbility(byte slot){

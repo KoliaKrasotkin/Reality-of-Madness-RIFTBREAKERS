@@ -1,0 +1,626 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23cc826b2f4840d190786bc60b18e52c, type: 3}
+  m_Name: PopulationExterior
+  m_EditorClassIdentifier: Assembly-CSharp::ROM.CiudadDelSol.CiudadDelSolPopulationDefinition
+  Stage: Etapa 2 - exterior - siete sectores
+  CompatibleEnemies:
+  - {fileID: 11400000, guid: 9d42041f7fc057e4593c57e56b8b3969, type: 2}
+  - {fileID: 11400000, guid: 770c68e9bce04c54bab5b0d8fc519e8f, type: 2}
+  - {fileID: 11400000, guid: 73f3665fb4c401f4591dfefde6380fff, type: 2}
+  - {fileID: 11400000, guid: 3721eca948d120f48aec9659e4da0ebe, type: 2}
+  - {fileID: 11400000, guid: 7755dcb00314e194d8bcdfecb5e5ef35, type: 2}
+  - {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+  Posts:
+  - Id: entrada-diablillo-01
+    SectorId: 01-portico
+    EncounterId: entrada
+    Enemy: {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+    Rank: 0
+    Position: {x: 30, y: -2, z: -170}
+    AnchorPath: ""
+    PlayableRoot: Salida_Meridional_Generated
+    PlayableAncestor: 03 - Descanso y puente inferior
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 90
+    ActivationRadius: 150
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: portico-oeste-demon
+    SectorId: 01-portico
+    EncounterId: portico-oeste
+    Enemy: {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+    Rank: 0
+    Position: {x: -144, y: 0, z: -145}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 01 - Entrada Portico Solar
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 90
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: portico-oeste-oracle
+    SectorId: 01-portico
+    EncounterId: portico-oeste
+    Enemy: {fileID: 11400000, guid: 770c68e9bce04c54bab5b0d8fc519e8f, type: 2}
+    Rank: 0
+    Position: {x: -138, y: 0, z: -146}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 01 - Entrada Portico Solar
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 120
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: portico-patrulla
+    SectorId: 01-portico
+    EncounterId: portico-patrulla
+    Enemy: {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+    Rank: 0
+    Position: {x: -120, y: 0, z: -108}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 01 - Entrada Portico Solar
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 90
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints:
+    - {x: -120, y: 0, z: -108}
+    - {x: -120, y: 0, z: -96}
+    PatrolWaitSeconds: 1.5
+  - Id: jardines-oraculo-01
+    SectorId: 02-jardines
+    EncounterId: jardines-encuentro-01
+    Enemy: {fileID: 11400000, guid: 770c68e9bce04c54bab5b0d8fc519e8f, type: 2}
+    Rank: 0
+    Position: {x: -122.3, y: 4, z: -52}
+    AnchorPath: "Raid · Jardines Dorados · Encuentro 01/01 Frontal"
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 02 - Jardines Dorados
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 120
+    ActivationRadius: 150
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: jardines-norte-demon-a
+    SectorId: 02-jardines
+    EncounterId: jardines-norte
+    Enemy: {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+    Rank: 0
+    Position: {x: -93, y: 4, z: 5}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 02 - Jardines Dorados
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 90
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints:
+    - {x: -93, y: 4, z: 5}
+    - {x: -86, y: 4, z: 5}
+    - {x: -86, y: 4, z: 11}
+    - {x: -93, y: 4, z: 11}
+    PatrolWaitSeconds: 1.5
+  - Id: jardines-norte-demon-b
+    SectorId: 02-jardines
+    EncounterId: jardines-norte
+    Enemy: {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+    Rank: 0
+    Position: {x: -87, y: 4, z: 7}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 02 - Jardines Dorados
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 90
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: plaza-sur-chain
+    SectorId: 03-plaza
+    EncounterId: plaza-sur
+    Enemy: {fileID: 11400000, guid: 9d42041f7fc057e4593c57e56b8b3969, type: 2}
+    Rank: 0
+    Position: {x: -7, y: 12, z: -12}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 03 - Plaza del Eclipse
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 180
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: plaza-sur-demon
+    SectorId: 03-plaza
+    EncounterId: plaza-sur
+    Enemy: {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+    Rank: 0
+    Position: {x: -1, y: 12, z: -14}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 03 - Plaza del Eclipse
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 90
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: plaza-patrulla
+    SectorId: 03-plaza
+    EncounterId: plaza-patrulla
+    Enemy: {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+    Rank: 0
+    Position: {x: 44, y: 12, z: -12}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 03 - Plaza del Eclipse
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 90
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints:
+    - {x: 44, y: 12, z: -12}
+    - {x: 52, y: 12, z: -12}
+    - {x: 52, y: 12, z: -3}
+    PatrolWaitSeconds: 1.5
+  - Id: plaza-norte-elite
+    SectorId: 03-plaza
+    EncounterId: plaza-norte
+    Enemy: {fileID: 11400000, guid: 9d42041f7fc057e4593c57e56b8b3969, type: 2}
+    Rank: 1
+    Position: {x: 15, y: 12, z: 43}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 03 - Plaza del Eclipse
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 240
+    ActivationRadius: 110
+    HealthMultiplier: 2
+    DamageMultiplier: 1.15
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: plaza-norte-oracle
+    SectorId: 03-plaza
+    EncounterId: plaza-norte
+    Enemy: {fileID: 11400000, guid: 770c68e9bce04c54bab5b0d8fc519e8f, type: 2}
+    Rank: 0
+    Position: {x: 22, y: 12, z: 43}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 03 - Plaza del Eclipse
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 120
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: archivos-lectura-oracle
+    SectorId: 04-archivos
+    EncounterId: archivos-lectura
+    Enemy: {fileID: 11400000, guid: 770c68e9bce04c54bab5b0d8fc519e8f, type: 2}
+    Rank: 0
+    Position: {x: -111, y: 20, z: 110}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 04 - Archivos Solares
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 120
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: archivos-lectura-jura
+    SectorId: 04-archivos
+    EncounterId: archivos-lectura
+    Enemy: {fileID: 11400000, guid: 73f3665fb4c401f4591dfefde6380fff, type: 2}
+    Rank: 0
+    Position: {x: -105, y: 20, z: 112}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 04 - Archivos Solares
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 180
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints:
+    - {x: -105, y: 20, z: 112}
+    - {x: -105, y: 20, z: 102}
+    PatrolWaitSeconds: 1.5
+  - Id: archivos-norte-oracle
+    SectorId: 04-archivos
+    EncounterId: archivos-norte
+    Enemy: {fileID: 11400000, guid: 770c68e9bce04c54bab5b0d8fc519e8f, type: 2}
+    Rank: 0
+    Position: {x: -78, y: 20, z: 128}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 04 - Archivos Solares
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 120
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: archivos-norte-demon
+    SectorId: 04-archivos
+    EncounterId: archivos-norte
+    Enemy: {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+    Rank: 0
+    Position: {x: -84, y: 20, z: 128}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 04 - Archivos Solares
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 90
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: claustro-patio-jura
+    SectorId: 05-claustro
+    EncounterId: claustro-patio
+    Enemy: {fileID: 11400000, guid: 73f3665fb4c401f4591dfefde6380fff, type: 2}
+    Rank: 0
+    Position: {x: 10, y: 28, z: 136}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 05 - Claustro del Eclipse
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 180
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: claustro-patio-herald
+    SectorId: 05-claustro
+    EncounterId: claustro-patio
+    Enemy: {fileID: 11400000, guid: 3721eca948d120f48aec9659e4da0ebe, type: 2}
+    Rank: 0
+    Position: {x: 17, y: 28, z: 139}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 05 - Claustro del Eclipse
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 180
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: claustro-patrulla
+    SectorId: 05-claustro
+    EncounterId: claustro-patrulla
+    Enemy: {fileID: 11400000, guid: 73f3665fb4c401f4591dfefde6380fff, type: 2}
+    Rank: 0
+    Position: {x: 31, y: 28, z: 112}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 05 - Claustro del Eclipse
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 180
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints:
+    - {x: 31, y: 28, z: 112}
+    - {x: 43, y: 28, z: 112}
+    PatrolWaitSeconds: 1.5
+  - Id: claustro-galeria-elite
+    SectorId: 05-claustro
+    EncounterId: claustro-galeria
+    Enemy: {fileID: 11400000, guid: 9d42041f7fc057e4593c57e56b8b3969, type: 2}
+    Rank: 1
+    Position: {x: 12, y: 32, z: 165}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 05 - Claustro del Eclipse
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 240
+    ActivationRadius: 110
+    HealthMultiplier: 2
+    DamageMultiplier: 1.15
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: claustro-galeria-oracle
+    SectorId: 05-claustro
+    EncounterId: claustro-galeria
+    Enemy: {fileID: 11400000, guid: 770c68e9bce04c54bab5b0d8fc519e8f, type: 2}
+    Rank: 0
+    Position: {x: 24, y: 32, z: 165}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 05 - Claustro del Eclipse
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 120
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: santuario-sur-herald
+    SectorId: 06-santuario
+    EncounterId: santuario-sur
+    Enemy: {fileID: 11400000, guid: 3721eca948d120f48aec9659e4da0ebe, type: 2}
+    Rank: 0
+    Position: {x: 134, y: 4, z: -108}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 06 - Santuario Profano
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 180
+    ActivationRadius: 110
+    HealthMultiplier: 1.25
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: santuario-sur-oracle
+    SectorId: 06-santuario
+    EncounterId: santuario-sur
+    Enemy: {fileID: 11400000, guid: 770c68e9bce04c54bab5b0d8fc519e8f, type: 2}
+    Rank: 0
+    Position: {x: 139, y: 4, z: -104}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 06 - Santuario Profano
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 120
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: santuario-elite
+    SectorId: 06-santuario
+    EncounterId: santuario-elite
+    Enemy: {fileID: 11400000, guid: 9d42041f7fc057e4593c57e56b8b3969, type: 2}
+    Rank: 1
+    Position: {x: 174, y: 4, z: -56}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 06 - Santuario Profano
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 240
+    ActivationRadius: 110
+    HealthMultiplier: 2
+    DamageMultiplier: 1.15
+    PatrolPoints:
+    - {x: 174, y: 4, z: -56}
+    - {x: 168, y: 4, z: -56}
+    PatrolWaitSeconds: 1.5
+  - Id: sol-sur-herald
+    SectorId: 07-sol
+    EncounterId: sol-sur
+    Enemy: {fileID: 11400000, guid: 3721eca948d120f48aec9659e4da0ebe, type: 2}
+    Rank: 0
+    Position: {x: 151, y: 36, z: 133}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 07 - El Sol Corrompido
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 180
+    ActivationRadius: 110
+    HealthMultiplier: 1.25
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: sol-sur-oracle
+    SectorId: 07-sol
+    EncounterId: sol-sur
+    Enemy: {fileID: 11400000, guid: 770c68e9bce04c54bab5b0d8fc519e8f, type: 2}
+    Rank: 0
+    Position: {x: 158, y: 36, z: 133}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 07 - El Sol Corrompido
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 120
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: sol-este-elite
+    SectorId: 07-sol
+    EncounterId: sol-este
+    Enemy: {fileID: 11400000, guid: 73f3665fb4c401f4591dfefde6380fff, type: 2}
+    Rank: 1
+    Position: {x: 207, y: 36, z: 146}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 07 - El Sol Corrompido
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 240
+    ActivationRadius: 110
+    HealthMultiplier: 2
+    DamageMultiplier: 1.15
+    PatrolPoints:
+    - {x: 207, y: 36, z: 146}
+    - {x: 214, y: 36, z: 146}
+    PatrolWaitSeconds: 1.5
+  - Id: sol-este-demon
+    SectorId: 07-sol
+    EncounterId: sol-este
+    Enemy: {fileID: 11400000, guid: 328845eff794d414eaba1db26a836f36, type: 2}
+    Rank: 0
+    Position: {x: 211, y: 36, z: 151}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 07 - El Sol Corrompido
+    Yaw: 180
+    Level: 1
+    Respawn: 1
+    RespawnSeconds: 90
+    ActivationRadius: 110
+    HealthMultiplier: 1
+    DamageMultiplier: 1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  - Id: sol-regente
+    SectorId: 07-sol
+    EncounterId: sol-regente
+    Enemy: {fileID: 11400000, guid: 7755dcb00314e194d8bcdfecb5e5ef35, type: 2}
+    Rank: 2
+    Position: {x: 180, y: 36, z: 173}
+    AnchorPath: ""
+    PlayableRoot: Dungeon_Ciudad_del_Sol_Generated
+    PlayableAncestor: 07 - El Sol Corrompido
+    Yaw: 180
+    Level: 1
+    Respawn: 0
+    RespawnSeconds: 900
+    ActivationRadius: 110
+    HealthMultiplier: 1.5
+    DamageMultiplier: 1.1
+    PatrolPoints: []
+    PatrolWaitSeconds: 1.5
+  Sectors:
+  - Id: 01-portico
+    PlayableAncestor: 01 - Entrada Portico Solar
+    RecoveryAreaId: portico-descanso
+    Maximum: 4
+  - Id: 02-jardines
+    PlayableAncestor: 02 - Jardines Dorados
+    RecoveryAreaId: jardines-descanso
+    Maximum: 3
+  - Id: 03-plaza
+    PlayableAncestor: 03 - Plaza del Eclipse
+    RecoveryAreaId: plaza-descanso
+    Maximum: 5
+  - Id: 04-archivos
+    PlayableAncestor: 04 - Archivos Solares
+    RecoveryAreaId: archivos-descanso
+    Maximum: 4
+  - Id: 05-claustro
+    PlayableAncestor: 05 - Claustro del Eclipse
+    RecoveryAreaId: claustro-descanso
+    Maximum: 5
+  - Id: 06-santuario
+    PlayableAncestor: 06 - Santuario Profano
+    RecoveryAreaId: santuario-descanso
+    Maximum: 3
+  - Id: 07-sol
+    PlayableAncestor: 07 - El Sol Corrompido
+    RecoveryAreaId: sol-descanso
+    Maximum: 5
+  RecoveryAreas:
+  - Id: entrada-segura
+    Position: {x: 30, y: -1.95, z: -206}
+    Radius: 22
+  - Id: portico-descanso
+    Position: {x: -138, y: 0, z: -103}
+    Radius: 6
+  - Id: jardines-descanso
+    Position: {x: -70, y: 4, z: 12}
+    Radius: 6
+  - Id: plaza-descanso
+    Position: {x: -24, y: 12, z: 23}
+    Radius: 6
+  - Id: archivos-descanso
+    Position: {x: -78, y: 20, z: 86}
+    Radius: 6
+  - Id: claustro-descanso
+    Position: {x: -22, y: 28, z: 115}
+    Radius: 6
+  - Id: santuario-descanso
+    Position: {x: 150, y: 4, z: -44}
+    Radius: 6
+  - Id: sol-descanso
+    Position: {x: 138, y: 36, z: 159}
+    Radius: 6
+  GlobalMaximum: 29
+  TickSeconds: 0.5
+  RetrySeconds: 5
+  PlayerExclusionRadius: 25
+  CombatExclusionRadius: 40
+  CombatQuietSeconds: 10
+  ScaleForHumanPlayers: 1
+  ValidateExteriorEncounters: 1
+  AccessibilityOrigin: {x: 30, y: -2, z: -206}
+  MaximumInitialGroupSize: 3

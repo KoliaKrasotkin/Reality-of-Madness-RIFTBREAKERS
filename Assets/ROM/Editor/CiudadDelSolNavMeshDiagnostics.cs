@@ -9,7 +9,7 @@ namespace ROM.EditorTools
 {
     internal enum NavIssueKind { Partial, Support, Corridor, Island, Coverage }
 
-    internal sealed class CiudadDelSolNavMeshDiagnostics : EditorWindow
+    internal sealed partial class CiudadDelSolNavMeshDiagnostics : EditorWindow
     {
         sealed class Issue
         {
@@ -68,11 +68,15 @@ namespace ROM.EditorTools
         void OnEnable()
         {
             SceneView.duringSceneGui += DrawScene;
+            EditorApplication.playModeStateChanged += ClearEncounterCapture;
             EditorSceneEvents(true);
         }
 
         void OnDisable()
         {
+            EditorApplication.playModeStateChanged -= ClearEncounterCapture;
+            captureGeneration++;
+            encounterRoutes.Clear();
             SceneView.duringSceneGui -= DrawScene;
             EditorSceneEvents(false);
             SceneView.RepaintAll();
@@ -89,6 +93,7 @@ namespace ROM.EditorTools
         public void CreateGUI()
         {
             rootVisualElement.Clear();
+            AddEncounterDiagnostics(rootVisualElement);
             summary = new Label { style = { whiteSpace = WhiteSpace.Normal } };
             list = new ListView
             {
@@ -133,7 +138,7 @@ namespace ROM.EditorTools
             list.Rebuild();
             summary.text = list.itemsSource.Count > 0
                 ? $"{Clusters.Sum(item => item.Issues.Count)} observaciones en {Clusters.Count} grupos. Primero los recorridos obligatorios."
-                : "Sin cortes registrados para esta escena. Ejecutá «1. Hornear y validar candidata».";
+                : "Sin registros del antiguo horneado. Para población, utilizá la captura manual de la sección superior.";
             ShowIssue();
         }
 
@@ -207,6 +212,7 @@ namespace ROM.EditorTools
 
         void DrawScene(SceneView view)
         {
+            DrawEncounterSnapshot();
             if (!HasCurrentScene || Event.current.type != EventType.Repaint) return;
             var previousColor = Handles.color;
             try

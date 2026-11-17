@@ -6,6 +6,8 @@ public sealed class RiftFieldUI:MonoBehaviour {
  public RiftHUDTheme Theme;public RectTransform MapPanel,Content,Viewport,PlayerMarker,PotionRoot;public RawImage MapImage;public Text MapInfo;public Button CloseButton,MapButton;public Button[] Potions;public Text[] Counts,Keys,Timers;public Image[] Cooldowns;
  public RiftCartographicProjection Projection{get;private set;}
  public bool CityCartography {get;private set;}
+ public bool ExteriorCartography {get;private set;}
+ public string CartographyDescription=>ExteriorCartography?"CIUDAD DEL SOL · Exterior\nVos: flecha dorada · Rueda: zoom · Arrastrar: mover.":"EL RIFT · Cristales azul · Encuentros rojo · Vos dorado.\n! Disponible · ? Entrega · Objetivo seguido celeste · Rueda: zoom · Arrastrar: mover.";
  public bool MapOpen=>MapPanel&&MapPanel.gameObject.activeSelf;
  RiftMinimapAtlas atlas,originalAtlas;RiftCartographicProjection originalProjection;Vector2 originalSize;int displayedFloor=-1;bool cursorHeld,pauseAllowed;float next;readonly List<Transform> pins=new List<Transform>();Canvas canvas;
  [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]static void Install(){SceneManager.sceneLoaded-=Loaded;SceneManager.sceneLoaded+=Loaded;}
@@ -13,33 +15,35 @@ public sealed class RiftFieldUI:MonoBehaviour {
  void Awake(){canvas=GetComponent<Canvas>();if(!MapPanel)Build();atlas=ROM.Tutorial.Crilium.CriliumSession.Active&&ROM.Tutorial.Crilium.CriliumDefinition.Load?ROM.Tutorial.Crilium.CriliumDefinition.Load.Atlas:Resources.Load<RiftMinimapAtlas>("RiftMinimapAtlas");if(atlas){Projection=ROM.Tutorial.Crilium.CriliumSession.Active?null:RiftCartographicProjection.Load(atlas);MapImage.texture=Projection!=null?Projection.Texture:atlas.Map;}var pointer=MapImage.gameObject.AddComponent<RiftMapCoordinatePointer>();pointer.Owner=this;CloseButton.onClick.AddListener(()=>SetMap(false));MapButton.onClick.AddListener(()=>SetMap(!MapOpen));for(int i=0;i<2;i++){int id=i;Potions[i].onClick.AddListener(()=>Drink(id));}MapPanel.gameObject.SetActive(false);RiftModernMapFrame.Install(this);RiftMapPlayerLocator.Install(this);gameObject.AddComponent<RiftMapAtmosphere>().Initialize(this);gameObject.AddComponent<RiftQuestMapPins>();gameObject.AddComponent<RiftMapRegionLevels>();originalAtlas=atlas;originalProjection=Projection;gameObject.AddComponent<RiftCiudadDelSolMapControls>();}
  void Update(){var player=ClientFrontend.ClientPlayerInstance;var actor=player?player.MyCharacter:null;bool valid=actor&&actor.Health.CurrentHealth>0&&!ClientFrontend.Hub;
   canvas.enabled=valid;MapButton.interactable=valid&&!ClientFrontend.Pause&&!(RiftVillageUI.Instance&&RiftVillageUI.Instance.TalkingTo);if(!valid||ClientFrontend.Pause){if(MapOpen)SetMap(false);return;}
-  RefreshCartography(actor.transform.position);
+  RefreshCartography(actor);
   if(MapOpen){if(RiftControls.Pressed("WorldMap")||(RiftControls.EscapeConsumedFrame!=Time.frameCount&&UICursorManager.IsTopRequest(gameObject)&&RiftControls.Pressed("Pause"))){RiftControls.EscapeConsumedFrame=Time.frameCount;SetMap(false);return;}if(Mouse.current!=null&&RectTransformUtility.RectangleContainsScreenPoint(Viewport,Mouse.current.position.ReadValue())){float scroll=Mouse.current.scroll.ReadValue().y;if(scroll!=0)SetZoom(Content.localScale.x*(scroll>0?1.15f:.87f));}bool located=TryPosition(actor.transform.position,out var coordinate);PlayerMarker.gameObject.SetActive(located);if(located){PlayerMarker.anchoredPosition=coordinate;var heading=Heading(actor.transform.position,actor.Input.LookY);if(heading.sqrMagnitude>.0000001f)PlayerMarker.localRotation=Quaternion.Euler(0,0,-Mathf.Atan2(heading.x,heading.y)*Mathf.Rad2Deg);}else MapInfo.text="Posición fuera del área cartografiada.";}
   else if(UICursorManager.GamePlayInput()&&!RiftControls.Rebinding){if(RiftControls.Pressed("WorldMap"))SetMap(true);if(RiftControls.Pressed("Potion"))Drink(0);else if(RiftControls.Pressed("PotionMajor"))Drink(1);}
   PotionRoot.gameObject.SetActive(true);if(Time.unscaledTime<next)return;next=Time.unscaledTime+.1f;MapButton.GetComponentInChildren<Text>().text="MAPA ["+RiftControls.ActionLabel("WorldMap")+"]";var village=player.GetComponent<RiftVillagePlayer>();double remain=village?System.Math.Max(0,village.PotionReadyAt-NetworkTime.time):0;
   for(int i=0;i<2;i++){int count=RiftVillageSupplies.Count(i);Counts[i].text=count.ToString();Keys[i].text=RiftControls.ActionLabel(i==0?"Potion":"PotionMajor");Keys[i].fontSize=Keys[i].text.Length>4?10:12;Timers[i].text=remain>0?remain.ToString("0.0"):"";Cooldowns[i].fillAmount=(float)remain/5;Potions[i].interactable=NetworkServer.active&&count>0&&remain<=0&&actor.Health.CurrentHealth<actor.Health.MaxHealth;var tip=Potions[i].GetComponent<RiftTooltipTrigger>();if(tip)tip.Description="Recupera "+(RiftVillageSupplies.Healing(i)*100).ToString("0")+"% de vida. Cantidad: "+count+". Recarga compartida: 5 s."+(!NetworkServer.active?"\nDisponible en host local; cartera remota pendiente.":"");}
  }
  // Switch presentation resources only; preserve zoom/pan between floor selections.
- void RefreshCartography(Vector3 position){
-  bool city=RiftCiudadDelSolCartography.Sample(position,out _);
+ void RefreshCartography(MultiFPS.Gameplay.CharacterInstance actor){
+  bool exterior=RiftCiudadDelSolExteriorMap.IsLocalContext(actor);
+  bool city=!exterior&&RiftCiudadDelSolCartography.Sample(actor.transform.position,out _);
   int floor=city?RiftCiudadDelSolCartography.DisplayFloor:-1;
-  if(city==CityCartography&&floor==displayedFloor)return;
-  bool contextChanged=city!=CityCartography;
-  if(city&&!CityCartography)originalSize=Content.sizeDelta;
-  CityCartography=city;displayedFloor=floor;
-  atlas=city?RiftCiudadDelSolCartography.Atlas(floor):originalAtlas;
-  Projection=city?null:originalProjection;
-  MapImage.texture=city?atlas.Map:Projection!=null?Projection.Texture:atlas?atlas.Map:null;
-  GetComponent<RiftMapAtmosphere>()?.SetCartography(city);
+  if(city==CityCartography&&exterior==ExteriorCartography&&floor==displayedFloor)return;
+  bool contextChanged=city!=CityCartography||exterior!=ExteriorCartography;
+  if((city||exterior)&&!(CityCartography||ExteriorCartography))originalSize=Content.sizeDelta;
+  CityCartography=city;ExteriorCartography=exterior;displayedFloor=floor;
+  atlas=exterior?RiftCiudadDelSolExteriorMap.Load():city?RiftCiudadDelSolCartography.Atlas(floor):originalAtlas;
+  Projection=(city||exterior)?null:originalProjection;
+  MapImage.texture=Projection!=null?Projection.Texture:atlas?atlas.Map:null;
+  GetComponent<RiftMapAtmosphere>()?.SetCartography(city||exterior);
   if(contextChanged){
-   if(city)Content.sizeDelta=new Vector2(Content.rect.height*atlas.WorldSize.x/atlas.WorldSize.y,Content.rect.height);
+   if((city||exterior)&&atlas)Content.sizeDelta=new Vector2(Content.rect.height*atlas.WorldSize.x/atlas.WorldSize.y,Content.rect.height);
    else Content.sizeDelta=originalSize;
    Pins();
+   if(exterior)MapInfo.text=CartographyDescription;
    if(MapOpen){GetComponent<RiftModernMapFrame>()?.PrepareOpen();SetZoom(OverviewZoom);Content.anchoredPosition=Vector2.zero;}
   }
  }
  public void Drink(int id){if(!NetworkServer.active){RiftVillageUI.Notify("Las provisiones de clientes remotos requieren una cartera de servidor.");return;}var player=ClientFrontend.ClientPlayerInstance;if(player&&UICursorManager.GamePlayInput()&&!ClientFrontend.Pause&&!MapOpen)player.GetComponent<RiftVillagePlayer>().CmdDrinkPotion(id);}
- public void SetMap(bool open){if(open==MapOpen)return;if(open){if(!atlas||!atlas.Map)return;MapPanel.gameObject.SetActive(true);GetComponent<RiftModernMapFrame>()?.PrepareOpen();pauseAllowed=UIPauseMenu._instance?UIPauseMenu._instance.AbleToPause:true;if(UIPauseMenu._instance)UIPauseMenu._instance.AbleToPause=false;UICursorManager.RequestCursor(gameObject,true);cursorHeld=true;SetZoom(OverviewZoom);Content.anchoredPosition=Vector2.zero;Pins();PlayerMarker.SetAsLastSibling();MapInfo.text="EL RIFT · Cristales azul · Encuentros rojo · Vos dorado.\n! Disponible · ? Entrega · Objetivo seguido celeste · Rueda: zoom · Arrastrar: mover.";}else{MapPanel.gameObject.SetActive(false);if(cursorHeld){UICursorManager.ReleaseCursor(gameObject);cursorHeld=false;if(UIPauseMenu._instance)UIPauseMenu._instance.AbleToPause=pauseAllowed;}}RiftAbilityTooltip.HideAll();}
+ public void SetMap(bool open){if(open==MapOpen)return;if(open){if(!atlas||!atlas.Map)return;MapPanel.gameObject.SetActive(true);GetComponent<RiftModernMapFrame>()?.PrepareOpen();pauseAllowed=UIPauseMenu._instance?UIPauseMenu._instance.AbleToPause:true;if(UIPauseMenu._instance)UIPauseMenu._instance.AbleToPause=false;UICursorManager.RequestCursor(gameObject,true);cursorHeld=true;SetZoom(OverviewZoom);Content.anchoredPosition=Vector2.zero;Pins();PlayerMarker.SetAsLastSibling();MapInfo.text=CartographyDescription;}else{MapPanel.gameObject.SetActive(false);if(cursorHeld){UICursorManager.ReleaseCursor(gameObject);cursorHeld=false;if(UIPauseMenu._instance)UIPauseMenu._instance.AbleToPause=pauseAllowed;}}RiftAbilityTooltip.HideAll();}
  public float OverviewZoom {get{float inset=Projection!=null?0:2*RiftPresentationSettings.Load.TutorialMapOverviewPadding;float x=(Viewport.rect.width-inset)/Mathf.Max(1,Content.rect.width),y=(Viewport.rect.height-inset)/Mathf.Max(1,Content.rect.height);return Mathf.Max(.1f,Projection!=null?Mathf.Max(x,y)+.002f:Mathf.Min(x,y));}}
  public float MinimumZoom=>Projection!=null?OverviewZoom:Mathf.Min(OverviewZoom,RiftPresentationSettings.Load.TutorialMinimumMapZoom);
  public void ClampPan(){var extent=Vector2.Max(Vector2.zero,(Content.rect.size*Content.localScale.x-Viewport.rect.size)*.5f);Content.anchoredPosition=new Vector2(Mathf.Clamp(Content.anchoredPosition.x,-extent.x,extent.x),Mathf.Clamp(Content.anchoredPosition.y,-extent.y,extent.y));}
@@ -48,7 +52,7 @@ public sealed class RiftFieldUI:MonoBehaviour {
  public bool TryPosition(Vector3 world,out Vector2 point){point=default;if(!atlas)return false;if(CityCartography)world=RiftCiudadDelSolCartography.ToLocal(world);var uv=new Vector2((world.x-atlas.Center.x)/atlas.WorldSize.x+.5f,(world.z-atlas.Center.y)/atlas.WorldSize.y+.5f);if(uv.x<0||uv.x>1||uv.y<0||uv.y>1)return false;if(Projection!=null){if(!Projection.TryMap(uv,out var mapped))return false;uv=mapped;}point=new Vector2((uv.x-.5f)*Content.rect.width,(uv.y-.5f)*Content.rect.height);return true;}
  public bool TryWorldPosition(Vector2 point,out Vector3 world){world=default;if(!atlas)return false;var uv=new Vector2(point.x/Content.rect.width+.5f,point.y/Content.rect.height+.5f);if(uv.x<0||uv.x>1||uv.y<0||uv.y>1)return false;if(Projection!=null){if(!Projection.TryInverse(uv,out var mapped))return false;uv=mapped;}world=new Vector3((uv.x-.5f)*atlas.WorldSize.x+atlas.Center.x,0,(uv.y-.5f)*atlas.WorldSize.y+atlas.Center.y);if(CityCartography){world.y=RiftCiudadDelSolCartography.DisplayFloor==0?-16:RiftCiudadDelSolCartography.DisplayFloor==1?-24:RiftCiudadDelSolCartography.DisplayFloor==2?-30:RiftCiudadDelSolCartography.InV3(world)?-38:-34;world=RiftCiudadDelSolCartography.ToWorld(world);}return true;}
  public Vector2 Heading(Vector3 world,float yaw){float r=yaw*Mathf.Deg2Rad;var ahead=world+new Vector3(Mathf.Sin(r),0,Mathf.Cos(r))*.25f;return TryPosition(world,out var a)&&TryPosition(ahead,out var b)?b-a:Vector2.zero;}
- void Pins(){foreach(var pin in pins)if(pin)Destroy(pin.gameObject);pins.Clear();if(CityCartography)return;var world=ROM.Horde.Horde.Instance;if(!world)return;foreach(var crystal in world.Checkpoints)if(crystal)Pin(crystal.Title,crystal.transform.position,new Color(.25f,.7f,1),true);foreach(var encounter in world.Encounters)if(encounter)Pin(encounter.Title,encounter.transform.position,new Color(1,.18f,.12f),false);}
+ void Pins(){foreach(var pin in pins)if(pin)Destroy(pin.gameObject);pins.Clear();if(CityCartography||ExteriorCartography)return;var world=ROM.Horde.Horde.Instance;if(!world)return;foreach(var crystal in world.Checkpoints)if(crystal)Pin(crystal.Title,crystal.transform.position,new Color(.25f,.7f,1),true);foreach(var encounter in world.Encounters)if(encounter)Pin(encounter.Title,encounter.transform.position,new Color(1,.18f,.12f),false);}
  void Pin(string title,Vector3 position,Color color,bool label){if(!TryPosition(position,out _))return;var pin=Rect(Content,title,new Vector2(.5f,.5f),Position(position),new Vector2(14,14));var graphic=pin.gameObject.AddComponent<RiftHUDGraphic>();graphic.Shape=HUDShape.Diamond;graphic.color=color;graphic.raycastTarget=true;var button=pin.gameObject.AddComponent<Button>();button.targetGraphic=graphic;button.onClick.AddListener(()=>MapInfo.text=title+" · X: "+position.x.ToString("0")+"  Y: "+position.z.ToString("0"));var tip=pin.gameObject.AddComponent<RiftTooltipTrigger>();tip.Title=title;tip.Description=label?"Cristal / refugio":"Zona de encuentro";if(label)Label(pin,title,new Vector2(0,-17-(pins.Count%3)*14),new Vector2(180,24),11);pins.Add(pin);}
  void OnDisable(){if(cursorHeld)SetMap(false);}
  RectTransform Rect(Transform parent,string name,Vector2 anchor,Vector2 pos,Vector2 size){var rect=new GameObject(name,typeof(RectTransform)).GetComponent<RectTransform>();rect.SetParent(parent,false);rect.anchorMin=rect.anchorMax=anchor;rect.pivot=new Vector2(.5f,.5f);rect.anchoredPosition=pos;rect.sizeDelta=size;return rect;}

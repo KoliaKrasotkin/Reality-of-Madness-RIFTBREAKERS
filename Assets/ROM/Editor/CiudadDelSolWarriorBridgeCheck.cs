@@ -32,7 +32,7 @@ namespace ROM.EditorTools
             var scene = SceneManager.GetActiveScene();
             Check(EditorApplication.isPlaying && !EditorApplication.isPaused &&
                 scene.path == City && scene.isLoaded && SceneManager.sceneCount == 1 && pending == null,
-                "Cargá Ciudad del Sol con la prueba de carga existente y dejá Play sin pausa.");
+                "Ciudad del Sol debe ser la única escena cargada en Play, sin pausa ni cargas pendientes (modo automático o carga manual).");
             Check(!NetworkBusy(), "Validá el puente antes de iniciar una sesión de Mirror.");
 
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(WarriorPrefab);

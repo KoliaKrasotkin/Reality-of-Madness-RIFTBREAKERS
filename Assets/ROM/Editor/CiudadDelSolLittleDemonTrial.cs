@@ -31,6 +31,7 @@ namespace ROM.EditorTools
             internal int WarriorLife, EnemyLife;
             internal Vector3 Origin;
             internal bool Moved, CorpseRemoved;
+            internal bool Passed36, Passed120;
         }
 
         [MenuItem(DemonMenu + "1. Crear encuentro de prueba")]
@@ -60,7 +61,11 @@ namespace ROM.EditorTools
                     "El manager y el cliente deben tener registrado el prefab original del Diablillo. No se cambió ningún registro.");
                 var position = ValidateDemonPlacement(scene, prefab, warrior.transform.position);
                 var combat = warrior.Health ? AbilityController.For(warrior.Health) : null;
-                Check(combat && combat.Prototype, "Esperá a que se configure el combate original del Warrior.");
+                Check(combat && combat.isServer && combat.isLocalPlayer && combat.Player &&
+                    combat.Actor == warrior && combat.Player.MyCharacter == warrior &&
+                    warrior.GetComponent<WarriorAvatar>() && warrior.GetComponent<CharacterController>() &&
+                    warrior.GetComponent<CharacterController>().enabled && combat.AutoProfile != null && combat.Class && combat.Class.BasicAttack,
+                    "Warrior/combate: faltan el controlador local autorizado, el CharacterController activo o el perfil de ataque original. No se activó ninguna especialización.");
                 var definition = prefab.GetComponent<RiftEnemyAgent>().Definition;
                 float detection = RiftAggroTuning.Load.Detection(definition.Detection, 1, combat.Level);
                 Check(Vector3.Distance(warrior.transform.position, position) > detection + 4,
@@ -70,9 +75,9 @@ namespace ROM.EditorTools
                 instance.name = "TEMP Ciudad del Sol · Diablillo 01";
                 SceneManager.MoveGameObjectToScene(instance, scene);
                 var enemy = instance.GetComponent<RiftEnemyAgent>();
-                enemy.ConfigureSpawn(1); // No leash override, Horde population or reward handler.
+                enemy.ConfigureSpawn(1, cityRaidPursuit: true);
                 NetworkServer.Spawn(instance, assetId);
-                Check(enemy.isServer && enemy.netId != 0 && enemy.connectionToClient == null &&
+                Check(enemy.isServer && enemy.CityRaidPursuitActive && enemy.netId != 0 && enemy.connectionToClient == null &&
                     instance.GetComponent<NavMeshAgent>().isOnNavMesh,
                     "Mirror o el NavMesh no aceptaron al enemigo; se retirará la instancia.");
                 enemy.Health.RegisterNativeSpawn();
@@ -82,7 +87,7 @@ namespace ROM.EditorTools
                 EditorApplication.playModeStateChanged += DemonPlayChanged;
                 AssemblyReloadEvents.beforeAssemblyReload += StopDemonTrial;
                 Debug.Log($"CIUDAD_DIABLILLO CREADO netId={enemy.netId}, posición={enemy.transform.position:F3}, " +
-                    $"vida={enemy.Health.CurrentHealth}, leash={enemy.EffectiveLeash:F2}, detección={detection:F2}. " +
+                    $"vida={enemy.Health.CurrentHealth}, persecución Raid sin límite={enemy.CityRaidPursuitActive}, leash base conservado={enemy.EffectiveLeash:F2}, detección={detection:F2}. " +
                     "Acercate por la pasarela. Un único enemigo, sin oleadas, respawn ni recompensas del ensayo.");
             }
             catch (Exception error)
@@ -113,6 +118,21 @@ namespace ROM.EditorTools
             Debug.Log("CIUDAD_DIABLILLO Ensayo retirado. No se modificó la escena ni el Host.");
         }
 
+        [MenuItem(DemonMenu + "3. Registrar estado de persecución")]
+        static void ReportDemonPursuit()
+        {
+            var state = demonTrial;
+            if (!EditorApplication.isPlaying || state == null || !state.Enemy)
+            { Debug.LogWarning("CIUDAD_DIABLILLO No hay un ensayo activo para inspeccionar."); return; }
+            var enemy = state.Enemy;
+            var agent = enemy.GetComponent<NavMeshAgent>();
+            Debug.Log($"CIUDAD_DIABLILLO PERSECUCION política={enemy.CityRaidPursuitActive}; " +
+                $"distancia enemigo/origen={Vector3.Distance(enemy.Home, enemy.transform.position):F2}; " +
+                $"distancia Warrior/origen={(state.Warrior ? Vector3.Distance(enemy.Home, state.Warrior.transform.position) : -1):F2}; " +
+                $"objetivo={(enemy.Target ? enemy.Target.name : "ninguno")}; " +
+                $"sobre NavMesh={agent.isOnNavMesh}; ruta={agent.pathStatus}; diagnóstico={enemy.PursuitPathState}; fallos={enemy.PursuitPathFailures}");
+        }
+
         static void DemonPlayChanged(PlayModeStateChange state)
         {
             if (state == PlayModeStateChange.ExitingPlayMode) StopDemonTrial();
@@ -132,6 +152,12 @@ namespace ROM.EditorTools
             }
             if (!state.Moved && Vector3.Distance(state.Origin, state.Enemy.transform.position) > .5f)
             { state.Moved = true; Debug.Log("CIUDAD_DIABLILLO DESPLAZAMIENTO_REAL " + state.Enemy.transform.position.ToString("F3")); }
+            float distance = Vector3.Distance(state.Enemy.Home, state.Enemy.transform.position);
+            if (state.Enemy.CityRaidPursuitActive && state.Enemy.Target == state.Warrior.Health)
+            {
+                if (!state.Passed36 && distance > 36) { state.Passed36 = true; Debug.Log("CIUDAD_DIABLILLO PERSECUCION_SUPERA_36_M con objetivo conservado"); }
+                if (!state.Passed120 && distance > 120) { state.Passed120 = true; Debug.Log("CIUDAD_DIABLILLO PERSECUCION_SUPERA_120_M con objetivo conservado"); }
+            }
             if (state.EnemyLife != state.Enemy.Health.CurrentHealth)
             {
                 Debug.Log($"CIUDAD_DIABLILLO VIDA_ENEMIGO {state.EnemyLife} → {state.Enemy.Health.CurrentHealth}");

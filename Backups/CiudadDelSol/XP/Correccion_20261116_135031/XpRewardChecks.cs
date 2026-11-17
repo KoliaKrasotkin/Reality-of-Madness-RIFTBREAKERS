@@ -1,0 +1,44 @@
+using System; using System.Linq; using System.Collections.Generic; using UnityEngine; using Mirror; using MultiFPS; using MultiFPS.Gameplay; using MultiFPS.Gameplay.RiftCombat; using MultiFPS.Gameplay.RiftEnemies; using ROM.Progression; using ROM.CiudadDelSol;
+namespace UnityEngine { public class Object { public static implicit operator bool(Object x)=>x!=null; } public class ScriptableObject:Object {public static T CreateInstance<T>() where T:new()=>new T();} public class CreateAssetMenuAttribute:Attribute {public string menuName;} public class RangeAttribute:Attribute{public RangeAttribute(float a,float b){}} public class HeaderAttribute:Attribute{public HeaderAttribute(string x){}} public static class Resources{public static T Load<T>(string name)where T:class=>null;} public static class Mathf {public static int Clamp(int x,int a,int b)=>Math.Min(b,Math.Max(a,x));public static float Clamp(float x,float a,float b)=>Math.Min(b,Math.Max(a,x));public static int Max(int a,int b)=>Math.Max(a,b);} public static class Debug {public static void Log(string s,object o){}public static void LogException(Exception e,object o){throw e;}} }
+namespace Mirror { public static class NetworkServer{public static bool active=true;} public static class NetworkTime{public static double time=100;} }
+namespace MultiFPS { public class PlayerInstance:UnityEngine.Object {public bool BOT;public Character MyCharacter;public RiftJournalPlayer Journal; public T GetComponent<T>()where T:class=>Journal as T;} public class Character {public Health Health;} public static class GameManager{public static List<PlayerInstance> Players=new List<PlayerInstance>();} }
+namespace MultiFPS.Gameplay {public class Health:UnityEngine.Object{} }
+namespace MultiFPS.Gameplay.RiftCombat {public static class RiftClassCombat {public static PlayerInstance Owner(Health health)=>!health?null:GameManager.Players.FirstOrDefault(p=>p&&!p.BOT&&p.MyCharacter!=null&&p.MyCharacter.Health==health);} public class RiftProgressionCaps{public int WorldCap=120;public static RiftProgressionCaps Load=new RiftProgressionCaps();} }
+namespace MultiFPS.Gameplay.RiftEnemies {public class RiftEnemyDefinition {public int Experience=20; public string Id="demon";public bool IsBoss;}public class RiftEnemyAgent {public RiftEnemyDefinition Definition=new RiftEnemyDefinition();public int Level=1;public string QuestEncounter="trial";} }
+namespace ROM.Progression {public enum RiftProgressEvent{Kill,MiniBoss}public class RiftJournalPlayer:UnityEngine.Object {public int Experience;public List<string> Calls=new List<string>();public void ServerRecord(RiftProgressEvent kind,string key,int amount=1,int experienceOverride=-1,string encounter=""){Experience+=experienceOverride;Calls.Add(kind+":"+key+":"+amount+":"+experienceOverride+":"+encounter);}} }
+public class Trial {public class Definition {public string Id="post";public double RespawnSeconds=90;public bool AutoRespawn=true;}public class Post {public Definition Definition=new Definition();public CiudadDelSolRespawnSchedule Schedule=new CiudadDelSolRespawnSchedule();}readonly Dictionary<RiftEnemyAgent,Post> owners=new Dictionary<RiftEnemyAgent,Post>();bool shuttingDown,faulted;public bool Faulted=>faulted;public bool ShuttingDown{set=>shuttingDown=value;} public Post Add(RiftEnemyAgent e){var p=new Post();p.Schedule.Spawned();owners.Add(e,p);return p;} public void Die(RiftEnemyAgent e,Health h)=>Killed(e,h); public void Respawn(RiftEnemyAgent old,RiftEnemyAgent next,Post p){owners.Remove(old);p.Schedule.Spawned();owners.Add(next,p);}
+        void Killed(RiftEnemyAgent enemy, Health killer)
+        {
+            if (!NetworkServer.active || shuttingDown || !owners.TryGetValue(enemy, out var post) ||
+                post.Schedule.Phase != CiudadDelSolRespawnSchedule.State.Occupied) return;
+            try
+            {
+                post.Schedule.Lost(NetworkTime.time, post.Definition.RespawnSeconds, post.Definition.AutoRespawn);
+                // Match native kill XP without depending on Horde or sharing XP as party quest credit.
+                // Lost consumes this life before dispatch, so duplicate death callbacks cannot award twice.
+                var player = RiftClassCombat.Owner(killer);
+                var journal = player ? player.GetComponent<RiftJournalPlayer>() : null;
+                if (journal)
+                {
+                    var definition = enemy.Definition;
+                    int experience = RiftEnemyLevelTuning.Load.Experience(definition.Experience, enemy.Level);
+                    journal.ServerRecord(RiftProgressEvent.Kill, definition.Id, 1, experience, enemy.QuestEncounter);
+                    if (definition.IsBoss)
+                        journal.ServerRecord(RiftProgressEvent.MiniBoss, definition.Id, 1, 0, enemy.QuestEncounter);
+                }
+                Debug.Log($"CIUDAD_POBLACION MUERTE {post.Definition.Id}; " +
+                    (post.Definition.AutoRespawn ? $"respawn elegible en {post.Definition.RespawnSeconds:F0}s, sujeto a seguridad y presupuesto." : "sin respawn automático."), this);
+            }
+            catch (Exception error) { faulted = true; Debug.LogException(error, this); }
+        }
+
+}
+public static class Checks {static int checks;static void Equal<T>(T actual,T expected,string label){if(!EqualityComparer<T>.Default.Equals(actual,expected))throw new Exception(label+": "+actual+" != "+expected);checks++;Console.WriteLine("PASS "+label);}static PlayerInstance Player(bool bot=false){var p=new PlayerInstance{BOT=bot,MyCharacter=new Character{Health=new Health()},Journal=new RiftJournalPlayer()};GameManager.Players.Add(p);return p;}public static int Main(){
+var a=Player();var b=Player();var c=Player();var d=Player();var trial=new Trial();var demon=new RiftEnemyAgent();var post=trial.Add(demon);trial.Die(demon,a.MyCharacter.Health);Equal(a.Journal.Experience,20,"native level-1 definition XP to killer");Equal(post.Schedule.Phase,CiudadDelSolRespawnSchedule.State.CoolingDown,"respawn unchanged");Equal(post.Schedule.ReadyAt,190d,"90s cooldown unchanged");trial.Die(demon,a.MyCharacter.Health);Equal(a.Journal.Experience,20,"duplicate death does not reward twice");Equal(b.Journal.Experience+c.Journal.Experience+d.Journal.Experience,0,"four humans: no automatic XP sharing");Equal(a.Journal.Calls[0],"Kill:demon:1:20:trial","native journal event and encounter");
+var second=new RiftEnemyAgent{Level=2};trial.Add(second);trial.Die(second,b.MyCharacter.Health);Equal(b.Journal.Experience,27,"actual native level scaling 20 * 1.35");
+var missing=new RiftEnemyAgent();trial.Add(missing);trial.Die(missing,new Health());Equal(a.Journal.Experience+b.Journal.Experience,47,"unknown killer grants nobody");
+var bot=Player(true);var botEnemy=new RiftEnemyAgent();trial.Add(botEnemy);trial.Die(botEnemy,bot.MyCharacter.Health);Equal(bot.Journal.Experience,0,"bot excluded by original ownership rule");
+var noJournal=Player();noJournal.Journal=null;var nj=new RiftEnemyAgent();trial.Add(nj);trial.Die(nj,noJournal.MyCharacter.Health);Equal(trial.Faulted,false,"missing journal does not break respawn");
+var boss=new RiftEnemyAgent();boss.Definition.IsBoss=true;boss.Definition.Experience=80;var bossPost=trial.Add(boss);bossPost.Definition.AutoRespawn=false;trial.Die(boss,c.MyCharacter.Health);Equal(c.Journal.Experience,80,"boss XP once");Equal(c.Journal.Calls.Count,2,"boss native kill and miniboss records");Equal(c.Journal.Calls[1],"MiniBoss:demon:1:0:trial","miniboss credit adds zero extra XP");Equal(bossPost.Schedule.Phase,CiudadDelSolRespawnSchedule.State.Defeated,"non-respawning boss unchanged");
+var client=new RiftEnemyAgent();var cp=trial.Add(client);NetworkServer.active=false;trial.Die(client,a.MyCharacter.Health);Equal(cp.Schedule.Phase,CiudadDelSolRespawnSchedule.State.Occupied,"client cannot consume death");Equal(a.Journal.Experience,20,"client cannot award XP");NetworkServer.active=true;trial.ShuttingDown=true;trial.Die(client,a.MyCharacter.Health);Equal(a.Journal.Experience,20,"shutdown grants no XP");trial.ShuttingDown=false;trial.Die(new RiftEnemyAgent(),a.MyCharacter.Health);Equal(a.Journal.Experience,20,"unowned enemy grants no XP");
+Equal(RiftEnemyLevelTuning.Load.Experience(0,5),0,"native zero reward preserved");Equal(RiftEnemyLevelTuning.Load.Experience(20,1),20,"level-1 native formula unchanged");var respawned=new RiftEnemyAgent();trial.Respawn(demon,respawned,post);trial.Die(respawned,a.MyCharacter.Health);Equal(a.Journal.Experience,40,"new life at same post rewards normally");trial.Die(respawned,a.MyCharacter.Health);Equal(a.Journal.Experience,40,"respawn duplicate remains suppressed");Equal(trial.Faulted,false,"no trial faults");Console.WriteLine("RESULT "+checks+" checks passed; isolated handler/native scaling tests, not Unity or Mirror integration.");return 0;}}

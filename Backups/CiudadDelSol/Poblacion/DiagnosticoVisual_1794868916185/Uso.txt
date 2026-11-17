@@ -1,0 +1,11 @@
+DIAGNÓSTICO VISUAL — SIN CAMBIAR APROBACIONES
+Abrir ROM > Dungeon Ciudad del Sol > Población > Diagnosticar las dos rutas bloqueadas. Reutiliza la ventana Cortes de NavMesh. No ejecutar los comandos antiguos de horneado.
+Con la escena cargada y NavMesh disponible (preferiblemente en la sesión de desarrollo que produjo el preflight, después de esperar su finalización), elegir portico-sureste y pulsar Capturar ida y vuelta. No inicia Play ni Host. Captura 4 rutas, dos puestos por ambos sentidos, una por callback manual. Puede pausar momentáneamente el Editor mientras valida.
+Elegir ruta y muestra RECHAZO; Enfocar muestra / origen. Verde=pasos locales NavMesh comprobados, rojo=rechazo, gris=sin evaluar. Cian=origen, amarillo=destino/esquinas, magenta=aristas y normales, naranja=impactos ida/vuelta, blanco=suelo y diferencia vertical. La física completa se informa con Route ORIGINAL, nunca mediante color verde solamente. Seleccionar apoyo identifica el collider sin modificarlo.
+Inspeccionar error nativo ORIGINAL, distancia real de aristas, SamplePosition a 1 mm, impacto y máscara en ambos sentidos, suelo/normal/pendiente, cápsula y jerarquías/prefab. Copiar informe completo guarda texto en portapapeles; no escribe assets ni aprueba encuentros.
+Repetir para archivos-suroeste. Las 4 rutas se reemplazan al capturar el otro encuentro: copiar el primer informe antes.
+Interpretación: PathPartial o prueba nativa que no llega/portal ausente son evidencia de discontinuidad; discrepancias de arista/proyección cuantifican la posible ambigüedad, sin autorizarla. Suelo continuo no basta para demostrar continuidad NavMesh. Si el resultado difiere entre Edit y Play, conservar informes separados. No afirmar causa definitiva hasta disponer de la captura.
+Cerrar ventana, Limpiar/cancelar o cambiar Play Mode retira/invalida la captura. Dibujo usa solo datos en memoria, sin consultas por frame ni componentes de escena.
+Compilación Roslyn de Assembly-CSharp-Editor correcta; 86 regresiones simuladas del validador original aprobadas. No hubo ejecución de Unity/Play Mode ni validación visual de la ventana.
+Documentación consultada: AI Navigation NavInnerWorkings.md y AreasAndCosts.md; habilidades UI Toolkit y AI Navigation.
+Escena, NavMeshData, configuración de población y validador runtime conservados por SHA-256. Máximo29 no se toca.

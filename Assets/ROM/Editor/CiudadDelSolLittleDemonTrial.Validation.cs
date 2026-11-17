@@ -36,6 +36,9 @@ namespace ROM.EditorTools
             static bool attacked;
             static double strikeAt;
             static int warriorLife, enemyLife;
+            static bool detected, pursued, damaged;
+            static double nextAttack;
+            static bool warriorReadyObserved;
 
             [InitializeOnLoadMethod]
             internal static void Install()
@@ -47,7 +50,11 @@ namespace ROM.EditorTools
                 EditorApplication.update += Tick;
             }
 
-            static void SetPhase(int value) { phase = value; SessionState.SetInt(Phase, value); }
+            static void SetPhase(int value)
+            {
+                phase = value; SessionState.SetInt(Phase, value);
+                Debug.Log("CIUDAD_DIABLILLO FASE " + value);
+            }
 
             static void Tick()
             {
@@ -61,27 +68,40 @@ namespace ROM.EditorTools
                         EditorApplication.Exit(SessionState.GetInt(Key + ".Exit", 1));
                         return;
                     }
-                    Check(EditorApplication.timeSinceStartup < deadline, "La prueba superó su límite de 180 s.");
+                    Check(EditorApplication.timeSinceStartup < deadline, "La prueba superó 180 s en fase " + phase +
+                        " (0 arranque, 1 carga, 2 Host/Warrior, 3 persecución/ataque enemigo, 4 daño/muerte).");
                     if (!EditorApplication.isPlaying || EditorApplication.isPaused) return;
                     var scene = SceneManager.GetActiveScene();
                     if (phase == 0)
                     {
                         if (scene.path != MainMenu || !ClientInterfaceManager.Instance || !MultiFPS.DNNetworkManager.Instance) return;
                         Debug.Log("CIUDAD_DIABLILLO PRUEBA_PLAY_MODE MainMenu cargado por flujo original.");
-                        LoadInPlay(); SetPhase(1); return;
+                        LoadInPlay();
+                        Check(string.IsNullOrEmpty(cityLoadFailure), "Carga: " + cityLoadFailure);
+                        SetPhase(1); return;
                     }
                     if (phase == 1)
                     {
-                        if (scene.path != City || pending != null) return;
-                        StartWarriorTrial(); SetPhase(2); return;
+                        Check(string.IsNullOrEmpty(cityLoadFailure), "Carga: " + cityLoadFailure);
+                        if (scene.path != City || pending != null || !cityLoadVerified) return;
+                        StartWarriorTrial();
+                        Check(stopWarriorTrial != null, "Host: el arranque fue rechazado; revisá el error precedente del Host local.");
+                        SetPhase(2); return;
                     }
+                    Check(stopWarriorTrial != null && NetworkServer.active, "Host: la sesión local fue cancelada o no está activa.");
                     var warrior = ClientFrontend.OwnedCharacterInstance;
-                    if (!warrior || !NetworkServer.active) return;
+                    if (!warrior) { Check(phase == 2, "Warrior: desapareció durante el encuentro."); return; }
+                    Check(warrior.Health && warrior.Health.CurrentHealth > 0, "Warrior: murió antes de completar el ensayo.");
                     var combat = AbilityController.For(warrior.Health);
                     if (phase == 2)
                     {
                         if (stopWarriorTrial == null) throw new InvalidOperationException("El Host original rechazó el arranque. No se cambiará la selección guardada.");
-                        if (!combat || !combat.Prototype) return;
+                        Check(combat && combat.Actor == warrior && combat.isServer && combat.isLocalPlayer && combat.AutoProfile != null,
+                            "Warrior: el personaje existe pero su combate local original no está disponible.");
+                        // The Host's WaitForWarrior callback may run later in this same Editor update.
+                        // Let it finish its initial teleport before this probe approaches the enemy.
+                        if (!warriorReadyObserved) { warriorReadyObserved = true; return; }
+                        if (Vector3.Distance(warrior.transform.position, BridgeSpawn) > 2) return;
                         StartDemonTrial();
                         Check(demonTrial != null && demonTrial.Enemy, "No se pudo crear el Diablillo.");
                         warriorLife = warrior.Health.CurrentHealth;
@@ -93,14 +113,24 @@ namespace ROM.EditorTools
                         warrior.ServerTeleport(point.position + Vector3.up * .03f, 0);
                         SetPhase(3); return;
                     }
-                    Check(demonTrial != null && demonTrial.Enemy, "El enemigo desapareció antes de completar la comprobación.");
+                    if (phase == 4 && demonTrial != null && demonTrial.Enemy && demonTrial.Enemy.Health.CurrentHealth <= 0)
+                    {
+                        Check(damaged, "Muerte sin daño del Warrior registrado.");
+                        Finish(true, $"PLAY REAL: aparición, detección, persecución NavMesh, ataque enemigo y daño al Warrior ({warriorLife}→{warrior.Health.CurrentHealth}); " +
+                            $"ataques originales del Warrior y muerte del Diablillo ({enemyLife}→0). Sin daño forzado ni especialización artificial. Habilidades y clientes remotos: pendientes.");
+                        return;
+                    }
+                    Check(demonTrial != null && demonTrial.Enemy, "Enemigo: desapareció sin verificarse su muerte.");
                     var enemy = demonTrial.Enemy;
                     Check(enemy.GetComponent<NavMeshAgent>().isOnNavMesh, "El enemigo abandonó el NavMesh.");
                     if (phase == 3)
                     {
+                        if (!detected && enemy.Target == warrior.Health) { detected = true; Debug.Log("CIUDAD_DIABLILLO DETECCION_OK"); }
+                        if (!pursued && demonTrial.Moved) { pursued = true; Debug.Log("CIUDAD_DIABLILLO PERSECUCION_OK"); }
                         if (warrior.Health.CurrentHealth >= warriorLife) return;
                         Check(demonTrial.Moved, "Hubo daño sin desplazamiento real de persecución.");
                         Check(enemy.Target == warrior.Health, "El objetivo del Diablillo no es el Warrior.");
+                        Debug.Log("CIUDAD_DIABLILLO ATAQUE_ENEMIGO_OK daño al Warrior confirmado.");
                         combat.CmdSetTarget(enemy.netId);
                         combat.CmdAutoAttack(); attacked = true; strikeAt = EditorApplication.timeSinceStartup;
                         SetPhase(4); return;
@@ -109,13 +139,16 @@ namespace ROM.EditorTools
                     {
                         if (enemy.Health.CurrentHealth < enemyLife)
                         {
-                            Finish(true, $"PLAY REAL: persecución >0,5 m; Warrior {warriorLife}→{warrior.Health.CurrentHealth}; " +
-                                $"Diablillo {enemyLife}→{enemy.Health.CurrentHealth}; objetivo y autoataque por Commands originales. " +
-                                "Sin muerte forzada, recompensa ni respawn de enemigos. Clientes remotos y habilidades: pendientes.");
-                            return;
+                            if (!damaged) Debug.Log("CIUDAD_DIABLILLO ATAQUE_WARRIOR_OK daño al Diablillo confirmado.");
+                            damaged = true;
                         }
-                        Check(!attacked || EditorApplication.timeSinceStartup - strikeAt < 15,
+                        Check(damaged || !attacked || EditorApplication.timeSinceStartup - strikeAt < 15,
                             "El autoataque no produjo daño en 15 s.");
+                        if (EditorApplication.timeSinceStartup >= nextAttack)
+                        {
+                            combat.CmdAutoAttack();
+                            nextAttack = EditorApplication.timeSinceStartup + .25;
+                        }
                     }
                 }
                 catch (Exception error) { Finish(false, error.Message); }

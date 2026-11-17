@@ -14,6 +14,19 @@ namespace MultiFPS.Gameplay.Gamemodes
         private readonly Dictionary<PlayerInstance, Transform> playerCheckpoints =
             new Dictionary<PlayerInstance, Transform>();
 
+        // Recovery-only access: ClassRules stays null so Raid does not enable legacy combat rules.
+        public bool TryGetCityHealthRecovery(PlayerInstance player, out float delay, out float fraction)
+        {
+            delay = fraction = 0;
+            if (!player || !player.MyCharacter || !player.PlayerInfo.Warrior || player.PlayerInfo.CharacterSkinID != 1 ||
+                player.MyCharacter.gameObject.scene.path != "Assets/Scenes/Dungeon_Isla_del_Sol.unity") return false;
+            var rules = RiftClassRules.Load();
+            if (!rules) return false;
+            delay = rules.RecoveryDelay;
+            fraction = rules.RecoveryPerSecond;
+            return true;
+        }
+
         protected override void Awake()
         {
             base.Awake();

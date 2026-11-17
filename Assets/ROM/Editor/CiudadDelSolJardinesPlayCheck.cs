@@ -25,6 +25,8 @@ namespace ROM.EditorTools
         static readonly string[] Markers = { "01 Frontal", "02 Distancia", "03 Patrulla A", "04 Patrulla B" };
         static readonly List<string> LoadErrors = new List<string>();
         static AsyncOperation pending;
+        static bool cityLoadVerified;
+        static string cityLoadFailure;
 
         [MenuItem(Menu + "1. Revisar escena de inicio")]
         static void CheckStartScene()
@@ -70,6 +72,8 @@ namespace ROM.EditorTools
                 Check(AssetDatabase.LoadAssetAtPath<SceneAsset>(City), "No se encontró el asset de Ciudad del Sol.");
 
                 Report("Inicio de prueba en Play Mode. " + DescribeScenes());
+                cityLoadVerified = false;
+                cityLoadFailure = null;
                 LoadErrors.Clear();
                 Application.logMessageReceived += CaptureError;
                 EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
@@ -81,6 +85,7 @@ namespace ROM.EditorTools
             catch (Exception error)
             {
                 StopListening();
+                cityLoadFailure = error.Message;
                 Report("ERROR: " + error.Message, true);
             }
         }
@@ -104,10 +109,15 @@ namespace ROM.EditorTools
 
                 var root = scene.GetRootGameObjects().SingleOrDefault(item => item.name == Encounter);
                 Check(root && root.activeInHierarchy, "No se encontró la raíz activa del encuentro en Ciudad del Sol.");
-                var surface = root.GetComponent<NavMeshSurface>();
-                var expectedData = AssetDatabase.LoadAssetAtPath<NavMeshData>(NavAsset);
-                Check(surface && surface.isActiveAndEnabled && expectedData && surface.navMeshData == expectedData &&
-                    surface.agentTypeID == 0, "La superficie no tiene vinculados los datos persistentes aprobados.");
+                var surfaces = scene.GetRootGameObjects().SelectMany(item => item.GetComponentsInChildren<NavMeshSurface>(true))
+                    .Where(item => item.name == "NavMesh_Exterior_CiudadDelSol").ToArray();
+                Check(surfaces.Length == 1, "Carga/NavMesh: se esperaba una única superficie manual NavMesh_Exterior_CiudadDelSol.");
+                var surface = surfaces[0];
+                var dataPath = surface.navMeshData ? AssetDatabase.GetAssetPath(surface.navMeshData) : "";
+                Check(surface.isActiveAndEnabled && surface.agentTypeID == 0 && !string.IsNullOrEmpty(dataPath) &&
+                    AssetDatabase.LoadAssetAtPath<NavMeshData>(dataPath) == surface.navMeshData,
+                    "Carga/NavMesh: la superficie manual debe estar activa, usar Humanoid 0 y vincular un NavMeshData persistente.");
+                Report("Carga/NavMesh manual: " + dataPath);
 
                 var filter = new NavMeshQueryFilter { agentTypeID = surface.agentTypeID, areaMask = NavMesh.AllAreas };
                 foreach (string name in Markers)
@@ -119,10 +129,12 @@ namespace ROM.EditorTools
                     Report($"{name}: {marker.position:F3}. NavMesh: {hit.position:F3}.");
                 }
 
+                cityLoadVerified = true;
                 Report("OK: Ciudad del Sol cargada, NavMesh persistente disponible y 4/4 marcadores. No se creó ningún agente.");
             }
             catch (Exception error)
             {
+                cityLoadFailure = error.Message;
                 Report("ERROR: " + error.Message, true);
             }
         }

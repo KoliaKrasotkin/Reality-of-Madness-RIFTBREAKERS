@@ -1,0 +1,22 @@
+CIUDAD DEL SOL — DOS ESQUINAS RECHAZADAS
+
+Registro: 26 grupos aprobados, 2 bloqueados, 44/48 puestos.
+Pórtico: ida impacto en origen (-106.6,.05,-141.2); vuelta impacto en ese mismo punto, a .0997 m de su propio origen.
+Archivos: ida impacto a .000023 m del origen (-102.4,20.05,76.8); vuelta acaba en esa misma esquina, a aproximadamente .0998 m de su origen.
+Ambas sondas físicas (inicio, medio, fin) muestran Plaza_Floor_01 horizontal y diferencia vertical .025 m. No demuestran por sí solas continuidad nativa ni despeje de cápsula.
+Defecto confirmado: ConnectedStep rechazaba un impacto inverso en su destino original antes de intentar probar continuidad.
+Cambio exclusivo: reconocer ese caso solo en esquina original y exigir arista real en la esquina; permitir que la otra muestra sea interior de polígono. MapLocation, agente, nivel, Ground, MoveLocation ida/vuelta, mismo polígono o portal y StraightLocalPath en ambos sentidos siguen obligatorios. Tolerancia 1mm sin cambios; se conservan físicas y PathComplete.
+No se modificaron puestos, configuración, escenas, NavMesh, prefabs ni sistemas de juego.
+
+COMPROBACIONES
+Runtime y Editor: compilación C# Roslyn correcta, sin iniciar Unity.
+RouteContractChecks: 86 casos simulados, cero fallos.
+Regresiones existentes: progresión/XP 84, calendario 14, recuperación HP 39 correctas. Son pruebas aisladas con dobles; no validan Unity/PhysX/Mirror reales.
+SHA-256: escena, NavMeshData, PopulationExterior.asset y meta idénticos antes/después.
+Documentación instalada consultada: NavInnerWorkings.md y AreasAndCosts.md de AI Navigation.
+
+PRUEBA ÚNICA MANUAL
+Dejar recompilar Unity y ejecutar Play con el modo de desarrollo habitual. Esperar CIUDAD_EXTERIOR PREFLIGHT_TERMINADO. Objetivo condicionado: 28 aprobados, 0 bloqueados, 48/48 habilitados. Buscar ESQUINAS_VERIFICADAS y TOPOLOGIA_NATIVA_VERIFICADA de portico-sureste-demon y archivos-suroeste-oracle. Si la prueba nativa detecta arista, movimiento, portal, ruta local, apoyo o cápsula inválidos, el grupo seguirá bloqueado: conservar el registro y no forzar spawns. Confirmar 26 grupos anteriores y máximo global29 incluidos cadáveres; 48 habilitados no equivale a48 vivos. Salir de Play sin guardar objetos temporales.
+
+PENDIENTE
+No se ejecutó Play Mode ni se probaron los dos recorridos con la NavMesh nativa. No se declara solucionada su accesibilidad física.

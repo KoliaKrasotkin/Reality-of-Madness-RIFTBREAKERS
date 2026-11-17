@@ -1,0 +1,21 @@
+Cambio exclusivo: Assets/ROM/Resources/CiudadDelSol/PopulationExterior.asset
+38 puestos / 23 encuentros / 7 patrullas. Originales 29 conservados exactamente.
+Pórtico: 8 configurados, cupo 5; Jardines: 8 configurados, cupo 5. Global 29 ocupantes incluidos cadáveres.
+107 comprobaciones estáticas aprobadas; atlas y huella cenital no sustituyen validación nativa.
+Editor no respondió a consulta CLI y no hay Pipeline instalado. No se ejecutó Unity ni Play Mode.
+Los nueve puestos nuevos comienzan Approved=false al iniciar población porque ValidateExteriorEncounters=1.
+Preflight existente debe aprobar apoyo, cápsula, bordes, cota y ruta completa ida/vuelta antes de habilitar cada grupo.
+Si falla, GRUPO_BLOQUEADO conserva ese grupo sin nuevas apariciones. No se modificaron validadores ni tolerancias.
+Prueba manual: Play habitual; revisar PREFLIGHT_TERMINADO (objetivo 23/0 y 38/38 solo si todos pasan).
+Recorrer Pórtico y Jardines; respetar 25 m de exclusión, 40 m con actividad de combate, 90/120 s respawn.
+Sin nuevas patrullas ni cambios de IA, navegación, combate, HUD o progresión.
+Candidatos:
+portico-sureste-demon [-110,0,-146]; portico-sureste; D; validación nativa PENDIENTE
+portico-sureste-oracle [-110,0,-138]; portico-sureste; O; validación nativa PENDIENTE
+portico-lateral-oeste-demon-a [-154,0,-130]; portico-lateral-oeste; D; validación nativa PENDIENTE
+portico-lateral-oeste-demon-b [-150,0,-126]; portico-lateral-oeste; D; validación nativa PENDIENTE
+jardines-sureste-demon [-72,4,-46]; jardines-sureste; D; validación nativa PENDIENTE
+jardines-sureste-oracle [-66,4,-42]; jardines-sureste; O; validación nativa PENDIENTE
+jardines-central-demon [-118,4,-18]; jardines-central; D; validación nativa PENDIENTE
+jardines-central-oracle [-114,4,-10]; jardines-central; O; validación nativa PENDIENTE
+jardines-noroeste-demon [-126,4,22]; jardines-noroeste; D; validación nativa PENDIENTE
