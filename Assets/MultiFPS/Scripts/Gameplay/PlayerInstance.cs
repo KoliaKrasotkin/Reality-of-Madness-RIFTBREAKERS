@@ -602,49 +602,44 @@ namespace MultiFPS.Gameplay
         public void Disconnect()
         {
             if (_disconnected) return;
+            _disconnected = true;
 
             GameManager.RemovePlayerInstance(this);
 
             if (_subbedToNetworkManager)
-                DNNetworkManager.Instance.OnNewPlayerConnected -= UpdateDataForLatePlayer;
+            {
+                _subbedToNetworkManager = false;
+                if (DNNetworkManager.Instance)
+                    DNNetworkManager.Instance.OnNewPlayerConnected -= UpdateDataForLatePlayer;
+            }
+
+            var gamemode = GameManager.Gamemode;
+            bool serverContext = gamemode && gamemode.netIdentity && gamemode.isServer;
 
             if (_registeredPlayerInstance)
-                GameManager.Gamemode.Server_OnPlayerInstanceRemoved(this);
+            {
+                _registeredPlayerInstance = false;
+                if (serverContext) gamemode.Server_OnPlayerInstanceRemoved(this);
+            }
             
             if (_connectionToClient != -1)
             {
-                GameManager.Gamemode.Relay_ClientDisconnected(connectionToClient, this.netIdentity);
-                GameManager.RemoveConnectedPlayer(_connectionToClient,this);
+                int connectionId = _connectionToClient;
+                _connectionToClient = -1;
+                if (NetworkServer.active && serverContext)
+                    gamemode.Relay_ClientDisconnected(connectionToClient, this.netIdentity);
+                GameManager.RemoveConnectedPlayer(connectionId,this);
             }
-            if (GameManager.Gamemode is Raid raid)
+            if (gamemode is Raid raid)
             {
                 raid.UnregisterCheckpoint(this);
             }
 
-            _disconnected = true;
         }
 
         private void OnDestroy()
         {
-            if (GameManager.Gamemode is Raid raid)
-            {
-                raid.UnregisterCheckpoint(this);
-            }
-            GameManager.RemovePlayerInstance(this);
-
-            if (_subbedToNetworkManager)
-                DNNetworkManager.Instance.OnNewPlayerConnected -= UpdateDataForLatePlayer;
-
-            if (_registeredPlayerInstance)
-            {
-                GameManager.Gamemode.Server_OnPlayerInstanceRemoved(this);
-            }
-
-            if (_connectionToClient != -1) 
-            {
-                GameManager.Gamemode.Relay_ClientDisconnected(connectionToClient, this.netIdentity);
-                GameManager.RemoveConnectedPlayer(_connectionToClient,this);
-            }
+            Disconnect();
         }
     }
 

@@ -1,0 +1,12 @@
+{
+  "unity": "6000.3.23f1",
+  "navigationPackage": "2.0.14",
+  "onlyQueryCreationSites": [
+    "Assets/ROM/Scripts/CiudadDelSol/CiudadDelSolEncounterValidation.cs",
+    "Assets/ROM/Editor/CiudadDelSolNavMeshDiagnostics.Encounters.cs"
+  ],
+  "change": "Allocator.Temp -> Allocator.Persistent; using/Dispose and all navigation predicates unchanged",
+  "protectedUnchanged": true,
+  "originalDataAndCopyEqual": true,
+  "verificationScope": "Real native Unity tests in an isolated project with byte-identical existing NavMeshData. Original already-open Editor not restarted; City Play exit remains pending."
+}

@@ -1,0 +1,24 @@
+CIUDAD DEL SOL — CIERRE DEL HOST MIRROR
+
+CAUSA COMPROBADA
+Mirror instalado mantiene NetworkIdentity.isServer=true después de detener el servidor (comentarios explícitos NetworkIdentity.cs). NetworkServer.Shutdown destruye objetos y poneactive=false; los OnDestroy diferidos pueden ejecutarse después. SendRPCInternal rechaza cualquier RPC cuando NetworkServer.active=false. El log muestra Server_WriteToChat desde PlayerInstance.OnDestroy y ClientDeregisterObj desde Health/CharacterInstance.OnDestroy a través del pool. Las comprobaciones antiguas solo miraban isServer. Además Disconnect y OnDestroy repetían limpieza: el segundo no respetaba _disconnected.
+
+CAMBIOS (RESPALDO PREVIO)
+Assets/MultiFPS/Scripts/Gameplay/Net/LobbySynchronizer.cs: validar contexto del sincronizador y objeto; conservar advertencia por identidad ajena/índice inválido; comparar referencias reales para no confundir identidades destruidas; retirar arrays/contador/hash exactamente una vez; invalidar DNID liberado; enviar el mensaje original únicamente si el servidor sigue activo. Durante cierre sigue existiendo limpieza local. No se modificaron los métodos ClientRpc ni su contenido o firmas.
+Assets/MultiFPS/Scripts/Gameplay/PlayerInstance.cs: OnDestroy reutiliza Disconnect; bandera de limpieza y flags de registro/suscripción se consumen antes de callbacks para impedir duplicaciones/reentrada; se conserva eliminación de GameManager.Players y conexión esperada; gestores ausentes no generan desreferencias; Relay solo con servidor activo y contexto válido. Se conserva llamada existente a Raid.UnregisterCheckpoint con sus reglas originales.
+Assets/MultiFPS/Scripts/RoomCreator/Gamemodes/Gamemode.cs: si el servidor está detenido, eliminar referencias locales de equipos sin callbacks, chat ni comprobación de estado de partida. Con servidor activo se mantiene el flujo original RemovePlayerFromTeam -> Server_WriteToChat -> CheckTeamStates.
+No se modificaron Health.cs ni CharacterInstance.cs: su recorrido queda protegido en el pool compartido. Tampoco Mirror, DNNetworkManager, combate, daño, salud, progresión, XP, respawn, escena, geometría, NavMesh o configuración48/29.
+
+VALIDACIÓN
+MultiFPS.dll, Assembly-CSharp(Runtime) y Assembly-CSharp-Editor compilan sin errores con Roslyn y referencias actuales del proyecto.
+36 comprobaciones nuevas ejecutan cuerpos de producción extraídos mecánicamente: destrucción activa; mensajes/hashes; cierre con isServer retenido; duplicación; reentrada; identidad ajena/fake-null; contexto perdido; gestor ausente; conexión reutilizada y cuatro jugadores simulados. Cero llamadas RPC inválidas en los escenarios corregidos; envío normal preservado mientras el servidor está activo. Son dobles de Unity/Mirror/transporte, no prueba real de red ni Weaver.
+95 regresiones de navegación,84 progresión/XP,14 calendario de respawn,39 recuperación HP: todas correctas.
+SHA-256 antes/después: archivos protegidos idénticos. Cuerpos de RPC de registro/desregistro/chat/late join idénticos. Comprobaciones.json contiene resultados.
+
+PRUEBA REAL PENDIENTE
+Se localizó Unity; la ventana estaba minimizada y activate_window agotó espera. No se inició Play, no se detuvo el Host ni se cerró ninguna instancia. No se confirma aún ausencia real de errores al salir de Play.
+Prueba manual: desde sesión limpia dejar recompilar Unity, iniciar Play con desarrollo automático y esperar Warrior+HUD+Host. Durante partida eliminar un enemigo y esperar su retirada; comprobar que referencias/indicadores se actualizan, sin errores de desregistro. En prueba cooperativa, desconectar un cliente manteniendo Host: solo una baja y los restantes siguen sincronizados. Salir de Play y revisar el tramo nuevo del log buscando called without an active server. Entrar de nuevo para comprobar ausencia de referencias/jugadores duplicados. No guardar objetos temporales ni modificar la escena.
+
+FUENTES
+Código instalado Assets/Mirror/Core/NetworkIdentity.cs, NetworkServer.cs, NetworkManager.cs y NetworkBehaviour.cs; DNNetworkManager y flujo de desregistro actuales. Guías using-unity y build-multiplayer-game consultadas; se conserva Mirror, sin migración a NGO/MPS.
+Sin commits ni pushes.

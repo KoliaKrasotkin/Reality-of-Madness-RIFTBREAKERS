@@ -147,7 +147,15 @@ namespace MultiFPS.Gameplay.Gamemodes
 
         public void Server_OnPlayerInstanceRemoved(PlayerInstance player)
         {
-            if (!isServer) return;
+            if (!netIdentity || !isServer) return;
+
+            // OnDestroy may run after Mirror has stopped the server, while
+            // isServer remains true. Remove local references without callbacks/RPCs.
+            if (!NetworkServer.active)
+            {
+                foreach (var team in _teams) team.PlayerInstances.Remove(player);
+                return;
+            }
 
             //if player disconnects and was in certain team, then remove him from it
             if (player.Team != -1)

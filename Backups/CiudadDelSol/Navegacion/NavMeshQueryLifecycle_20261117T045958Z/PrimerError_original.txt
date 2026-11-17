@@ -1,0 +1,54 @@
+Internal error: NavMeshQuery has already been cleaned up but not deregistered from the NavMesh.
+0x00007fffba195b8e (Unity) StackWalker::ShowCallstack
+0x00007fffbb9da679 (Unity) PlatformStacktrace::GetStacktrace
+0x00007fffbb9daefe (Unity) Stacktrace::GetStacktrace
+0x00007fffba1465af (Unity) DebugStringToFile
+0x00007fffb9b2d397 (Unity) NavMesh::SyncWriteDependencies
+0x00007fffb9b2c546 (Unity) NavMesh::RemoveTile
+0x00007fffb9ae21ab (Unity) NavMeshManager::UnloadData
+0x00007fffb9abeb5e (Unity) NavMesh_CUSTOM_RemoveNavMeshDataInternal
+0x0000018119a029da (Mono JIT Code) (wrapper managed-to-native) UnityEngine.AI.NavMesh:RemoveNavMeshDataInternal (int)
+0x0000018119a02923 (Mono JIT Code) UnityEngine.AI.NavMeshDataInstance:Remove ()
+0x0000018119a02883 (Mono JIT Code) Unity.AI.Navigation.NavMeshSurface:RemoveData () (at ./Library/PackageCache/com.unity.ai.navigation@134dd6a3b97b/Runtime/NavMeshSurface.cs:234)
+0x0000018119a027c3 (Mono JIT Code) Unity.AI.Navigation.NavMeshSurface:OnDisable () (at ./Library/PackageCache/com.unity.ai.navigation@134dd6a3b97b/Runtime/NavMeshSurface.cs:205)
+0x000001811a0e3aa8 (Mono JIT Code) (wrapper runtime-invoke) object:runtime_invoke_void__this__ (object,intptr,intptr,intptr)
+0x00007ff878646c0e (mono-2.0-bdwgc) mono_jit_runtime_invoke (at C:/build/output/Unity-Technologies/mono/mono/mini/mini-runtime.c:3445)
+0x00007ff878588984 (mono-2.0-bdwgc) do_runtime_invoke (at C:/build/output/Unity-Technologies/mono/mono/metadata/object.c:3068)
+0x00007ff878588a70 (mono-2.0-bdwgc) mono_runtime_invoke (at C:/build/output/Unity-Technologies/mono/mono/metadata/object.c:3115)
+0x00007fffba9d22f4 (Unity) scripting_method_invoke
+0x00007fffba9d91b3 (Unity) ScriptingInvocation::Invoke
+0x00007fffba9d929e (Unity) ScriptingInvocation::InvokeChecked
+0x00007fffbaa10568 (Unity) SerializableManagedRef::CallMethod
+0x00007fffba8ed8c8 (Unity) MonoBehaviour::RemoveFromManager
+0x00007fffba3408e2 (Unity) GameObject::ActivateAwakeRecursivelyInternal
+0x00007fffba340363 (Unity) GameObject::ActivateAwakeRecursively
+0x00007fffba342ca9 (Unity) GameObject::Deactivate
+0x00007fffba858132 (Unity) DestroyObjectHighLevel_Internal
+0x00007fffba8587a1 (Unity) DestroyWorldObjects
+0x00007fffbb5eb33d (Unity) EditorSceneManager::RestoreSceneBackups
+0x00007fffbb21019d (Unity) PlayerLoopController::ExitPlayMode
+0x00007fffbb211f74 (Unity) PlayerLoopController::SetIsPlaying
+0x00007fffbb20d31c (Unity) Application::TickTimer
+0x00007fffbafedc4c (Unity) MainMessageLoop
+0x00007fffbaff56e2 (Unity) UnityMain
+0x00007ff729d12f2a (Unity) __scrt_common_main_seh
+0x00007ff92f97dda7 (KERNEL32) BaseThreadInitThunk
+0x00007ff930279c5c (ntdll) RtlUserThreadStart
+
+Internal error: NavMeshQuery has already been cleaned up but not deregistered from the NavMesh.
+0x00007fffba195b8e (Unity) StackWalker::ShowCallstack
+0x00007fffbb9da679 (Unity) PlatformStacktrace::GetStacktrace
+0x00007fffbb9daefe (Unity) Stacktrace::GetStacktrace
+0x00007fffba1465af (Unity) DebugStringToFile
+0x00007fffb9b2d397 (Unity) NavMesh::SyncWriteDependencies
+0x00007fffb9b2c546 (Unity) NavMesh::RemoveTile
+0x00007fffb9ae21ab (Unity) NavMeshManager::UnloadData
+0x00007fffb9abeb5e (Unity) NavMesh_CUSTOM_RemoveNavMeshDataInternal
+0x0000018119a029da (Mono JIT Code) (wrapper managed-to-native) UnityEngine.AI.NavMesh:RemoveNavMeshDataInternal (int)
+0x0000018119a02923 (Mono JIT Code) UnityEngine.AI.NavMeshDataInstance:Remove ()
+0x0000018119a02883 (Mono JIT Code) Unity.AI.Navigation.NavMeshSurface:RemoveData () (at ./Library/PackageCache/com.unity.ai.navigation@134dd6a3b97b/Runtime/NavMeshSurface.cs:234)
+0x0000018119a027c3 (Mono JIT Code) Unity.AI.Navigation.NavMeshSurface:OnDisable () (at ./Library/PackageCache/com.unity.ai.navigation@134dd6a3b97b/Runtime/NavMeshSurface.cs:205)
+0x000001811a0e3aa8 (Mono JIT Code) (wrapper runtime-invoke) object:runtime_invoke_void__this__ (object,intptr,intptr,intptr)
+0x00007ff878646c0e (mono-2.0-bdwgc) mono_jit_runtime_invoke (at C:/build/output/Unity-Technologies/mono/mono/mini/mini-runtime.c:3445)
+0x00007ff878588984 (mono-2.0-bdwgc) do_runtime_invoke (at C:/build/output/Unity-Technologies/mono/mono/metadata/object.c:3068)
+0x00007ff878

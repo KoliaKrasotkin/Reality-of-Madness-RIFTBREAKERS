@@ -1,0 +1,34 @@
+NAVMESHQUERY — CAUSA Y CORRECCIÓN
+
+ENTORNO
+Unity6000.3.23f1; AI Navigation2.0.14. Revisión de using-unity, initialize-ai-navigation, unity-cli, unity-pipeline y manual NavMeshSurface.md.
+
+EVIDENCIA DE CÓDIGO
+Solo dos new NavMeshQuery en Assets: NativePolygonStep del validador y NativeEvidence de la ventana. Ambas consultas locales, síncronas, dentro de using. Ninguna consulta en campos, cache, tareas ni jobs. CornerFanConnected recibe una copia prestada sin Dispose; solo el propietario la libera. Las capturas conservan vectores/impactos, no consultas. Cancelación de callbacks usa captureGeneration, OnDisable y cambios de Play. No es necesaria una capa permanente de gestión de consultas.
+El constructor de Unity6000.3 registra un AtomicSafetyHandle en el NavMesh; para Temp el handle es compartido. Dispose consulta su acceso, lo libera y después retira el registro. Con las consultas de la prueba, la combinación Temp + Dispose deja una entrada que el motor considera limpiada al descargar el NavMesh. Es una inferencia sobre el mecanismo interno respaldada por el código público y la comparación nativa; no se tiene el código C++ interno de Unity.
+NavMeshSurface.OnDisable llama RemoveData y NavMeshDataInstance.Remove; operación normal que no destruye el asset y que aquí expone el registro inválido. No se modificó el paquete ni se atribuye el fallo a un horneado corrupto.
+
+REPRODUCCIÓN REAL
+Proyecto aislado dentro de este respaldo; solo módulo integrado AI1.0.0. Se copió el NavMeshData existente, sin construir/hornear ni transformar nada; SHA idéntico. No usa NavMeshSurface ni com.unity.ai.navigation. Método: registrar datos, crear consulta, localizar suelo nativo, Dispose, esperar3 callbacks de Editor y retirar instancia.
+A Temp: Dispose retornó; después Remove produjo19.775 errores capturados;19777 ocurrencias del texto completo en el log de proceso. Salida0 significa reproducción esperada, NO éxito de Temp. Proceso21800,81.83s.
+B Persistent:0 errores en todo el log, descarga correcta antes y después de RequestScriptReload real (MonoManager.ReloadAssembly). Proceso6372,22.01s; salida0. Sin timeout. No se cerró ni interrumpió el Editor original.
+Resultados: ResultadoAB.json, Temp.result.txt, Persistent.result.txt, logs y metadatos de PID.
+
+CORRECCIÓN MÍNIMA
+Assets/ROM/Scripts/CiudadDelSol/CiudadDelSolEncounterValidation.cs
+Assets/ROM/Editor/CiudadDelSolNavMeshDiagnostics.Encounters.cs
+Solo se sustituyó Allocator.Temp por Allocator.Persistent en los dos constructores de NavMeshQuery y se añadieron comentarios explicativos. El handle deja de ser compartido; la consulta sigue liberándose al salir de su mismo bloque using, incluso con return o excepción. No se cambió la duración efectiva de la consulta, ni su filtro, tamaño256, caminos, portales, tolerancias ni validaciones físicas. Los NativeArray auxiliares de corta duración mantienen su asignador original.
+
+PRUEBAS
+Runtime y Editor compilan sin errores usando Roslyn y referencias Unity del proyecto.95 escenarios simulados del validador aprobados;84 progresión/XP,14 respawn y39 HP aprobados. Los simulados no sustituyen la reproducción nativa A/B. SHA antes/después de PopulationExterior.asset/meta, escena y NavMeshData idénticos.48 puestos y máximo29 intactos. Comprobación exacta contra respaldo: solamente asignador y comentarios.
+
+PENDIENTE EN CIUDAD DEL SOL
+La sesión ya abierta tenía entradas nativas inválidas antes de la modificación; cambiar C# no puede retirar con seguridad esos registros ya destruidos mediante la API pública. No se intentó ocultar logs, tocar datos, eliminar cachés ni forzar limpieza global. Se recomienda reiniciar Unity una vez, preservando cualquier trabajo propio sin guardar objetos de ensayo. Después, desde sesión limpia: ejecutar el diagnóstico para crear consultas; comprobar entrada/salida de Play; solicitar una recarga de scripts sin cambiar escena/NavMesh; volver a consultar y salir de Play. Buscar el mensaje exacto solo en el intervalo nuevo del Editor.log.
+El cambio elimina el fallo en la reproducción aislada de descarga y recarga, pero no se declara validado el ciclo completo original de Ciudad del Sol hasta realizar esa prueba desde sesión limpia.
+
+FUENTES PRIMARIAS
+https://raw.githubusercontent.com/Unity-Technologies/UnityCsReference/6000.3/Modules/AI/NavMeshExperimental.bindings.cs
+https://raw.githubusercontent.com/Unity-Technologies/UnityCsReference/6000.3/Runtime/Export/Jobs/AtomicSafetyHandle.bindings.cs
+El enlace histórico del Issue Tracker ya no está disponible; no se usa como confirmación de una corrección oficial.
+
+Sin commits ni pushes. Respaldos y proyecto de pruebas permanecen fuera de Assets originales.

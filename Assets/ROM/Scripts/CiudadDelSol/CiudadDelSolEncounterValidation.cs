@@ -209,7 +209,9 @@ namespace ROM.CiudadDelSol
             { error = "los extremos requeridos no acreditan aristas reales dentro de 0.001m"; return false; }
             try
             {
-                using (var query = new NavMeshQuery(NavMeshWorld.GetDefaultWorld(), Allocator.Temp, 256))
+                // Temp's shared safety handle leaves a stale NavMesh registration in
+                // Unity 6000.3 after Dispose. Own the handle; still dispose in this scope.
+                using (var query = new NavMeshQuery(NavMeshWorld.GetDefaultWorld(), Allocator.Persistent, 256))
                 {
                     var extent = new Vector3(precision, precision, precision);
                     var origin = query.MapLocation(from, extent, filter.agentTypeID, filter.areaMask);

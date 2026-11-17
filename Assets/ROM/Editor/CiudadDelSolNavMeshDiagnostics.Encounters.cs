@@ -230,7 +230,9 @@ namespace ROM.EditorTools
         {
             try
             {
-                using (var query = new NavMeshQuery(NavMeshWorld.GetDefaultWorld(), Allocator.Temp, 256))
+                // A dedicated safety handle avoids Unity 6000.3's stale Temp registration.
+                // This query remains synchronous and is disposed before returning.
+                using (var query = new NavMeshQuery(NavMeshWorld.GetDefaultWorld(), Allocator.Persistent, 256))
                 {
                     const float precision = .001f;
                     var extent = Vector3.one * precision;

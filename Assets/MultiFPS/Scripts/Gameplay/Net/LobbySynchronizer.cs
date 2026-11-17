@@ -145,13 +145,16 @@ namespace MultiFPS
         }
         public override void ServerDeregisterDNSyncObj(DNNetworkBehaviour netObj)
         {
-            if (!_synchronizer.isServer) return;
+            if (!_synchronizer || !_synchronizer.netIdentity || !_synchronizer.isServer || !netObj) return;
 
             if (netObj.DNID == byte.MaxValue) return; //it was never registered, so dont try to deregister
-            if (netObj.netIdentity != _netIDs[netObj.DNID]) {
+            byte id = netObj.DNID;
+            if (id >= _netIDs.Length || ReferenceEquals(_netIDs[id], null) || !ReferenceEquals(netObj.netIdentity, _netIDs[id])) {
                 Debug.LogWarning($"Server tried to deregister obj that was not registered: {netObj.name}");
                 return;
             }
+
+            uint mirrorId = netObj.netId;
 
             PoolStateHash++;
             if (PoolStateHash == ushort.MaxValue)
@@ -159,14 +162,19 @@ namespace MultiFPS
 
             RegisteredObjs--;
 
-            _netIDs[netObj.DNID] = null;
-            Obj[netObj.DNID] = null;
+            _netIDs[id] = null;
+            Obj[id] = null;
+            netObj.SetDNID(byte.MaxValue);
+
+            // Mirror keeps isServer after shutdown. Local cleanup is still needed,
+            // but an RPC is only valid while the server is actually active.
+            if (!NetworkServer.active) return;
 
             _synchronizer.ClientDeregisterObj(new RpcDeregisterDNSyncObjectMsg
             {
-                MirrorNetID = netObj.netId,
+                MirrorNetID = mirrorId,
                 PoolID = _poolID,
-                DNID = netObj.DNID,
+                DNID = id,
                 StateHash = PoolStateHash
             });
         }
