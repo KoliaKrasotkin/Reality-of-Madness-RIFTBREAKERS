@@ -1,0 +1,7 @@
+# Última recepción real de Etapa 7 recorridos globales exploratorios
+2026-11-18T15:15:40.2858985Z → 2026-11-18T15:15:53.5999773Z
+Aprobadas técnicamente: 1/3. Cuatro jugadores reales: no probado.
+Integridad: True. Error: 
+- CONT-A03-P01: PENDIENTE; NO_SE_CONSTRUYE_PARA_FORZAR_VALIDACION
+- CONT-R21-P01: PENDIENTE; NO_SE_CONSTRUYE_PARA_FORZAR_VALIDACION
+- CONT-B04-P01: RECEPCION_TECNICA_INDIVIDUAL; CUATRO_JUGADORES_PENDIENTES

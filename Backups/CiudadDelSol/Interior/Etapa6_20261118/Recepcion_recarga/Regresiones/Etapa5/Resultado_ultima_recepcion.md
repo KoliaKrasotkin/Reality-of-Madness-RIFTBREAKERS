@@ -1,0 +1,6 @@
+# Última recepción real de Regresión Etapa 5
+2026-11-18T07:01:19.4730162Z → 2026-11-18T07:01:22.6751133Z
+Aprobadas técnicamente: 2/2. Cuatro jugadores reales: no probado.
+Integridad: True. Error: 
+- VS04: RECEPCION_TECNICA_INDIVIDUAL; CUATRO_JUGADORES_PENDIENTES
+- VS05: RECEPCION_TECNICA_INDIVIDUAL; CUATRO_JUGADORES_PENDIENTES

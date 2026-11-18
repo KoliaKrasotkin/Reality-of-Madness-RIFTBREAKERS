@@ -1,0 +1,533 @@
+{
+  "mainPlate": {
+    "bounds": {
+      "x0": -162,
+      "x1": 240,
+      "z0": -162,
+      "z1": 216
+    },
+    "moduleArea": 100476,
+    "description": "Unión de 2791 celdas físicas nominales de 6 m. No es área NavMesh ni área libre de obstáculos."
+  },
+  "exterior": {
+    "scene": "Assets/Scenes/Dungeon_Isla_del_Sol.unity",
+    "sceneSHA256": "45B24571909CDBB425043FEC803381956D0D954F61C961AE2C733F109B8FFF35",
+    "navigationAsset": "Assets/Scenes/Dungeon_Isla_del_Sol/NavMesh-NavMesh_Exterior_CiudadDelSol.asset",
+    "navigationSHA256": "71EF62BA2CCF3CAAF9B90FD61E21B536229B49D3C69A8D71B2FE1236F9C50E13",
+    "atlas": "Assets/ROM/Cartography/CiudadDelSol/Exterior/Revision_20261115_162700_4e80ae/CiudadDelSol_Exterior_Atlas.asset",
+    "image": "Assets/ROM/Cartography/CiudadDelSol/Exterior/Revision_20261115_162700_4e80ae/CiudadDelSol_Exterior.png",
+    "orientation": "North=+Z (top); east=+X (right)",
+    "method": "Orthographic plan of actual physical exterior floors; gold=upper floor with existing NavMesh; cyan=lower/intermediate floor with existing NavMesh; muted stone=physical floor WITHOUT confirmed navigation (not a path); dark strokes=actual architectural sections. Overlapping floors are projected into one atlas, not separate interior maps. Not a new NavMesh or certification of connectivity.",
+    "width": 4096,
+    "height": 4096,
+    "floorColliders": 3165,
+    "obstacleColliders": 3536,
+    "walkingPixels": 4785414,
+    "underpassPixels": 31795,
+    "physicalPixels": 6142226,
+    "center": {
+      "x": 39,
+      "y": 3.5
+    },
+    "worldSize": {
+      "x": 449,
+      "y": 449
+    },
+    "groups": [
+      {
+        "name": "01 - Entrada Portico Solar",
+        "pivot": {
+          "x": -126,
+          "y": 0,
+          "z": -120
+        },
+        "minimum": {
+          "x": -162,
+          "y": -2,
+          "z": -162
+        },
+        "maximum": {
+          "x": -90,
+          "y": 4.0024590492248535,
+          "z": -78
+        },
+        "floorColliders": 372,
+        "navigationPixels": 367823
+      },
+      {
+        "name": "02 - Jardines Dorados",
+        "pivot": {
+          "x": -102,
+          "y": 4,
+          "z": -18
+        },
+        "minimum": {
+          "x": -150,
+          "y": 2,
+          "z": -66
+        },
+        "maximum": {
+          "x": -54,
+          "y": 8.000000953674316,
+          "z": 30
+        },
+        "floorColliders": 279,
+        "navigationPixels": 673788
+      },
+      {
+        "name": "03 - Plaza del Eclipse",
+        "pivot": {
+          "x": 18,
+          "y": 12,
+          "z": 12
+        },
+        "minimum": {
+          "x": -42,
+          "y": 10,
+          "z": -48
+        },
+        "maximum": {
+          "x": 78,
+          "y": 16,
+          "z": 72
+        },
+        "floorColliders": 360,
+        "navigationPixels": 831265
+      },
+      {
+        "name": "04 - Archivos Solares",
+        "pivot": {
+          "x": -108,
+          "y": 20,
+          "z": 108
+        },
+        "minimum": {
+          "x": -150,
+          "y": 18,
+          "z": 72
+        },
+        "maximum": {
+          "x": -66,
+          "y": 28.002460479736328,
+          "z": 144
+        },
+        "floorColliders": 381,
+        "navigationPixels": 371815
+      },
+      {
+        "name": "05 - Claustro del Eclipse",
+        "pivot": {
+          "x": 18,
+          "y": 28,
+          "z": 144
+        },
+        "minimum": {
+          "x": -36,
+          "y": 26,
+          "z": 96
+        },
+        "maximum": {
+          "x": 72,
+          "y": 36.00245666503906,
+          "z": 192
+        },
+        "floorColliders": 500,
+        "navigationPixels": 539566
+      },
+      {
+        "name": "06 - Santuario Profano",
+        "pivot": {
+          "x": 150,
+          "y": 4,
+          "z": -78
+        },
+        "minimum": {
+          "x": 102,
+          "y": 2,
+          "z": -132
+        },
+        "maximum": {
+          "x": 198,
+          "y": 12.002458572387695,
+          "z": -24
+        },
+        "floorColliders": 448,
+        "navigationPixels": 668635
+      },
+      {
+        "name": "07 - El Sol Corrompido",
+        "pivot": {
+          "x": 180,
+          "y": 36,
+          "z": 156
+        },
+        "minimum": {
+          "x": 120,
+          "y": 34,
+          "z": 96
+        },
+        "maximum": {
+          "x": 240,
+          "y": 44.00245666503906,
+          "z": 216
+        },
+        "floorColliders": 485,
+        "navigationPixels": 786902
+      },
+      {
+        "name": "01-02 - Ascenso a jardines - ancho util 12",
+        "pivot": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "minimum": {
+          "x": -120,
+          "y": 0,
+          "z": -78.33613586425781
+        },
+        "maximum": {
+          "x": -108,
+          "y": 4.000000953674316,
+          "z": -66
+        },
+        "floorColliders": 4,
+        "navigationPixels": 1188
+      },
+      {
+        "name": "01-06 - Ruta secundaria meridional - ancho util 6",
+        "pivot": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "minimum": {
+          "x": -96,
+          "y": -2.000000238418579,
+          "z": -135
+        },
+        "maximum": {
+          "x": 108,
+          "y": 4.000000953674316,
+          "z": -117
+        },
+        "floorColliders": 37,
+        "navigationPixels": 85720
+      },
+      {
+        "name": "02-03 - Puente de la plaza - ancho util 12",
+        "pivot": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "minimum": {
+          "x": -54.33613586425781,
+          "y": 4,
+          "z": 6
+        },
+        "maximum": {
+          "x": -42,
+          "y": 12,
+          "z": 18
+        },
+        "floorColliders": 4,
+        "navigationPixels": 1782
+      },
+      {
+        "name": "03-04 - Galeria occidental - ancho util 12",
+        "pivot": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "minimum": {
+          "x": -66,
+          "y": 10,
+          "z": 36
+        },
+        "maximum": {
+          "x": -30,
+          "y": 20,
+          "z": 90
+        },
+        "floorColliders": 25,
+        "navigationPixels": 48121
+      },
+      {
+        "name": "03-05 - Gran escalinata del claustro - ancho util 24",
+        "pivot": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "minimum": {
+          "x": -24,
+          "y": 10,
+          "z": 60
+        },
+        "maximum": {
+          "x": 66,
+          "y": 28,
+          "z": 96
+        },
+        "floorColliders": 66,
+        "navigationPixels": 122329
+      },
+      {
+        "name": "03-06 - Descenso al santuario - ancho util 12",
+        "pivot": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "minimum": {
+          "x": 78,
+          "y": 2,
+          "z": -60
+        },
+        "maximum": {
+          "x": 102,
+          "y": 12,
+          "z": 18
+        },
+        "floorColliders": 30,
+        "navigationPixels": 42599
+      },
+      {
+        "name": "04-05 - Galeria de los archivos - ancho util 12",
+        "pivot": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "minimum": {
+          "x": -66,
+          "y": 18,
+          "z": 114
+        },
+        "maximum": {
+          "x": -36,
+          "y": 28,
+          "z": 126
+        },
+        "floorColliders": 10,
+        "navigationPixels": 1279
+      },
+      {
+        "name": "05-07 - Puente ceremonial - ancho util 12",
+        "pivot": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "minimum": {
+          "x": 72,
+          "y": 26,
+          "z": 114
+        },
+        "maximum": {
+          "x": 120,
+          "y": 36,
+          "z": 162
+        },
+        "floorColliders": 28,
+        "navigationPixels": 56753
+      },
+      {
+        "name": "06-07 - Ascenso oriental - ancho util 12",
+        "pivot": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "minimum": {
+          "x": 198,
+          "y": 2,
+          "z": -60
+        },
+        "maximum": {
+          "x": 234,
+          "y": 36,
+          "z": 114
+        },
+        "floorColliders": 68,
+        "navigationPixels": 107933
+      },
+      {
+        "name": "Salida_Meridional_Generated",
+        "pivot": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "minimum": {
+          "x": 18,
+          "y": -4,
+          "z": -209
+        },
+        "maximum": {
+          "x": 42,
+          "y": 0,
+          "z": -135
+        },
+        "floorColliders": 68,
+        "navigationPixels": 82712
+      }
+    ]
+  },
+  "components": [
+    {
+      "y": -16,
+      "n": 2791,
+      "min": [
+        -162,
+        -162
+      ],
+      "max": [
+        240,
+        216
+      ]
+    },
+    {
+      "y": -34,
+      "n": 234,
+      "min": [
+        66,
+        -48
+      ],
+      "max": [
+        132,
+        96
+      ]
+    },
+    {
+      "y": -38,
+      "n": 196,
+      "min": [
+        -24,
+        -24
+      ],
+      "max": [
+        60,
+        60
+      ]
+    },
+    {
+      "y": 20,
+      "n": 171,
+      "min": [
+        120,
+        -24
+      ],
+      "max": [
+        204,
+        84
+      ]
+    },
+    {
+      "y": -24,
+      "n": 56,
+      "min": [
+        -18,
+        -18
+      ],
+      "max": [
+        54,
+        54
+      ]
+    },
+    {
+      "y": -30,
+      "n": 40,
+      "min": [
+        -12,
+        -12
+      ],
+      "max": [
+        48,
+        48
+      ]
+    },
+    {
+      "y": 4,
+      "n": 21,
+      "min": [
+        144,
+        6
+      ],
+      "max": [
+        174,
+        36
+      ]
+    },
+    {
+      "y": -30,
+      "n": 8,
+      "min": [
+        108,
+        -48
+      ],
+      "max": [
+        132,
+        -36
+      ]
+    },
+    {
+      "y": -24,
+      "n": 4,
+      "min": [
+        78,
+        84
+      ],
+      "max": [
+        90,
+        96
+      ]
+    },
+    {
+      "y": -24,
+      "n": 1,
+      "min": [
+        120,
+        -24
+      ],
+      "max": [
+        126,
+        -18
+      ]
+    },
+    {
+      "y": -30,
+      "n": 1,
+      "min": [
+        78,
+        60
+      ],
+      "max": [
+        84,
+        66
+      ]
+    }
+  ],
+  "entryReference": [
+    162,
+    20,
+    -18
+  ],
+  "bossProposal": {
+    "bounds": {
+      "x0": 0,
+      "x1": 18,
+      "z0": 0,
+      "z1": 30
+    },
+    "center": [
+      9,
+      -38,
+      15
+    ],
+    "status": "P: subzona candidata sin nueva geometría; muestras históricas interiores a X<18 dieron >=29.98 m verticales, no certifican volumen barrido",
+    "avoid": "Bajo puente N-S X18..24 y escalera X−12..−6; conservar apoyos y corona solar."
+  }
+}

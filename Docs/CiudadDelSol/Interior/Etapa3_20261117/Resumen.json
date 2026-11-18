@@ -1,0 +1,48 @@
+{
+  "generatedUTC": "2026-11-18T02:01:10.397Z",
+  "source": "C:\\Users\\juang\\Desktop\\Git\\Reality-of-Madness-RIFTBREAKERS\\Backups\\CiudadDelSol\\Interior\\Etapa3_20261117\\Recepcion.json",
+  "sourceSHA256": "45F61FEE089A897EE551088D4E9DCA7BFB061551916F1CD9D624463E0C8B19D7",
+  "approved": [
+    "VE01",
+    "VE02",
+    "VD01"
+  ],
+  "pending": [],
+  "complete": true,
+  "realPlayersTested": false,
+  "nativeBatch": true,
+  "regressionStageTwo": "6/6 nativas",
+  "protectedIntact": true,
+  "connections": [
+    {
+      "id": "VE01",
+      "from": "A03",
+      "to": "B06",
+      "approved": true,
+      "chosen": "Recorrido existente por descanso B06 (123,-30,-45); evita salida lateral a través de baranda; ejes originales archivados",
+      "minWidth": 3.8400001525878906,
+      "forward": "PathComplete",
+      "reverse": "PathComplete"
+    },
+    {
+      "id": "VE02",
+      "from": "B06",
+      "to": "D02",
+      "approved": true,
+      "chosen": "Recorrido existente por descanso B06 (123,-30,-45); evita salida lateral a través de baranda; ejes originales archivados",
+      "minWidth": 3.940000057220459,
+      "forward": "PathComplete",
+      "reverse": "PathComplete"
+    },
+    {
+      "id": "VD01",
+      "from": "D02",
+      "to": "D01",
+      "approved": true,
+      "chosen": "Eje documental físico",
+      "minWidth": 5.21999979019165,
+      "forward": "PathComplete",
+      "reverse": "PathComplete"
+    }
+  ]
+}

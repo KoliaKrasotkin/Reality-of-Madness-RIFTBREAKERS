@@ -1,0 +1,186 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using Unity.AI.Navigation;
+
+namespace ROM.EditorTools
+{
+ public static partial class CiudadDelSolInteriorStageTwo
+ {
+  const string Root6="CiudadDelSol_Etapa6_VS03";
+  static readonly Bounds Patch6=new Bounds(V(-9,-34,26),V(16,16,38));
+  static GuardFlight[] Flights6()=>Enumerable.Range(0,4).Select(i=>new GuardFlight{id="VS03",index=i,start=V(-9,-30-2*i,36-6*i),dir=Vector3.back}).ToArray();
+
+  [Serializable] sealed class Dense6
+  {
+   public int stations,failures,unsafeSides;
+   public float minimumWidth=float.MaxValue,maximumSlope,minimumOverhead=float.MaxValue;
+   public List<string> problems=new List<string>();
+  }
+  static bool DenseStageSix(string folder)
+  {
+   Directory.CreateDirectory(folder);var r=new Dense6();var p=StageSixPlan();var cfg=ConstructionConfig4(SceneManager.GetSceneByPath(City));
+   for(int i=1;i<p.points.Length;i++)
+   {
+    var a=p.points[i-1];var b=p.points[i];int n=Mathf.CeilToInt(Vector3.Distance(a,b)/.1f);
+    var side=Vector3.Cross(Vector3.up,(b-a).normalized).normalized;Station prev=null;
+    for(int j=0;j<=n;j++)
+    {
+     var q=Vector3.Lerp(a,b,(float)j/n);bool grade=NearGrade(q,p,cfg.radius+.25f);
+     var station=Probe(q,cfg,grade,grade?cfg.step:.03f);var width=MeasureWidth(station,side,cfg,grade);r.stations++;
+     r.minimumWidth=Mathf.Min(r.minimumWidth,width.usefulWidthLowerBound);r.maximumSlope=Mathf.Max(r.maximumSlope,station.slope);
+     bool swept=prev==null||Sweep(prev,station,cfg,grade,out _,out _);
+     if(!station.Clear||!station.nav||!swept||!width.fourStaticCapsulesClear||width.leftUnsupportedUnprotected||width.rightUnsupportedUnprotected)
+     {r.failures++;r.problems.Add(q.ToString("F4")+" "+JsonUtility.ToJson(station)+" "+JsonUtility.ToJson(width)+" sweep="+swept);}
+     if(station.support&&cfg.physics.Raycast(station.floor+Vector3.up*.05f,Vector3.up,out var h,30,cfg.mask,QueryTriggerInteraction.Ignore))r.minimumOverhead=Mathf.Min(r.minimumOverhead,h.distance+.05f);
+     prev=station;
+    }
+   }
+   foreach(var f in Flights6())foreach(int side in new[]{-1,1})for(int i=0;i<=60;i++)
+    if(ProtectionUnsafeAt(f,side,cfg,i*.1f)){r.unsafeSides++;r.problems.Add("Flanco "+f.index+" lado="+side+" avance="+i*.1f);}
+   File.WriteAllText(folder+"/Perfil_denso.json",JsonUtility.ToJson(r,true));return r.failures==0&&r.unsafeSides==0;
+  }
+  static bool ReceiveAllSix(string folder,bool preview)
+  {
+   var r=InspectSelected(new[]{StageSixPlan()},folder+"/VS03","Etapa 6 VS03",preview,true);
+   bool dense=DenseStageSix(folder),regressions=ConstructionReception4(folder+"/Regresiones",preview);
+   var five=InspectSelected(StageFivePlans(),folder+"/Regresiones/Etapa5","Regresión Etapa 5",preview,true);
+   var fiveGlobal=InspectSelected(StageFivePlans(),folder+"/Regresiones/Etapa5Global","Regresion global Etapa 5",preview,false);
+   regressions&=Raw4(fiveGlobal,2);
+   var global=InspectSelected(new[]{StageSixPlan()},folder+"/GlobalDirecta","Etapa 6 camino global",preview,false);
+   File.WriteAllText(folder+"/Resultado.txt","VS03="+Raw4(r,1)+"; Denso="+dense+"; Global="+Raw4(global,1)+"; Regresiones="+(regressions&&Raw4(five,2)));
+   return Raw4(r,1)&&dense&&regressions&&Raw4(five,2)&&Raw4(global,1);
+  }
+  static List<Vector3> OutsideSix(NavMeshTriangulation t)
+  {
+   var list=new List<Vector3>();for(int i=0;i<t.indices.Length;i+=3)
+   {
+    var a=t.vertices[t.indices[i]];var b=t.vertices[t.indices[i+1]];var c=t.vertices[t.indices[i+2]];
+    foreach(var p in new[]{a,b,c,(a+b+c)/3,(a+b)/2,(a+c)/2,(b+c)/2})
+     if(!Patch6.Contains(p)&&NavMesh.SamplePosition(p,out var hit,.35f,NavMesh.AllAreas))list.Add(hit.position);
+   }
+   return list;
+  }
+  static readonly Dictionary<Vector3,Station> PhysicalBaseline6=new Dictionary<Vector3,Station>();
+  static void CapturePhysicalSix(List<Vector3> points)
+  {
+   var cfg=ConstructionConfig4(SceneManager.GetSceneByPath(City));
+   foreach(var p in points)if(!PhysicalBaseline6.ContainsKey(p))PhysicalBaseline6.Add(p,Probe(p,cfg,true,.35f));
+  }
+  static bool CoverageSix(List<Vector3> points,string phase)
+  {
+   var f=new NavMeshQueryFilter{agentTypeID=0,areaMask=NavMesh.AllAreas};var failures=new List<string>();var proven=new List<string>();var cfg=ConstructionConfig4(SceneManager.GetSceneByPath(City));
+   foreach(var p in points)
+   {
+    if(NavMesh.SamplePosition(p,out var exact,.001f,f)&&Vector3.Distance(p,exact.position)<=.001f)continue;
+    bool same=false;
+    if(PhysicalBaseline6.TryGetValue(p,out var before)&&before.Clear&&NavMesh.SamplePosition(p,out var near,.35f,f)&&new Vector2(near.position.x-p.x,near.position.z-p.z).magnitude<=.001f)
+    {
+     var after=Probe(near.position,cfg,true,.35f);
+     same=after.Clear&&before.supportObject==after.supportObject&&Vector3.Distance(before.floor,after.floor)<=.001f&&Vector3.Angle(before.normal,after.normal)<=.001f;
+     if(same)proven.Add(JsonUtility.ToJson(new CoverageFailure4{expected=p,nearest=near.position,projected=true,distance=Vector3.Distance(p,near.position)})+" physicalFloor="+before.floor.ToString("R")+" support="+before.supportObject);
+    }
+    if(!same)failures.Add(p.ToString("R"));
+   }
+   File.WriteAllText(Work6+"/Cobertura_"+phase+".txt","Muestras="+points.Count+"; fallos="+failures.Count+"; equivalencias_fisicas="+proven.Count+"\n"+string.Join("\n",failures)+"\n"+string.Join("\n",proven));return failures.Count==0;
+  }
+  [MenuItem("ROM/Etapa 6 interior/Construir protecciones locales y recibir")]
+  public static void ConstructStageSix()
+  {
+   if(EditorApplication.isPlayingOrWillChangePlaymode||Enumerable.Range(0,SceneManager.sceneCount).Any(i=>SceneManager.GetSceneAt(i).isDirty))throw new InvalidOperationException("Requiere Edit Mode y escena limpia.");
+   var scene=SceneManager.GetSceneByPath(City);if(!scene.isLoaded)throw new InvalidOperationException("Abrir escena definitiva.");
+   if(scene.GetRootGameObjects().Any(g=>g.name==Root6))throw new InvalidOperationException("Etapa 6 ya construida; no se duplica.");
+   string backup=Work6+"/"+City,backupNav=Work6+"/"+Nav;
+   if(!File.Exists(backup)||Hash(backup)!=Hash(City)||!File.Exists(backupNav)||Hash(backupNav)!=Hash(Nav))throw new InvalidOperationException("Respaldo no coincide.");
+   var surface=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<NavMeshSurface>(true)).Single(s=>s.name=="NavMesh_Exterior_CiudadDelSol");
+   var data=surface.navMeshData;var original=UnityEngine.Object.Instantiate(data);NavMeshData candidate=null;GameObject root=null;bool written=false;
+   var report=new Build4{started=DateTime.UtcNow.ToString("o"),sceneBefore=Hash(City),navBefore=Hash(Nav)};
+   var meshes=new Dictionary<string,(Mesh visual,Mesh collision)>();
+   var transforms=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Transform>(true)).ToArray();var allowed=new HashSet<int>();var fingerprints=Fingerprint4(transforms,allowed);
+   try
+   {
+    var settings=surface.GetBuildSettings();report.radius=settings.agentRadius;report.climb=settings.agentClimb;report.voxel=settings.voxelSize;
+    if(settings.agentTypeID!=0||Mathf.Abs(settings.agentRadius-.57f)>.0001f||Mathf.Abs(settings.agentClimb-.36f)>.0001f||Mathf.Abs(settings.voxelSize-.1f)>.0001f)throw new InvalidOperationException("Parámetros protegidos difieren.");
+    PhysicalBaseline6.Clear();
+    var outside=OutsideSix(NavMesh.CalculateTriangulation());CapturePhysicalSix(outside);if(!CoverageSix(outside,"Baseline"))throw new InvalidOperationException("Testigos iniciales no reproducibles.");var exterior=ExteriorPaths4(NavMesh.CalculateTriangulation());report.outsideWitnesses=outside.Count;report.exteriorPaths=exterior.Count;
+    root=new GameObject(Root6);SceneManager.MoveGameObjectToScene(root,scene);
+    foreach(var f in Flights6())
+    {
+     var mid=f.start+f.dir*3+Vector3.down;
+     var stair=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Collider>(true)).Where(c=>c.enabled&&c.gameObject.activeInHierarchy&&c.name.StartsWith("Staircase_01",StringComparison.Ordinal)&&c.bounds.Contains(mid)).OrderBy(c=>Vector3.Distance(c.bounds.center,mid)).First();
+     if(!stair.transform.IsChildOf(scene.GetRootGameObjects().Single(g=>g.name=="Nucleo_Monumental_Conjunto").transform))throw new InvalidOperationException("Escalera fuera de alcance.");
+     Resize4(stair,f.Right,10,stair.bounds.center,report,allowed);
+    }
+    // Widen only the existing head landing: no new room or deep boss floor.
+    FloorAt4(scene,V(-9,-30,39));
+    foreach(int sign in new[]{-1,1})
+    {
+     const string floorPath="Assets/Standard Assets/Eternal Temple/Prefabs/Pits and Platforms/Platform_Base_01.prefab";
+     var go=(GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(floorPath),scene);go.transform.SetParent(root.transform,true);go.name="Ampliacion_cabecera_"+sign;
+     go.transform.SetPositionAndRotation(Vector3.zero,Quaternion.identity);go.transform.localScale=Vector3.one;Physics.SyncTransforms();var c=go.GetComponent<Collider>();var cb=c.bounds;
+     go.transform.localScale=V(2/cb.size.x,1,6/cb.size.z);Physics.SyncTransforms();cb=c.bounds;
+     go.transform.position=V(-9+sign*4f-cb.center.x,-30-cb.max.y,39-cb.center.z);Physics.SyncTransforms();
+     report.platforms.Add(new Platform4{prefab=floorPath,center=c.bounds.center,size=c.bounds.size,top=-30});
+    }
+    // Continuous parapets outside the full ten metre stair footprint.
+    foreach(var f in Flights6())foreach(int sign in new[]{-1,1})BuildRail4(root,f.start+f.Right*(sign*5),f.start+f.dir*6+Vector3.down*2+f.Right*(sign*5),f.Right*sign,meshes,report);
+    foreach(int sign in new[]{-1,1})
+    {
+     BuildRail4(root,V(-9+sign*5,-30,42),V(-9+sign*5,-30,36),Vector3.right*sign,meshes,report);
+     // Cap just the added side strip; central original entry remains open.
+     BuildRail4(root,V(-9+sign*5,-30,42),V(-9+sign*3,-30,42),Vector3.forward,meshes,report);
+    }
+    InstallCornerMarginsSix(root);
+    Physics.SyncTransforms();report.originalObjectsUnchanged=Same4(Fingerprint4(transforms,allowed),fingerprints.Where(x=>!allowed.Contains(x.Key)).ToDictionary(x=>x.Key,x=>x.Value));
+    if(!report.originalObjectsUnchanged)throw new InvalidOperationException("Cambios fuera de cuatro escaleras autorizadas.");
+    File.WriteAllText(Work6+"/Fase.txt","Geometría local construida en memoria; generando candidata.");
+    var collect=typeof(NavMeshSurface).GetMethod("CollectSources",BindingFlags.Instance|BindingFlags.NonPublic);
+    var sources=(List<NavMeshBuildSource>)collect.Invoke(surface,null);report.sources=sources.Count;
+    candidate=UnityEngine.Object.Instantiate(data);
+    if(!NavMeshBuilder.UpdateNavMeshData(candidate,settings,sources,data.sourceBounds))throw new InvalidOperationException("Falló candidata.");
+    Swap4(surface,candidate);
+    if(!CoverageSix(outside,"Original_en_candidata")||!CompareExterior4(exterior))throw new InvalidOperationException("Regresión fuera de alcance o exterior.");
+    var newOutside=OutsideSix(NavMesh.CalculateTriangulation());CapturePhysicalSix(newOutside);Swap4(surface,original);
+    if(!CoverageSix(newOutside,"Candidata_en_original"))throw new InvalidOperationException("Nueva navegación fuera de alcance.");
+    Swap4(surface,candidate);report.outsideNavPreserved=true;
+    File.WriteAllText(Work6+"/Fase.txt","Candidata en memoria; recepción previa a guardar.");
+    if(!ReceiveAllSix(Work6+"/Prevalidacion",true)||!CheckHumanoidSix(Work6+"/Prevalidacion"))throw new InvalidOperationException("Recepción previa fallida: no se guarda.");
+    report.regressionsPassed=true;
+    var folder="Assets/ROM/Generated/InteriorEtapa6_"+DateTime.UtcNow.ToString("yyyyMMddTHHmmssfff");Directory.CreateDirectory(folder);AssetDatabase.Refresh();report.assetFolder=folder;
+    int index=0;foreach(var pair in meshes.Values)foreach(var m in new[]{pair.visual,pair.collision})AssetDatabase.CreateAsset(m,folder+"/Parapeto_"+(index++)+".asset");
+    written=true;surface.RemoveData();EditorUtility.CopySerialized(candidate,data);EditorUtility.SetDirty(data);surface.navMeshData=data;surface.AddData();
+    AssetDatabase.SaveAssetIfDirty(data);
+    if(!EditorSceneManager.SaveScene(scene))throw new InvalidOperationException("No se guardó escena.");
+    if(!ReceiveAllSix(Work6+"/Recepcion",false)||!CheckHumanoidSix(Work6+"/Recepcion")||!CoverageSix(outside,"Original_en_candidata")||!CompareExterior4(exterior))throw new InvalidOperationException("Recepción persistente fallida.");
+    File.WriteAllText(Work6+"/Prueba_navegacion.json",JsonUtility.ToJson(new Proof4{digest=TriangleDigest4(),outside=outside,exterior=exterior},true));
+    report.saved=true;File.WriteAllText(Work6+"/Fase.txt","Guardado y recepción posterior satisfactorios.");
+   }
+   catch(Exception e)
+   {
+    report.error=e.ToString();
+    surface.RemoveData();surface.navMeshData=data;surface.AddData();
+    if(written){surface.RemoveData();EditorUtility.CopySerialized(original,data);EditorUtility.SetDirty(data);AssetDatabase.SaveAssetIfDirty(data);File.Copy(backup,City,true);File.Copy(backupNav,Nav,true);AssetDatabase.ImportAsset(Nav,ImportAssetOptions.ForceSynchronousImport|ImportAssetOptions.ForceUpdate);}
+    report.rolledBack=true;Debug.LogException(e);
+   }
+   finally
+   {
+    if(!report.saved)
+    {
+     // Restore the clean original scene, including original stair scales.
+     surface.RemoveData();EditorSceneManager.OpenScene(City,OpenSceneMode.Single);
+     foreach(var pair in meshes.Values)foreach(var m in new[]{pair.visual,pair.collision})if(m&&!AssetDatabase.Contains(m))UnityEngine.Object.DestroyImmediate(m);
+    }
+    if(candidate)UnityEngine.Object.DestroyImmediate(candidate);if(original)UnityEngine.Object.DestroyImmediate(original);
+    report.ended=DateTime.UtcNow.ToString("o");report.sceneAfter=Hash(City);report.navAfter=Hash(Nav);File.WriteAllText(Work6+"/Construccion.json",JsonUtility.ToJson(report,true));
+   }
+   ShowStageSixView(2);
+  }
+ }
+}

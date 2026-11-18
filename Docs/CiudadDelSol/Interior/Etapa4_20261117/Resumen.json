@@ -1,0 +1,94 @@
+{
+  "generatedUTC": "2026-11-18T03:15:57.421Z",
+  "unity": "6000.3.23f1",
+  "approved": [],
+  "pending": [
+    "VS01",
+    "VS02"
+  ],
+  "complete": false,
+  "realPlayersTested": false,
+  "allProtectedFilesIntact": true,
+  "regressions": [
+    {
+      "stage": 1,
+      "approved": 1,
+      "total": 1,
+      "healthy": true
+    },
+    {
+      "stage": 2,
+      "approved": 6,
+      "total": 6,
+      "healthy": true
+    },
+    {
+      "stage": 3,
+      "approved": 3,
+      "total": 3,
+      "healthy": true
+    }
+  ],
+  "sourceSHA256": "9B64DC23F17CD4E47274A9291F9422D9E02A28B9C06314FC611A5F992C833B3B",
+  "edgeSamples": 14,
+  "unprotectedDropSamples": 10,
+  "proposal": {
+    "persisted": false,
+    "pieces": 8,
+    "navFootprintConflicts": 8
+  },
+  "connections": [
+    {
+      "id": "VS01",
+      "approved": false,
+      "start": {
+        "x": 156,
+        "y": -16,
+        "z": 99
+      },
+      "end": {
+        "x": 45,
+        "y": -24,
+        "z": 15
+      },
+      "guideSamples": 1331,
+      "guideFailures": 0,
+      "guideSweeps": 0,
+      "guideMissingNav": 0,
+      "forward": "PathComplete",
+      "reverse": "PathComplete",
+      "physicalForward": true,
+      "physicalReverse": true,
+      "minWidth": 4.940000057220459,
+      "maxSlope": 18.91621208190918,
+      "fourStaticCapsules": true,
+      "edges": false
+    },
+    {
+      "id": "VS02",
+      "approved": false,
+      "start": {
+        "x": 45,
+        "y": -24,
+        "z": 15
+      },
+      "end": {
+        "x": 24,
+        "y": -30,
+        "z": 45
+      },
+      "guideSamples": 264,
+      "guideFailures": 0,
+      "guideSweeps": 0,
+      "guideMissingNav": 0,
+      "forward": "PathComplete",
+      "reverse": "PathComplete",
+      "physicalForward": true,
+      "physicalReverse": true,
+      "minWidth": 4.740000247955322,
+      "maxSlope": 18.91621208190918,
+      "fourStaticCapsules": true,
+      "edges": false
+    }
+  ]
+}

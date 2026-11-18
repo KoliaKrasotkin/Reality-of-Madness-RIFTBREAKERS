@@ -1,0 +1,586 @@
+[
+  {
+    "id": "AC01",
+    "reason": "Acceso anterior; fuera de Etapa 2",
+    "selected": false,
+    "to": "A00",
+    "from": "EX06",
+    "points": "(129,4,-42) → (129,12,-30) → (132,12,-27) → (132,12,-18) → (132,20,-6) → (132,20,27) → (162,20,27)"
+  },
+  {
+    "id": "AC02",
+    "reason": "Acceso anterior; fuera de Etapa 2",
+    "selected": false,
+    "to": "A01",
+    "from": "A00",
+    "points": "(162,20,27) → (147,20,27) → (147,20,6) → (147,20,3) → (147,20,-21) → (162,20,-21) → (162,20,-18) → (162,4,6) → (162,4,18)"
+  },
+  {
+    "id": "AC03",
+    "reason": "Acceso anterior; fuera de Etapa 2",
+    "selected": false,
+    "to": "A02",
+    "from": "A01",
+    "points": "(162,4,18) → (162,4,33.45) → (150,4,33.45) → (150,4,36)"
+  },
+  {
+    "id": "AC04",
+    "reason": "Acceso anterior; fuera de Etapa 2",
+    "selected": false,
+    "to": "A03",
+    "from": "A02",
+    "points": "(150,4,36) → (150,0,42) → (150,0,48) → (150,-4,54) → (150,-4,60) → (150,-8,66) → (150,-8,72) → (150,-12,78) → (150,-12,84) → (150,-16,90) → (150,-16,99) → (156,-16,99)"
+  },
+  {
+    "id": "VC01",
+    "reason": "Continuidad R21, galerías próximas y primer descenso Centro Oriental",
+    "selected": true,
+    "to": "B05",
+    "from": "A03",
+    "points": "(156,-16,99) → (180,-16,99) → (180,-16,63) → (135,-16,63) → (135,-16,105) → (120,-16,105) → (120,-16,90) → (114,-16,90) → (90,-24,90) → (84,-24,90)"
+  },
+  {
+    "id": "VC02",
+    "reason": "Continuidad R21, galerías próximas y primer descenso Centro Oriental",
+    "selected": true,
+    "to": "D01",
+    "from": "B05",
+    "points": "(84,-24,90) → (81,-24,90) → (81,-24,84) → (81,-30,66) → (81,-30,60) → (81,-34,48) → (81,-34,39) → (99,-34,39) → (99,-34,45) → (102,-34,45) → (102,-34,63) → (105,-34,63)"
+  },
+  {
+    "id": "VE01",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "B06",
+    "from": "A03",
+    "points": "(156,-16,99) → (180,-16,99) → (180,-16,63) → (135,-16,63) → (135,-16,105) → (120,-16,105) → (120,-16,12) → (123,-16,12) → (123,-16,6) → (123,-24,-18) → (123,-24,-24) → (123,-30,-42) → (120,-30,-42)"
+  },
+  {
+    "id": "VE02",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "D02",
+    "from": "B06",
+    "points": "(120,-30,-42) → (123,-30,-42) → (123,-30,-45) → (111,-30,-45) → (111,-30,-39) → (108,-30,-39) → (96,-34,-39) → (93,-34,-39) → (93,-34,-9) → (99,-34,-9)"
+  },
+  {
+    "id": "VD01",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "D01",
+    "from": "D02",
+    "points": "(99,-34,-9) → (93,-34,-9) → (93,-34,-3) → (96,-34,-3) → (96,-34,27) → (96,-34,33) → (99,-34,39) → (99,-34,45) → (102,-34,45) → (102,-34,63) → (105,-34,63)"
+  },
+  {
+    "id": "VS01",
+    "reason": "Núcleo Sol Invertido/final protegido; etapa posterior",
+    "selected": false,
+    "to": "B01",
+    "from": "A03",
+    "points": "(156,-16,99) → (180,-16,99) → (180,-16,63) → (135,-16,63) → (135,-16,105) → (120,-16,105) → (120,-16,12) → (63,-16,12) → (63,-16,-15) → (57,-16,-15) → (45,-16,-15) → (45,-16,-12) → (45,-24,12) → (45,-24,15)"
+  },
+  {
+    "id": "VS02",
+    "reason": "Núcleo Sol Invertido/final protegido; etapa posterior",
+    "selected": false,
+    "to": "B02",
+    "from": "B01",
+    "points": "(45,-24,15) → (51,-24,15) → (51,-24,45) → (42,-24,45) → (24,-30,45)"
+  },
+  {
+    "id": "VS03",
+    "reason": "Núcleo Sol Invertido/final protegido; etapa posterior",
+    "selected": false,
+    "to": "D03",
+    "from": "B02",
+    "points": "(24,-30,45) → (-9,-30,45) → (-9,-30,36) → (-9,-38,12) → (-9,-38,9) → (18,-38,9)"
+  },
+  {
+    "id": "VS04",
+    "reason": "Núcleo Sol Invertido/final protegido; etapa posterior",
+    "selected": false,
+    "to": "B03",
+    "from": "B01",
+    "points": "(51,-24,39) → (45,-24,39) → (18,-24,39) → (-15,-24,39)"
+  },
+  {
+    "id": "VS05",
+    "reason": "Núcleo Sol Invertido/final protegido; etapa posterior",
+    "selected": false,
+    "to": "B04",
+    "from": "B02",
+    "points": "(21,-30,45) → (21,-30,39) → (21,-30,-3) → (21,-30,-9)"
+  },
+  {
+    "id": "VS06",
+    "reason": "Núcleo Sol Invertido/final protegido; etapa posterior",
+    "selected": false,
+    "to": "P01",
+    "from": "D03",
+    "points": "(18,-38,9) → (12,-38,9) → (9,-38,15)"
+  },
+  {
+    "id": "H01",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R30",
+    "from": "A03",
+    "points": "(153,-16,99) → (189,-16,99) → (189,-16,129)"
+  },
+  {
+    "id": "H02",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G04",
+    "from": "R30",
+    "points": "(189,-16,129) → (213,-16,129)"
+  },
+  {
+    "id": "H03",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G03",
+    "from": "R30",
+    "points": "(189,-16,129) → (165,-16,129) → (165,-16,141)"
+  },
+  {
+    "id": "H04",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R26",
+    "from": "G03",
+    "points": "(165,-16,141) → (141,-16,141) → (141,-16,159)"
+  },
+  {
+    "id": "H05",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R23",
+    "from": "R26",
+    "points": "(141,-16,159) → (123,-16,159) → (123,-16,165)"
+  },
+  {
+    "id": "H06",
+    "reason": "Continuidad R21, galerías próximas y primer descenso Centro Oriental",
+    "selected": true,
+    "to": "G11",
+    "from": "R23",
+    "points": "(123,-16,165) → (105,-16,165)"
+  },
+  {
+    "id": "H07",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "M02",
+    "from": "G03",
+    "points": "(165,-16,141) → (189,-16,141) → (189,-16,159)"
+  },
+  {
+    "id": "H08",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G02",
+    "from": "M02",
+    "points": "(189,-16,159) → (213,-16,159) → (213,-16,165)"
+  },
+  {
+    "id": "H09",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R31",
+    "from": "M02",
+    "points": "(189,-16,159) → (189,-16,195)"
+  },
+  {
+    "id": "H10",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R27",
+    "from": "R31",
+    "points": "(189,-16,195) → (165,-16,195) → (165,-16,189)"
+  },
+  {
+    "id": "H11",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G01",
+    "from": "G04",
+    "points": "(213,-16,129) → (213,-16,93)"
+  },
+  {
+    "id": "H12",
+    "reason": "Continuidad R21, galerías próximas y primer descenso Centro Oriental",
+    "selected": true,
+    "to": "R21",
+    "from": "R23",
+    "points": "(123,-16,165) → (117,-16,165) → (117,-16,123)"
+  },
+  {
+    "id": "H13",
+    "reason": "Continuidad R21, galerías próximas y primer descenso Centro Oriental",
+    "selected": true,
+    "to": "G05",
+    "from": "R21",
+    "points": "(117,-16,123) → (75,-16,123)"
+  },
+  {
+    "id": "H14",
+    "reason": "Continuidad R21, galerías próximas y primer descenso Centro Oriental",
+    "selected": true,
+    "to": "R34",
+    "from": "G05",
+    "points": "(75,-16,123) → (57,-16,123) → (57,-16,117)"
+  },
+  {
+    "id": "H15",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G13",
+    "from": "R34",
+    "points": "(57,-16,117) → (27,-16,117) → (27,-16,111)"
+  },
+  {
+    "id": "H16",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R16",
+    "from": "G13",
+    "points": "(27,-16,111) → (3,-16,111)"
+  },
+  {
+    "id": "H17",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R11",
+    "from": "R16",
+    "points": "(3,-16,111) → (-15,-16,111) → (-15,-16,129)"
+  },
+  {
+    "id": "H18",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R20",
+    "from": "G13",
+    "points": "(27,-16,111) → (21,-16,111) → (21,-16,87)"
+  },
+  {
+    "id": "H19",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R17",
+    "from": "R11",
+    "points": "(-15,-16,129) → (-51,-16,129) → (-51,-16,123)"
+  },
+  {
+    "id": "H20",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G12",
+    "from": "R17",
+    "points": "(-51,-16,123) → (-45,-16,123) → (-45,-16,93)"
+  },
+  {
+    "id": "H21",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G14",
+    "from": "R17",
+    "points": "(-51,-16,123) → (-81,-16,123) → (-81,-16,117)"
+  },
+  {
+    "id": "H22",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R01",
+    "from": "G14",
+    "points": "(-81,-16,117) → (-105,-16,117) → (-105,-16,123)"
+  },
+  {
+    "id": "H23",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G08",
+    "from": "R01",
+    "points": "(-105,-16,123) → (-129,-16,123) → (-129,-16,105)"
+  },
+  {
+    "id": "H24",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G15",
+    "from": "G08",
+    "points": "(-129,-16,105) → (-105,-16,105) → (-105,-16,87)"
+  },
+  {
+    "id": "H25",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G07",
+    "from": "G15",
+    "points": "(-105,-16,87) → (-81,-16,87) → (-81,-16,81)"
+  },
+  {
+    "id": "H26",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R09",
+    "from": "G15",
+    "points": "(-105,-16,87) → (-129,-16,87) → (-129,-16,69)"
+  },
+  {
+    "id": "H27",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R08",
+    "from": "R09",
+    "points": "(-129,-16,69) → (-129,-16,39)"
+  },
+  {
+    "id": "H28",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R05",
+    "from": "R08",
+    "points": "(-129,-16,39) → (-105,-16,39) → (-105,-16,45)"
+  },
+  {
+    "id": "H29",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G10",
+    "from": "R05",
+    "points": "(-105,-16,45) → (-81,-16,45)"
+  },
+  {
+    "id": "H30",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R18",
+    "from": "G10",
+    "points": "(-81,-16,45) → (-63,-16,45)"
+  },
+  {
+    "id": "H31",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R15",
+    "from": "R18",
+    "points": "(-63,-16,45) → (-33,-16,45) → (-33,-16,51)"
+  },
+  {
+    "id": "H32",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R14",
+    "from": "R15",
+    "points": "(-33,-16,51) → (-33,-16,21)"
+  },
+  {
+    "id": "H33",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R12",
+    "from": "R14",
+    "points": "(-33,-16,21) → (-33,-16,-3)"
+  },
+  {
+    "id": "H34",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R13",
+    "from": "R12",
+    "points": "(-33,-16,-3) → (-33,-16,-27)"
+  },
+  {
+    "id": "H35",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "M01",
+    "from": "G13",
+    "points": "(27,-16,111) → (21,-16,111) → (21,-16,153)"
+  },
+  {
+    "id": "H36",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R33",
+    "from": "M01",
+    "points": "(21,-16,153) → (51,-16,153) → (51,-16,171)"
+  },
+  {
+    "id": "H37",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R04",
+    "from": "R05",
+    "points": "(-105,-16,45) → (-105,-16,3)"
+  },
+  {
+    "id": "H38",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R02",
+    "from": "R04",
+    "points": "(-105,-16,3) → (-105,-16,-21)"
+  },
+  {
+    "id": "H39",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R03",
+    "from": "R02",
+    "points": "(-105,-16,-21) → (-105,-16,-45)"
+  },
+  {
+    "id": "H40",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R07",
+    "from": "R02",
+    "points": "(-105,-16,-21) → (-129,-16,-21)"
+  },
+  {
+    "id": "H41",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "M03",
+    "from": "R02",
+    "points": "(-105,-16,-21) → (-81,-16,-21) → (-81,-16,-15)"
+  },
+  {
+    "id": "H42",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R19",
+    "from": "R03",
+    "points": "(-105,-16,-45) → (-69,-16,-45) → (-69,-16,-99)"
+  },
+  {
+    "id": "H43",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R06",
+    "from": "R19",
+    "points": "(-69,-16,-99) → (-117,-16,-99) → (-117,-16,-117)"
+  },
+  {
+    "id": "H44",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G06",
+    "from": "R06",
+    "points": "(-117,-16,-117) → (-141,-16,-117) → (-141,-16,-99)"
+  },
+  {
+    "id": "H45",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R10",
+    "from": "R06",
+    "points": "(-117,-16,-117) → (-141,-16,-117) → (-141,-16,-141)"
+  },
+  {
+    "id": "H46",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R25",
+    "from": "A03",
+    "points": "(153,-16,99) → (141,-16,99) → (141,-16,3)"
+  },
+  {
+    "id": "H47",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G16",
+    "from": "R25",
+    "points": "(141,-16,3) → (183,-16,3) → (183,-16,-3)"
+  },
+  {
+    "id": "H48",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R32",
+    "from": "G16",
+    "points": "(183,-16,-3) → (207,-16,-3) → (207,-16,-15)"
+  },
+  {
+    "id": "H49",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R28",
+    "from": "G16",
+    "points": "(183,-16,-3) → (171,-16,-3) → (171,-16,-39)"
+  },
+  {
+    "id": "H50",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "M04",
+    "from": "R28",
+    "points": "(171,-16,-39) → (147,-16,-39) → (147,-16,-63)"
+  },
+  {
+    "id": "H51",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "G09",
+    "from": "M04",
+    "points": "(147,-16,-63) → (171,-16,-63) → (171,-16,-75)"
+  },
+  {
+    "id": "H52",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R29",
+    "from": "G09",
+    "points": "(171,-16,-75) → (171,-16,-111)"
+  },
+  {
+    "id": "H53",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R24",
+    "from": "R29",
+    "points": "(171,-16,-111) → (147,-16,-111)"
+  },
+  {
+    "id": "H54",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "R22",
+    "from": "M04",
+    "points": "(147,-16,-63) → (123,-16,-63) → (123,-16,-87)"
+  },
+  {
+    "id": "LA1",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "M02",
+    "from": "M01",
+    "points": "(21,-16,153) → (189,-16,153) → (189,-16,159)"
+  },
+  {
+    "id": "LA2",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "M03",
+    "from": "M02",
+    "points": "(189,-16,159) → (-33,-16,159) → (-33,-16,141) → (-81,-16,141) → (-81,-16,-15)"
+  },
+  {
+    "id": "LA3",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "M04",
+    "from": "M03",
+    "points": "(-81,-16,-15) → (-21,-16,-15) → (-21,-16,-21) → (63,-16,-21) → (63,-16,9) → (147,-16,9) → (147,-16,-63)"
+  },
+  {
+    "id": "LA4",
+    "reason": "Otras alas o lazos; se conserva sin intervención",
+    "selected": false,
+    "to": "M01",
+    "from": "M04",
+    "points": "(147,-16,-63) → (135,-16,-63) → (135,-16,9) → (57,-16,9) → (57,-16,57) → (21,-16,57) → (21,-16,153)"
+  }
+]

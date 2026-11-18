@@ -1,0 +1,549 @@
+{
+  "sceneSHA256": "45b24571909cdbb425043fec803381956d0d954f61c961ae2c733f109b8fff35",
+  "sceneBytes": 96932348,
+  "spaces": 68,
+  "connections": 73,
+  "categoryCounts": {
+    "A": 0,
+    "B": 12,
+    "C": 15,
+    "D": 46
+  },
+  "liveUnityTests": 0,
+  "activeBoxes": 8140,
+  "activeMeshColliders": 390,
+  "disabledCounts": {
+    "Base_Ceiling_3m_01 / collider desactivado": 2063,
+    "Column_Ceiling_02 / objeto inactivo": 449,
+    "Platform_Base_01 / objeto inactivo": 144,
+    "Base_Wall_02 / collider desactivado": 73,
+    "Column_Stackable_01 / collider desactivado": 367,
+    "Base_Ceiling_3m_01 / objeto inactivo": 1067,
+    "Arch_Wide_01 / collider desactivado": 41,
+    "Ceiling_Beam_01 / objeto inactivo": 379,
+    "Ceiling_Beam_01 / collider desactivado": 47,
+    "Ceiling_Beam_02 / collider desactivado": 120,
+    "Torch_01 / trigger": 6,
+    "Bottom_Decor_01 / collider desactivado": 1,
+    "Column_Ceiling_02 / collider desactivado": 1,
+    "Railing_01 / objeto inactivo": 1
+  },
+  "visualOnlyCount": 2672,
+  "missingLiteralHierarchy": [
+    {
+      "id": "P01",
+      "source": "D03, X0..18 Z0..30"
+    }
+  ],
+  "naveEnvelopeArea": 38412,
+  "designComponentsWithoutBlockedTraces": [
+    [
+      "R01",
+      "G14",
+      "G08",
+      "R17",
+      "G15",
+      "R11",
+      "G12",
+      "G07",
+      "R09",
+      "R16",
+      "R08",
+      "G13",
+      "R05",
+      "R34",
+      "R20",
+      "M01",
+      "G10",
+      "R04",
+      "G05",
+      "R33",
+      "M02",
+      "R18",
+      "R02",
+      "R21",
+      "G03",
+      "G02",
+      "R31",
+      "M03",
+      "R15",
+      "R03",
+      "R07",
+      "R23",
+      "R30",
+      "R26",
+      "R27",
+      "R14",
+      "R19",
+      "G11",
+      "A03",
+      "G04",
+      "R12",
+      "R06",
+      "A02",
+      "B05",
+      "B06",
+      "B01",
+      "G01",
+      "R13",
+      "G06",
+      "R10",
+      "A01",
+      "D01",
+      "D02",
+      "B02",
+      "B03",
+      "A00",
+      "D03",
+      "B04",
+      "P01"
+    ],
+    [
+      "R22",
+      "M04",
+      "R28",
+      "G09",
+      "G16",
+      "R29",
+      "R32",
+      "R24"
+    ],
+    [
+      "R25"
+    ]
+  ],
+  "detourCandidates": [
+    {
+      "for": "H46",
+      "boxHits": 0,
+      "missingSupport": 0
+    },
+    {
+      "for": "H47",
+      "boxHits": 0,
+      "missingSupport": 0
+    },
+    {
+      "for": "LA3",
+      "boxHits": 0,
+      "missingSupport": 0
+    },
+    {
+      "for": "LA4",
+      "boxHits": 0,
+      "missingSupport": 0
+    },
+    {
+      "for": "VC01/VE01/VS01 (tramo común)",
+      "boxHits": 0,
+      "missingSupport": 0
+    }
+  ],
+  "protectedUnchanged": true,
+  "offlineTests": [
+    {
+      "name": "Distancia de segmento que atraviesa caja",
+      "pass": true
+    },
+    {
+      "name": "Distancia paralela exterior a caja",
+      "pass": true
+    },
+    {
+      "name": "Distancia puntual a esquina",
+      "pass": true
+    },
+    {
+      "name": "Todas las cajas transformadas tienen ejes ortogonales",
+      "pass": true
+    },
+    {
+      "name": "54 naves conservan dos MeshCollider asociados",
+      "pass": true
+    },
+    {
+      "name": "Cuatro interferencias de eje documentadas",
+      "pass": true
+    },
+    {
+      "name": "Alternativas sin cruces de caja conocidos ni huecos de apoyo",
+      "pass": true
+    },
+    {
+      "name": "Escena, NavMeshData y dossier conservados",
+      "pass": true
+    },
+    {
+      "name": "Segmento cruza triángulo",
+      "pass": true
+    },
+    {
+      "name": "Punto sobre cara a distancia uno",
+      "pass": true
+    },
+    {
+      "name": "Segmentos paralelos separados",
+      "pass": true
+    },
+    {
+      "name": "Salas.csv conserva 68 filas",
+      "pass": true
+    },
+    {
+      "name": "Conexiones.csv conserva 73 filas",
+      "pass": true
+    },
+    {
+      "name": "IDs de CSV y JSON coinciden",
+      "pass": true
+    },
+    {
+      "name": "Coordenadas y dimensiones CSV/JSON coinciden",
+      "pass": true
+    },
+    {
+      "name": "67 referencias de jerarquía presentes, P01 solo propuesta",
+      "pass": true
+    },
+    {
+      "name": "68 fichas representadas con dimensiones y centros coherentes en SVG",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "73 conexiones identificadas en las láminas SVG",
+      "pass": true
+    },
+    {
+      "name": "68 IDs del informe coinciden con el catálogo",
+      "pass": true
+    },
+    {
+      "name": "73 polilíneas CSV/JSON coinciden",
+      "pass": true
+    }
+  ],
+  "notes": [
+    "D no demuestra que no exista un paso alternativo.",
+    "C corresponde a colisión del eje en archivos; no certifica desconexión NavMesh.",
+    "No se declaran salas terminadas sin recepción en Unity.",
+    "No se ejecuta ni modifica Unity."
+  ],
+  "meshGeometryIncluded": true,
+  "confirmedBuiltInUnity": 0,
+  "allUnityValidationPending": true,
+  "mainRouteLengthOfDesign": 894.2652863053868,
+  "criticalSharedPoint": [
+    132,
+    -16,
+    105
+  ],
+  "knownCauses": [
+    {
+      "type": "MeshCollider .asset activo, triángulos decodificados",
+      "object": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 102/102 (30×42)\"/Nervaduras, pilastras y transiciones",
+      "guid": "b19fc356bc0e0604ca7277685fee6b65",
+      "asset": "Assets/ROM/CiudadDelSol34Naves/Nave_08_2.asset",
+      "p": [
+        132,
+        -16,
+        105
+      ],
+      "links": [
+        "VC01",
+        "VE01",
+        "VS01"
+      ]
+    },
+    {
+      "type": "MeshCollider .asset activo, triángulos decodificados",
+      "object": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 132/120 (18×78)\"/Nervaduras, pilastras y transiciones",
+      "guid": "c7eebb731a5c4114d9ecde1ca80a9c18",
+      "asset": "Assets/ROM/CiudadDelSol34Naves/Nave_02_2.asset",
+      "p": [
+        133,
+        -16,
+        159
+      ],
+      "links": [
+        "H05",
+        "LA2"
+      ]
+    },
+    {
+      "type": "MeshCollider .asset activo, triángulos decodificados",
+      "object": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 114/156 (18×18)\"/Nervaduras, pilastras y transiciones",
+      "guid": "1bc849c0bb5af0840b6551ceee1bf2d8",
+      "asset": "Assets/ROM/CiudadDelSol34Naves/Nave_30_2.asset",
+      "p": [
+        132,
+        -16,
+        159
+      ],
+      "links": [
+        "H05",
+        "LA2"
+      ]
+    },
+    {
+      "type": "MeshCollider .asset activo, triángulos decodificados",
+      "object": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 48/78 (18×78)\"/Nervaduras, pilastras y transiciones",
+      "guid": "8009843f9193fb24db92deea02794d06",
+      "asset": "Assets/ROM/CiudadDelSol34Naves/Nave_04_2.asset",
+      "p": [
+        49,
+        -16,
+        117
+      ],
+      "links": [
+        "H15"
+      ]
+    },
+    {
+      "type": "MeshCollider .asset activo, triángulos decodificados",
+      "object": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -24/90 (18×78)\"/Nervaduras, pilastras y transiciones",
+      "guid": "2fd5f9a58157c7f43ad42a703a18cd58",
+      "asset": "Assets/ROM/CiudadDelSol34Naves/Nave_03_2.asset",
+      "p": [
+        -23,
+        -16,
+        129
+      ],
+      "links": [
+        "H19"
+      ]
+    },
+    {
+      "type": "MeshCollider .asset activo, triángulos decodificados",
+      "object": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -114/114 (18×18)\"/Nervaduras, pilastras y transiciones",
+      "guid": "399c44b82aa388c47b1d6c788f1adecf",
+      "asset": "Assets/ROM/CiudadDelSol34Naves/Nave_29_2.asset",
+      "p": [
+        -96,
+        -16,
+        117
+      ],
+      "links": [
+        "H22"
+      ]
+    },
+    {
+      "type": "MeshCollider .asset activo, triángulos decodificados",
+      "object": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 48/78 (18×78)\"/Nervaduras, pilastras y transiciones",
+      "guid": "8009843f9193fb24db92deea02794d06",
+      "asset": "Assets/ROM/CiudadDelSol34Naves/Nave_04_2.asset",
+      "p": [
+        48,
+        -16,
+        153
+      ],
+      "links": [
+        "H36",
+        "LA1"
+      ]
+    },
+    {
+      "type": "BoxCollider activo",
+      "object": "Subsuelo_Acceso_Etapa01/04 - Protecciones del piso inferior/Railing_01",
+      "instance": "207646119",
+      "collider": "6581090",
+      "p": [
+        145,
+        -16,
+        99
+      ],
+      "links": [
+        "H46"
+      ]
+    },
+    {
+      "type": "BoxCollider activo",
+      "object": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+      "instance": "1605132572",
+      "collider": "3914816671524358254",
+      "p": [
+        151,
+        -16,
+        3
+      ],
+      "links": [
+        "H47"
+      ]
+    },
+    {
+      "type": "BoxCollider activo",
+      "object": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+      "instance": "1785767212",
+      "collider": "3914816671524358254",
+      "p": [
+        160,
+        -16,
+        3
+      ],
+      "links": [
+        "H47"
+      ]
+    },
+    {
+      "type": "BoxCollider activo",
+      "object": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+      "instance": "333649260",
+      "collider": "3914816671524358254",
+      "p": [
+        169,
+        -16,
+        3
+      ],
+      "links": [
+        "H47"
+      ]
+    },
+    {
+      "type": "MeshCollider .asset activo, triángulos decodificados",
+      "object": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 114/-120 (18×66)\"/Nervaduras, pilastras y transiciones",
+      "guid": "307da8f3e38c68745bd5e9724045cebf",
+      "asset": "Assets/ROM/CiudadDelSol34Naves/Nave_05_2.asset",
+      "p": [
+        132,
+        -16,
+        -63
+      ],
+      "links": [
+        "H54"
+      ]
+    },
+    {
+      "type": "BoxCollider activo",
+      "object": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+      "instance": "1394495222",
+      "collider": "1394495225",
+      "p": [
+        -21,
+        -16,
+        -17
+      ],
+      "links": [
+        "LA3"
+      ]
+    },
+    {
+      "type": "BoxCollider activo",
+      "object": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+      "instance": "1960575576",
+      "collider": "1960575579",
+      "p": [
+        -18,
+        -16,
+        -21
+      ],
+      "links": [
+        "LA3"
+      ]
+    },
+    {
+      "type": "BoxCollider activo",
+      "object": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+      "instance": "960518187",
+      "collider": "960518190",
+      "p": [
+        53,
+        -16,
+        -21
+      ],
+      "links": [
+        "LA3"
+      ]
+    },
+    {
+      "type": "BoxCollider activo",
+      "object": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+      "instance": "1958434412",
+      "collider": "1958434415",
+      "p": [
+        57,
+        -16,
+        53
+      ],
+      "links": [
+        "LA4"
+      ]
+    },
+    {
+      "type": "BoxCollider activo",
+      "object": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+      "instance": "1967147222",
+      "collider": "1967147225",
+      "p": [
+        54,
+        -16,
+        57
+      ],
+      "links": [
+        "LA4"
+      ]
+    }
+  ],
+  "visibleWallWarnings": 18,
+  "wallPointsWithoutKnownReplacement": 9,
+  "layerAudit": {
+    "characterLayer": 6,
+    "defaultLayer": 0,
+    "defaultVsCharacter": true,
+    "obstacleBoxLayers": [
+      0
+    ],
+    "note": "Matriz de proyecto en disco. No se comprueban llamadas IgnoreCollision/IgnoreLayerCollision en ejecución ni overrides de capa de PhysX en un Editor vivo."
+  },
+  "dataChecks": [
+    {
+      "name": "Salas.csv conserva 68 filas",
+      "pass": true
+    },
+    {
+      "name": "Conexiones.csv conserva 73 filas",
+      "pass": true
+    },
+    {
+      "name": "IDs de CSV y JSON coinciden",
+      "pass": true
+    },
+    {
+      "name": "Coordenadas y dimensiones CSV/JSON coinciden",
+      "pass": true
+    },
+    {
+      "name": "67 referencias de jerarquía presentes, P01 solo propuesta",
+      "pass": true
+    },
+    {
+      "name": "68 fichas representadas con dimensiones y centros coherentes en SVG",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "73 conexiones identificadas en las láminas SVG",
+      "pass": true
+    },
+    {
+      "name": "68 IDs del informe coinciden con el catálogo",
+      "pass": true
+    },
+    {
+      "name": "73 polilíneas CSV/JSON coinciden",
+      "pass": true
+    }
+  ],
+  "graphComponentsAfterKnownInterferences": [
+    22,
+    5,
+    3,
+    5,
+    1,
+    7,
+    1,
+    13,
+    1,
+    4,
+    6
+  ]
+}

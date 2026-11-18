@@ -1,0 +1,70 @@
+{
+  "performed": "Offline, sin Unity",
+  "checks": [
+    {
+      "name": "68 IDs de espacios únicos",
+      "pass": true
+    },
+    {
+      "name": "73 IDs de conexiones únicos",
+      "pass": true
+    },
+    {
+      "name": "54 naves medidas, 108 mallas",
+      "pass": true
+    },
+    {
+      "name": "Referencias de conexión existentes",
+      "pass": true
+    },
+    {
+      "name": "Valores finitos y dimensiones positivas",
+      "pass": true
+    },
+    {
+      "name": "Pendiente de eje no supera 45 grados",
+      "pass": true
+    },
+    {
+      "name": "Sin saltos verticales de longitud horizontal nula",
+      "pass": true
+    },
+    {
+      "name": "54 naves respaldadas por huella modular",
+      "pass": true
+    },
+    {
+      "name": "Apoyo nominal del eje horizontal, muestras <=1 m",
+      "pass": true,
+      "details": {
+        "samples": 5095,
+        "failures": [],
+        "excludes": "Obstáculos, cápsulas, pendientes, bordes y NavMesh"
+      }
+    },
+    {
+      "name": "Grafo de DISEÑO conectado",
+      "pass": true,
+      "details": "No implica conectividad NavMesh"
+    },
+    {
+      "name": "No confundir cruce de puentes",
+      "pass": true
+    },
+    {
+      "name": "Escena y dos NavMeshData conservados",
+      "pass": true
+    },
+    {
+      "name": "59 NavMeshModifier conservados",
+      "pass": true
+    }
+  ],
+  "pending": [
+    "NavMesh.CalculatePath bidireccional real",
+    "Barridos físicos completos y MeshCollider importados",
+    "Cuatro jugadores y Mirror",
+    "Dimensiones y animaciones del jefe",
+    "Rendimiento"
+  ]
+}

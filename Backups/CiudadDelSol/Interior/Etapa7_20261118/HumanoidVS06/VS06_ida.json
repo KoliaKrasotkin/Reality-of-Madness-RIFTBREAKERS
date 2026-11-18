@@ -1,0 +1,2626 @@
+{
+    "name": "Humanoid VS06 ida",
+    "clear": true,
+    "insideCorridor": true,
+    "samples": 45,
+    "failures": 0,
+    "sweepFailures": 0,
+    "missingNav": 0,
+    "refinedSweeps": 0,
+    "disconnectedSurfaceSteps": 0,
+    "maximumInterpolatedHeightCorrection": 0.049999237060546878,
+    "maximumSlope": 0.0,
+    "minimumNavEdge": 10.456097602844239,
+    "stations": [
+        {
+            "requested": {
+                "x": 18.0,
+                "y": -37.95000076293945,
+                "z": 9.0
+            },
+            "rawPathPoint": {
+                "x": 18.0,
+                "y": -37.95000076293945,
+                "z": 9.0
+            },
+            "floor": {
+                "x": 18.0,
+                "y": -38.0,
+                "z": 9.0
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 18.0,
+                "y": -37.95000076293945,
+                "z": 9.0
+            },
+            "navPosition": {
+                "x": 18.0,
+                "y": -37.95000076293945,
+                "z": 9.0
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 10.456097602844239,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 17.795454025268556,
+                "y": -38.0,
+                "z": 9.136363983154297
+            },
+            "rawPathPoint": {
+                "x": 17.795454025268556,
+                "y": -37.95000076293945,
+                "z": 9.136363983154297
+            },
+            "floor": {
+                "x": 17.795454025268556,
+                "y": -38.0,
+                "z": 9.136363983154297
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 17.795454025268556,
+                "y": -37.95000076293945,
+                "z": 9.136363983154297
+            },
+            "navPosition": {
+                "x": 17.795454025268556,
+                "y": -37.95000076293945,
+                "z": 9.136363983154297
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 10.627129554748536,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 17.590909957885743,
+                "y": -38.0,
+                "z": 9.272727012634278
+            },
+            "rawPathPoint": {
+                "x": 17.590909957885743,
+                "y": -37.95000076293945,
+                "z": 9.272727012634278
+            },
+            "floor": {
+                "x": 17.590909957885743,
+                "y": -38.0,
+                "z": 9.272727012634278
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 17.590909957885743,
+                "y": -37.95000076293945,
+                "z": 9.272727012634278
+            },
+            "navPosition": {
+                "x": 17.590909957885743,
+                "y": -37.95000076293945,
+                "z": 9.272727012634278
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 10.801047325134278,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 17.386363983154298,
+                "y": -38.0,
+                "z": 9.409090995788575
+            },
+            "rawPathPoint": {
+                "x": 17.386363983154298,
+                "y": -37.95000076293945,
+                "z": 9.409090995788575
+            },
+            "floor": {
+                "x": 17.386363983154298,
+                "y": -38.0,
+                "z": 9.409090995788575
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 17.386363983154298,
+                "y": -37.95000076293945,
+                "z": 9.409090995788575
+            },
+            "navPosition": {
+                "x": 17.386363983154298,
+                "y": -37.95000076293945,
+                "z": 9.409090995788575
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 10.977716445922852,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 17.18181800842285,
+                "y": -38.0,
+                "z": 9.545454978942871
+            },
+            "rawPathPoint": {
+                "x": 17.18181800842285,
+                "y": -37.95000076293945,
+                "z": 9.545454978942871
+            },
+            "floor": {
+                "x": 17.18181800842285,
+                "y": -38.0,
+                "z": 9.545454978942871
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 17.18181800842285,
+                "y": -37.95000076293945,
+                "z": 9.545454978942871
+            },
+            "navPosition": {
+                "x": 17.18181800842285,
+                "y": -37.95000076293945,
+                "z": 9.545454978942871
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 11.157005310058594,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 16.977272033691408,
+                "y": -38.0,
+                "z": 9.681818008422852
+            },
+            "rawPathPoint": {
+                "x": 16.977272033691408,
+                "y": -37.95000076293945,
+                "z": 9.681818008422852
+            },
+            "floor": {
+                "x": 16.977272033691408,
+                "y": -38.0,
+                "z": 9.681818008422852
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 16.977272033691408,
+                "y": -37.95000076293945,
+                "z": 9.681818008422852
+            },
+            "navPosition": {
+                "x": 16.977272033691408,
+                "y": -37.95000076293945,
+                "z": 9.681818008422852
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 11.338788032531739,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 16.772727966308595,
+                "y": -38.0,
+                "z": 9.818181991577149
+            },
+            "rawPathPoint": {
+                "x": 16.772727966308595,
+                "y": -37.95000076293945,
+                "z": 9.818181991577149
+            },
+            "floor": {
+                "x": 16.772727966308595,
+                "y": -38.0,
+                "z": 9.818181991577149
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 16.772727966308595,
+                "y": -37.95000076293945,
+                "z": 9.818181991577149
+            },
+            "navPosition": {
+                "x": 16.772727966308595,
+                "y": -37.95000076293945,
+                "z": 9.818181991577149
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 11.522948265075684,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 16.56818199157715,
+                "y": -38.0,
+                "z": 9.954545021057129
+            },
+            "rawPathPoint": {
+                "x": 16.56818199157715,
+                "y": -37.95000076293945,
+                "z": 9.954545021057129
+            },
+            "floor": {
+                "x": 16.56818199157715,
+                "y": -38.0,
+                "z": 9.954545021057129
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 16.56818199157715,
+                "y": -37.95000076293945,
+                "z": 9.954545021057129
+            },
+            "navPosition": {
+                "x": 16.56818199157715,
+                "y": -37.95000076293945,
+                "z": 9.954545021057129
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 11.709373474121094,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 16.363636016845704,
+                "y": -38.0,
+                "z": 10.090909004211426
+            },
+            "rawPathPoint": {
+                "x": 16.363636016845704,
+                "y": -37.95000076293945,
+                "z": 10.090909004211426
+            },
+            "floor": {
+                "x": 16.363636016845704,
+                "y": -38.0,
+                "z": 10.090909004211426
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 16.363636016845704,
+                "y": -37.95000076293945,
+                "z": 10.090909004211426
+            },
+            "navPosition": {
+                "x": 16.363636016845704,
+                "y": -37.95000076293945,
+                "z": 10.090909004211426
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 11.897957801818848,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 16.159090042114259,
+                "y": -38.0,
+                "z": 10.227272987365723
+            },
+            "rawPathPoint": {
+                "x": 16.159090042114259,
+                "y": -37.95000076293945,
+                "z": 10.227272987365723
+            },
+            "floor": {
+                "x": 16.159090042114259,
+                "y": -38.0,
+                "z": 10.227272987365723
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 16.159090042114259,
+                "y": -37.95000076293945,
+                "z": 10.227272987365723
+            },
+            "navPosition": {
+                "x": 16.159090042114259,
+                "y": -37.95000076293945,
+                "z": 10.227272987365723
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 12.088600158691407,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 15.954545021057129,
+                "y": -38.0,
+                "z": 10.363636016845704
+            },
+            "rawPathPoint": {
+                "x": 15.954545021057129,
+                "y": -37.95000076293945,
+                "z": 10.363636016845704
+            },
+            "floor": {
+                "x": 15.954545021057129,
+                "y": -38.0,
+                "z": 10.363636016845704
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 15.954545021057129,
+                "y": -37.95000076293945,
+                "z": 10.363636016845704
+            },
+            "navPosition": {
+                "x": 15.954545021057129,
+                "y": -37.95000076293945,
+                "z": 10.363636016845704
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 12.28120231628418,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 15.75,
+                "y": -38.0,
+                "z": 10.5
+            },
+            "rawPathPoint": {
+                "x": 15.75,
+                "y": -37.95000076293945,
+                "z": 10.5
+            },
+            "floor": {
+                "x": 15.75,
+                "y": -38.0,
+                "z": 10.5
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 15.75,
+                "y": -37.95000076293945,
+                "z": 10.5
+            },
+            "navPosition": {
+                "x": 15.75,
+                "y": -37.95000076293945,
+                "z": 10.5
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 12.475675582885743,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 15.545454025268555,
+                "y": -38.0,
+                "z": 10.636363983154297
+            },
+            "rawPathPoint": {
+                "x": 15.545454025268555,
+                "y": -37.95000076293945,
+                "z": 10.636363983154297
+            },
+            "floor": {
+                "x": 15.545454025268555,
+                "y": -38.0,
+                "z": 10.636363983154297
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 15.545454025268555,
+                "y": -37.95000076293945,
+                "z": 10.636363983154297
+            },
+            "navPosition": {
+                "x": 15.545454025268555,
+                "y": -37.95000076293945,
+                "z": 10.636363983154297
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 12.671935081481934,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 15.340909004211426,
+                "y": -38.0,
+                "z": 10.772727012634278
+            },
+            "rawPathPoint": {
+                "x": 15.340909004211426,
+                "y": -37.95000076293945,
+                "z": 10.772727012634278
+            },
+            "floor": {
+                "x": 15.340909004211426,
+                "y": -38.0,
+                "z": 10.772727012634278
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 15.340909004211426,
+                "y": -37.95000076293945,
+                "z": 10.772727012634278
+            },
+            "navPosition": {
+                "x": 15.340909004211426,
+                "y": -37.95000076293945,
+                "z": 10.772727012634278
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 12.869895935058594,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 15.136363983154297,
+                "y": -38.0,
+                "z": 10.909090995788575
+            },
+            "rawPathPoint": {
+                "x": 15.136363983154297,
+                "y": -37.95000076293945,
+                "z": 10.909090995788575
+            },
+            "floor": {
+                "x": 15.136363983154297,
+                "y": -38.0,
+                "z": 10.909090995788575
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 15.136363983154297,
+                "y": -37.95000076293945,
+                "z": 10.909090995788575
+            },
+            "navPosition": {
+                "x": 15.136363983154297,
+                "y": -37.95000076293945,
+                "z": 10.909090995788575
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 13.069483757019043,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 14.931818008422852,
+                "y": -38.0,
+                "z": 11.045454978942871
+            },
+            "rawPathPoint": {
+                "x": 14.931818008422852,
+                "y": -37.95000076293945,
+                "z": 11.045454978942871
+            },
+            "floor": {
+                "x": 14.931818008422852,
+                "y": -38.0,
+                "z": 11.045454978942871
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 14.931818008422852,
+                "y": -37.95000076293945,
+                "z": 11.045454978942871
+            },
+            "navPosition": {
+                "x": 14.931818008422852,
+                "y": -37.95000076293945,
+                "z": 11.045454978942871
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 13.270623207092286,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 14.727272987365723,
+                "y": -38.0,
+                "z": 11.181818008422852
+            },
+            "rawPathPoint": {
+                "x": 14.727272987365723,
+                "y": -37.95000076293945,
+                "z": 11.181818008422852
+            },
+            "floor": {
+                "x": 14.727272987365723,
+                "y": -38.0,
+                "z": 11.181818008422852
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 14.727272987365723,
+                "y": -37.95000076293945,
+                "z": 11.181818008422852
+            },
+            "navPosition": {
+                "x": 14.727272987365723,
+                "y": -37.95000076293945,
+                "z": 11.181818008422852
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 13.473245620727539,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 14.522727012634278,
+                "y": -38.0,
+                "z": 11.318181991577149
+            },
+            "rawPathPoint": {
+                "x": 14.522727012634278,
+                "y": -37.95000076293945,
+                "z": 11.318181991577149
+            },
+            "floor": {
+                "x": 14.522727012634278,
+                "y": -38.0,
+                "z": 11.318181991577149
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 14.522727012634278,
+                "y": -37.95000076293945,
+                "z": 11.318181991577149
+            },
+            "navPosition": {
+                "x": 14.522727012634278,
+                "y": -37.95000076293945,
+                "z": 11.318181991577149
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 13.677284240722657,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 14.318181991577149,
+                "y": -38.0,
+                "z": 11.454545021057129
+            },
+            "rawPathPoint": {
+                "x": 14.318181991577149,
+                "y": -37.95000076293945,
+                "z": 11.454545021057129
+            },
+            "floor": {
+                "x": 14.318181991577149,
+                "y": -38.0,
+                "z": 11.454545021057129
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 14.318181991577149,
+                "y": -37.95000076293945,
+                "z": 11.454545021057129
+            },
+            "navPosition": {
+                "x": 14.318181991577149,
+                "y": -37.95000076293945,
+                "z": 11.454545021057129
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 13.882678031921387,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 14.113636016845704,
+                "y": -38.0,
+                "z": 11.590909004211426
+            },
+            "rawPathPoint": {
+                "x": 14.113636016845704,
+                "y": -37.95000076293945,
+                "z": 11.590909004211426
+            },
+            "floor": {
+                "x": 14.113636016845704,
+                "y": -38.0,
+                "z": 11.590909004211426
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 14.113636016845704,
+                "y": -37.95000076293945,
+                "z": 11.590909004211426
+            },
+            "navPosition": {
+                "x": 14.113636016845704,
+                "y": -37.95000076293945,
+                "z": 11.590909004211426
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 14.089366912841797,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 13.909090995788575,
+                "y": -38.0,
+                "z": 11.727272987365723
+            },
+            "rawPathPoint": {
+                "x": 13.909090995788575,
+                "y": -37.95000076293945,
+                "z": 11.727272987365723
+            },
+            "floor": {
+                "x": 13.909090995788575,
+                "y": -38.0,
+                "z": 11.727272987365723
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 13.909090995788575,
+                "y": -37.95000076293945,
+                "z": 11.727272987365723
+            },
+            "navPosition": {
+                "x": 13.909090995788575,
+                "y": -37.95000076293945,
+                "z": 11.727272987365723
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 14.297294616699219,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 13.704545974731446,
+                "y": -38.0,
+                "z": 11.863636016845704
+            },
+            "rawPathPoint": {
+                "x": 13.704545974731446,
+                "y": -37.95000076293945,
+                "z": 11.863636016845704
+            },
+            "floor": {
+                "x": 13.704545974731446,
+                "y": -38.0,
+                "z": 11.863636016845704
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 13.704545974731446,
+                "y": -37.95000076293945,
+                "z": 11.863636016845704
+            },
+            "navPosition": {
+                "x": 13.704545974731446,
+                "y": -37.95000076293945,
+                "z": 11.863636016845704
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 14.506407737731934,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 13.5,
+                "y": -38.0,
+                "z": 12.0
+            },
+            "rawPathPoint": {
+                "x": 13.5,
+                "y": -37.95000076293945,
+                "z": 12.0
+            },
+            "floor": {
+                "x": 13.5,
+                "y": -38.0,
+                "z": 12.0
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 13.5,
+                "y": -37.95000076293945,
+                "z": 12.0
+            },
+            "navPosition": {
+                "x": 13.5,
+                "y": -37.95000076293945,
+                "z": 12.0
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 14.716657638549805,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 13.295454978942871,
+                "y": -38.0,
+                "z": 12.136363983154297
+            },
+            "rawPathPoint": {
+                "x": 13.295454978942871,
+                "y": -37.95000076293945,
+                "z": 12.136363983154297
+            },
+            "floor": {
+                "x": 13.295454978942871,
+                "y": -38.0,
+                "z": 12.136363983154297
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 13.295454978942871,
+                "y": -37.95000076293945,
+                "z": 12.136363983154297
+            },
+            "navPosition": {
+                "x": 13.295454978942871,
+                "y": -37.95000076293945,
+                "z": 12.136363983154297
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 14.927992820739746,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 13.090909004211426,
+                "y": -38.0,
+                "z": 12.272727012634278
+            },
+            "rawPathPoint": {
+                "x": 13.090909004211426,
+                "y": -37.95000076293945,
+                "z": 12.272727012634278
+            },
+            "floor": {
+                "x": 13.090909004211426,
+                "y": -38.0,
+                "z": 12.272727012634278
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 13.090909004211426,
+                "y": -37.95000076293945,
+                "z": 12.272727012634278
+            },
+            "navPosition": {
+                "x": 13.090909004211426,
+                "y": -37.95000076293945,
+                "z": 12.272727012634278
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 15.14037036895752,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 12.886363983154297,
+                "y": -38.0,
+                "z": 12.409090995788575
+            },
+            "rawPathPoint": {
+                "x": 12.886363983154297,
+                "y": -37.95000076293945,
+                "z": 12.409090995788575
+            },
+            "floor": {
+                "x": 12.886363983154297,
+                "y": -38.0,
+                "z": 12.409090995788575
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 12.886363983154297,
+                "y": -37.95000076293945,
+                "z": 12.409090995788575
+            },
+            "navPosition": {
+                "x": 12.886363983154297,
+                "y": -37.95000076293945,
+                "z": 12.409090995788575
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 15.35374641418457,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 12.681818008422852,
+                "y": -38.0,
+                "z": 12.545454025268555
+            },
+            "rawPathPoint": {
+                "x": 12.681818008422852,
+                "y": -37.95000076293945,
+                "z": 12.545454025268555
+            },
+            "floor": {
+                "x": 12.681818008422852,
+                "y": -38.0,
+                "z": 12.545454025268555
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 12.681818008422852,
+                "y": -37.95000076293945,
+                "z": 12.545454025268555
+            },
+            "navPosition": {
+                "x": 12.681818008422852,
+                "y": -37.95000076293945,
+                "z": 12.545454025268555
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 15.568079948425293,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 12.477272987365723,
+                "y": -38.0,
+                "z": 12.681818008422852
+            },
+            "rawPathPoint": {
+                "x": 12.477272987365723,
+                "y": -37.95000076293945,
+                "z": 12.681818008422852
+            },
+            "floor": {
+                "x": 12.477272987365723,
+                "y": -38.0,
+                "z": 12.681818008422852
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 12.477272987365723,
+                "y": -37.95000076293945,
+                "z": 12.681818008422852
+            },
+            "navPosition": {
+                "x": 12.477272987365723,
+                "y": -37.95000076293945,
+                "z": 12.681818008422852
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 15.77727222442627,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 12.272727012634278,
+                "y": -38.0,
+                "z": 12.818181991577149
+            },
+            "rawPathPoint": {
+                "x": 12.272727012634278,
+                "y": -37.95000076293945,
+                "z": 12.818181991577149
+            },
+            "floor": {
+                "x": 12.272727012634278,
+                "y": -38.0,
+                "z": 12.818181991577149
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 12.272727012634278,
+                "y": -37.95000076293945,
+                "z": 12.818181991577149
+            },
+            "navPosition": {
+                "x": 12.272727012634278,
+                "y": -37.95000076293945,
+                "z": 12.818181991577149
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 15.572726249694825,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 12.068181991577149,
+                "y": -38.0,
+                "z": 12.954545974731446
+            },
+            "rawPathPoint": {
+                "x": 12.068181991577149,
+                "y": -37.95000076293945,
+                "z": 12.954545974731446
+            },
+            "floor": {
+                "x": 12.068181991577149,
+                "y": -38.0,
+                "z": 12.954545974731446
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 12.068181991577149,
+                "y": -37.95000076293945,
+                "z": 12.954545974731446
+            },
+            "navPosition": {
+                "x": 12.068181991577149,
+                "y": -37.95000076293945,
+                "z": 12.954545974731446
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 15.368181228637696,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 11.863636016845704,
+                "y": -38.0,
+                "z": 13.090909004211426
+            },
+            "rawPathPoint": {
+                "x": 11.863636016845704,
+                "y": -37.95000076293945,
+                "z": 13.090909004211426
+            },
+            "floor": {
+                "x": 11.863636016845704,
+                "y": -38.0,
+                "z": 13.090909004211426
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 11.863636016845704,
+                "y": -37.95000076293945,
+                "z": 13.090909004211426
+            },
+            "navPosition": {
+                "x": 11.863636016845704,
+                "y": -37.95000076293945,
+                "z": 13.090909004211426
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 15.16363525390625,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 11.659090995788575,
+                "y": -38.0,
+                "z": 13.227272987365723
+            },
+            "rawPathPoint": {
+                "x": 11.659090995788575,
+                "y": -37.95000076293945,
+                "z": 13.227272987365723
+            },
+            "floor": {
+                "x": 11.659090995788575,
+                "y": -38.0,
+                "z": 13.227272987365723
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 11.659090995788575,
+                "y": -37.95000076293945,
+                "z": 13.227272987365723
+            },
+            "navPosition": {
+                "x": 11.659090995788575,
+                "y": -37.95000076293945,
+                "z": 13.227272987365723
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 14.959090232849121,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 11.454545021057129,
+                "y": -38.0,
+                "z": 13.363636016845704
+            },
+            "rawPathPoint": {
+                "x": 11.454545021057129,
+                "y": -37.95000076293945,
+                "z": 13.363636016845704
+            },
+            "floor": {
+                "x": 11.454545021057129,
+                "y": -38.0,
+                "z": 13.363636016845704
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 11.454545021057129,
+                "y": -37.95000076293945,
+                "z": 13.363636016845704
+            },
+            "navPosition": {
+                "x": 11.454545021057129,
+                "y": -37.95000076293945,
+                "z": 13.363636016845704
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 14.754544258117676,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 11.25,
+                "y": -38.0,
+                "z": 13.5
+            },
+            "rawPathPoint": {
+                "x": 11.25,
+                "y": -37.95000076293945,
+                "z": 13.5
+            },
+            "floor": {
+                "x": 11.25,
+                "y": -38.0,
+                "z": 13.5
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 11.25,
+                "y": -37.95000076293945,
+                "z": 13.5
+            },
+            "navPosition": {
+                "x": 11.25,
+                "y": -37.95000076293945,
+                "z": 13.5
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 14.549999237060547,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 11.045454978942871,
+                "y": -38.0,
+                "z": 13.636363983154297
+            },
+            "rawPathPoint": {
+                "x": 11.045454978942871,
+                "y": -37.95000076293945,
+                "z": 13.636363983154297
+            },
+            "floor": {
+                "x": 11.045454978942871,
+                "y": -38.0,
+                "z": 13.636363983154297
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 11.045454978942871,
+                "y": -37.95000076293945,
+                "z": 13.636363983154297
+            },
+            "navPosition": {
+                "x": 11.045454978942871,
+                "y": -37.95000076293945,
+                "z": 13.636363983154297
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 14.345454216003418,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 10.840909004211426,
+                "y": -38.0,
+                "z": 13.772727012634278
+            },
+            "rawPathPoint": {
+                "x": 10.840909004211426,
+                "y": -37.95000076293945,
+                "z": 13.772727012634278
+            },
+            "floor": {
+                "x": 10.840909004211426,
+                "y": -38.0,
+                "z": 13.772727012634278
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 10.840909004211426,
+                "y": -37.95000076293945,
+                "z": 13.772727012634278
+            },
+            "navPosition": {
+                "x": 10.840909004211426,
+                "y": -37.95000076293945,
+                "z": 13.772727012634278
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 14.140908241271973,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 10.636363983154297,
+                "y": -38.0,
+                "z": 13.909090995788575
+            },
+            "rawPathPoint": {
+                "x": 10.636363983154297,
+                "y": -37.95000076293945,
+                "z": 13.909090995788575
+            },
+            "floor": {
+                "x": 10.636363983154297,
+                "y": -38.0,
+                "z": 13.909090995788575
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 10.636363983154297,
+                "y": -37.95000076293945,
+                "z": 13.909090995788575
+            },
+            "navPosition": {
+                "x": 10.636363983154297,
+                "y": -37.95000076293945,
+                "z": 13.909090995788575
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 13.936363220214844,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 10.431818008422852,
+                "y": -38.0,
+                "z": 14.045454025268555
+            },
+            "rawPathPoint": {
+                "x": 10.431818008422852,
+                "y": -37.95000076293945,
+                "z": 14.045454025268555
+            },
+            "floor": {
+                "x": 10.431818008422852,
+                "y": -38.0,
+                "z": 14.045454025268555
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 10.431818008422852,
+                "y": -37.95000076293945,
+                "z": 14.045454025268555
+            },
+            "navPosition": {
+                "x": 10.431818008422852,
+                "y": -37.95000076293945,
+                "z": 14.045454025268555
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 13.731817245483399,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 10.227272987365723,
+                "y": -38.0,
+                "z": 14.181818008422852
+            },
+            "rawPathPoint": {
+                "x": 10.227272987365723,
+                "y": -37.95000076293945,
+                "z": 14.181818008422852
+            },
+            "floor": {
+                "x": 10.227272987365723,
+                "y": -38.0,
+                "z": 14.181818008422852
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 10.227272987365723,
+                "y": -37.95000076293945,
+                "z": 14.181818008422852
+            },
+            "navPosition": {
+                "x": 10.227272987365723,
+                "y": -37.95000076293945,
+                "z": 14.181818008422852
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 13.52727222442627,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 10.022727012634278,
+                "y": -38.0,
+                "z": 14.318181991577149
+            },
+            "rawPathPoint": {
+                "x": 10.022727012634278,
+                "y": -37.95000076293945,
+                "z": 14.318181991577149
+            },
+            "floor": {
+                "x": 10.022727012634278,
+                "y": -38.0,
+                "z": 14.318181991577149
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 10.022727012634278,
+                "y": -37.95000076293945,
+                "z": 14.318181991577149
+            },
+            "navPosition": {
+                "x": 10.022727012634278,
+                "y": -37.95000076293945,
+                "z": 14.318181991577149
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 13.322726249694825,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 9.818181991577149,
+                "y": -38.0,
+                "z": 14.454545974731446
+            },
+            "rawPathPoint": {
+                "x": 9.818181991577149,
+                "y": -37.95000076293945,
+                "z": 14.454545974731446
+            },
+            "floor": {
+                "x": 9.818181991577149,
+                "y": -38.0,
+                "z": 14.454545974731446
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 9.818181991577149,
+                "y": -37.95000076293945,
+                "z": 14.454545974731446
+            },
+            "navPosition": {
+                "x": 9.818181991577149,
+                "y": -37.95000076293945,
+                "z": 14.454545974731446
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 13.118181228637696,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 9.613636016845704,
+                "y": -38.0,
+                "z": 14.590909004211426
+            },
+            "rawPathPoint": {
+                "x": 9.613636016845704,
+                "y": -37.95000076293945,
+                "z": 14.590909004211426
+            },
+            "floor": {
+                "x": 9.613636016845704,
+                "y": -38.0,
+                "z": 14.590909004211426
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 9.613636016845704,
+                "y": -37.95000076293945,
+                "z": 14.590909004211426
+            },
+            "navPosition": {
+                "x": 9.613636016845704,
+                "y": -37.95000076293945,
+                "z": 14.590909004211426
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 12.91363525390625,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 9.409090995788575,
+                "y": -38.0,
+                "z": 14.727272987365723
+            },
+            "rawPathPoint": {
+                "x": 9.409090995788575,
+                "y": -37.95000076293945,
+                "z": 14.727272987365723
+            },
+            "floor": {
+                "x": 9.409090995788575,
+                "y": -38.0,
+                "z": 14.727272987365723
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 9.409090995788575,
+                "y": -37.95000076293945,
+                "z": 14.727272987365723
+            },
+            "navPosition": {
+                "x": 9.409090995788575,
+                "y": -37.95000076293945,
+                "z": 14.727272987365723
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 12.709090232849121,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 9.204545021057129,
+                "y": -38.0,
+                "z": 14.863636016845704
+            },
+            "rawPathPoint": {
+                "x": 9.204545021057129,
+                "y": -37.95000076293945,
+                "z": 14.863636016845704
+            },
+            "floor": {
+                "x": 9.204545021057129,
+                "y": -38.0,
+                "z": 14.863636016845704
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 9.204545021057129,
+                "y": -37.95000076293945,
+                "z": 14.863636016845704
+            },
+            "navPosition": {
+                "x": 9.204545021057129,
+                "y": -37.95000076293945,
+                "z": 14.863636016845704
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 12.504544258117676,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        },
+        {
+            "requested": {
+                "x": 9.0,
+                "y": -37.95000076293945,
+                "z": 15.0
+            },
+            "rawPathPoint": {
+                "x": 9.0,
+                "y": -37.95000076293945,
+                "z": 15.0
+            },
+            "floor": {
+                "x": 9.0,
+                "y": -38.0,
+                "z": 15.0
+            },
+            "normal": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "foot": {
+                "x": 9.0,
+                "y": -37.95000076293945,
+                "z": 15.0
+            },
+            "navPosition": {
+                "x": 9.0,
+                "y": -37.95000076293945,
+                "z": 15.0
+            },
+            "support": true,
+            "footprint": true,
+            "capsule": true,
+            "nav": true,
+            "gradedSupport": false,
+            "slope": 0.0,
+            "navEdge": 12.299999237060547,
+            "lift": 0.049999237060546878,
+            "centerPlaneLift": 0.05000000074505806,
+            "supportObject": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/01 - Piso profundo Y-38/Platform_Base_01",
+            "problem": {
+                "kind": "",
+                "collider": "",
+                "hierarchy": "",
+                "globalId": "",
+                "prefab": "",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "occurrences": 1
+            }
+        }
+    ],
+    "widths": [
+        {
+            "center": {
+                "x": 18.0,
+                "y": -38.0,
+                "z": 9.0
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        },
+        {
+            "center": {
+                "x": 17.18181800842285,
+                "y": -38.0,
+                "z": 9.545454978942871
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        },
+        {
+            "center": {
+                "x": 16.363636016845704,
+                "y": -38.0,
+                "z": 10.090909004211426
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        },
+        {
+            "center": {
+                "x": 15.545454025268555,
+                "y": -38.0,
+                "z": 10.636363983154297
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        },
+        {
+            "center": {
+                "x": 14.727272987365723,
+                "y": -38.0,
+                "z": 11.181818008422852
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        },
+        {
+            "center": {
+                "x": 13.909090995788575,
+                "y": -38.0,
+                "z": 11.727272987365723
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        },
+        {
+            "center": {
+                "x": 13.090909004211426,
+                "y": -38.0,
+                "z": 12.272727012634278
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        },
+        {
+            "center": {
+                "x": 12.272727012634278,
+                "y": -38.0,
+                "z": 12.818181991577149
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        },
+        {
+            "center": {
+                "x": 11.454545021057129,
+                "y": -38.0,
+                "z": 13.363636016845704
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        },
+        {
+            "center": {
+                "x": 10.636363983154297,
+                "y": -38.0,
+                "z": 13.909090995788575
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        },
+        {
+            "center": {
+                "x": 9.818181991577149,
+                "y": -38.0,
+                "z": 14.454545974731446
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        },
+        {
+            "center": {
+                "x": 9.0,
+                "y": -38.0,
+                "z": 15.0
+            },
+            "usefulWidthLowerBound": 6.0,
+            "fourStaticCapsulesClear": true,
+            "leftUnsupportedUnprotected": false,
+            "rightUnsupportedUnprotected": false
+        }
+    ],
+    "problems": []
+}

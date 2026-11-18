@@ -1,0 +1,107 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+using UnityEditor;
+
+namespace ROM.EditorTools
+{
+ public static partial class CiudadDelSolInteriorStageTwo
+ {
+  const string AutoWork="Backups/CiudadDelSol/Interior/RutasAutomaticas_20261118";
+  const string AutoRequest=AutoWork+"/Recepcion.pending";
+  [Serializable] sealed class AutomaticEvidence
+  {
+   public string route,direction,status,started,ended;
+   public float radius,height,minimumWidth=float.MaxValue,maximumSlope,maximumHorizontalProjection;
+   public bool complete,accepted,filesUnchanged;
+   public int samples,missingNav,physicalFailures,sweepFailures,navFailures,unsafeEdges,fourLaneFailures,completedLegs;
+   public Vector3[] corners;
+   public List<Station> stations=new List<Station>();
+   public List<Problem> problems=new List<Problem>();
+   public List<RayEvidence> rays=new List<RayEvidence>();
+  }
+  [InitializeOnLoadMethod] static void InstallAutomaticRequest()
+  {
+   if(!Application.isBatchMode&&File.Exists(AutoRequest))EditorApplication.delayCall+=ConsumeAutomaticRequest;
+  }
+  static void ConsumeAutomaticRequest()
+  {
+   if(!File.Exists(AutoRequest))return;
+   if(EditorApplication.isUpdating||EditorApplication.isCompiling){EditorApplication.delayCall+=ConsumeAutomaticRequest;return;}
+   string id=File.ReadAllText(AutoRequest).Trim();if(!Guid.TryParse(id,out _))return;
+   File.Move(AutoRequest,AutoRequest+".consumed."+id);
+   try{ReceiveAutomaticRoutes();}catch(Exception e){File.WriteAllText(AutoWork+"/Error_"+id+".txt",e.ToString());Debug.LogException(e);}
+  }
+  static AutomaticEvidence InspectAutomaticRoute(string name,Vector3 start,Vector3 end,bool humanoid,string direction)
+  {
+   var cfg=ConstructionConfig4(SceneManager.GetSceneByPath(City));var agent=NavMesh.GetSettingsByID(0);
+   if(humanoid){cfg.radius=agent.agentRadius;cfg.height=Mathf.Max(cfg.height,agent.agentHeight);}
+   var r=new AutomaticEvidence{route=name,direction=direction,radius=cfg.radius,height=cfg.height,started=DateTime.UtcNow.ToString("o")};
+   var filter=new NavMeshQueryFilter{agentTypeID=0,areaMask=NavMesh.AllAreas};string sceneHash=Hash(City),navHash=Hash(Nav);
+   if(!NavMesh.SamplePosition(start,out var a,.35f,filter)||!NavMesh.SamplePosition(end,out var b,.35f,filter)||Mathf.Abs(a.position.y-start.y)>.35f||Mathf.Abs(b.position.y-end.y)>.35f)
+   {r.status="SIN_PROYECCION_LOCAL";return r;}
+   var path=new NavMeshPath();r.complete=NavMesh.CalculatePath(a.position,b.position,filter,path)&&path.status==NavMeshPathStatus.PathComplete;r.corners=path.corners;r.status=path.status.ToString();
+   Station previous=null;Vector3 previousNav=a.position;bool stopped=false;
+   if(r.complete)for(int leg=1;leg<r.corners.Length&&!stopped;leg++)
+   {
+    var from=r.corners[leg-1];var to=r.corners[leg];int n=Mathf.Max(1,Mathf.CeilToInt(new Vector2(to.x-from.x,to.z-from.z).magnitude/.1f));
+    var side=Vector3.Cross(Vector3.up,(to-from).normalized).normalized;
+    for(int j=leg==1?0:1;j<=n;j++)
+    {
+     // Preserve the native XZ corridor. Follow the connected local NavMesh
+     // height instead of borrowing Y from a different documentary itinerary.
+     var query=Vector3.Lerp(from,to,(float)j/n);query.y=previousNav.y;
+     if(j==0)query=from;
+     if(!NavMesh.SamplePosition(query,out var hit,.35f,filter))
+     {r.missingNav++;Add(r.problems,Issue("SIN_SUPERFICIE_LOCAL_AUTOMATICA",query,null));stopped=true;break;}
+     r.maximumHorizontalProjection=Mathf.Max(r.maximumHorizontalProjection,new Vector2(query.x-hit.position.x,query.z-hit.position.z).magnitude);
+     if(j==n&&Vector3.Distance(hit.position,to)>.35f)
+     {r.navFailures++;Add(r.problems,Issue("NO_SE_ALCANZA_ESQUINA_NATIVA_EN_SU_PLANTA",hit.position,null));stopped=true;break;}
+     var s=Probe(hit.position,cfg,false,.35f);s.rawPathPoint=Vector3.Lerp(from,to,(float)j/n);r.stations.Add(s);r.samples++;
+     if(!s.Clear){r.physicalFailures++;Add(r.problems,s.problem);}
+     if(!s.nav)r.missingNav++;
+     if(previous!=null)
+     {
+      if(!Sweep(previous,s,cfg,previous.gradedSupport||s.gradedSupport,out var p,out _)){r.sweepFailures++;Add(r.problems,p);}
+      if(previous.nav&&s.nav&&Vector3.Distance(previous.navPosition,s.navPosition)>.00001f)
+      {
+       bool ca=r.corners.Any(c=>Vector3.Distance(c,previous.navPosition)<=.001f),cb=r.corners.Any(c=>Vector3.Distance(c,s.navPosition)<=.001f);
+       if(!Connected(previous.navPosition,s.navPosition,cfg,ca,cb,out var proof))r.navFailures++;
+       if(proof.rawBlocked)r.rays.Add(proof);
+      }
+     }
+     if(s.Clear&&j%10==0)
+     {
+      var width=MeasureWidth(s,side,cfg,s.gradedSupport);r.minimumWidth=Mathf.Min(r.minimumWidth,width.usefulWidthLowerBound);
+      if(!width.fourStaticCapsulesClear)r.fourLaneFailures++;
+      if(width.leftUnsupportedUnprotected||width.rightUnsupportedUnprotected)r.unsafeEdges++;
+     }
+     r.maximumSlope=Mathf.Max(r.maximumSlope,s.slope);previous=s;previousNav=hit.position;
+    }
+    if(!stopped)r.completedLegs++;
+   }
+   r.filesUnchanged=sceneHash==Hash(City)&&navHash==Hash(Nav)&&!SceneManager.GetSceneByPath(City).isDirty;
+   r.accepted=r.complete&&!stopped&&r.completedLegs==r.corners.Length-1&&r.samples>0&&r.missingNav==0&&r.physicalFailures==0&&r.sweepFailures==0&&r.navFailures==0&&r.unsafeEdges==0&&(!humanoid?r.fourLaneFailures==0:true)&&r.filesUnchanged;
+   r.ended=DateTime.UtcNow.ToString("o");return r;
+  }
+  [MenuItem("ROM/Etapa 7 interior/Comprobar automaticas A03 R21")]
+  public static void ReceiveAutomaticRoutes()
+  {
+   var scene=SceneManager.GetSceneByPath(City);
+   if(EditorApplication.isPlayingOrWillChangePlaymode||!scene.isLoaded||scene.isDirty)throw new InvalidOperationException("Requiere Ciudad del Sol limpia en Edit Mode.");
+   Directory.CreateDirectory(AutoWork);var results=new List<AutomaticEvidence>();
+   foreach(var item in new[]{(id:"A03-P01",start:V(156,-16,99)),(id:"R21-P01",start:V(117,-16,123))})
+    foreach(bool humanoid in new[]{false,true})foreach(bool reverse in new[]{false,true})
+    {
+     var r=InspectAutomaticRoute(item.id,reverse?V(9,-38,15):item.start,reverse?item.start:V(9,-38,15),humanoid,reverse?"vuelta":"ida");results.Add(r);
+     File.WriteAllText(AutoWork+"/"+item.id+"_"+(humanoid?"Humanoid":"Warrior")+"_"+r.direction+".json",JsonUtility.ToJson(r,true));
+    }
+   File.WriteAllLines(AutoWork+"/Resultado.txt",results.Select(r=>r.route+" "+r.radius+" "+r.direction+" accepted="+r.accepted+" samples="+r.samples+" physical="+r.physicalFailures+" sweeps="+r.sweepFailures+" nav="+r.navFailures+" missing="+r.missingNav+" edges="+r.unsafeEdges+" four="+r.fourLaneFailures));
+   Debug.Log("CIUDAD_INTERIOR_AUTOMATICAS: "+results.Count(r=>r.accepted)+"/"+results.Count+" ensayos recibidos. "+Path.GetFullPath(AutoWork));
+  }
+ }
+}

@@ -1,0 +1,2301 @@
+{
+    "unity": "6000.3.23f1",
+    "scene": "Assets/Scenes/Dungeon_Isla_del_Sol.unity",
+    "beforeSHA256": "45B24571909CDBB425043FEC803381956D0D954F61C961AE2C733F109B8FFF35",
+    "afterSHA256": "45B24571909CDBB425043FEC803381956D0D954F61C961AE2C733F109B8FFF35",
+    "error": "",
+    "result": "NINGUNA_CANDIDATA_APROBADA; SIN_CAMBIOS",
+    "batch": true,
+    "playMode": false,
+    "originalDirty": false,
+    "sceneUnchanged": true,
+    "noSave": true,
+    "warriorRadius": 0.3199999928474426,
+    "warriorHeight": 2.0,
+    "warriorStep": 0.30000001192092898,
+    "warriorSlope": 48.0,
+    "agentRadius": 0.5699999928474426,
+    "agentClimb": 0.36000001430511477,
+    "collisionMask": -26936,
+    "vertices": 33914,
+    "activeColliders": 17991,
+    "characterSelfCollision": false,
+    "routes": [
+        {
+            "name": "Control negativo: eje 132/105",
+            "guide": [
+                {
+                    "x": 135.0,
+                    "y": -16.0,
+                    "z": 105.0
+                },
+                {
+                    "x": 120.0,
+                    "y": -16.0,
+                    "z": 105.0
+                }
+            ],
+            "negativeControl": true,
+            "centerClear": false,
+            "widthSixClear": false,
+            "scopeValid": true,
+            "checkedSamples": 61,
+            "centerProblems": 61,
+            "widthProblems": 0,
+            "issues": [
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 135.0,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 134.75,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 134.5,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 134.25,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 134.0,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 133.75,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 133.5,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 133.25,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 133.0,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 132.75,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 132.5,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 132.25,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 132.0,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 131.75,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 131.5,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 131.25,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 131.0,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 130.75,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 130.5,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 130.25,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 130.0,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 129.75,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 129.5,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 129.25,
+                        "y": -16.0,
+                        "z": 105.0
+                    },
+                    "value": 0.0
+                }
+            ],
+            "forward": {
+                "direction": "",
+                "status": "",
+                "projected": false,
+                "complete": false,
+                "physical": false,
+                "start": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "end": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "corners": [],
+                "checkedSamples": 0,
+                "problems": 0,
+                "issues": []
+            },
+            "reverse": {
+                "direction": "",
+                "status": "",
+                "projected": false,
+                "complete": false,
+                "physical": false,
+                "start": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "end": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "corners": [],
+                "checkedSamples": 0,
+                "problems": 0,
+                "issues": []
+            }
+        },
+        {
+            "name": "A03-R21 por distribuidor norte Z117",
+            "guide": [
+                {
+                    "x": 156.0,
+                    "y": -16.0,
+                    "z": 99.0
+                },
+                {
+                    "x": 174.0,
+                    "y": -16.0,
+                    "z": 99.0
+                },
+                {
+                    "x": 174.0,
+                    "y": -16.0,
+                    "z": 117.0
+                },
+                {
+                    "x": 120.0,
+                    "y": -16.0,
+                    "z": 117.0
+                },
+                {
+                    "x": 117.0,
+                    "y": -16.0,
+                    "z": 123.0
+                }
+            ],
+            "negativeControl": false,
+            "centerClear": false,
+            "widthSixClear": false,
+            "scopeValid": true,
+            "checkedSamples": 391,
+            "centerProblems": 778,
+            "widthProblems": 4692,
+            "issues": [
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 99.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 101.68000030517578
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 101.1927261352539
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 100.70545196533203
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 100.21818542480469
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 99.73091125488281
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 99.24363708496094
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 98.75636291503906
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 98.26908874511719
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 97.78181457519531
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 97.29454803466797
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 96.8072738647461
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 96.31999969482422
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 99.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 101.68000030517578
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 101.1927261352539
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 100.70545196533203
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 100.21818542480469
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 99.73091125488281
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 99.24363708496094
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 98.75636291503906
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 98.26908874511719
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 97.78181457519531
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 97.29454803466797
+                    },
+                    "value": 0.0
+                }
+            ],
+            "forward": {
+                "direction": "ida",
+                "status": "PathComplete",
+                "projected": true,
+                "complete": true,
+                "physical": false,
+                "start": {
+                    "x": 156.0,
+                    "y": -16.0,
+                    "z": 99.0
+                },
+                "end": {
+                    "x": 117.0,
+                    "y": -16.0,
+                    "z": 123.0
+                },
+                "corners": [
+                    {
+                        "x": 156.0,
+                        "y": -15.94999885559082,
+                        "z": 99.0
+                    },
+                    {
+                        "x": 168.09999084472657,
+                        "y": -15.94999885559082,
+                        "z": 101.30000305175781
+                    },
+                    {
+                        "x": 168.59999084472657,
+                        "y": -15.94999885559082,
+                        "z": 101.80000305175781
+                    },
+                    {
+                        "x": 168.6999969482422,
+                        "y": -15.94999885559082,
+                        "z": 114.0999984741211
+                    },
+                    {
+                        "x": 168.09999084472657,
+                        "y": -15.94999885559082,
+                        "z": 114.70000457763672
+                    },
+                    {
+                        "x": 144.89999389648438,
+                        "y": -15.94999885559082,
+                        "z": 121.4000015258789
+                    },
+                    {
+                        "x": 132.89999389648438,
+                        "y": -15.94999885559082,
+                        "z": 124.20000457763672
+                    },
+                    {
+                        "x": 131.10000610351563,
+                        "y": -15.94999885559082,
+                        "z": 124.20000457763672
+                    },
+                    {
+                        "x": 117.0,
+                        "y": -15.94999885559082,
+                        "z": 123.0
+                    }
+                ],
+                "checkedSamples": 327,
+                "problems": 335,
+                "issues": [
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 156.0,
+                            "y": -15.94999885559082,
+                            "z": 99.0
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 156.24200439453126,
+                            "y": -15.94999885559082,
+                            "z": 99.0459976196289
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 156.48399353027345,
+                            "y": -15.94999885559082,
+                            "z": 99.09200286865235
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 156.7259979248047,
+                            "y": -15.94999885559082,
+                            "z": 99.13800048828125
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 156.96800231933595,
+                            "y": -15.94999885559082,
+                            "z": 99.18399810791016
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 157.2100067138672,
+                            "y": -15.94999885559082,
+                            "z": 99.2300033569336
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 157.45199584960938,
+                            "y": -15.94999885559082,
+                            "z": 99.2760009765625
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 157.69400024414063,
+                            "y": -15.94999885559082,
+                            "z": 99.3219985961914
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 157.93600463867188,
+                            "y": -15.94999885559082,
+                            "z": 99.36800384521485
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 158.17799377441407,
+                            "y": -15.94999885559082,
+                            "z": 99.41400146484375
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 158.4199981689453,
+                            "y": -15.94999885559082,
+                            "z": 99.45999908447266
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 158.66200256347657,
+                            "y": -15.94999885559082,
+                            "z": 99.5060043334961
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 158.90399169921876,
+                            "y": -15.94999885559082,
+                            "z": 99.552001953125
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 159.14599609375,
+                            "y": -15.94999885559082,
+                            "z": 99.5979995727539
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 159.38800048828126,
+                            "y": -15.94999885559082,
+                            "z": 99.64399719238281
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 159.6300048828125,
+                            "y": -15.94999885559082,
+                            "z": 99.69000244140625
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 159.8719940185547,
+                            "y": -15.94999885559082,
+                            "z": 99.73600006103516
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 160.11399841308595,
+                            "y": -15.94999885559082,
+                            "z": 99.78199768066406
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 160.3560028076172,
+                            "y": -15.94999885559082,
+                            "z": 99.8280029296875
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 160.59799194335938,
+                            "y": -15.94999885559082,
+                            "z": 99.8740005493164
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 160.83999633789063,
+                            "y": -15.94999885559082,
+                            "z": 99.91999816894531
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 161.08200073242188,
+                            "y": -15.94999885559082,
+                            "z": 99.96600341796875
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 161.32398986816407,
+                            "y": -15.94999885559082,
+                            "z": 100.01200103759766
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 161.5659942626953,
+                            "y": -15.94999885559082,
+                            "z": 100.05799865722656
+                        },
+                        "value": 0.0
+                    }
+                ]
+            },
+            "reverse": {
+                "direction": "vuelta",
+                "status": "PathComplete",
+                "projected": true,
+                "complete": true,
+                "physical": false,
+                "start": {
+                    "x": 117.0,
+                    "y": -16.0,
+                    "z": 123.0
+                },
+                "end": {
+                    "x": 156.0,
+                    "y": -16.0,
+                    "z": 99.0
+                },
+                "corners": [
+                    {
+                        "x": 117.0,
+                        "y": -15.94999885559082,
+                        "z": 123.0
+                    },
+                    {
+                        "x": 131.10000610351563,
+                        "y": -15.94999885559082,
+                        "z": 124.20000457763672
+                    },
+                    {
+                        "x": 132.89999389648438,
+                        "y": -15.94999885559082,
+                        "z": 124.20000457763672
+                    },
+                    {
+                        "x": 144.89999389648438,
+                        "y": -15.94999885559082,
+                        "z": 121.4000015258789
+                    },
+                    {
+                        "x": 168.09999084472657,
+                        "y": -15.94999885559082,
+                        "z": 114.70000457763672
+                    },
+                    {
+                        "x": 168.6999969482422,
+                        "y": -15.94999885559082,
+                        "z": 114.0999984741211
+                    },
+                    {
+                        "x": 168.59999084472657,
+                        "y": -15.94999885559082,
+                        "z": 101.80000305175781
+                    },
+                    {
+                        "x": 168.09999084472657,
+                        "y": -15.94999885559082,
+                        "z": 101.30000305175781
+                    },
+                    {
+                        "x": 156.0,
+                        "y": -15.94999885559082,
+                        "z": 99.0
+                    }
+                ],
+                "checkedSamples": 327,
+                "problems": 335,
+                "issues": [
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 117.0,
+                            "y": -15.94999885559082,
+                            "z": 123.0
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 117.24736785888672,
+                            "y": -15.94999885559082,
+                            "z": 123.02104949951172
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 117.49473571777344,
+                            "y": -15.94999885559082,
+                            "z": 123.04210662841797
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 117.74210357666016,
+                            "y": -15.94999885559082,
+                            "z": 123.06315612792969
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 117.98947143554688,
+                            "y": -15.94999885559082,
+                            "z": 123.08421325683594
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 118.2368392944336,
+                            "y": -15.94999885559082,
+                            "z": 123.10526275634766
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 118.48421478271485,
+                            "y": -15.94999885559082,
+                            "z": 123.1263198852539
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 118.73158264160156,
+                            "y": -15.94999885559082,
+                            "z": 123.14736938476563
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 118.97895050048828,
+                            "y": -15.94999885559082,
+                            "z": 123.16841888427735
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 119.226318359375,
+                            "y": -15.94999885559082,
+                            "z": 123.1894760131836
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 119.47368621826172,
+                            "y": -15.94999885559082,
+                            "z": 123.21052551269531
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 119.72105407714844,
+                            "y": -15.94999885559082,
+                            "z": 123.23158264160156
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 119.96842193603516,
+                            "y": -15.94999885559082,
+                            "z": 123.25263214111328
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 120.21578979492188,
+                            "y": -15.94999885559082,
+                            "z": 123.273681640625
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 120.4631576538086,
+                            "y": -15.94999885559082,
+                            "z": 123.29473876953125
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 120.71052551269531,
+                            "y": -15.94999885559082,
+                            "z": 123.31578826904297
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 120.95789337158203,
+                            "y": -15.94999885559082,
+                            "z": 123.33684539794922
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 121.20526123046875,
+                            "y": -15.94999885559082,
+                            "z": 123.35789489746094
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 121.45263671875,
+                            "y": -15.94999885559082,
+                            "z": 123.37895202636719
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 121.70000457763672,
+                            "y": -15.94999885559082,
+                            "z": 123.4000015258789
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 121.94737243652344,
+                            "y": -15.94999885559082,
+                            "z": 123.42105102539063
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 122.19474029541016,
+                            "y": -15.94999885559082,
+                            "z": 123.44210815429688
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 122.44210815429688,
+                            "y": -15.94999885559082,
+                            "z": 123.4631576538086
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 122.6894760131836,
+                            "y": -15.94999885559082,
+                            "z": 123.48421478271485
+                        },
+                        "value": 0.0
+                    }
+                ]
+            }
+        },
+        {
+            "name": "A03-R21 por rodeo Z111",
+            "guide": [
+                {
+                    "x": 156.0,
+                    "y": -16.0,
+                    "z": 99.0
+                },
+                {
+                    "x": 174.0,
+                    "y": -16.0,
+                    "z": 99.0
+                },
+                {
+                    "x": 174.0,
+                    "y": -16.0,
+                    "z": 111.0
+                },
+                {
+                    "x": 135.0,
+                    "y": -16.0,
+                    "z": 111.0
+                },
+                {
+                    "x": 120.0,
+                    "y": -16.0,
+                    "z": 111.0
+                },
+                {
+                    "x": 120.0,
+                    "y": -16.0,
+                    "z": 123.0
+                },
+                {
+                    "x": 117.0,
+                    "y": -16.0,
+                    "z": 123.0
+                }
+            ],
+            "negativeControl": false,
+            "centerClear": false,
+            "widthSixClear": false,
+            "scopeValid": true,
+            "checkedSamples": 402,
+            "centerProblems": 798,
+            "widthProblems": 4824,
+            "issues": [
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 99.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 101.68000030517578
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 101.1927261352539
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 100.70545196533203
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 100.21818542480469
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 99.73091125488281
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 99.24363708496094
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 98.75636291503906
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 98.26908874511719
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 97.78181457519531
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 97.29454803466797
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 96.8072738647461
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.0,
+                        "y": -16.0,
+                        "z": 96.31999969482422
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 99.0
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 101.68000030517578
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 101.1927261352539
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 100.70545196533203
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 100.21818542480469
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 99.73091125488281
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 99.24363708496094
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 98.75636291503906
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 98.26908874511719
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 97.78181457519531
+                    },
+                    "value": 0.0
+                },
+                {
+                    "type": "SIN_APOYO_LOCAL",
+                    "collider": "",
+                    "hierarchy": "",
+                    "point": {
+                        "x": 156.25,
+                        "y": -16.0,
+                        "z": 97.29454803466797
+                    },
+                    "value": 0.0
+                }
+            ],
+            "forward": {
+                "direction": "ida",
+                "status": "PathComplete",
+                "projected": true,
+                "complete": true,
+                "physical": false,
+                "start": {
+                    "x": 156.0,
+                    "y": -16.0,
+                    "z": 99.0
+                },
+                "end": {
+                    "x": 117.0,
+                    "y": -16.0,
+                    "z": 123.0
+                },
+                "corners": [
+                    {
+                        "x": 156.0,
+                        "y": -15.94999885559082,
+                        "z": 99.0
+                    },
+                    {
+                        "x": 168.09999084472657,
+                        "y": -15.94999885559082,
+                        "z": 101.30000305175781
+                    },
+                    {
+                        "x": 168.59999084472657,
+                        "y": -15.94999885559082,
+                        "z": 101.80000305175781
+                    },
+                    {
+                        "x": 168.6999969482422,
+                        "y": -15.94999885559082,
+                        "z": 114.0999984741211
+                    },
+                    {
+                        "x": 168.09999084472657,
+                        "y": -15.94999885559082,
+                        "z": 114.70000457763672
+                    },
+                    {
+                        "x": 144.89999389648438,
+                        "y": -15.94999885559082,
+                        "z": 121.4000015258789
+                    },
+                    {
+                        "x": 132.89999389648438,
+                        "y": -15.94999885559082,
+                        "z": 124.20000457763672
+                    },
+                    {
+                        "x": 131.10000610351563,
+                        "y": -15.94999885559082,
+                        "z": 124.20000457763672
+                    },
+                    {
+                        "x": 117.0,
+                        "y": -15.94999885559082,
+                        "z": 123.0
+                    }
+                ],
+                "checkedSamples": 327,
+                "problems": 335,
+                "issues": [
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 156.0,
+                            "y": -15.94999885559082,
+                            "z": 99.0
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 156.24200439453126,
+                            "y": -15.94999885559082,
+                            "z": 99.0459976196289
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 156.48399353027345,
+                            "y": -15.94999885559082,
+                            "z": 99.09200286865235
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 156.7259979248047,
+                            "y": -15.94999885559082,
+                            "z": 99.13800048828125
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 156.96800231933595,
+                            "y": -15.94999885559082,
+                            "z": 99.18399810791016
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 157.2100067138672,
+                            "y": -15.94999885559082,
+                            "z": 99.2300033569336
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 157.45199584960938,
+                            "y": -15.94999885559082,
+                            "z": 99.2760009765625
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 157.69400024414063,
+                            "y": -15.94999885559082,
+                            "z": 99.3219985961914
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 157.93600463867188,
+                            "y": -15.94999885559082,
+                            "z": 99.36800384521485
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 158.17799377441407,
+                            "y": -15.94999885559082,
+                            "z": 99.41400146484375
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 158.4199981689453,
+                            "y": -15.94999885559082,
+                            "z": 99.45999908447266
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 158.66200256347657,
+                            "y": -15.94999885559082,
+                            "z": 99.5060043334961
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 158.90399169921876,
+                            "y": -15.94999885559082,
+                            "z": 99.552001953125
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 159.14599609375,
+                            "y": -15.94999885559082,
+                            "z": 99.5979995727539
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 159.38800048828126,
+                            "y": -15.94999885559082,
+                            "z": 99.64399719238281
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 159.6300048828125,
+                            "y": -15.94999885559082,
+                            "z": 99.69000244140625
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 159.8719940185547,
+                            "y": -15.94999885559082,
+                            "z": 99.73600006103516
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 160.11399841308595,
+                            "y": -15.94999885559082,
+                            "z": 99.78199768066406
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 160.3560028076172,
+                            "y": -15.94999885559082,
+                            "z": 99.8280029296875
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 160.59799194335938,
+                            "y": -15.94999885559082,
+                            "z": 99.8740005493164
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 160.83999633789063,
+                            "y": -15.94999885559082,
+                            "z": 99.91999816894531
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 161.08200073242188,
+                            "y": -15.94999885559082,
+                            "z": 99.96600341796875
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 161.32398986816407,
+                            "y": -15.94999885559082,
+                            "z": 100.01200103759766
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 161.5659942626953,
+                            "y": -15.94999885559082,
+                            "z": 100.05799865722656
+                        },
+                        "value": 0.0
+                    }
+                ]
+            },
+            "reverse": {
+                "direction": "vuelta",
+                "status": "PathComplete",
+                "projected": true,
+                "complete": true,
+                "physical": false,
+                "start": {
+                    "x": 117.0,
+                    "y": -16.0,
+                    "z": 123.0
+                },
+                "end": {
+                    "x": 156.0,
+                    "y": -16.0,
+                    "z": 99.0
+                },
+                "corners": [
+                    {
+                        "x": 117.0,
+                        "y": -15.94999885559082,
+                        "z": 123.0
+                    },
+                    {
+                        "x": 131.10000610351563,
+                        "y": -15.94999885559082,
+                        "z": 124.20000457763672
+                    },
+                    {
+                        "x": 132.89999389648438,
+                        "y": -15.94999885559082,
+                        "z": 124.20000457763672
+                    },
+                    {
+                        "x": 144.89999389648438,
+                        "y": -15.94999885559082,
+                        "z": 121.4000015258789
+                    },
+                    {
+                        "x": 168.09999084472657,
+                        "y": -15.94999885559082,
+                        "z": 114.70000457763672
+                    },
+                    {
+                        "x": 168.6999969482422,
+                        "y": -15.94999885559082,
+                        "z": 114.0999984741211
+                    },
+                    {
+                        "x": 168.59999084472657,
+                        "y": -15.94999885559082,
+                        "z": 101.80000305175781
+                    },
+                    {
+                        "x": 168.09999084472657,
+                        "y": -15.94999885559082,
+                        "z": 101.30000305175781
+                    },
+                    {
+                        "x": 156.0,
+                        "y": -15.94999885559082,
+                        "z": 99.0
+                    }
+                ],
+                "checkedSamples": 327,
+                "problems": 335,
+                "issues": [
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 117.0,
+                            "y": -15.94999885559082,
+                            "z": 123.0
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 117.24736785888672,
+                            "y": -15.94999885559082,
+                            "z": 123.02104949951172
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 117.49473571777344,
+                            "y": -15.94999885559082,
+                            "z": 123.04210662841797
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 117.74210357666016,
+                            "y": -15.94999885559082,
+                            "z": 123.06315612792969
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 117.98947143554688,
+                            "y": -15.94999885559082,
+                            "z": 123.08421325683594
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 118.2368392944336,
+                            "y": -15.94999885559082,
+                            "z": 123.10526275634766
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 118.48421478271485,
+                            "y": -15.94999885559082,
+                            "z": 123.1263198852539
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 118.73158264160156,
+                            "y": -15.94999885559082,
+                            "z": 123.14736938476563
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 118.97895050048828,
+                            "y": -15.94999885559082,
+                            "z": 123.16841888427735
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 119.226318359375,
+                            "y": -15.94999885559082,
+                            "z": 123.1894760131836
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 119.47368621826172,
+                            "y": -15.94999885559082,
+                            "z": 123.21052551269531
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 119.72105407714844,
+                            "y": -15.94999885559082,
+                            "z": 123.23158264160156
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 119.96842193603516,
+                            "y": -15.94999885559082,
+                            "z": 123.25263214111328
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 120.21578979492188,
+                            "y": -15.94999885559082,
+                            "z": 123.273681640625
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 120.4631576538086,
+                            "y": -15.94999885559082,
+                            "z": 123.29473876953125
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 120.71052551269531,
+                            "y": -15.94999885559082,
+                            "z": 123.31578826904297
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 120.95789337158203,
+                            "y": -15.94999885559082,
+                            "z": 123.33684539794922
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 121.20526123046875,
+                            "y": -15.94999885559082,
+                            "z": 123.35789489746094
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 121.45263671875,
+                            "y": -15.94999885559082,
+                            "z": 123.37895202636719
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 121.70000457763672,
+                            "y": -15.94999885559082,
+                            "z": 123.4000015258789
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 121.94737243652344,
+                            "y": -15.94999885559082,
+                            "z": 123.42105102539063
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 122.19474029541016,
+                            "y": -15.94999885559082,
+                            "z": 123.44210815429688
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 122.44210815429688,
+                            "y": -15.94999885559082,
+                            "z": 123.4631576538086
+                        },
+                        "value": 0.0
+                    },
+                    {
+                        "type": "SIN_APOYO_LOCAL",
+                        "collider": "",
+                        "hierarchy": "",
+                        "point": {
+                            "x": 122.6894760131836,
+                            "y": -15.94999885559082,
+                            "z": 123.48421478271485
+                        },
+                        "value": 0.0
+                    }
+                ]
+            }
+        }
+    ],
+    "movement": [],
+    "selectedRoute": ""
+}

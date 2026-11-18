@@ -1,0 +1,4295 @@
+[
+  {
+    "id": "R01",
+    "name": "Nave -114/114 (18×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -114/114 (18×18)\"",
+    "category": "R",
+    "x": -105,
+    "y": -16,
+    "z": 123,
+    "w": 18,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Sala de exploración / recuperación entre encuentros, según balance",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">32.18",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "6afab251b22871043857b7122a41b28b",
+    "connections": [
+      "H22",
+      "H23"
+    ],
+    "ports": [
+      {
+        "connection": "H22",
+        "point": [
+          -105,
+          -16,
+          123
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H23",
+        "point": [
+          -105,
+          -16,
+          123
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R02",
+    "name": "Nave -120/-30 (30×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -120/-30 (30×18)\"",
+    "category": "R",
+    "x": -105,
+    "y": -16,
+    "z": -21,
+    "w": 30,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "26972f3129a005244a13fd71cfac5094",
+    "connections": [
+      "H38",
+      "H39",
+      "H40",
+      "H41"
+    ],
+    "ports": [
+      {
+        "connection": "H38",
+        "point": [
+          -105,
+          -16,
+          -21
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H39",
+        "point": [
+          -105,
+          -16,
+          -21
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H40",
+        "point": [
+          -105,
+          -16,
+          -21
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H41",
+        "point": [
+          -105,
+          -16,
+          -21
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "R03",
+    "name": "Nave -120/-54 (30×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -120/-54 (30×18)\"",
+    "category": "R",
+    "x": -105,
+    "y": -16,
+    "z": -45,
+    "w": 30,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "6a7314cc769e4c042ac7e92276f204f4",
+    "connections": [
+      "H39",
+      "H42"
+    ],
+    "ports": [
+      {
+        "connection": "H39",
+        "point": [
+          -105,
+          -16,
+          -45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H42",
+        "point": [
+          -105,
+          -16,
+          -45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "R04",
+    "name": "Nave -120/-6 (30×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -120/-6 (30×18)\"",
+    "category": "R",
+    "x": -105,
+    "y": -16,
+    "z": 3,
+    "w": 30,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "d78a8f88ead7a52479b992d252e55dbb",
+    "connections": [
+      "H37",
+      "H38"
+    ],
+    "ports": [
+      {
+        "connection": "H37",
+        "point": [
+          -105,
+          -16,
+          3
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H38",
+        "point": [
+          -105,
+          -16,
+          3
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "R05",
+    "name": "Nave -120/30 (30×36)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -120/30 (30×36)\"",
+    "category": "R",
+    "x": -105,
+    "y": -16,
+    "z": 48,
+    "w": 30,
+    "d": 36,
+    "floor": -16,
+    "ceiling": 1.7999999523162842,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.4200000762939453,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Salón ceremonial: encuentro amplio y exploración perimetral",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "451cce2e832a3214db8ac886156c8a23",
+    "connections": [
+      "H28",
+      "H29",
+      "H37"
+    ],
+    "ports": [
+      {
+        "connection": "H28",
+        "point": [
+          -105,
+          -16,
+          45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H29",
+        "point": [
+          -105,
+          -16,
+          45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H37",
+        "point": [
+          -105,
+          -16,
+          45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 1.7999999523162842
+  },
+  {
+    "id": "R06",
+    "name": "Nave -126/-150 (18×66)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -126/-150 (18×66)\"",
+    "category": "R",
+    "x": -117,
+    "y": -16,
+    "z": -117,
+    "w": 18,
+    "d": 66,
+    "floor": -16,
+    "ceiling": -2.9000000953674316,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": -2.2800002098083496,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Salón ceremonial: encuentro amplio y exploración perimetral",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "bf3fd8c05fa1ddb4aa563e0970d9c0b1",
+    "connections": [
+      "H43",
+      "H44",
+      "H45"
+    ],
+    "ports": [
+      {
+        "connection": "H43",
+        "point": [
+          -117,
+          -16,
+          -117
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H44",
+        "point": [
+          -117,
+          -16,
+          -117
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H45",
+        "point": [
+          -117,
+          -16,
+          -117
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": -2.9000000953674316
+  },
+  {
+    "id": "R07",
+    "name": "Nave -138/-54 (18×66)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -138/-54 (18×66)\"",
+    "category": "R",
+    "x": -129,
+    "y": -16,
+    "z": -21,
+    "w": 18,
+    "d": 66,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Salón ceremonial: encuentro amplio y exploración perimetral",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "6f3b8aa97d7a8cd49a217b3bb7d6e301",
+    "connections": [
+      "H40"
+    ],
+    "ports": [
+      {
+        "connection": "H40",
+        "point": [
+          -129,
+          -16,
+          -21
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "R08",
+    "name": "Nave -138/30 (18×24)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -138/30 (18×24)\"",
+    "category": "R",
+    "x": -129,
+    "y": -16,
+    "z": 42,
+    "w": 18,
+    "d": 24,
+    "floor": -16,
+    "ceiling": 1.7999999523162842,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.4200000762939453,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Sala de exploración / recuperación entre encuentros, según balance",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": "10.48",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "6b34693c2e1d381449268cec79ebcd77",
+    "connections": [
+      "H27",
+      "H28"
+    ],
+    "ports": [
+      {
+        "connection": "H27",
+        "point": [
+          -129,
+          -16,
+          39
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H28",
+        "point": [
+          -129,
+          -16,
+          39
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 1.7999999523162842
+  },
+  {
+    "id": "R09",
+    "name": "Nave -138/60 (18×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -138/60 (18×18)\"",
+    "category": "R",
+    "x": -129,
+    "y": -16,
+    "z": 69,
+    "w": 18,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de reliquias: objetivo secundario propuesto, sin bloquear ruta",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">31.96",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "6071c0bd4552ae348869cd564a8d288e",
+    "connections": [
+      "H26",
+      "H27"
+    ],
+    "ports": [
+      {
+        "connection": "H26",
+        "point": [
+          -129,
+          -16,
+          69
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H27",
+        "point": [
+          -129,
+          -16,
+          69
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R10",
+    "name": "Nave -150/-150 (18×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -150/-150 (18×18)\"",
+    "category": "R",
+    "x": -141,
+    "y": -16,
+    "z": -141,
+    "w": 18,
+    "d": 18,
+    "floor": -16,
+    "ceiling": -2.9000000953674316,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": -2.2800002098083496,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Sala de exploración / recuperación entre encuentros, según balance",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">31.96",
+      "clearZ": ">31.96",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "82a39ffbf983b164f8c82aa4e89ba365",
+    "connections": [
+      "H45"
+    ],
+    "ports": [
+      {
+        "connection": "H45",
+        "point": [
+          -141,
+          -16,
+          -141
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": -2.9000000953674316
+  },
+  {
+    "id": "R11",
+    "name": "Nave -24/90 (18×78)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -24/90 (18×78)\"",
+    "category": "R",
+    "x": -15,
+    "y": -16,
+    "z": 129,
+    "w": 18,
+    "d": 78,
+    "floor": -16,
+    "ceiling": 1.6699999570846558,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Salón ceremonial: encuentro amplio y exploración perimetral",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "fc40890c5ada8f74cbfb7ef4089b86db",
+    "connections": [
+      "H17",
+      "H19"
+    ],
+    "ports": [
+      {
+        "connection": "H17",
+        "point": [
+          -15,
+          -16,
+          129
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H19",
+        "point": [
+          -15,
+          -16,
+          129
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 1.6699999570846558
+  },
+  {
+    "id": "R12",
+    "name": "Nave -42/-12 (18×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -42/-12 (18×18)\"",
+    "category": "R",
+    "x": -33,
+    "y": -16,
+    "z": -3,
+    "w": 18,
+    "d": 18,
+    "floor": -16,
+    "ceiling": -2.9000000953674316,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": -2.2800002098083496,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de reliquias: objetivo secundario propuesto, sin bloquear ruta",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">27.79",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "03d3f846d6dbb0e4fb64fd39114ed94e",
+    "connections": [
+      "H33",
+      "H34"
+    ],
+    "ports": [
+      {
+        "connection": "H33",
+        "point": [
+          -33,
+          -16,
+          -3
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H34",
+        "point": [
+          -33,
+          -16,
+          -3
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": -2.9000000953674316
+  },
+  {
+    "id": "R13",
+    "name": "Nave -42/-36 (18×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -42/-36 (18×18)\"",
+    "category": "R",
+    "x": -33,
+    "y": -16,
+    "z": -27,
+    "w": 18,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Sala de exploración / recuperación entre encuentros, según balance",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">32.18",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "f02c06c085471cf47982e13500bc2c6f",
+    "connections": [
+      "H34"
+    ],
+    "ports": [
+      {
+        "connection": "H34",
+        "point": [
+          -33,
+          -16,
+          -27
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R14",
+    "name": "Nave -42/12 (18×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -42/12 (18×18)\"",
+    "category": "R",
+    "x": -33,
+    "y": -16,
+    "z": 21,
+    "w": 18,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Sala de exploración / recuperación entre encuentros, según balance",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "4043d6fb79f724940871300619d23347",
+    "connections": [
+      "H32",
+      "H33"
+    ],
+    "ports": [
+      {
+        "connection": "H32",
+        "point": [
+          -33,
+          -16,
+          21
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H33",
+        "point": [
+          -33,
+          -16,
+          21
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R15",
+    "name": "Nave -42/36 (18×30)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -42/36 (18×30)\"",
+    "category": "R",
+    "x": -33,
+    "y": -16,
+    "z": 51,
+    "w": 18,
+    "d": 30,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "03e59b05b94a22a48bfac5c1122f8da3",
+    "connections": [
+      "H31",
+      "H32"
+    ],
+    "ports": [
+      {
+        "connection": "H31",
+        "point": [
+          -33,
+          -16,
+          51
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H32",
+        "point": [
+          -33,
+          -16,
+          51
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R16",
+    "name": "Nave -6/96 (18×30)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -6/96 (18×30)\"",
+    "category": "R",
+    "x": 3,
+    "y": -16,
+    "z": 111,
+    "w": 18,
+    "d": 30,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "342753a6557173b4eb55746fdc3b6054",
+    "connections": [
+      "H16",
+      "H17"
+    ],
+    "ports": [
+      {
+        "connection": "H16",
+        "point": [
+          3,
+          -16,
+          111
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H17",
+        "point": [
+          3,
+          -16,
+          111
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R17",
+    "name": "Nave -66/114 (30×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -66/114 (30×18)\"",
+    "category": "R",
+    "x": -51,
+    "y": -16,
+    "z": 123,
+    "w": 30,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "0810fbb9a43715845a056640db4c0801",
+    "connections": [
+      "H19",
+      "H20",
+      "H21"
+    ],
+    "ports": [
+      {
+        "connection": "H19",
+        "point": [
+          -51,
+          -16,
+          123
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H20",
+        "point": [
+          -51,
+          -16,
+          123
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H21",
+        "point": [
+          -51,
+          -16,
+          123
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R18",
+    "name": "Nave -72/30 (18×30)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -72/30 (18×30)\"",
+    "category": "R",
+    "x": -63,
+    "y": -16,
+    "z": 45,
+    "w": 18,
+    "d": 30,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "acf6c3d171424de469aef90f0c11192a",
+    "connections": [
+      "H30",
+      "H31"
+    ],
+    "ports": [
+      {
+        "connection": "H30",
+        "point": [
+          -63,
+          -16,
+          45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H31",
+        "point": [
+          -63,
+          -16,
+          45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "R19",
+    "name": "Nave -90/-126 (42×54)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave -90/-126 (42×54)\"",
+    "category": "R",
+    "x": -69,
+    "y": -16,
+    "z": -99,
+    "w": 42,
+    "d": 54,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Salón ceremonial: encuentro amplio y exploración perimetral",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "63350ec77edf52b478c2124513fe4f96",
+    "connections": [
+      "H42",
+      "H43"
+    ],
+    "ports": [
+      {
+        "connection": "H42",
+        "point": [
+          -69,
+          -16,
+          -99
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H43",
+        "point": [
+          -69,
+          -16,
+          -99
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R20",
+    "name": "Nave 0/78 (42×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 0/78 (42×18)\"",
+    "category": "R",
+    "x": 21,
+    "y": -16,
+    "z": 87,
+    "w": 42,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "0e8f0e2feeb7a3c4eb16163e25594652",
+    "connections": [
+      "H18"
+    ],
+    "ports": [
+      {
+        "connection": "H18",
+        "point": [
+          21,
+          -16,
+          87
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R21",
+    "name": "Nave 102/102 (30×42)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 102/102 (30×42)\"",
+    "category": "R",
+    "x": 117,
+    "y": -16,
+    "z": 123,
+    "w": 30,
+    "d": 42,
+    "floor": -16,
+    "ceiling": 1.6699999570846558,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Salón ceremonial: encuentro amplio y exploración perimetral",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "1fe9ececf6c874d4db857da7920210dd",
+    "connections": [
+      "H12",
+      "H13"
+    ],
+    "ports": [
+      {
+        "connection": "H12",
+        "point": [
+          117,
+          -16,
+          123
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H13",
+        "point": [
+          117,
+          -16,
+          123
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 1.6699999570846558
+  },
+  {
+    "id": "R22",
+    "name": "Nave 114/-120 (18×66)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 114/-120 (18×66)\"",
+    "category": "R",
+    "x": 123,
+    "y": -16,
+    "z": -87,
+    "w": 18,
+    "d": 66,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Salón ceremonial: encuentro amplio y exploración perimetral",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "6c8a9b5b4a85f934ca55ed945404470e",
+    "connections": [
+      "H54"
+    ],
+    "ports": [
+      {
+        "connection": "H54",
+        "point": [
+          123,
+          -16,
+          -87
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "R23",
+    "name": "Nave 114/156 (18×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 114/156 (18×18)\"",
+    "category": "R",
+    "x": 123,
+    "y": -16,
+    "z": 165,
+    "w": 18,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Sala de exploración / recuperación entre encuentros, según balance",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "3f1e7ce7396f35d4eb2672f015127c24",
+    "connections": [
+      "H05",
+      "H06",
+      "H12"
+    ],
+    "ports": [
+      {
+        "connection": "H05",
+        "point": [
+          123,
+          -16,
+          165
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H06",
+        "point": [
+          123,
+          -16,
+          165
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H12",
+        "point": [
+          123,
+          -16,
+          165
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R24",
+    "name": "Nave 132/-120 (30×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 132/-120 (30×18)\"",
+    "category": "R",
+    "x": 147,
+    "y": -16,
+    "z": -111,
+    "w": 30,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "824bdaf7dc8196841b2629e55b6b3e6f",
+    "connections": [
+      "H53"
+    ],
+    "ports": [
+      {
+        "connection": "H53",
+        "point": [
+          147,
+          -16,
+          -111
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "R25",
+    "name": "Nave 132/-18 (18×42)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 132/-18 (18×42)\"",
+    "category": "R",
+    "x": 141,
+    "y": -16,
+    "z": 3,
+    "w": 18,
+    "d": 42,
+    "floor": -16,
+    "ceiling": -3.2300000190734863,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": -2.2800002098083496,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">28.19",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "22f46d357d54eac46a02e951aa39979c",
+    "connections": [
+      "H46",
+      "H47"
+    ],
+    "ports": [
+      {
+        "connection": "H46",
+        "point": [
+          141,
+          -16,
+          3
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H47",
+        "point": [
+          141,
+          -16,
+          3
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": -3.2300000190734863
+  },
+  {
+    "id": "R26",
+    "name": "Nave 132/120 (18×78)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 132/120 (18×78)\"",
+    "category": "R",
+    "x": 141,
+    "y": -16,
+    "z": 159,
+    "w": 18,
+    "d": 78,
+    "floor": -16,
+    "ceiling": 1.6699999570846558,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Salón ceremonial: encuentro amplio y exploración perimetral",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "f980672cc092b8b41a6c35f062c35179",
+    "connections": [
+      "H04",
+      "H05"
+    ],
+    "ports": [
+      {
+        "connection": "H04",
+        "point": [
+          141,
+          -16,
+          159
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H05",
+        "point": [
+          141,
+          -16,
+          159
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 1.6699999570846558
+  },
+  {
+    "id": "R27",
+    "name": "Nave 150/180 (30×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 150/180 (30×18)\"",
+    "category": "R",
+    "x": 165,
+    "y": -16,
+    "z": 189,
+    "w": 30,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "7bab17f09d2f01a4181ebfdfa3be1a56",
+    "connections": [
+      "H10"
+    ],
+    "ports": [
+      {
+        "connection": "H10",
+        "point": [
+          165,
+          -16,
+          189
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R28",
+    "name": "Nave 156/-48 (30×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 156/-48 (30×18)\"",
+    "category": "R",
+    "x": 171,
+    "y": -16,
+    "z": -39,
+    "w": 30,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "bfd8942537ac30a4aa2620359ce2151b",
+    "connections": [
+      "H49",
+      "H50"
+    ],
+    "ports": [
+      {
+        "connection": "H49",
+        "point": [
+          171,
+          -16,
+          -39
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H50",
+        "point": [
+          171,
+          -16,
+          -39
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "R29",
+    "name": "Nave 162/-120 (18×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 162/-120 (18×18)\"",
+    "category": "R",
+    "x": 171,
+    "y": -16,
+    "z": -111,
+    "w": 18,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Sala de exploración / recuperación entre encuentros, según balance",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "420c899bd444f964090c8f1572367552",
+    "connections": [
+      "H52",
+      "H53"
+    ],
+    "ports": [
+      {
+        "connection": "H52",
+        "point": [
+          171,
+          -16,
+          -111
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H53",
+        "point": [
+          171,
+          -16,
+          -111
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "R30",
+    "name": "Nave 174/120 (30×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 174/120 (30×18)\"",
+    "category": "R",
+    "x": 189,
+    "y": -16,
+    "z": 129,
+    "w": 30,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de exploración y combate opcional; conservar paso transversal",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "d37f41b65a045264aac7480ea064b4c0",
+    "connections": [
+      "H01",
+      "H02",
+      "H03"
+    ],
+    "ports": [
+      {
+        "connection": "H01",
+        "point": [
+          189,
+          -16,
+          129
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H02",
+        "point": [
+          189,
+          -16,
+          129
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H03",
+        "point": [
+          189,
+          -16,
+          129
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R31",
+    "name": "Nave 180/186 (18×18)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 180/186 (18×18)\"",
+    "category": "R",
+    "x": 189,
+    "y": -16,
+    "z": 195,
+    "w": 18,
+    "d": 18,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Sala de exploración / recuperación entre encuentros, según balance",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "6c4f5e09850ed7c4fb971cbb5ad07645",
+    "connections": [
+      "H09",
+      "H10"
+    ],
+    "ports": [
+      {
+        "connection": "H09",
+        "point": [
+          189,
+          -16,
+          195
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H10",
+        "point": [
+          189,
+          -16,
+          195
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R32",
+    "name": "Nave 198/-48 (18×66)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 198/-48 (18×66)\"",
+    "category": "R",
+    "x": 207,
+    "y": -16,
+    "z": -15,
+    "w": 18,
+    "d": 66,
+    "floor": -16,
+    "ceiling": 2,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Salón ceremonial: encuentro amplio y exploración perimetral",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "af1ef941fc44ef14c8d2db346499b715",
+    "connections": [
+      "H48"
+    ],
+    "ports": [
+      {
+        "connection": "H48",
+        "point": [
+          207,
+          -16,
+          -15
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 2
+  },
+  {
+    "id": "R33",
+    "name": "Nave 36/162 (30×12)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 36/162 (30×12)\"",
+    "category": "R",
+    "x": 51,
+    "y": -16,
+    "z": 168,
+    "w": 30,
+    "d": 12,
+    "floor": -16,
+    "ceiling": 1.7999999523162842,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.4200000762939453,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Cámara de reliquias: objetivo secundario propuesto, sin bloquear ruta",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": "10.48",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "cd7a10504d9f0ad4da33c2502ac8ab17",
+    "connections": [
+      "H36"
+    ],
+    "ports": [
+      {
+        "connection": "H36",
+        "point": [
+          51,
+          -16,
+          171
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 1.7999999523162842
+  },
+  {
+    "id": "R34",
+    "name": "Nave 48/78 (18×78)",
+    "source": "Subsuelo_34_Naves_Sin_Reticula/\"Nave 48/78 (18×78)\"",
+    "category": "R",
+    "x": 57,
+    "y": -16,
+    "z": 117,
+    "w": 18,
+    "d": 78,
+    "floor": -16,
+    "ceiling": 1.6699999570846558,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.619999885559082,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Salón ceremonial: encuentro amplio y exploración perimetral",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "ef5101f741282dc4e8775eedb82cf0ff",
+    "connections": [
+      "H14",
+      "H15"
+    ],
+    "ports": [
+      {
+        "connection": "H14",
+        "point": [
+          57,
+          -16,
+          117
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H15",
+        "point": [
+          57,
+          -16,
+          117
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 1.6699999570846558
+  },
+  {
+    "id": "G01",
+    "name": "E2 Galería este hacia el sur",
+    "source": "Subsuelo_Rediseno_16_Sectores/\"E2 Galería este hacia el sur\"",
+    "category": "G",
+    "x": 213,
+    "y": -16,
+    "z": 93,
+    "w": 18,
+    "d": 30,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "5a02487d6e994054aa9ca73c44e32231",
+    "connections": [
+      "H11"
+    ],
+    "ports": [
+      {
+        "connection": "H11",
+        "point": [
+          213,
+          -16,
+          93
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G02",
+    "name": "E3 Galería oriental del Sol",
+    "source": "Subsuelo_Rediseno_16_Sectores/\"E3 Galería oriental del Sol\"",
+    "category": "G",
+    "x": 213,
+    "y": -16,
+    "z": 168,
+    "w": 18,
+    "d": 36,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": "22.48",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "5017c947d46e4924e89c0c704c56bcc5",
+    "connections": [
+      "H08"
+    ],
+    "ports": [
+      {
+        "connection": "H08",
+        "point": [
+          213,
+          -16,
+          165
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G03",
+    "name": "E4 Galería del Sol hacia el oeste",
+    "source": "Subsuelo_Rediseno_16_Sectores/\"E4 Galería del Sol hacia el oeste\"",
+    "category": "G",
+    "x": 165,
+    "y": -16,
+    "z": 144,
+    "w": 18,
+    "d": 36,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": "10.48",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "9c4c40115ba6a9b4f9d7058a9f0cac88",
+    "connections": [
+      "H03",
+      "H04",
+      "H07"
+    ],
+    "ports": [
+      {
+        "connection": "H03",
+        "point": [
+          165,
+          -16,
+          141
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H04",
+        "point": [
+          165,
+          -16,
+          141
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H07",
+        "point": [
+          165,
+          -16,
+          141
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G04",
+    "name": "Galería del borde oriental",
+    "source": "Subsuelo_Rediseno_16_Sectores/\"Galería del borde oriental\"",
+    "category": "G",
+    "x": 213,
+    "y": -16,
+    "z": 129,
+    "w": 18,
+    "d": 30,
+    "floor": -16,
+    "ceiling": 0.6000000238418579,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.2200000286102295,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "ecbc0031d380af24bb6e1611ef1b03d2",
+    "connections": [
+      "H02",
+      "H11"
+    ],
+    "ports": [
+      {
+        "connection": "H02",
+        "point": [
+          213,
+          -16,
+          129
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H11",
+        "point": [
+          213,
+          -16,
+          129
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.6000000238418579
+  },
+  {
+    "id": "G05",
+    "name": "N5 Galería norte hacia el Sol",
+    "source": "Subsuelo_Rediseno_16_Sectores/\"N5 Galería norte hacia el Sol\"",
+    "category": "G",
+    "x": 75,
+    "y": -16,
+    "z": 120,
+    "w": 18,
+    "d": 36,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": "10.48",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "eaa92be70d3ee2144abb79f83e249948",
+    "connections": [
+      "H13",
+      "H14"
+    ],
+    "ports": [
+      {
+        "connection": "H13",
+        "point": [
+          75,
+          -16,
+          123
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H14",
+        "point": [
+          75,
+          -16,
+          123
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G06",
+    "name": "Nave suroeste bajo Pórtico Solar",
+    "source": "Subsuelo_Rediseno_16_Sectores/\"Nave suroeste bajo Pórtico Solar\"",
+    "category": "G",
+    "x": -141,
+    "y": -16,
+    "z": -102,
+    "w": 18,
+    "d": 36,
+    "floor": -16,
+    "ceiling": -3.2300000190734863,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": -2.2800002098083496,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": "10.48",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "edd4bc901cee52144af64eb074e6222e",
+    "connections": [
+      "H44"
+    ],
+    "ports": [
+      {
+        "connection": "H44",
+        "point": [
+          -141,
+          -16,
+          -99
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": -3.2300000190734863
+  },
+  {
+    "id": "G07",
+    "name": "O3 Galería norte de Jardines",
+    "source": "Subsuelo_Rediseno_16_Sectores/\"O3 Galería norte de Jardines\"",
+    "category": "G",
+    "x": -81,
+    "y": -16,
+    "z": 81,
+    "w": 18,
+    "d": 30,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "ce01e8c478a17ce4bb3bf8410a534318",
+    "connections": [
+      "H25"
+    ],
+    "ports": [
+      {
+        "connection": "H25",
+        "point": [
+          -81,
+          -16,
+          81
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G08",
+    "name": "O6 Galería occidental de Archivos",
+    "source": "Subsuelo_Rediseno_16_Sectores/\"O6 Galería occidental de Archivos\"",
+    "category": "G",
+    "x": -129,
+    "y": -16,
+    "z": 105,
+    "w": 18,
+    "d": 42,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">31.96",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "ee5508547d403774faccd698f1316f64",
+    "connections": [
+      "H23",
+      "H24"
+    ],
+    "ports": [
+      {
+        "connection": "H23",
+        "point": [
+          -129,
+          -16,
+          105
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H24",
+        "point": [
+          -129,
+          -16,
+          105
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G09",
+    "name": "S2 Galería junto al Santuario",
+    "source": "Subsuelo_Rediseno_16_Sectores/\"S2 Galería junto al Santuario\"",
+    "category": "G",
+    "x": 171,
+    "y": -16,
+    "z": -78,
+    "w": 18,
+    "d": 36,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "1a7b610bded207d428695a2ad006fe5c",
+    "connections": [
+      "H51",
+      "H52"
+    ],
+    "ports": [
+      {
+        "connection": "H51",
+        "point": [
+          171,
+          -16,
+          -75
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H52",
+        "point": [
+          171,
+          -16,
+          -75
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G10",
+    "name": "Transición norte de Jardines Dorados",
+    "source": "Subsuelo_Rediseno_16_Sectores/\"Transición norte de Jardines Dorados\"",
+    "category": "G",
+    "x": -81,
+    "y": -16,
+    "z": 45,
+    "w": 18,
+    "d": 30,
+    "floor": -16,
+    "ceiling": -1.149999976158142,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": -0.5299999713897705,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "b02d64f7873389943815021929c5d7e9",
+    "connections": [
+      "H29",
+      "H30"
+    ],
+    "ports": [
+      {
+        "connection": "H29",
+        "point": [
+          -81,
+          -16,
+          45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H30",
+        "point": [
+          -81,
+          -16,
+          45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": -1.149999976158142
+  },
+  {
+    "id": "G11",
+    "name": "E6 Entrada occidental al ala del Sol",
+    "source": "Subsuelo_Rediseno_16_Sectores/E6 Entrada occidental al ala del Sol",
+    "category": "G",
+    "x": 105,
+    "y": -16,
+    "z": 165,
+    "w": 18,
+    "d": 30,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "d2fcb2629f2d670418db7b320fabdf04",
+    "connections": [
+      "H06"
+    ],
+    "ports": [
+      {
+        "connection": "H06",
+        "point": [
+          105,
+          -16,
+          165
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G12",
+    "name": "N1 Ala oeste del Claustro",
+    "source": "Subsuelo_Rediseno_16_Sectores/N1 Ala oeste del Claustro",
+    "category": "G",
+    "x": -45,
+    "y": -16,
+    "z": 93,
+    "w": 18,
+    "d": 30,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "f4188252062ea304f9e05a6a44935e4d",
+    "connections": [
+      "H20"
+    ],
+    "ports": [
+      {
+        "connection": "H20",
+        "point": [
+          -45,
+          -16,
+          93
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G13",
+    "name": "N3 Acceso sur del Claustro",
+    "source": "Subsuelo_Rediseno_16_Sectores/N3 Acceso sur del Claustro",
+    "category": "G",
+    "x": 27,
+    "y": -16,
+    "z": 114,
+    "w": 18,
+    "d": 24,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "41d7a64e4a6668c43baa9ce9d6b10fac",
+    "connections": [
+      "H15",
+      "H16",
+      "H18",
+      "H35"
+    ],
+    "ports": [
+      {
+        "connection": "H15",
+        "point": [
+          27,
+          -16,
+          111
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H16",
+        "point": [
+          27,
+          -16,
+          111
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H18",
+        "point": [
+          27,
+          -16,
+          111
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H35",
+        "point": [
+          27,
+          -16,
+          111
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G14",
+    "name": "O4 Jardines hacia Archivos",
+    "source": "Subsuelo_Rediseno_16_Sectores/O4 Jardines hacia Archivos",
+    "category": "G",
+    "x": -81,
+    "y": -16,
+    "z": 117,
+    "w": 18,
+    "d": 30,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "acb27ae012947a742ae10536787faab2",
+    "connections": [
+      "H21",
+      "H22"
+    ],
+    "ports": [
+      {
+        "connection": "H21",
+        "point": [
+          -81,
+          -16,
+          117
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H22",
+        "point": [
+          -81,
+          -16,
+          117
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G15",
+    "name": "O5 Patio bajo Archivos",
+    "source": "Subsuelo_Rediseno_16_Sectores/O5 Patio bajo Archivos",
+    "category": "G",
+    "x": -105,
+    "y": -16,
+    "z": 90,
+    "w": 18,
+    "d": 36,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">20.24",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "5d94ff33cdb40fc49b2a155ff5a945f9",
+    "connections": [
+      "H24",
+      "H25",
+      "H26"
+    ],
+    "ports": [
+      {
+        "connection": "H24",
+        "point": [
+          -105,
+          -16,
+          87
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H25",
+        "point": [
+          -105,
+          -16,
+          87
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H26",
+        "point": [
+          -105,
+          -16,
+          87
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "G16",
+    "name": "S3 Enlace oriental del Santuario",
+    "source": "Subsuelo_Rediseno_16_Sectores/S3 Enlace oriental del Santuario",
+    "category": "G",
+    "x": 183,
+    "y": -16,
+    "z": -6,
+    "w": 18,
+    "d": 36,
+    "floor": -16,
+    "ceiling": -2.9000000953674316,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": -2.2800002098083496,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Galería secundaria y redistribución",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "fccd036b1d9cbf34faeea43112dae702",
+    "connections": [
+      "H47",
+      "H48",
+      "H49"
+    ],
+    "ports": [
+      {
+        "connection": "H47",
+        "point": [
+          183,
+          -16,
+          -3
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H48",
+        "point": [
+          183,
+          -16,
+          -3
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H49",
+        "point": [
+          183,
+          -16,
+          -3
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": -2.9000000953674316
+  },
+  {
+    "id": "M01",
+    "name": "Claustro del Eclipse",
+    "source": "Subsuelo_Salas_Monumentales/Claustro del Eclipse",
+    "category": "M",
+    "x": 21,
+    "y": -16,
+    "z": 153,
+    "w": 30,
+    "d": 42,
+    "floor": -16,
+    "ceiling": 1.600000023841858,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 2.2200000286102295,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Claustro ceremonial: encuentro cooperativo y rutas laterales",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "17.60",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Boveda longitudinal",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "f41d86b4ccaa48842aa904e65ee3e6d4",
+    "connections": [
+      "H35",
+      "H36",
+      "LA1",
+      "LA4"
+    ],
+    "ports": [
+      {
+        "connection": "H35",
+        "point": [
+          21,
+          -16,
+          153
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H36",
+        "point": [
+          21,
+          -16,
+          153
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "LA1",
+        "point": [
+          21,
+          -16,
+          153
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "LA4",
+        "point": [
+          21,
+          -16,
+          153
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 1.600000023841858
+  },
+  {
+    "id": "M02",
+    "name": "El Sol Corrompido",
+    "source": "Subsuelo_Salas_Monumentales/El Sol Corrompido",
+    "category": "M",
+    "x": 189,
+    "y": -16,
+    "z": 162,
+    "w": 18,
+    "d": 36,
+    "floor": -16,
+    "ceiling": 0.5,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.1200000047683716,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Templo profundo del Sol: encuentro importante previo al núcleo",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "16.50",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Boveda longitudinal",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "3fecb972859d5b34c88fcf017550a843",
+    "connections": [
+      "H07",
+      "H08",
+      "H09",
+      "LA1",
+      "LA2"
+    ],
+    "ports": [
+      {
+        "connection": "H07",
+        "point": [
+          189,
+          -16,
+          159
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H08",
+        "point": [
+          189,
+          -16,
+          159
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H09",
+        "point": [
+          189,
+          -16,
+          159
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "LA1",
+        "point": [
+          189,
+          -16,
+          159
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "LA2",
+        "point": [
+          189,
+          -16,
+          159
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.5
+  },
+  {
+    "id": "M03",
+    "name": "Jardines Dorados",
+    "source": "Subsuelo_Salas_Monumentales/Jardines Dorados",
+    "category": "M",
+    "x": -81,
+    "y": -16,
+    "z": -18,
+    "w": 18,
+    "d": 60,
+    "floor": -16,
+    "ceiling": 0.31999996304512024,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.2699999809265137,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Nave de Jardines: gran galería de exploración y primer encuentro interior propuesto",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "16.32",
+      "clearX": "16.51",
+      "clearZ": ">36.00",
+      "overhead": "Nervaduras, pilastras y transiciones",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "b671fe672d179e5478a19f41609d92a0",
+    "connections": [
+      "H41",
+      "LA2",
+      "LA3"
+    ],
+    "ports": [
+      {
+        "connection": "H41",
+        "point": [
+          -81,
+          -16,
+          -15
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "LA2",
+        "point": [
+          -81,
+          -16,
+          -15
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "LA3",
+        "point": [
+          -81,
+          -16,
+          -15
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.31999996304512024
+  },
+  {
+    "id": "M04",
+    "name": "Santuario Profano",
+    "source": "Subsuelo_Salas_Monumentales/Santuario Profano",
+    "category": "M",
+    "x": 147,
+    "y": -16,
+    "z": -63,
+    "w": 18,
+    "d": 66,
+    "floor": -16,
+    "ceiling": 0.6499999761581421,
+    "ceilingEdge": -7.24399995803833,
+    "ceilingEnvelopeTop": 1.2699999809265137,
+    "shape": "Nave rectangular abovedada; volumen abierto, no habitación cerrada nueva",
+    "function": "Santuario bajo el Santuario: sala ritual de dificultad intermedia",
+    "geometry": "E: mallas y suelo serializados",
+    "use": "P: función propuesta",
+    "widthPolicy": "Conservar anchura estructural; carril objetivo libre 6 m y puertas propuestas 6 × 5 m; no medidos como hueco libre",
+    "status": "Pendiente barrido físico y NavMesh en Unity",
+    "historicalSurvey": {
+      "clearHeight": "16.65",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Boveda longitudinal",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "meshGUID": "6c9c63df12fefd24191067030f6c8356",
+    "connections": [
+      "H50",
+      "H51",
+      "H54",
+      "LA3",
+      "LA4"
+    ],
+    "ports": [
+      {
+        "connection": "H50",
+        "point": [
+          147,
+          -16,
+          -63
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H51",
+        "point": [
+          147,
+          -16,
+          -63
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H54",
+        "point": [
+          147,
+          -16,
+          -63
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "LA3",
+        "point": [
+          147,
+          -16,
+          -63
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "LA4",
+        "point": [
+          147,
+          -16,
+          -63
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": 0.6499999761581421
+  },
+  {
+    "id": "A00",
+    "name": "Atrio octagonal del Umbral",
+    "source": "Umbral_De_Las_Profundidades/01 - Arena octagonal",
+    "category": "A",
+    "x": 162,
+    "y": 20,
+    "z": 42,
+    "w": 84,
+    "d": 84,
+    "floor": 20,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Octágono escalonado de módulos; 84 × 84 es su caja, no un cuadrado macizo",
+    "function": "Recepción exterior y acceso único legible",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": null,
+    "connections": [
+      "AC01",
+      "AC02"
+    ],
+    "ports": [
+      {
+        "connection": "AC01",
+        "point": [
+          162,
+          20,
+          27
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "AC02",
+        "point": [
+          162,
+          20,
+          27
+        ],
+        "width": 16,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 0.8214285714285714,
+    "nearestBoxAbove": null,
+    "physicalCeilingAtCenter": null
+  },
+  {
+    "id": "A01",
+    "name": "Vestíbulo bajo la arena",
+    "source": "Umbral_De_Las_Profundidades/06 - Descanso bajo la arena",
+    "category": "A",
+    "x": 162,
+    "y": 4,
+    "z": 18,
+    "w": 24,
+    "d": 24,
+    "floor": 4,
+    "ceiling": 13.38,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Vestíbulo rectangular con cubierta parcial y boca norte",
+    "function": "Recepción interior y reagrupación",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": null,
+    "connections": [
+      "AC02",
+      "AC03"
+    ],
+    "ports": [
+      {
+        "connection": "AC02",
+        "point": [
+          162,
+          4,
+          18
+        ],
+        "width": 16,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "AC03",
+        "point": [
+          162,
+          4,
+          18
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": {
+      "id": "225947133",
+      "path": "Umbral_De_Las_Profundidades/06 - Cubierta de la cripta/Platform_Base_01",
+      "name": "Platform_Base_01",
+      "x0": 162,
+      "x1": 168,
+      "y0": 13.38,
+      "y1": 15.38,
+      "z0": 18,
+      "z1": 24,
+      "provenance": "BoxCollider único de prefab Eternal Temple; caja envolvente transformada, no colisionador de malla"
+    },
+    "physicalCeilingAtCenter": 13.38
+  },
+  {
+    "id": "A02",
+    "name": "Atrio del enlace",
+    "source": "Subsuelo_Acceso_Etapa01/01 - Atrio de enlace Y4",
+    "category": "A",
+    "x": 159,
+    "y": 4,
+    "z": 33,
+    "w": 30,
+    "d": 6,
+    "floor": 4,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Banda de transición en L con el vestíbulo",
+    "function": "Giro hacia escalera; no encuentro",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": null,
+    "connections": [
+      "AC03",
+      "AC04"
+    ],
+    "ports": [
+      {
+        "connection": "AC03",
+        "point": [
+          150,
+          4,
+          36
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "AC04",
+        "point": [
+          150,
+          4,
+          36
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": {
+      "id": "757321421",
+      "path": "Subsuelo_Techo_Etapa01/01 - Bovedas modulares continuas/Base_Ceiling_3m_01",
+      "name": "Base_Ceiling_3m_01",
+      "x0": 156,
+      "x1": 162,
+      "y0": 12.13581555,
+      "y1": 15.38000005,
+      "z0": 30,
+      "z1": 36,
+      "provenance": "BoxCollider único de prefab Eternal Temple; caja envolvente transformada, no colisionador de malla"
+    },
+    "physicalCeilingAtCenter": 12.13581555
+  },
+  {
+    "id": "A03",
+    "name": "Gran descanso inferior",
+    "source": "Subsuelo_Acceso_Etapa01/05 - Primer piso inferior Y-16",
+    "category": "A",
+    "x": 156,
+    "y": -16,
+    "z": 102,
+    "w": 24,
+    "d": 24,
+    "floor": -16,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Plataforma rectangular protegida",
+    "function": "Orientación y punto de recuperación propuesto",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": {
+      "clearHeight": "8.76",
+      "clearX": "21.95",
+      "clearZ": "21.95",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "connections": [
+      "AC04",
+      "VC01",
+      "VE01",
+      "VS01",
+      "H01",
+      "H46"
+    ],
+    "ports": [
+      {
+        "connection": "AC04",
+        "point": [
+          156,
+          -16,
+          99
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VC01",
+        "point": [
+          156,
+          -16,
+          99
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VE01",
+        "point": [
+          156,
+          -16,
+          99
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VS01",
+        "point": [
+          156,
+          -16,
+          99
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H01",
+        "point": [
+          153,
+          -16,
+          99
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "H46",
+        "point": [
+          153,
+          -16,
+          99
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": {
+      "id": "742769538",
+      "path": "Subsuelo_Central_Sureste_Etapa02/02 - Bovedas generales Y-4/Base_Ceiling_3m_01",
+      "name": "Base_Ceiling_3m_01",
+      "x0": 156,
+      "x1": 162,
+      "y0": -7.24418445,
+      "y1": -3.9999999500000003,
+      "z0": 102,
+      "z1": 108,
+      "provenance": "BoxCollider único de prefab Eternal Temple; caja envolvente transformada, no colisionador de malla"
+    },
+    "physicalCeilingAtCenter": -7.24418445
+  },
+  {
+    "id": "D01",
+    "name": "Cámara Centro Oriental",
+    "source": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado",
+    "category": "D",
+    "x": 105,
+    "y": -34,
+    "z": 63,
+    "w": 54,
+    "d": 66,
+    "floor": -34,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Gran vacío vertical; perímetro 78..132 / 30..96",
+    "function": "Encuentro importante opcional y exploración vertical",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": {
+      "clearHeight": "26.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "connections": [
+      "VC02",
+      "VD01"
+    ],
+    "ports": [
+      {
+        "connection": "VC02",
+        "point": [
+          105,
+          -34,
+          63
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VD01",
+        "point": [
+          105,
+          -34,
+          63
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": {
+      "id": "416937015",
+      "path": "Subsuelo_Ala_Este_Cierre_Etapa05/02 - Bovedas generales Y-4/Base_Ceiling_3m_01",
+      "name": "Base_Ceiling_3m_01",
+      "x0": 102,
+      "x1": 108,
+      "y0": -7.24418445,
+      "y1": -3.9999999500000003,
+      "z0": 60,
+      "z1": 66,
+      "provenance": "BoxCollider único de prefab Eternal Temple; caja envolvente transformada, no colisionador de malla"
+    },
+    "physicalCeilingAtCenter": -7.24418445
+  },
+  {
+    "id": "D02",
+    "name": "Cámara de las arcadas del Sureste",
+    "source": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas",
+    "category": "D",
+    "x": 99,
+    "y": -34,
+    "z": -9,
+    "w": 66,
+    "d": 78,
+    "floor": -34,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Recinto vertical con puentes superiores; huella con escaleras y apoyos",
+    "function": "Sala ceremonial y encuentro de coordinación",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": {
+      "clearHeight": "13.37",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Arch_Wide_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "connections": [
+      "VE02",
+      "VD01"
+    ],
+    "ports": [
+      {
+        "connection": "VE02",
+        "point": [
+          99,
+          -34,
+          -9
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VD01",
+        "point": [
+          99,
+          -34,
+          -9
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 0.9440559440559441,
+    "nearestBoxAbove": {
+      "id": "1136613175",
+      "path": "Subsuelo_Central_Sureste_Etapa02/02 - Bovedas generales Y-4/Base_Ceiling_3m_01",
+      "name": "Base_Ceiling_3m_01",
+      "x0": 96,
+      "x1": 102,
+      "y0": -7.24418445,
+      "y1": -3.9999999500000003,
+      "z0": -12,
+      "z1": -6,
+      "provenance": "BoxCollider único de prefab Eternal Temple; caja envolvente transformada, no colisionador de malla"
+    },
+    "physicalCeilingAtCenter": -7.24418445
+  },
+  {
+    "id": "D03",
+    "name": "Gran Cámara del Sol Invertido",
+    "source": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3",
+    "category": "D",
+    "x": 18,
+    "y": -38,
+    "z": 18,
+    "w": 84,
+    "d": 84,
+    "floor": -38,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Cámara cuadrada monumental con galerías, puentes y pilares",
+    "function": "Cámara final; no asumir 84 × 84 totalmente despejados",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": {
+      "clearHeight": "6.00",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Platform_Base_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "connections": [
+      "VS03",
+      "VS06"
+    ],
+    "ports": [
+      {
+        "connection": "VS03",
+        "point": [
+          18,
+          -38,
+          9
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VS06",
+        "point": [
+          18,
+          -38,
+          9
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": {
+      "id": "1588795155",
+      "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/03 - Puente norte sur Y-30/Platform_Base_01",
+      "name": "Platform_Base_01",
+      "x0": 18,
+      "x1": 24,
+      "y0": -32,
+      "y1": -30,
+      "z0": 18,
+      "z1": 24,
+      "provenance": "BoxCollider de escena; envolvente transformada"
+    },
+    "physicalCeilingAtCenter": -32
+  },
+  {
+    "id": "B01",
+    "name": "Galería perimetral superior del Sol",
+    "source": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/02 - Galerias Y-24",
+    "category": "B",
+    "x": 18,
+    "y": -24,
+    "z": 18,
+    "w": 72,
+    "d": 72,
+    "floor": -24,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Anillo de 6 m; vacío central 60 × 60 m; no piso completo",
+    "function": "Aproximación final y visión del vacío",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": null,
+    "connections": [
+      "VS01",
+      "VS02",
+      "VS04"
+    ],
+    "ports": [
+      {
+        "connection": "VS01",
+        "point": [
+          45,
+          -24,
+          15
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VS02",
+        "point": [
+          45,
+          -24,
+          15
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VS04",
+        "point": [
+          51,
+          -24,
+          39
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 0.3888888888888889,
+    "nearestBoxAbove": {
+      "id": "1685071904",
+      "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/08 - Anclaje fijo a la cubierta/Column_Stackable_01",
+      "name": "Column_Stackable_01",
+      "x0": 17.3150177,
+      "x1": 18.6849823,
+      "y0": -8.3,
+      "y1": -7.239999600000001,
+      "z0": 17.3150177,
+      "z1": 18.6849823,
+      "provenance": "BoxCollider de escena; envolvente transformada"
+    },
+    "physicalCeilingAtCenter": -8.3
+  },
+  {
+    "id": "B02",
+    "name": "Galería perimetral inferior del Sol",
+    "source": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/02 - Galerias Y-30",
+    "category": "B",
+    "x": 18,
+    "y": -30,
+    "z": 18,
+    "w": 60,
+    "d": 60,
+    "floor": -30,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Anillo de 6 m; vacío central 48 × 48 m; apertura de escalera",
+    "function": "Recorrido de descenso y ruta de retorno",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": {
+      "clearHeight": "21.70",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Column_Stackable_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "connections": [
+      "VS02",
+      "VS03",
+      "VS05"
+    ],
+    "ports": [
+      {
+        "connection": "VS02",
+        "point": [
+          24,
+          -30,
+          45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VS03",
+        "point": [
+          24,
+          -30,
+          45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VS05",
+        "point": [
+          21,
+          -30,
+          45
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 0.4,
+    "nearestBoxAbove": {
+      "id": "1685071904",
+      "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/08 - Anclaje fijo a la cubierta/Column_Stackable_01",
+      "name": "Column_Stackable_01",
+      "x0": 17.3150177,
+      "x1": 18.6849823,
+      "y0": -8.3,
+      "y1": -7.239999600000001,
+      "z0": 17.3150177,
+      "z1": 18.6849823,
+      "provenance": "BoxCollider de escena; envolvente transformada"
+    },
+    "physicalCeilingAtCenter": -8.3
+  },
+  {
+    "id": "B03",
+    "name": "Puente este-oeste",
+    "source": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/03 - Puente este oeste Y-24",
+    "category": "B",
+    "x": 18,
+    "y": -24,
+    "z": 39,
+    "w": 60,
+    "d": 6,
+    "floor": -24,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Puente recto; centros de módulos X−9..45, huella X−12..48",
+    "function": "Exploración; no conexión con puente que pasa debajo",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": {
+      "clearHeight": "15.98",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Ceiling_Beam_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "connections": [
+      "VS04"
+    ],
+    "ports": [
+      {
+        "connection": "VS04",
+        "point": [
+          -15,
+          -24,
+          39
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": {
+      "id": "973468525",
+      "path": "Subsuelo_Central_Sureste_Etapa02/03 - Vigas longitudinales principales/Ceiling_Beam_01",
+      "name": "Ceiling_Beam_01",
+      "x0": 17.525090703,
+      "x1": 18.474957953,
+      "y0": -8.016983558,
+      "y1": -7.244184558000001,
+      "z0": 36.000028017578,
+      "z1": 42.000093017578,
+      "provenance": "BoxCollider único de prefab Eternal Temple; caja envolvente transformada, no colisionador de malla"
+    },
+    "physicalCeilingAtCenter": -8.016983558
+  },
+  {
+    "id": "B04",
+    "name": "Puente norte-sur",
+    "source": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/03 - Puente norte sur Y-30",
+    "category": "B",
+    "x": 21,
+    "y": -30,
+    "z": 18,
+    "w": 6,
+    "d": 48,
+    "floor": -30,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Puente recto; huella Z−6..42",
+    "function": "Exploración en otra cota",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": {
+      "clearHeight": "22.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "connections": [
+      "VS05"
+    ],
+    "ports": [
+      {
+        "connection": "VS05",
+        "point": [
+          21,
+          -30,
+          -9
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": {
+      "id": "15973284",
+      "path": "Subsuelo_Central_Sureste_Etapa02/02 - Bovedas generales Y-4/Base_Ceiling_3m_01",
+      "name": "Base_Ceiling_3m_01",
+      "x0": 18,
+      "x1": 24,
+      "y0": -7.24418445,
+      "y1": -3.9999999500000003,
+      "z0": 12,
+      "z1": 18,
+      "provenance": "BoxCollider único de prefab Eternal Temple; caja envolvente transformada, no colisionador de malla"
+    },
+    "physicalCeilingAtCenter": -7.24418445
+  },
+  {
+    "id": "B05",
+    "name": "Terraza del Centro Oriental",
+    "source": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/04 - Terraza Y-24",
+    "category": "B",
+    "x": 84,
+    "y": -24,
+    "z": 90,
+    "w": 12,
+    "d": 12,
+    "floor": -24,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Descanso de cuatro módulos",
+    "function": "Descanso protegido; no grupo permanente",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": {
+      "clearHeight": "16.76",
+      "clearX": "17.28",
+      "clearZ": ">24.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "connections": [
+      "VC01",
+      "VC02"
+    ],
+    "ports": [
+      {
+        "connection": "VC01",
+        "point": [
+          84,
+          -24,
+          90
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VC02",
+        "point": [
+          84,
+          -24,
+          90
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": {
+      "id": "1048176016",
+      "path": "Subsuelo_Ala_Norte_Etapa04/02 - Bovedas generales Y-4/Base_Ceiling_3m_01",
+      "name": "Base_Ceiling_3m_01",
+      "x0": 84,
+      "x1": 90,
+      "y0": -7.24418445,
+      "y1": -3.9999999500000003,
+      "z0": 84,
+      "z1": 90,
+      "provenance": "BoxCollider único de prefab Eternal Temple; caja envolvente transformada, no colisionador de malla"
+    },
+    "physicalCeilingAtCenter": -7.24418445
+  },
+  {
+    "id": "B06",
+    "name": "Terraza del Sureste",
+    "source": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/01 - Ocho pisos terraza Y-30",
+    "category": "B",
+    "x": 120,
+    "y": -30,
+    "z": -42,
+    "w": 24,
+    "d": 12,
+    "floor": -30,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Terraza lateral sobre cámara inferior",
+    "function": "Giro del descenso",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": {
+      "clearHeight": "0.38",
+      "clearX": ">30.00",
+      "clearZ": "9.37",
+      "overhead": "Railing_Staircase_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "connections": [
+      "VE01",
+      "VE02"
+    ],
+    "ports": [
+      {
+        "connection": "VE01",
+        "point": [
+          120,
+          -30,
+          -42
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      },
+      {
+        "connection": "VE02",
+        "point": [
+          120,
+          -30,
+          -42
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": {
+      "id": "658314537",
+      "path": "Subsuelo_Central_Sureste_Etapa02/02 - Bovedas generales Y-4/Base_Ceiling_3m_01",
+      "name": "Base_Ceiling_3m_01",
+      "x0": 114,
+      "x1": 120,
+      "y0": -7.24418445,
+      "y1": -3.9999999500000003,
+      "z0": -48,
+      "z1": -42,
+      "provenance": "BoxCollider único de prefab Eternal Temple; caja envolvente transformada, no colisionador de malla"
+    },
+    "physicalCeilingAtCenter": -7.24418445
+  },
+  {
+    "id": "P01",
+    "name": "Área candidata del jefe",
+    "source": "D03, X0..18 Z0..30",
+    "category": "P",
+    "x": 9,
+    "y": -38,
+    "z": 15,
+    "w": 18,
+    "d": 30,
+    "floor": -38,
+    "ceiling": null,
+    "ceilingEdge": null,
+    "ceilingEnvelopeTop": null,
+    "shape": "Subzona funcional dentro de D03; sin nueva geometría",
+    "function": "Combate principal del jefe; conservar circulación periférica y comprobar volumen completo",
+    "geometry": "E: huella física / P: delimitación funcional",
+    "use": "P",
+    "widthPolicy": "Paso nominal 6 m salvo ficha de conexión; altura libre por validar",
+    "status": "Pendiente comprobación en Unity",
+    "historicalSurvey": {
+      "clearHeight": "30.76",
+      "clearX": ">36.00",
+      "clearZ": ">36.00",
+      "overhead": "Base_Ceiling_3m_01",
+      "provenance": "Muestras.tsv histórico; no sustituye medición actual"
+    },
+    "connections": [
+      "VS06"
+    ],
+    "ports": [
+      {
+        "connection": "VS06",
+        "point": [
+          9,
+          -38,
+          15
+        ],
+        "width": 6,
+        "height": 5,
+        "status": "P: anclaje de circulación sobre suelo; no es jamba ni prueba de abertura física"
+      }
+    ],
+    "floorCoverage": 1,
+    "nearestBoxAbove": {
+      "id": "74725334",
+      "path": "Subsuelo_Central_Sureste_Etapa02/02 - Bovedas generales Y-4/Base_Ceiling_3m_01",
+      "name": "Base_Ceiling_3m_01",
+      "x0": 6,
+      "x1": 12,
+      "y0": -7.24418445,
+      "y1": -3.9999999500000003,
+      "z0": 12,
+      "z1": 18,
+      "provenance": "BoxCollider único de prefab Eternal Temple; caja envolvente transformada, no colisionador de malla"
+    },
+    "physicalCeilingAtCenter": -7.24418445
+  }
+]

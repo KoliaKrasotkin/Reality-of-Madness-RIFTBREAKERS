@@ -1,0 +1,70 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+
+namespace ROM.EditorTools
+{
+ public static partial class CiudadDelSolInteriorStageTwo
+ {
+  // A funnel leg can omit height transitions along a polygon boundary. Never
+  // forgive its blocked ray: request native subpaths and test every resulting leg
+  // with the original Connected and physical sweep routines, bounded to 3 levels.
+  static bool ExpandNativeSix(Vector3 a,Vector3 b,Plan plan,Config cfg,int depth,List<Vector3> output,List<string> evidence)
+  {
+   if(Connected(a,b,cfg,true,true,out var ray))
+   {if(output.Count==0)output.Add(a);output.Add(b);return true;}
+   var path=new NavMeshPath();var f=new NavMeshQueryFilter{agentTypeID=0,areaMask=NavMesh.AllAreas};
+   bool complete=NavMesh.CalculatePath(a,b,f,path)&&path.status==NavMeshPathStatus.PathComplete;
+   evidence.Add("depth="+depth+" from="+a.ToString("R")+" to="+b.ToString("R")+" ray="+JsonUtility.ToJson(ray)+" native="+complete+" corners="+string.Join(";",path.corners.Select(c=>c.ToString("R"))));
+   if(!complete)return false;
+   if(depth<3&&path.corners.Length>2&&path.corners.Length<=32&&Vector3.Distance(a,path.corners[0])<=.001f&&Vector3.Distance(b,path.corners[path.corners.Length-1])<=.001f)
+   {
+    var sub=new List<Vector3>();bool all=true;
+    for(int i=1;i<path.corners.Length;i++)if(!ExpandNativeSix(path.corners[i-1],path.corners[i],plan,cfg,depth+1,sub,evidence)){all=false;break;}
+    if(all){output.AddRange(sub);return true;}
+   }
+   // A straight 3D chord is not the ground-following path over a flat landing
+   // followed by stairs. Reuse measured stations, not interpolated fictitious
+   // heights. Every station must have physical support and native projection;
+   // every adjacent projected pair must pass the SAME strict Connected check.
+   var trace=InspectTrace("Prueba local sobre apoyo y NavMesh reales",new[]{a,b},plan,cfg,false);
+   if(!trace.clear||trace.missingNav!=0||trace.disconnectedSurfaceSteps!=0)return false;
+   var stations=trace.stations.Select(s=>s.navPosition).ToArray();
+   for(int i=1;i<stations.Length;i++)if(!Connected(stations[i-1],stations[i],cfg,false,false,out _))return false;
+   evidence.Add("Continuidad por "+stations.Length+" proyecciones nativas medidas, sin impactos omitidos ni enlaces.");
+   output.AddRange(stations);return true;
+  }
+  static Report RefinedGlobalSix(Report raw,string folder)
+  {
+   var r=JsonUtility.FromJson<Report>(JsonUtility.ToJson(raw));var cfg=ConstructionConfig4(SceneManager.GetSceneByPath(City));cfg.activeLinks=r.activeNavMeshLinks;var log=new List<string>();
+   foreach(var c in r.connections)
+   {
+    foreach(var route in new[]{c.forward,c.reverse})
+    {
+     if(!route.complete||!route.physical||route.blockedRaycasts==0)continue;
+     var joined=new List<Vector3>();bool success=true;
+     for(int i=1;i<route.corners.Length;i++)if(!ExpandNativeSix(route.corners[i-1],route.corners[i],c.plan,cfg,0,joined,log)){success=false;break;}
+     if(!success)continue;
+     var corners=joined.Where((v,i)=>i==0||Vector3.Distance(v,joined[i-1])>.00001f).ToArray();
+     var trace=InspectTrace("Subcaminos nativos completos y comprobados",corners,c.plan,cfg,false);
+     if(!trace.clear||trace.missingNav!=0)continue;
+     route.rejectedGlobalCorners=route.corners;route.rejectedGlobalTrace=route.trace;route.rejectedGlobalRays=route.rayEvidence;
+     route.corners=corners;route.trace=trace;route.blockedRaycasts=0;route.rayEvidence=new List<RayEvidence>();route.rawBlockedRaycasts=0;
+     for(int i=1;i<corners.Length;i++)
+     {
+      if(!Connected(corners[i-1],corners[i],cfg,false,false,out var proof))route.blockedRaycasts++;
+      if(proof.rawBlocked){route.rawBlockedRaycasts++;route.rayEvidence.Add(proof);}
+     }
+     route.physical=trace.clear&&trace.missingNav==0;
+    }
+    c.technicalIndividual=c.forward.complete&&c.reverse.complete&&c.forward.physical&&c.reverse.physical&&c.forward.blockedRaycasts==0&&c.reverse.blockedRaycasts==0&&c.geometryFourLanes&&c.edgeProtectionClear;
+    c.status=c.technicalIndividual?"RECEPCION_TECNICA_INDIVIDUAL; CUATRO_JUGADORES_PENDIENTES":"PENDIENTE";
+   }
+   Directory.CreateDirectory(folder);File.WriteAllLines(folder+"/Subcaminos_nativos.txt",log);Write(r,"Recepcion.json",folder);return r;
+  }
+ }
+}

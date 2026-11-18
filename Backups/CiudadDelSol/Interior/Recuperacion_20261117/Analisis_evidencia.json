@@ -1,0 +1,148 @@
+{
+  "status": "EVIDENCIA_PARCIAL; SOLO_PUNTOS_FALTANTES_PENDIENTES",
+  "originalResult": "FUERA_AMBITO; INCOMPLETA",
+  "limitation": "Muestras discretas; no certifica todos los instantes ni cuatro jugadores por una prueba individual.",
+  "routeValid": true,
+  "verifiedPrefix": false,
+  "complete": false,
+  "physicalWarnings": true,
+  "stopReason": "SALIDA_AMBITO_XZ; CAIDA_NO_DEMOSTRADA",
+  "stoppedOutsideXZ": true,
+  "stoppedWrongHeight": false,
+  "terminalPosition": {
+    "x": 175.43723,
+    "y": -15.92,
+    "z": 89.853615
+  },
+  "stoppedAt": 308.28357549999987,
+  "requested": 1,
+  "people": [
+    {
+      "character": 3,
+      "next": 8,
+      "sampleCount": 2181,
+      "supportFailures": 0,
+      "navFailures": 0,
+      "sideContacts": 0,
+      "ungrounded": 0,
+      "nearEdges": 3,
+      "complete": false,
+      "minimumEdge": 0.20700836,
+      "lastPosition": {
+        "x": 175.30324,
+        "y": -15.92,
+        "z": 90.64028
+      },
+      "hits": [
+        {
+          "checkpoint": 0,
+          "seconds": 1.9000169999999343,
+          "distance": 0.8747524796225011,
+          "position": {
+            "x": 156.46693,
+            "y": -15.92,
+            "z": 98.26463
+          },
+          "evidence": "muestra original"
+        },
+        {
+          "checkpoint": 1,
+          "seconds": 21.402039599999853,
+          "distance": 0.9684299872798795,
+          "position": {
+            "x": 173.20758,
+            "y": -15.92,
+            "z": 99.550934
+          },
+          "evidence": "muestra original"
+        },
+        {
+          "checkpoint": 2,
+          "seconds": 36.239360799999986,
+          "distance": 0.8635854773321928,
+          "position": {
+            "x": 174.85985,
+            "y": -15.92,
+            "z": 116.993576
+          },
+          "evidence": "muestra original"
+        },
+        {
+          "checkpoint": 3,
+          "seconds": 140.37891079999986,
+          "distance": 0.9656079724130058,
+          "position": {
+            "x": 120.46841,
+            "y": -15.92,
+            "z": 117.84059
+          },
+          "evidence": "muestra original"
+        },
+        {
+          "checkpoint": 4,
+          "seconds": 182.3803512999998,
+          "distance": 0.9641037952114351,
+          "position": {
+            "x": 117.07411,
+            "y": -15.92,
+            "z": 122.04208
+          },
+          "evidence": "muestra original"
+        },
+        {
+          "checkpoint": 5,
+          "seconds": 238.83889759999988,
+          "distance": 0.9063555577267908,
+          "position": {
+            "x": 119.14305,
+            "y": -15.92,
+            "z": 117.28411
+          },
+          "evidence": "muestra original"
+        },
+        {
+          "checkpoint": 6,
+          "seconds": 278.01518379999993,
+          "distance": 0.9094928857666511,
+          "position": {
+            "x": 174.182,
+            "y": -15.92,
+            "z": 117.8875
+          },
+          "evidence": "muestra original"
+        },
+        {
+          "checkpoint": 7,
+          "seconds": 306.5749977999999,
+          "distance": 0.4433210592464719,
+          "position": {
+            "x": 173.74388,
+            "y": -15.92,
+            "z": 99.3529
+          },
+          "evidence": "muestra original"
+        }
+      ],
+      "gaps": [
+        {
+          "from": 273.96538769999984,
+          "to": 275.67354,
+          "duration": 1.7081523000001653,
+          "start": {
+            "x": 168.09131,
+            "y": -15.92,
+            "z": 117.69969
+          },
+          "end": {
+            "x": 168.57707,
+            "y": -15.92,
+            "z": 117.71467
+          }
+        }
+      ],
+      "nextClosestDistance": 17.55733774925493,
+      "nextClosestTime": 306.8402068999999
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,137 @@
+{
+  "generatedUTC": "2026-11-17T23:43:12.094Z",
+  "source": "C:\\Users\\juang\\Desktop\\Git\\Reality-of-Madness-RIFTBREAKERS\\Backups\\CiudadDelSol\\Interior\\Etapa2_20261117\\Recepcion.json",
+  "sourceSHA256": "2f1d776359bb3f02d321103681e332c8537e066d4677b237757532073b6ba944",
+  "unity": "6000.3.23f1",
+  "started": "2026-11-17T23:22:55.5575704Z",
+  "ended": "2026-11-17T23:23:07.3304667Z",
+  "approved": [
+    "H12",
+    "H06",
+    "H13",
+    "H14",
+    "VC01"
+  ],
+  "pending": [
+    "VC02"
+  ],
+  "allFilesIntact": true,
+  "nativeError": "",
+  "noPlay": true,
+  "negativeControls": true,
+  "realPlayersTested": false,
+  "connections": [
+    {
+      "id": "H12",
+      "from": "R21",
+      "to": "R23",
+      "approved": true,
+      "minWidthLowerBound": 5.21999979019165,
+      "fourStaticCapsules": true,
+      "edges": true,
+      "forward": "PathComplete",
+      "reverse": "PathComplete",
+      "problems": [],
+      "forwardProblems": [],
+      "reverseProblems": []
+    },
+    {
+      "id": "H06",
+      "from": "R23",
+      "to": "G11",
+      "approved": true,
+      "minWidthLowerBound": 6,
+      "fourStaticCapsules": true,
+      "edges": true,
+      "forward": "PathComplete",
+      "reverse": "PathComplete",
+      "problems": [],
+      "forwardProblems": [],
+      "reverseProblems": []
+    },
+    {
+      "id": "H13",
+      "from": "R21",
+      "to": "G05",
+      "approved": true,
+      "minWidthLowerBound": 6,
+      "fourStaticCapsules": true,
+      "edges": true,
+      "forward": "PathComplete",
+      "reverse": "PathComplete",
+      "problems": [],
+      "forwardProblems": [],
+      "reverseProblems": []
+    },
+    {
+      "id": "H14",
+      "from": "G05",
+      "to": "R34",
+      "approved": true,
+      "minWidthLowerBound": 6,
+      "fourStaticCapsules": true,
+      "edges": true,
+      "forward": "PathComplete",
+      "reverse": "PathComplete",
+      "problems": [],
+      "forwardProblems": [],
+      "reverseProblems": []
+    },
+    {
+      "id": "VC01",
+      "from": "R21 (cola de VC01)",
+      "to": "B05",
+      "approved": true,
+      "minWidthLowerBound": 4.039999961853027,
+      "fourStaticCapsules": true,
+      "edges": true,
+      "forward": "PathComplete",
+      "reverse": "PathComplete",
+      "problems": [],
+      "forwardProblems": [],
+      "reverseProblems": []
+    },
+    {
+      "id": "VC02",
+      "from": "B05",
+      "to": "D01 (acceso)",
+      "approved": false,
+      "minWidthLowerBound": 3.8400001525878906,
+      "fourStaticCapsules": true,
+      "edges": true,
+      "forward": "PathComplete",
+      "reverse": "PathComplete",
+      "problems": [],
+      "forwardProblems": [
+        {
+          "kind": "CAMINO_FUERA_CONEXION_O_NIVEL",
+          "collider": "",
+          "hierarchy": "",
+          "globalId": "",
+          "prefab": "",
+          "position": {
+            "x": 92.88823699951172,
+            "y": -34,
+            "z": 45.0029411315918
+          },
+          "occurrences": 1
+        }
+      ],
+      "reverseProblems": [
+        {
+          "kind": "CAMINO_FUERA_CONEXION_O_NIVEL",
+          "collider": "",
+          "hierarchy": "",
+          "globalId": "",
+          "prefab": "",
+          "position": {
+            "x": 92.88823699951172,
+            "y": -34,
+            "z": 45.0029411315918
+          },
+          "occurrences": 1
+        }
+      ]
+    }
+  ]
+}

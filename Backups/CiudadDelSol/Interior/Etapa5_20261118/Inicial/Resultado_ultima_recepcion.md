@@ -1,0 +1,6 @@
+# Última recepción real de Etapa 5 - inicial
+2026-11-18T06:00:01.9943304Z → 2026-11-18T06:00:06.3860727Z
+Aprobadas técnicamente: 2/2. Cuatro jugadores reales: no probado.
+Integridad: True. Error: 
+- VS04: RECEPCION_TECNICA_INDIVIDUAL; CUATRO_JUGADORES_PENDIENTES
+- VS05: RECEPCION_TECNICA_INDIVIDUAL; CUATRO_JUGADORES_PENDIENTES

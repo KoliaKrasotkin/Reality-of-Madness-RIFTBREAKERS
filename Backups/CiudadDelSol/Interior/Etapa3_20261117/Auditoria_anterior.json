@@ -1,0 +1,471 @@
+[
+  {
+    "id": "VE01",
+    "from": "A03",
+    "to": "B06",
+    "points": [
+      [
+        156,
+        -16,
+        99
+      ],
+      [
+        180,
+        -16,
+        99
+      ],
+      [
+        180,
+        -16,
+        63
+      ],
+      [
+        135,
+        -16,
+        63
+      ],
+      [
+        135,
+        -16,
+        105
+      ],
+      [
+        120,
+        -16,
+        105
+      ],
+      [
+        120,
+        -16,
+        12
+      ],
+      [
+        123,
+        -16,
+        12
+      ],
+      [
+        123,
+        -16,
+        6
+      ],
+      [
+        123,
+        -24,
+        -18
+      ],
+      [
+        123,
+        -24,
+        -24
+      ],
+      [
+        123,
+        -30,
+        -42
+      ],
+      [
+        120,
+        -30,
+        -42
+      ]
+    ],
+    "width": 6,
+    "kind": "Acceso Sureste, 4+3 tramos 2/6",
+    "source": "CiudadDelSolArticulacionSurestePreviewGenerator",
+    "length3D": 317.2718872423573,
+    "horizontalLength": 315,
+    "deltaY": -14,
+    "maxSlope": 18.43494882292201,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 647,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          63
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          66
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          72
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          78
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          84
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          90
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          120.75,
+          -24,
+          -18
+        ],
+        "offset": -2.25,
+        "depth": 0.31999927301822567
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          125.25,
+          -24,
+          -18
+        ],
+        "offset": 2.25,
+        "depth": 0.31999927301822567
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/05 - Continuidad de cabeceras protegidas/Column_Stackable_01",
+        "p": [
+          125.25,
+          -24,
+          -24
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VE02",
+    "from": "B06",
+    "to": "D02",
+    "points": [
+      [
+        120,
+        -30,
+        -42
+      ],
+      [
+        123,
+        -30,
+        -42
+      ],
+      [
+        123,
+        -30,
+        -45
+      ],
+      [
+        111,
+        -30,
+        -45
+      ],
+      [
+        111,
+        -30,
+        -39
+      ],
+      [
+        108,
+        -30,
+        -39
+      ],
+      [
+        96,
+        -34,
+        -39
+      ],
+      [
+        93,
+        -34,
+        -39
+      ],
+      [
+        93,
+        -34,
+        -9
+      ],
+      [
+        99,
+        -34,
+        -9
+      ]
+    ],
+    "width": 6,
+    "kind": "Giro y 2 escaleras 2/6",
+    "source": "CiudadDelSolArticulacionSurestePreviewGenerator",
+    "length3D": 78.64911064067351,
+    "horizontalLength": 78,
+    "deltaY": -4,
+    "maxSlope": 18.43494882292201,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 167,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          123,
+          -30,
+          -47.25
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          120,
+          -30,
+          -47.25
+        ],
+        "offset": 2.25,
+        "depth": 0.31999944325588875
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          114,
+          -30,
+          -47.25
+        ],
+        "offset": 2.25,
+        "depth": 0.31999944325588875
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/05 - Continuidad de cabeceras protegidas/Column_Stackable_01",
+        "p": [
+          114,
+          -30,
+          -47.25
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          108.75,
+          -30,
+          -45
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          111,
+          -30,
+          -36.75
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/05 - Continuidad de cabeceras protegidas/Column_Stackable_01",
+        "p": [
+          90.75,
+          -34,
+          -36
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/10 - Variante - Pilares de arcadas/Column_Stackable_01",
+        "p": [
+          90.75,
+          -34,
+          -30
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/10 - Variante - Pilares de arcadas/Column_Stackable_01",
+        "p": [
+          90.75,
+          -34,
+          -18
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VD01",
+    "from": "D02",
+    "to": "D01",
+    "points": [
+      [
+        99,
+        -34,
+        -9
+      ],
+      [
+        93,
+        -34,
+        -9
+      ],
+      [
+        93,
+        -34,
+        -3
+      ],
+      [
+        96,
+        -34,
+        -3
+      ],
+      [
+        96,
+        -34,
+        27
+      ],
+      [
+        96,
+        -34,
+        33
+      ],
+      [
+        99,
+        -34,
+        39
+      ],
+      [
+        99,
+        -34,
+        45
+      ],
+      [
+        102,
+        -34,
+        45
+      ],
+      [
+        102,
+        -34,
+        63
+      ],
+      [
+        105,
+        -34,
+        63
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión inferior entre cámaras",
+    "source": "CiudadDelSolNucleoConjuntoPreviewGenerator.ValidateConjunto",
+    "length3D": 87.70820393249937,
+    "horizontalLength": 87.70820393249937,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 186,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/10 - Variante - Pilares de arcadas/Column_Stackable_01",
+        "p": [
+          90.75,
+          -34,
+          -6
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  }
+]

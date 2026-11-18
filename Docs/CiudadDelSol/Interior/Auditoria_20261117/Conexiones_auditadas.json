@@ -1,0 +1,6205 @@
+[
+  {
+    "id": "AC01",
+    "from": "EX06",
+    "to": "A00",
+    "points": [
+      [
+        129,
+        4,
+        -42
+      ],
+      [
+        129,
+        12,
+        -30
+      ],
+      [
+        132,
+        12,
+        -27
+      ],
+      [
+        132,
+        12,
+        -18
+      ],
+      [
+        132,
+        20,
+        -6
+      ],
+      [
+        132,
+        20,
+        27
+      ],
+      [
+        162,
+        20,
+        27
+      ]
+    ],
+    "width": 6,
+    "kind": "Acceso existente por Santuario",
+    "source": "UmbralDeLasProfundidadesGenerator; posiciones contrastadas con plataformas de escena",
+    "length3D": 105.0870508908312,
+    "horizontalLength": 100.24264068711929,
+    "deltaY": 16,
+    "maxSlope": 33.690067525979785,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 217,
+    "warriorBoxConflicts": [
+      {
+        "instance": "2010466313",
+        "collider": "6578978",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/02 - Apoyos sobre patio existente/Platform_Base_01",
+        "points": [
+          {
+            "p": [
+              129,
+              7.862068965517242,
+              -36.206896551724135
+            ],
+            "segment": 1,
+            "t": 0.4827586206896552
+          }
+        ],
+        "maxDepth": 0.044400124601159274
+      }
+    ],
+    "humanoidBoxConflicts": [
+      {
+        "instance": "2010466313",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/02 - Apoyos sobre patio existente/Platform_Base_01",
+        "p": [
+          129,
+          7.862068965517242,
+          -36.206896551724135
+        ],
+        "maxDepth": 0.09094909030617876
+      },
+      {
+        "instance": "1257052104",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/03 - Puente del Santuario/Platform_Base_01",
+        "p": [
+          129,
+          11.724137931034484,
+          -30.413793103448278
+        ],
+        "maxDepth": 0.06231717092794631
+      },
+      {
+        "instance": "327376195",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/03 - Puente del Santuario/Platform_Base_01",
+        "p": [
+          132,
+          19.724137931034484,
+          -6.413793103448276
+        ],
+        "maxDepth": 0.06231717092794786
+      },
+      {
+        "instance": "2046822211",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/03 - Puente del Santuario/Platform_Base_01",
+        "p": [
+          132,
+          19.724137931034484,
+          -6.413793103448276
+        ],
+        "maxDepth": 0.06231717092794786
+      }
+    ],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [
+      {
+        "p": [
+          130.59099025766974,
+          12,
+          -31.59099025766973
+        ],
+        "segment": 2,
+        "offset": -2.25
+      },
+      {
+        "p": [
+          129.53033008588991,
+          12,
+          -30.53033008588991
+        ],
+        "segment": 2,
+        "offset": -0.75
+      },
+      {
+        "p": [
+          131.59099025766974,
+          12,
+          -30.59099025766973
+        ],
+        "segment": 2,
+        "offset": -2.25
+      }
+    ],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "AC02",
+    "from": "A00",
+    "to": "A01",
+    "points": [
+      [
+        162,
+        20,
+        27
+      ],
+      [
+        147,
+        20,
+        27
+      ],
+      [
+        147,
+        20,
+        6
+      ],
+      [
+        147,
+        20,
+        3
+      ],
+      [
+        147,
+        20,
+        -21
+      ],
+      [
+        162,
+        20,
+        -21
+      ],
+      [
+        162,
+        20,
+        -18
+      ],
+      [
+        162,
+        4,
+        6
+      ],
+      [
+        162,
+        4,
+        18
+      ]
+    ],
+    "width": 16,
+    "kind": "Escalera monumental: 4 tramos de 4/6; ancho nominal 24 m",
+    "source": "Umbral_De_Las_Profundidades/05 - Unica escalinata central hacia la cripta",
+    "length3D": 121.84441020371192,
+    "horizontalLength": 117,
+    "deltaY": -16,
+    "maxSlope": 33.690067525979785,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 252,
+    "warriorBoxConflicts": [
+      {
+        "instance": "299052677",
+        "collider": "6578978",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Basamento de la escalinata/Platform_Base_01",
+        "points": [
+          {
+            "p": [
+              162,
+              15.862068965517242,
+              -11.793103448275861
+            ],
+            "segment": 7,
+            "t": 0.25862068965517243
+          }
+        ],
+        "maxDepth": 0.04440012460115661
+      },
+      {
+        "instance": "1764027008",
+        "collider": "6578978",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Basamento de la escalinata/Platform_Base_01",
+        "points": [
+          {
+            "p": [
+              162,
+              15.862068965517242,
+              -11.793103448275861
+            ],
+            "segment": 7,
+            "t": 0.25862068965517243
+          }
+        ],
+        "maxDepth": 0.04440012460115661
+      },
+      {
+        "instance": "1328380998",
+        "collider": "6578978",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Basamento de la escalinata/Platform_Base_01",
+        "points": [
+          {
+            "p": [
+              162,
+              7.862068965517242,
+              0.2068965517241388
+            ],
+            "segment": 7,
+            "t": 0.7586206896551724
+          }
+        ],
+        "maxDepth": 0.04440012460115661
+      },
+      {
+        "instance": "1996908714",
+        "collider": "6578978",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Basamento de la escalinata/Platform_Base_01",
+        "points": [
+          {
+            "p": [
+              162,
+              7.862068965517242,
+              0.2068965517241388
+            ],
+            "segment": 7,
+            "t": 0.7586206896551724
+          }
+        ],
+        "maxDepth": 0.04440012460115661
+      }
+    ],
+    "humanoidBoxConflicts": [
+      {
+        "instance": "1392663546",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Atrio superior del descenso/Platform_Base_01",
+        "p": [
+          162,
+          19.724137931034484,
+          -17.586206896551722
+        ],
+        "maxDepth": 0.06231717092794631
+      },
+      {
+        "instance": "1797878659",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Atrio superior del descenso/Platform_Base_01",
+        "p": [
+          162,
+          19.724137931034484,
+          -17.586206896551722
+        ],
+        "maxDepth": 0.06231717092794631
+      },
+      {
+        "instance": "299052677",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Basamento de la escalinata/Platform_Base_01",
+        "p": [
+          162,
+          15.862068965517242,
+          -11.793103448275861
+        ],
+        "maxDepth": 0.0909490903061772
+      },
+      {
+        "instance": "1764027008",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Basamento de la escalinata/Platform_Base_01",
+        "p": [
+          162,
+          15.862068965517242,
+          -11.793103448275861
+        ],
+        "maxDepth": 0.0909490903061772
+      },
+      {
+        "instance": "536669815",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Basamento de la escalinata/Platform_Base_01",
+        "p": [
+          162,
+          11.724137931034482,
+          -5.586206896551724
+        ],
+        "maxDepth": 0.06231717092794886
+      },
+      {
+        "instance": "991394335",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Basamento de la escalinata/Platform_Base_01",
+        "p": [
+          162,
+          11.724137931034482,
+          -5.586206896551724
+        ],
+        "maxDepth": 0.06231717092794886
+      },
+      {
+        "instance": "1328380998",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Basamento de la escalinata/Platform_Base_01",
+        "p": [
+          162,
+          7.862068965517242,
+          0.2068965517241388
+        ],
+        "maxDepth": 0.0909490903061772
+      },
+      {
+        "instance": "1996908714",
+        "name": "Platform_Base_01",
+        "path": "Umbral_De_Las_Profundidades/05 - Basamento de la escalinata/Platform_Base_01",
+        "p": [
+          162,
+          7.862068965517242,
+          0.2068965517241388
+        ],
+        "maxDepth": 0.0909490903061772
+      }
+    ],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Broken_01",
+        "path": "Umbral_De_Las_Profundidades/09 - Muros y ruinas/Column_Broken_01",
+        "p": [
+          144.75,
+          20,
+          18
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "SM_GranitePillar",
+        "path": "Umbral_De_Las_Profundidades/08 - Columnata monumental/SM_GranitePillar",
+        "p": [
+          147.75,
+          20,
+          13.5
+        ],
+        "offset": 0.75,
+        "depth": 0.06713434583302202
+      },
+      {
+        "name": "Column_01",
+        "path": "Umbral_De_Las_Profundidades/11 - Antorchas y cristales/Column_01",
+        "p": [
+          144.75,
+          20,
+          9
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Borde octagonal protegido/Railing_01",
+        "p": [
+          144.75,
+          20,
+          6
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Pretiles/Railing_01",
+        "p": [
+          144.75,
+          20,
+          0
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Pretiles/Railing_01",
+        "p": [
+          149.25,
+          20,
+          0
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Pretiles/Railing_01",
+        "p": [
+          144.75,
+          20,
+          -6
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Pretiles/Railing_01",
+        "p": [
+          149.25,
+          20,
+          -6
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Pretiles/Railing_01",
+        "p": [
+          144.75,
+          20,
+          -12
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Pretiles/Railing_01",
+        "p": [
+          149.25,
+          20,
+          -12
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Pretiles/Railing_01",
+        "p": [
+          144.75,
+          20,
+          -18
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Pretiles del atrio/Railing_01",
+        "p": [
+          147,
+          20,
+          -23.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Pretiles del atrio/Railing_01",
+        "p": [
+          150,
+          20,
+          -23.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Pretiles del atrio/Railing_01",
+        "p": [
+          156,
+          20,
+          -23.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Umbral_De_Las_Profundidades/04 - Pretiles del atrio/Railing_01",
+        "p": [
+          162,
+          20,
+          -23.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "AC03",
+    "from": "A01",
+    "to": "A02",
+    "points": [
+      [
+        162,
+        4,
+        18
+      ],
+      [
+        162,
+        4,
+        33.45
+      ],
+      [
+        150,
+        4,
+        33.45
+      ],
+      [
+        150,
+        4,
+        36
+      ]
+    ],
+    "width": 6,
+    "kind": "Paso y giro; salida de cripta nominal 12 m",
+    "source": "CiudadDelSolSubsueloAccessGenerator",
+    "length3D": 30,
+    "horizontalLength": 30,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 64,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Subsuelo_Acceso_Etapa01/04 - Pretiles del enlace/Railing_01",
+        "p": [
+          162,
+          4,
+          35.7
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Subsuelo_Acceso_Etapa01/04 - Pretiles del enlace/Railing_01",
+        "p": [
+          162,
+          4,
+          35.7
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Subsuelo_Acceso_Etapa01/04 - Pretiles del enlace/Railing_01",
+        "p": [
+          156,
+          4,
+          35.7
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Techo_Etapa01/05 - Columnas con capitel monumental/Column_Ceiling_02",
+        "p": [
+          156,
+          4,
+          31.200000000000003
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "AC04",
+    "from": "A02",
+    "to": "A03",
+    "points": [
+      [
+        150,
+        4,
+        36
+      ],
+      [
+        150,
+        0,
+        42
+      ],
+      [
+        150,
+        0,
+        48
+      ],
+      [
+        150,
+        -4,
+        54
+      ],
+      [
+        150,
+        -4,
+        60
+      ],
+      [
+        150,
+        -8,
+        66
+      ],
+      [
+        150,
+        -8,
+        72
+      ],
+      [
+        150,
+        -12,
+        78
+      ],
+      [
+        150,
+        -12,
+        84
+      ],
+      [
+        150,
+        -16,
+        90
+      ],
+      [
+        150,
+        -16,
+        99
+      ],
+      [
+        156,
+        -16,
+        99
+      ]
+    ],
+    "width": 6,
+    "kind": "5 escaleras 4/6 y 4 descansos de 6 m",
+    "source": "CiudadDelSolSubsueloAccessGenerator",
+    "length3D": 75.05551275463989,
+    "horizontalLength": 69,
+    "deltaY": -20,
+    "maxSlope": 33.690067525979785,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 164,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [
+      {
+        "instance": "1015483076",
+        "name": "Platform_Base_01",
+        "path": "Subsuelo_Acceso_Etapa01/01 - Atrio de enlace Y4/Platform_Base_01",
+        "p": [
+          150,
+          3.7333333333333334,
+          36.4
+        ],
+        "maxDepth": 0.06799291726997492
+      },
+      {
+        "instance": "1184489233",
+        "name": "Platform_Base_01",
+        "path": "Subsuelo_Acceso_Etapa01/01 - Atrio de enlace Y4/Platform_Base_01",
+        "p": [
+          150,
+          3.7333333333333334,
+          36.4
+        ],
+        "maxDepth": 0.06799291726997492
+      },
+      {
+        "instance": "1942726176",
+        "name": "Platform_Base_01",
+        "path": "Subsuelo_Acceso_Etapa01/03 - Descansos intermedios/Platform_Base_01",
+        "p": [
+          150,
+          -0.26666666666666666,
+          48.4
+        ],
+        "maxDepth": 0.06799291726997525
+      },
+      {
+        "instance": "1497801159",
+        "name": "Platform_Base_01",
+        "path": "Subsuelo_Acceso_Etapa01/03 - Descansos intermedios/Platform_Base_01",
+        "p": [
+          150,
+          -4.266666666666667,
+          60.4
+        ],
+        "maxDepth": 0.06799291726997525
+      },
+      {
+        "instance": "542675726",
+        "name": "Platform_Base_01",
+        "path": "Subsuelo_Acceso_Etapa01/03 - Descansos intermedios/Platform_Base_01",
+        "p": [
+          150,
+          -8.266666666666667,
+          72.4
+        ],
+        "maxDepth": 0.06799291726996981
+      },
+      {
+        "instance": "1124975492",
+        "name": "Platform_Base_01",
+        "path": "Subsuelo_Acceso_Etapa01/03 - Descansos intermedios/Platform_Base_01",
+        "p": [
+          150,
+          -12.266666666666667,
+          84.4
+        ],
+        "maxDepth": 0.06799291726996981
+      }
+    ],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VC01",
+    "from": "A03",
+    "to": "B05",
+    "points": [
+      [
+        156,
+        -16,
+        99
+      ],
+      [
+        180,
+        -16,
+        99
+      ],
+      [
+        180,
+        -16,
+        63
+      ],
+      [
+        135,
+        -16,
+        63
+      ],
+      [
+        135,
+        -16,
+        105
+      ],
+      [
+        120,
+        -16,
+        105
+      ],
+      [
+        120,
+        -16,
+        90
+      ],
+      [
+        114,
+        -16,
+        90
+      ],
+      [
+        90,
+        -24,
+        90
+      ],
+      [
+        84,
+        -24,
+        90
+      ]
+    ],
+    "width": 6,
+    "kind": "Acceso Centro Oriental y descenso 4×2/6",
+    "source": "CiudadDelSolNucleoConjuntoPreviewGenerator.UpperRoute / CentroOriental.Build",
+    "length3D": 214.29822128134703,
+    "horizontalLength": 213,
+    "deltaY": -8,
+    "maxSlope": 18.43494882292201,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 438,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          63
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          66
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          72
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          78
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          84
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          90
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VC02",
+    "from": "B05",
+    "to": "D01",
+    "points": [
+      [
+        84,
+        -24,
+        90
+      ],
+      [
+        81,
+        -24,
+        90
+      ],
+      [
+        81,
+        -24,
+        84
+      ],
+      [
+        81,
+        -30,
+        66
+      ],
+      [
+        81,
+        -30,
+        60
+      ],
+      [
+        81,
+        -34,
+        48
+      ],
+      [
+        81,
+        -34,
+        39
+      ],
+      [
+        99,
+        -34,
+        39
+      ],
+      [
+        99,
+        -34,
+        45
+      ],
+      [
+        102,
+        -34,
+        45
+      ],
+      [
+        102,
+        -34,
+        63
+      ],
+      [
+        105,
+        -34,
+        63
+      ]
+    ],
+    "width": 6,
+    "kind": "Descenso 3+2 tramos 2/6",
+    "source": "CiudadDelSolCentroOrientalPreviewGenerator",
+    "length3D": 103.6227766016838,
+    "horizontalLength": 102,
+    "deltaY": -10,
+    "maxSlope": 18.43494882292201,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 219,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          78.75,
+          -24,
+          90
+        ],
+        "offset": -2.25,
+        "depth": 0.319999273018215
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          78.75,
+          -24,
+          90
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/05 - Continuidad de 22 apoyos originales/Column_Stackable_01",
+        "p": [
+          78.75,
+          -24,
+          84
+        ],
+        "offset": -2.25,
+        "depth": 0.25498230000000005
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          78.75,
+          -30,
+          66
+        ],
+        "offset": -2.25,
+        "depth": 0.31999927301823633
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          83.25,
+          -30,
+          66
+        ],
+        "offset": 2.25,
+        "depth": 0.31999927301823633
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/05 - Continuidad de 22 apoyos originales/Column_Stackable_01",
+        "p": [
+          78.75,
+          -30,
+          60
+        ],
+        "offset": -2.25,
+        "depth": 0.25498230000000005
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/05 - Continuidad de 22 apoyos originales/Column_Stackable_01",
+        "p": [
+          78.75,
+          -34,
+          48
+        ],
+        "offset": -2.25,
+        "depth": 0.25498230000000005
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/05 - Continuidad de 22 apoyos originales/Column_Stackable_01",
+        "p": [
+          90,
+          -34,
+          36.75
+        ],
+        "offset": -2.25,
+        "depth": 0.25498230000000005
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VE01",
+    "from": "A03",
+    "to": "B06",
+    "points": [
+      [
+        156,
+        -16,
+        99
+      ],
+      [
+        180,
+        -16,
+        99
+      ],
+      [
+        180,
+        -16,
+        63
+      ],
+      [
+        135,
+        -16,
+        63
+      ],
+      [
+        135,
+        -16,
+        105
+      ],
+      [
+        120,
+        -16,
+        105
+      ],
+      [
+        120,
+        -16,
+        12
+      ],
+      [
+        123,
+        -16,
+        12
+      ],
+      [
+        123,
+        -16,
+        6
+      ],
+      [
+        123,
+        -24,
+        -18
+      ],
+      [
+        123,
+        -24,
+        -24
+      ],
+      [
+        123,
+        -30,
+        -42
+      ],
+      [
+        120,
+        -30,
+        -42
+      ]
+    ],
+    "width": 6,
+    "kind": "Acceso Sureste, 4+3 tramos 2/6",
+    "source": "CiudadDelSolArticulacionSurestePreviewGenerator",
+    "length3D": 317.2718872423573,
+    "horizontalLength": 315,
+    "deltaY": -14,
+    "maxSlope": 18.43494882292201,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 647,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          63
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          66
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          72
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          78
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          84
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          90
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          120.75,
+          -24,
+          -18
+        ],
+        "offset": -2.25,
+        "depth": 0.31999927301822567
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          125.25,
+          -24,
+          -18
+        ],
+        "offset": 2.25,
+        "depth": 0.31999927301822567
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/05 - Continuidad de cabeceras protegidas/Column_Stackable_01",
+        "p": [
+          125.25,
+          -24,
+          -24
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VE02",
+    "from": "B06",
+    "to": "D02",
+    "points": [
+      [
+        120,
+        -30,
+        -42
+      ],
+      [
+        123,
+        -30,
+        -42
+      ],
+      [
+        123,
+        -30,
+        -45
+      ],
+      [
+        111,
+        -30,
+        -45
+      ],
+      [
+        111,
+        -30,
+        -39
+      ],
+      [
+        108,
+        -30,
+        -39
+      ],
+      [
+        96,
+        -34,
+        -39
+      ],
+      [
+        93,
+        -34,
+        -39
+      ],
+      [
+        93,
+        -34,
+        -9
+      ],
+      [
+        99,
+        -34,
+        -9
+      ]
+    ],
+    "width": 6,
+    "kind": "Giro y 2 escaleras 2/6",
+    "source": "CiudadDelSolArticulacionSurestePreviewGenerator",
+    "length3D": 78.64911064067351,
+    "horizontalLength": 78,
+    "deltaY": -4,
+    "maxSlope": 18.43494882292201,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 167,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          123,
+          -30,
+          -47.25
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          120,
+          -30,
+          -47.25
+        ],
+        "offset": 2.25,
+        "depth": 0.31999944325588875
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          114,
+          -30,
+          -47.25
+        ],
+        "offset": 2.25,
+        "depth": 0.31999944325588875
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/05 - Continuidad de cabeceras protegidas/Column_Stackable_01",
+        "p": [
+          114,
+          -30,
+          -47.25
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          108.75,
+          -30,
+          -45
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          111,
+          -30,
+          -36.75
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/05 - Continuidad de cabeceras protegidas/Column_Stackable_01",
+        "p": [
+          90.75,
+          -34,
+          -36
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/10 - Variante - Pilares de arcadas/Column_Stackable_01",
+        "p": [
+          90.75,
+          -34,
+          -30
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      },
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/10 - Variante - Pilares de arcadas/Column_Stackable_01",
+        "p": [
+          90.75,
+          -34,
+          -18
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VD01",
+    "from": "D02",
+    "to": "D01",
+    "points": [
+      [
+        99,
+        -34,
+        -9
+      ],
+      [
+        93,
+        -34,
+        -9
+      ],
+      [
+        93,
+        -34,
+        -3
+      ],
+      [
+        96,
+        -34,
+        -3
+      ],
+      [
+        96,
+        -34,
+        27
+      ],
+      [
+        96,
+        -34,
+        33
+      ],
+      [
+        99,
+        -34,
+        39
+      ],
+      [
+        99,
+        -34,
+        45
+      ],
+      [
+        102,
+        -34,
+        45
+      ],
+      [
+        102,
+        -34,
+        63
+      ],
+      [
+        105,
+        -34,
+        63
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión inferior entre cámaras",
+    "source": "CiudadDelSolNucleoConjuntoPreviewGenerator.ValidateConjunto",
+    "length3D": 87.70820393249937,
+    "horizontalLength": 87.70820393249937,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 186,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/10 - Variante - Pilares de arcadas/Column_Stackable_01",
+        "p": [
+          90.75,
+          -34,
+          -6
+        ],
+        "offset": 2.25,
+        "depth": 0.25498230000000005
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VS01",
+    "from": "A03",
+    "to": "B01",
+    "points": [
+      [
+        156,
+        -16,
+        99
+      ],
+      [
+        180,
+        -16,
+        99
+      ],
+      [
+        180,
+        -16,
+        63
+      ],
+      [
+        135,
+        -16,
+        63
+      ],
+      [
+        135,
+        -16,
+        105
+      ],
+      [
+        120,
+        -16,
+        105
+      ],
+      [
+        120,
+        -16,
+        12
+      ],
+      [
+        63,
+        -16,
+        12
+      ],
+      [
+        63,
+        -16,
+        -15
+      ],
+      [
+        57,
+        -16,
+        -15
+      ],
+      [
+        45,
+        -16,
+        -15
+      ],
+      [
+        45,
+        -16,
+        -12
+      ],
+      [
+        45,
+        -24,
+        12
+      ],
+      [
+        45,
+        -24,
+        15
+      ]
+    ],
+    "width": 6,
+    "kind": "Ruta superior existente y 4 escaleras 2/6",
+    "source": "CiudadDelSolNucleoConjuntoPreviewGenerator.UpperRoute / SolInvertido.Build",
+    "length3D": 388.298221281347,
+    "horizontalLength": 387,
+    "deltaY": -8,
+    "maxSlope": 18.43494882292201,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 790,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          63
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          66
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          72
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          78
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          84
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/01 - Centro Oriental aprobado/07 - Protecciones/Railing_01",
+        "p": [
+          132.75,
+          -16,
+          90
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          60,
+          -16,
+          -17.25
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          54,
+          -16,
+          -17.25
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          48,
+          -16,
+          -17.25
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VS02",
+    "from": "B01",
+    "to": "B02",
+    "points": [
+      [
+        45,
+        -24,
+        15
+      ],
+      [
+        51,
+        -24,
+        15
+      ],
+      [
+        51,
+        -24,
+        45
+      ],
+      [
+        42,
+        -24,
+        45
+      ],
+      [
+        24,
+        -30,
+        45
+      ]
+    ],
+    "width": 6,
+    "kind": "Anillo y 3 escaleras 2/6",
+    "source": "CiudadDelSolSolInvertidoPreviewGenerator",
+    "length3D": 63.973665961010276,
+    "horizontalLength": 63,
+    "deltaY": -6,
+    "maxSlope": 18.43494882292201,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 132,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/05 - Prolongaciones de apoyos conservados/Column_Stackable_01",
+        "p": [
+          42,
+          -24,
+          47.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VS03",
+    "from": "B02",
+    "to": "D03",
+    "points": [
+      [
+        24,
+        -30,
+        45
+      ],
+      [
+        -9,
+        -30,
+        45
+      ],
+      [
+        -9,
+        -30,
+        36
+      ],
+      [
+        -9,
+        -38,
+        12
+      ],
+      [
+        -9,
+        -38,
+        9
+      ],
+      [
+        18,
+        -38,
+        9
+      ]
+    ],
+    "width": 6,
+    "kind": "Anillo y 4 escaleras 2/6",
+    "source": "CiudadDelSolSolInvertidoPreviewGenerator",
+    "length3D": 97.29822128134704,
+    "horizontalLength": 96,
+    "deltaY": -8,
+    "maxSlope": 18.43494882292201,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 200,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Stackable_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/05 - Prolongaciones de apoyos conservados/Column_Stackable_01",
+        "p": [
+          -6,
+          -30,
+          47.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VS04",
+    "from": "B01",
+    "to": "B03",
+    "points": [
+      [
+        51,
+        -24,
+        39
+      ],
+      [
+        45,
+        -24,
+        39
+      ],
+      [
+        18,
+        -24,
+        39
+      ],
+      [
+        -15,
+        -24,
+        39
+      ]
+    ],
+    "width": 6,
+    "kind": "Puente este-oeste, mismo nivel",
+    "source": "CiudadDelSolSolInvertidoPreviewGenerator",
+    "length3D": 66,
+    "horizontalLength": 66,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 135,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          48,
+          -24,
+          41.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          48,
+          -24,
+          36.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          42,
+          -24,
+          41.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          42,
+          -24,
+          36.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          36,
+          -24,
+          41.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          36,
+          -24,
+          36.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          30,
+          -24,
+          41.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          30,
+          -24,
+          36.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          24,
+          -24,
+          41.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          24,
+          -24,
+          36.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          18,
+          -24,
+          41.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          18,
+          -24,
+          36.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          12,
+          -24,
+          41.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          12,
+          -24,
+          36.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          6,
+          -24,
+          41.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          6,
+          -24,
+          36.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          0,
+          -24,
+          41.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          0,
+          -24,
+          36.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          -6,
+          -24,
+          41.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          -6,
+          -24,
+          36.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VS05",
+    "from": "B02",
+    "to": "B04",
+    "points": [
+      [
+        21,
+        -30,
+        45
+      ],
+      [
+        21,
+        -30,
+        39
+      ],
+      [
+        21,
+        -30,
+        -3
+      ],
+      [
+        21,
+        -30,
+        -9
+      ]
+    ],
+    "width": 6,
+    "kind": "Puente norte-sur, mismo nivel",
+    "source": "CiudadDelSolSolInvertidoPreviewGenerator",
+    "length3D": 54,
+    "horizontalLength": 54,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 111,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          18.75,
+          -30,
+          42
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          23.25,
+          -30,
+          42
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          18.75,
+          -30,
+          36
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          23.25,
+          -30,
+          36
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          18.75,
+          -30,
+          30
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          23.25,
+          -30,
+          30
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          18.75,
+          -30,
+          24
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          23.25,
+          -30,
+          24
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          18.75,
+          -30,
+          18
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          23.25,
+          -30,
+          18
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          18.75,
+          -30,
+          12
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          23.25,
+          -30,
+          12
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          18.75,
+          -30,
+          6
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          23.25,
+          -30,
+          6
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          18.75,
+          -30,
+          0
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles de puentes/Railing_01",
+        "p": [
+          23.25,
+          -30,
+          0
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "VS06",
+    "from": "D03",
+    "to": "P01",
+    "points": [
+      [
+        18,
+        -38,
+        9
+      ],
+      [
+        12,
+        -38,
+        9
+      ],
+      [
+        9,
+        -38,
+        15
+      ]
+    ],
+    "width": 6,
+    "kind": "Delimitación funcional del encuentro; no puerta nueva",
+    "source": "Propuesta P; evitar parte bajo puente X18..24",
+    "length3D": 12.70820393249937,
+    "horizontalLength": 12.70820393249937,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Construida, pero pendiente de validación",
+    "classCode": "B",
+    "geometryBasis": "Estructuras y descensos asociados presentes en escena y fuentes",
+    "checkedSamples": 28,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H01",
+    "from": "A03",
+    "to": "R30",
+    "points": [
+      [
+        153,
+        -16,
+        99
+      ],
+      [
+        189,
+        -16,
+        99
+      ],
+      [
+        189,
+        -16,
+        129
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 66,
+    "horizontalLength": 66,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 134,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Este_Cierre_Etapa05/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          191.25,
+          -16,
+          120
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H02",
+    "from": "R30",
+    "to": "G04",
+    "points": [
+      [
+        189,
+        -16,
+        129
+      ],
+      [
+        213,
+        -16,
+        129
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 24,
+    "horizontalLength": 24,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 49,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H03",
+    "from": "R30",
+    "to": "G03",
+    "points": [
+      [
+        189,
+        -16,
+        129
+      ],
+      [
+        165,
+        -16,
+        129
+      ],
+      [
+        165,
+        -16,
+        141
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 36,
+    "horizontalLength": 36,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 74,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H04",
+    "from": "G03",
+    "to": "R26",
+    "points": [
+      [
+        165,
+        -16,
+        141
+      ],
+      [
+        141,
+        -16,
+        141
+      ],
+      [
+        141,
+        -16,
+        159
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 42,
+    "horizontalLength": 42,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 86,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H05",
+    "from": "R26",
+    "to": "R23",
+    "points": [
+      [
+        141,
+        -16,
+        159
+      ],
+      [
+        123,
+        -16,
+        159
+      ],
+      [
+        123,
+        -16,
+        165
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 24,
+    "horizontalLength": 24,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 50,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Este_Cierre_Etapa05/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          132,
+          -16,
+          156.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H06",
+    "from": "R23",
+    "to": "G11",
+    "points": [
+      [
+        123,
+        -16,
+        165
+      ],
+      [
+        105,
+        -16,
+        165
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 18,
+    "horizontalLength": 18,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 37,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H07",
+    "from": "G03",
+    "to": "M02",
+    "points": [
+      [
+        165,
+        -16,
+        141
+      ],
+      [
+        189,
+        -16,
+        141
+      ],
+      [
+        189,
+        -16,
+        159
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 42,
+    "horizontalLength": 42,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 86,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H08",
+    "from": "M02",
+    "to": "G02",
+    "points": [
+      [
+        189,
+        -16,
+        159
+      ],
+      [
+        213,
+        -16,
+        159
+      ],
+      [
+        213,
+        -16,
+        165
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 30,
+    "horizontalLength": 30,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 62,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H09",
+    "from": "M02",
+    "to": "R31",
+    "points": [
+      [
+        189,
+        -16,
+        159
+      ],
+      [
+        189,
+        -16,
+        195
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 36,
+    "horizontalLength": 36,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 73,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H10",
+    "from": "R31",
+    "to": "R27",
+    "points": [
+      [
+        189,
+        -16,
+        195
+      ],
+      [
+        165,
+        -16,
+        195
+      ],
+      [
+        165,
+        -16,
+        189
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 30,
+    "horizontalLength": 30,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 62,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H11",
+    "from": "G04",
+    "to": "G01",
+    "points": [
+      [
+        213,
+        -16,
+        129
+      ],
+      [
+        213,
+        -16,
+        93
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 36,
+    "horizontalLength": 36,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 73,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H12",
+    "from": "R23",
+    "to": "R21",
+    "points": [
+      [
+        123,
+        -16,
+        165
+      ],
+      [
+        117,
+        -16,
+        165
+      ],
+      [
+        117,
+        -16,
+        123
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 48,
+    "horizontalLength": 48,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 98,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Este_Cierre_Etapa05/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          119.25,
+          -16,
+          156
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Este_Cierre_Etapa05/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          119.25,
+          -16,
+          144
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H13",
+    "from": "R21",
+    "to": "G05",
+    "points": [
+      [
+        117,
+        -16,
+        123
+      ],
+      [
+        75,
+        -16,
+        123
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 42,
+    "horizontalLength": 42,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 85,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H14",
+    "from": "G05",
+    "to": "R34",
+    "points": [
+      [
+        75,
+        -16,
+        123
+      ],
+      [
+        57,
+        -16,
+        123
+      ],
+      [
+        57,
+        -16,
+        117
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 24,
+    "horizontalLength": 24,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 50,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H15",
+    "from": "R34",
+    "to": "G13",
+    "points": [
+      [
+        57,
+        -16,
+        117
+      ],
+      [
+        27,
+        -16,
+        117
+      ],
+      [
+        27,
+        -16,
+        111
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 36,
+    "horizontalLength": 36,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 74,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H16",
+    "from": "G13",
+    "to": "R16",
+    "points": [
+      [
+        27,
+        -16,
+        111
+      ],
+      [
+        3,
+        -16,
+        111
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 24,
+    "horizontalLength": 24,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 49,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H17",
+    "from": "R16",
+    "to": "R11",
+    "points": [
+      [
+        3,
+        -16,
+        111
+      ],
+      [
+        -15,
+        -16,
+        111
+      ],
+      [
+        -15,
+        -16,
+        129
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 36,
+    "horizontalLength": 36,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 74,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H18",
+    "from": "G13",
+    "to": "R20",
+    "points": [
+      [
+        27,
+        -16,
+        111
+      ],
+      [
+        21,
+        -16,
+        111
+      ],
+      [
+        21,
+        -16,
+        87
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 30,
+    "horizontalLength": 30,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 62,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Norte_Etapa04/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          18.75,
+          -16,
+          96
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H19",
+    "from": "R11",
+    "to": "R17",
+    "points": [
+      [
+        -15,
+        -16,
+        129
+      ],
+      [
+        -51,
+        -16,
+        129
+      ],
+      [
+        -51,
+        -16,
+        123
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 42,
+    "horizontalLength": 42,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 86,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Norte_Etapa04/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          -42,
+          -16,
+          131.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H20",
+    "from": "R17",
+    "to": "G12",
+    "points": [
+      [
+        -51,
+        -16,
+        123
+      ],
+      [
+        -45,
+        -16,
+        123
+      ],
+      [
+        -45,
+        -16,
+        93
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 36,
+    "horizontalLength": 36,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 74,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H21",
+    "from": "R17",
+    "to": "G14",
+    "points": [
+      [
+        -51,
+        -16,
+        123
+      ],
+      [
+        -81,
+        -16,
+        123
+      ],
+      [
+        -81,
+        -16,
+        117
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 36,
+    "horizontalLength": 36,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 74,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H22",
+    "from": "G14",
+    "to": "R01",
+    "points": [
+      [
+        -81,
+        -16,
+        117
+      ],
+      [
+        -105,
+        -16,
+        117
+      ],
+      [
+        -105,
+        -16,
+        123
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 30,
+    "horizontalLength": 30,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 62,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Occidental_Etapa03/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          -102,
+          -16,
+          114.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H23",
+    "from": "R01",
+    "to": "G08",
+    "points": [
+      [
+        -105,
+        -16,
+        123
+      ],
+      [
+        -129,
+        -16,
+        123
+      ],
+      [
+        -129,
+        -16,
+        105
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 42,
+    "horizontalLength": 42,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 86,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H24",
+    "from": "G08",
+    "to": "G15",
+    "points": [
+      [
+        -129,
+        -16,
+        105
+      ],
+      [
+        -105,
+        -16,
+        105
+      ],
+      [
+        -105,
+        -16,
+        87
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 42,
+    "horizontalLength": 42,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 86,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H25",
+    "from": "G15",
+    "to": "G07",
+    "points": [
+      [
+        -105,
+        -16,
+        87
+      ],
+      [
+        -81,
+        -16,
+        87
+      ],
+      [
+        -81,
+        -16,
+        81
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 30,
+    "horizontalLength": 30,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 62,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H26",
+    "from": "G15",
+    "to": "R09",
+    "points": [
+      [
+        -105,
+        -16,
+        87
+      ],
+      [
+        -129,
+        -16,
+        87
+      ],
+      [
+        -129,
+        -16,
+        69
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 42,
+    "horizontalLength": 42,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 86,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Occidental_Etapa03/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          -126.75,
+          -16,
+          78
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H27",
+    "from": "R09",
+    "to": "R08",
+    "points": [
+      [
+        -129,
+        -16,
+        69
+      ],
+      [
+        -129,
+        -16,
+        39
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 30,
+    "horizontalLength": 30,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 61,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Occidental_Etapa03/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          -126.75,
+          -16,
+          54
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H28",
+    "from": "R08",
+    "to": "R05",
+    "points": [
+      [
+        -129,
+        -16,
+        39
+      ],
+      [
+        -105,
+        -16,
+        39
+      ],
+      [
+        -105,
+        -16,
+        45
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 30,
+    "horizontalLength": 30,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 62,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H29",
+    "from": "R05",
+    "to": "G10",
+    "points": [
+      [
+        -105,
+        -16,
+        45
+      ],
+      [
+        -81,
+        -16,
+        45
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 24,
+    "horizontalLength": 24,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 49,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H30",
+    "from": "G10",
+    "to": "R18",
+    "points": [
+      [
+        -81,
+        -16,
+        45
+      ],
+      [
+        -63,
+        -16,
+        45
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 18,
+    "horizontalLength": 18,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 37,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H31",
+    "from": "R18",
+    "to": "R15",
+    "points": [
+      [
+        -63,
+        -16,
+        45
+      ],
+      [
+        -33,
+        -16,
+        45
+      ],
+      [
+        -33,
+        -16,
+        51
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 36,
+    "horizontalLength": 36,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 74,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H32",
+    "from": "R15",
+    "to": "R14",
+    "points": [
+      [
+        -33,
+        -16,
+        51
+      ],
+      [
+        -33,
+        -16,
+        21
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 30,
+    "horizontalLength": 30,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 61,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          -30.75,
+          -16,
+          36
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H33",
+    "from": "R14",
+    "to": "R12",
+    "points": [
+      [
+        -33,
+        -16,
+        21
+      ],
+      [
+        -33,
+        -16,
+        -3
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 24,
+    "horizontalLength": 24,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 49,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          -30.75,
+          -16,
+          12
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H34",
+    "from": "R12",
+    "to": "R13",
+    "points": [
+      [
+        -33,
+        -16,
+        -3
+      ],
+      [
+        -33,
+        -16,
+        -27
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 24,
+    "horizontalLength": 24,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 49,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          -30.75,
+          -16,
+          -12
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H35",
+    "from": "G13",
+    "to": "M01",
+    "points": [
+      [
+        27,
+        -16,
+        111
+      ],
+      [
+        21,
+        -16,
+        111
+      ],
+      [
+        21,
+        -16,
+        153
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 48,
+    "horizontalLength": 48,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 98,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H36",
+    "from": "M01",
+    "to": "R33",
+    "points": [
+      [
+        21,
+        -16,
+        153
+      ],
+      [
+        51,
+        -16,
+        153
+      ],
+      [
+        51,
+        -16,
+        171
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 48,
+    "horizontalLength": 48,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 98,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Norte_Etapa04/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          53.25,
+          -16,
+          156
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H37",
+    "from": "R05",
+    "to": "R04",
+    "points": [
+      [
+        -105,
+        -16,
+        45
+      ],
+      [
+        -105,
+        -16,
+        3
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 42,
+    "horizontalLength": 42,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 85,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Occidental_Etapa03/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          -102.75,
+          -16,
+          30
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H38",
+    "from": "R04",
+    "to": "R02",
+    "points": [
+      [
+        -105,
+        -16,
+        3
+      ],
+      [
+        -105,
+        -16,
+        -21
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 24,
+    "horizontalLength": 24,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 49,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H39",
+    "from": "R02",
+    "to": "R03",
+    "points": [
+      [
+        -105,
+        -16,
+        -21
+      ],
+      [
+        -105,
+        -16,
+        -45
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 24,
+    "horizontalLength": 24,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 49,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H40",
+    "from": "R02",
+    "to": "R07",
+    "points": [
+      [
+        -105,
+        -16,
+        -21
+      ],
+      [
+        -129,
+        -16,
+        -21
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 24,
+    "horizontalLength": 24,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 49,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H41",
+    "from": "R02",
+    "to": "M03",
+    "points": [
+      [
+        -105,
+        -16,
+        -21
+      ],
+      [
+        -81,
+        -16,
+        -21
+      ],
+      [
+        -81,
+        -16,
+        -15
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 30,
+    "horizontalLength": 30,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 62,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H42",
+    "from": "R03",
+    "to": "R19",
+    "points": [
+      [
+        -105,
+        -16,
+        -45
+      ],
+      [
+        -69,
+        -16,
+        -45
+      ],
+      [
+        -69,
+        -16,
+        -99
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 90,
+    "horizontalLength": 90,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 182,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H43",
+    "from": "R19",
+    "to": "R06",
+    "points": [
+      [
+        -69,
+        -16,
+        -99
+      ],
+      [
+        -117,
+        -16,
+        -99
+      ],
+      [
+        -117,
+        -16,
+        -117
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 66,
+    "horizontalLength": 66,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 134,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H44",
+    "from": "R06",
+    "to": "G06",
+    "points": [
+      [
+        -117,
+        -16,
+        -117
+      ],
+      [
+        -141,
+        -16,
+        -117
+      ],
+      [
+        -141,
+        -16,
+        -99
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 42,
+    "horizontalLength": 42,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 86,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H45",
+    "from": "R06",
+    "to": "R10",
+    "points": [
+      [
+        -117,
+        -16,
+        -117
+      ],
+      [
+        -141,
+        -16,
+        -117
+      ],
+      [
+        -141,
+        -16,
+        -141
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 48,
+    "horizontalLength": 48,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 98,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H46",
+    "from": "A03",
+    "to": "R25",
+    "points": [
+      [
+        153,
+        -16,
+        99
+      ],
+      [
+        141,
+        -16,
+        99
+      ],
+      [
+        141,
+        -16,
+        3
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 108,
+    "horizontalLength": 108,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Parcial o bloqueada: interferencia del eje propuesto con sólido activo",
+    "classCode": "C",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 218,
+    "warriorBoxConflicts": [
+      {
+        "instance": "207646119",
+        "collider": "6581090",
+        "name": "Railing_01",
+        "path": "Subsuelo_Acceso_Etapa01/04 - Protecciones del piso inferior/Railing_01",
+        "points": [
+          {
+            "p": [
+              145,
+              -16,
+              99
+            ],
+            "segment": 1,
+            "t": 0.6666666666666666
+          },
+          {
+            "p": [
+              144.5,
+              -16,
+              99
+            ],
+            "segment": 1,
+            "t": 0.7083333333333334
+          },
+          {
+            "p": [
+              144,
+              -16,
+              99
+            ],
+            "segment": 1,
+            "t": 0.75
+          }
+        ],
+        "maxDepth": 0.32
+      }
+    ],
+    "humanoidBoxConflicts": [
+      {
+        "instance": "207646119",
+        "name": "Railing_01",
+        "path": "Subsuelo_Acceso_Etapa01/04 - Protecciones del piso inferior/Railing_01",
+        "p": [
+          145.5,
+          -16,
+          99
+        ],
+        "maxDepth": 0.57
+      }
+    ],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Subsuelo_Acceso_Etapa01/04 - Protecciones del piso inferior/Railing_01",
+        "p": [
+          144,
+          -16,
+          101.25
+        ],
+        "offset": -2.25,
+        "depth": 0.28384933869999784
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          138.75,
+          -16,
+          24
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 1,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H47",
+    "from": "R25",
+    "to": "G16",
+    "points": [
+      [
+        141,
+        -16,
+        3
+      ],
+      [
+        183,
+        -16,
+        3
+      ],
+      [
+        183,
+        -16,
+        -3
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 48,
+    "horizontalLength": 48,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Parcial o bloqueada: interferencia del eje propuesto con sólido activo",
+    "classCode": "C",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 98,
+    "warriorBoxConflicts": [
+      {
+        "instance": "1605132572",
+        "collider": "3914816671524358254",
+        "name": "SM_GranitePillar",
+        "path": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+        "points": [
+          {
+            "p": [
+              151,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.23809523809523808
+          },
+          {
+            "p": [
+              151.5,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.25
+          },
+          {
+            "p": [
+              152,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.2619047619047619
+          },
+          {
+            "p": [
+              152.5,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.27380952380952384
+          }
+        ],
+        "maxDepth": 0.32
+      },
+      {
+        "instance": "1785767212",
+        "collider": "3914816671524358254",
+        "name": "SM_GranitePillar",
+        "path": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+        "points": [
+          {
+            "p": [
+              160,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.4523809523809524
+          },
+          {
+            "p": [
+              160.5,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.4642857142857143
+          },
+          {
+            "p": [
+              161,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.47619047619047616
+          },
+          {
+            "p": [
+              161.5,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.4880952380952381
+          }
+        ],
+        "maxDepth": 0.32
+      },
+      {
+        "instance": "333649260",
+        "collider": "3914816671524358254",
+        "name": "SM_GranitePillar",
+        "path": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+        "points": [
+          {
+            "p": [
+              169,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.6666666666666666
+          },
+          {
+            "p": [
+              169.5,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.6785714285714286
+          },
+          {
+            "p": [
+              170,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.6904761904761905
+          },
+          {
+            "p": [
+              170.5,
+              -16,
+              3
+            ],
+            "segment": 1,
+            "t": 0.7023809523809523
+          }
+        ],
+        "maxDepth": 0.32
+      }
+    ],
+    "humanoidBoxConflicts": [
+      {
+        "instance": "1605132572",
+        "name": "SM_GranitePillar",
+        "path": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+        "p": [
+          151,
+          -16,
+          3
+        ],
+        "maxDepth": 0.57
+      },
+      {
+        "instance": "1785767212",
+        "name": "SM_GranitePillar",
+        "path": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+        "p": [
+          160,
+          -16,
+          3
+        ],
+        "maxDepth": 0.57
+      },
+      {
+        "instance": "333649260",
+        "name": "SM_GranitePillar",
+        "path": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+        "p": [
+          169,
+          -16,
+          3
+        ],
+        "maxDepth": 0.57
+      }
+    ],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "SM_GranitePillar",
+        "path": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+        "p": [
+          151.5,
+          -16,
+          2.25
+        ],
+        "offset": -0.75,
+        "depth": 0.32
+      },
+      {
+        "name": "SM_GranitePillar",
+        "path": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+        "p": [
+          160.5,
+          -16,
+          2.25
+        ],
+        "offset": -0.75,
+        "depth": 0.32
+      },
+      {
+        "name": "SM_GranitePillar",
+        "path": "Umbral_De_Las_Profundidades/05 - Apoyos del descenso/SM_GranitePillar",
+        "p": [
+          169.5,
+          -16,
+          2.25
+        ],
+        "offset": -0.75,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 3,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H48",
+    "from": "G16",
+    "to": "R32",
+    "points": [
+      [
+        183,
+        -16,
+        -3
+      ],
+      [
+        207,
+        -16,
+        -3
+      ],
+      [
+        207,
+        -16,
+        -15
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 36,
+    "horizontalLength": 36,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 74,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H49",
+    "from": "G16",
+    "to": "R28",
+    "points": [
+      [
+        183,
+        -16,
+        -3
+      ],
+      [
+        171,
+        -16,
+        -3
+      ],
+      [
+        171,
+        -16,
+        -39
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 48,
+    "horizontalLength": 48,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 98,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H50",
+    "from": "R28",
+    "to": "M04",
+    "points": [
+      [
+        171,
+        -16,
+        -39
+      ],
+      [
+        147,
+        -16,
+        -39
+      ],
+      [
+        147,
+        -16,
+        -63
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 48,
+    "horizontalLength": 48,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 98,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H51",
+    "from": "M04",
+    "to": "G09",
+    "points": [
+      [
+        147,
+        -16,
+        -63
+      ],
+      [
+        171,
+        -16,
+        -63
+      ],
+      [
+        171,
+        -16,
+        -75
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 36,
+    "horizontalLength": 36,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 74,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H52",
+    "from": "G09",
+    "to": "R29",
+    "points": [
+      [
+        171,
+        -16,
+        -75
+      ],
+      [
+        171,
+        -16,
+        -111
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 36,
+    "horizontalLength": 36,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 73,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H53",
+    "from": "R29",
+    "to": "R24",
+    "points": [
+      [
+        171,
+        -16,
+        -111
+      ],
+      [
+        147,
+        -16,
+        -111
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 24,
+    "horizontalLength": 24,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 49,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "H54",
+    "from": "M04",
+    "to": "R22",
+    "points": [
+      [
+        147,
+        -16,
+        -63
+      ],
+      [
+        123,
+        -16,
+        -63
+      ],
+      [
+        123,
+        -16,
+        -87
+      ]
+    ],
+    "width": 6,
+    "kind": "Conexión funcional propuesta dentro de huella de piso; NO verifica pilares/barandas",
+    "source": "Búsqueda offline sobre módulos físicos de 6 m; no usa NavMesh",
+    "length3D": 48,
+    "horizontalLength": 48,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 98,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "LA1",
+    "from": "M01",
+    "to": "M02",
+    "points": [
+      [
+        21,
+        -16,
+        153
+      ],
+      [
+        189,
+        -16,
+        153
+      ],
+      [
+        189,
+        -16,
+        159
+      ]
+    ],
+    "width": 6,
+    "kind": "Lazo secundario propuesto; preservar pasos y obstáculos existentes",
+    "source": "Huella física; pendiente verificación del corredor en Unity",
+    "length3D": 174,
+    "horizontalLength": 174,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 350,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Norte_Etapa04/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          54,
+          -16,
+          155.25
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Norte_Etapa04/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          66,
+          -16,
+          155.25
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Este_Cierre_Etapa05/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          120,
+          -16,
+          155.25
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Este_Cierre_Etapa05/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          132,
+          -16,
+          155.25
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "LA2",
+    "from": "M02",
+    "to": "M03",
+    "points": [
+      [
+        189,
+        -16,
+        159
+      ],
+      [
+        -33,
+        -16,
+        159
+      ],
+      [
+        -33,
+        -16,
+        141
+      ],
+      [
+        -81,
+        -16,
+        141
+      ],
+      [
+        -81,
+        -16,
+        -15
+      ]
+    ],
+    "width": 6,
+    "kind": "Lazo secundario propuesto; preservar pasos y obstáculos existentes",
+    "source": "Huella física; pendiente verificación del corredor en Unity",
+    "length3D": 444,
+    "horizontalLength": 444,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Propuesta: paso físico individual no acreditado",
+    "classCode": "D",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 892,
+    "warriorBoxConflicts": [],
+    "humanoidBoxConflicts": [],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Este_Cierre_Etapa05/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          132,
+          -16,
+          156.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Este_Cierre_Etapa05/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          120,
+          -16,
+          156.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Norte_Etapa04/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          66,
+          -16,
+          156.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Norte_Etapa04/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          54,
+          -16,
+          156.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Norte_Etapa04/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          -30,
+          -16,
+          156.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Norte_Etapa04/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          -30.75,
+          -16,
+          144
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Occidental_Etapa03/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          -78,
+          -16,
+          138.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 0,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "LA3",
+    "from": "M03",
+    "to": "M04",
+    "points": [
+      [
+        -81,
+        -16,
+        -15
+      ],
+      [
+        -21,
+        -16,
+        -15
+      ],
+      [
+        -21,
+        -16,
+        -21
+      ],
+      [
+        63,
+        -16,
+        -21
+      ],
+      [
+        63,
+        -16,
+        9
+      ],
+      [
+        147,
+        -16,
+        9
+      ],
+      [
+        147,
+        -16,
+        -63
+      ]
+    ],
+    "width": 6,
+    "kind": "Lazo secundario propuesto; preservar pasos y obstáculos existentes",
+    "source": "Huella física; pendiente verificación del corredor en Unity",
+    "length3D": 336,
+    "horizontalLength": 336,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Parcial o bloqueada: interferencia del eje propuesto con sólido activo",
+    "classCode": "C",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 678,
+    "warriorBoxConflicts": [
+      {
+        "instance": "1394495222",
+        "collider": "1394495225",
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "points": [
+          {
+            "p": [
+              -21,
+              -16,
+              -17
+            ],
+            "segment": 2,
+            "t": 0.3333333333333333
+          },
+          {
+            "p": [
+              -21,
+              -16,
+              -17.5
+            ],
+            "segment": 2,
+            "t": 0.4166666666666667
+          },
+          {
+            "p": [
+              -21,
+              -16,
+              -18
+            ],
+            "segment": 2,
+            "t": 0.5
+          }
+        ],
+        "maxDepth": 0.32
+      },
+      {
+        "instance": "1960575576",
+        "collider": "1960575579",
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "points": [
+          {
+            "p": [
+              -18,
+              -16,
+              -21
+            ],
+            "segment": 3,
+            "t": 0.03571428571428571
+          },
+          {
+            "p": [
+              -17.5,
+              -16,
+              -21
+            ],
+            "segment": 3,
+            "t": 0.041666666666666664
+          },
+          {
+            "p": [
+              -17,
+              -16,
+              -21
+            ],
+            "segment": 3,
+            "t": 0.047619047619047616
+          }
+        ],
+        "maxDepth": 0.32
+      },
+      {
+        "instance": "960518187",
+        "collider": "960518190",
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "points": [
+          {
+            "p": [
+              53,
+              -16,
+              -21
+            ],
+            "segment": 3,
+            "t": 0.8809523809523809
+          },
+          {
+            "p": [
+              53.5,
+              -16,
+              -21
+            ],
+            "segment": 3,
+            "t": 0.8869047619047619
+          },
+          {
+            "p": [
+              54,
+              -16,
+              -21
+            ],
+            "segment": 3,
+            "t": 0.8928571428571429
+          }
+        ],
+        "maxDepth": 0.32
+      }
+    ],
+    "humanoidBoxConflicts": [
+      {
+        "instance": "1394495222",
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          -21,
+          -16,
+          -16.5
+        ],
+        "maxDepth": 0.57
+      },
+      {
+        "instance": "1960575576",
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          -18.5,
+          -16,
+          -21
+        ],
+        "maxDepth": 0.57
+      },
+      {
+        "instance": "960518187",
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          52.5,
+          -16,
+          -21
+        ],
+        "maxDepth": 0.57
+      }
+    ],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          -30,
+          -16,
+          -12.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          -24,
+          -16,
+          -17.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          -18,
+          -16,
+          -23.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          -6,
+          -16,
+          -23.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          6,
+          -16,
+          -23.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          18,
+          -16,
+          -23.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          30,
+          -16,
+          -23.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          42,
+          -16,
+          -23.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          54,
+          -16,
+          -23.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          66,
+          -16,
+          6.75
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          72,
+          -16,
+          6.75
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          78,
+          -16,
+          6.75
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          84,
+          -16,
+          6.75
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          90,
+          -16,
+          6.75
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          96,
+          -16,
+          6.75
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          102,
+          -16,
+          6.75
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          108,
+          -16,
+          6.75
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          114,
+          -16,
+          6.75
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          126,
+          -16,
+          6.75
+        ],
+        "offset": -2.25,
+        "depth": 0.3199907639369474
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 3,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  },
+  {
+    "id": "LA4",
+    "from": "M04",
+    "to": "M01",
+    "points": [
+      [
+        147,
+        -16,
+        -63
+      ],
+      [
+        135,
+        -16,
+        -63
+      ],
+      [
+        135,
+        -16,
+        9
+      ],
+      [
+        57,
+        -16,
+        9
+      ],
+      [
+        57,
+        -16,
+        57
+      ],
+      [
+        21,
+        -16,
+        57
+      ],
+      [
+        21,
+        -16,
+        153
+      ]
+    ],
+    "width": 6,
+    "kind": "Lazo secundario propuesto; preservar pasos y obstáculos existentes",
+    "source": "Huella física; pendiente verificación del corredor en Unity",
+    "length3D": 342,
+    "horizontalLength": 342,
+    "deltaY": 0,
+    "maxSlope": 0,
+    "ceilingRequired": 5,
+    "status": "P: recorrido de diseño apoyado en referencias E; no certificado por NavMesh/colisión actual",
+    "bidirectional": true,
+    "classification": "Parcial o bloqueada: interferencia del eje propuesto con sólido activo",
+    "classCode": "C",
+    "geometryBasis": "Código de enlace del dossier; no objeto arquitectónico de escena",
+    "checkedSamples": 690,
+    "warriorBoxConflicts": [
+      {
+        "instance": "1958434412",
+        "collider": "1958434415",
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "points": [
+          {
+            "p": [
+              57,
+              -16,
+              53
+            ],
+            "segment": 4,
+            "t": 0.9166666666666666
+          },
+          {
+            "p": [
+              57,
+              -16,
+              53.5
+            ],
+            "segment": 4,
+            "t": 0.9270833333333334
+          },
+          {
+            "p": [
+              57,
+              -16,
+              54
+            ],
+            "segment": 4,
+            "t": 0.9375
+          }
+        ],
+        "maxDepth": 0.32
+      },
+      {
+        "instance": "1967147222",
+        "collider": "1967147225",
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "points": [
+          {
+            "p": [
+              54,
+              -16,
+              57
+            ],
+            "segment": 5,
+            "t": 0.08333333333333333
+          },
+          {
+            "p": [
+              53.5,
+              -16,
+              57
+            ],
+            "segment": 5,
+            "t": 0.09722222222222222
+          },
+          {
+            "p": [
+              53,
+              -16,
+              57
+            ],
+            "segment": 5,
+            "t": 0.1111111111111111
+          }
+        ],
+        "maxDepth": 0.32
+      }
+    ],
+    "humanoidBoxConflicts": [
+      {
+        "instance": "1958434412",
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          57,
+          -16,
+          52.5
+        ],
+        "maxDepth": 0.57
+      },
+      {
+        "instance": "1967147222",
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          54.5,
+          -16,
+          57
+        ],
+        "maxDepth": 0.57
+      }
+    ],
+    "centerlineSupportGaps": [],
+    "fourLaneBoxWarnings": [
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          132,
+          -16,
+          6.75
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          120,
+          -16,
+          6.75
+        ],
+        "offset": 2.25,
+        "depth": 0.3199994432558359
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          114,
+          -16,
+          6.75
+        ],
+        "offset": 2.25,
+        "depth": 0.3199994432558359
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          108,
+          -16,
+          6.75
+        ],
+        "offset": 2.25,
+        "depth": 0.3199994432558359
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          102,
+          -16,
+          6.75
+        ],
+        "offset": 2.25,
+        "depth": 0.3199994432558359
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          96,
+          -16,
+          6.75
+        ],
+        "offset": 2.25,
+        "depth": 0.3199994432558359
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          90,
+          -16,
+          6.75
+        ],
+        "offset": 2.25,
+        "depth": 0.3199994432558359
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          84,
+          -16,
+          6.75
+        ],
+        "offset": 2.25,
+        "depth": 0.3199994432558359
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          78,
+          -16,
+          6.75
+        ],
+        "offset": 2.25,
+        "depth": 0.3199994432558359
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/02 - Sureste arcadas aprobadas/07 - Protecciones/Railing_01",
+        "p": [
+          72,
+          -16,
+          6.75
+        ],
+        "offset": 2.25,
+        "depth": 0.3199994432558359
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          54.75,
+          -16,
+          24
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          54.75,
+          -16,
+          36
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          59.25,
+          -16,
+          54
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Railing_01",
+        "path": "Nucleo_Monumental_Conjunto/03 - El Sol Invertido V3/09 - Pretiles superiores/Railing_01",
+        "p": [
+          54,
+          -16,
+          59.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          42,
+          -16,
+          59.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          30,
+          -16,
+          59.25
+        ],
+        "offset": -2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Central_Sureste_Etapa02/04 - Columnas monumentales del piso/Column_Ceiling_02",
+        "p": [
+          18.75,
+          -16,
+          60
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      },
+      {
+        "name": "Column_Ceiling_02",
+        "path": "Subsuelo_Ala_Norte_Etapa04/04 - Columnas monumentales/Column_Ceiling_02",
+        "p": [
+          18.75,
+          -16,
+          96
+        ],
+        "offset": 2.25,
+        "depth": 0.32
+      }
+    ],
+    "laneSupportWarnings": [],
+    "strongConflictCount": 2,
+    "navMeshBidirectional": "NO EJECUTADO EN UNITY",
+    "caveat": "C = eje interferido, no prueba de desconexión global. D = no se demuestra inexistencia de un paso alternativo. Contactos pequeños de escalera no se declaran bloqueo: requiere CharacterController y soporte real."
+  }
+]
