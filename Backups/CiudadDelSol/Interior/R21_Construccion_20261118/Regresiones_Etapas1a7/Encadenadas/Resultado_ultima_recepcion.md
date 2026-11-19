@@ -1,0 +1,7 @@
+# Última recepción real de Regresion continuidad recibida
+2026-11-18T22:01:58.4410661Z → 2026-11-18T22:02:10.2070583Z
+Aprobadas técnicamente: 0/3. Cuatro jugadores reales: no probado.
+Integridad: False. Error: 
+- CONT-A03-P01: RECEPCION_INVALIDA; REVISAR_ERROR_O_INTEGRIDAD
+- CONT-R21-P01: RECEPCION_INVALIDA; REVISAR_ERROR_O_INTEGRIDAD
+- CONT-B04-P01: RECEPCION_INVALIDA; REVISAR_ERROR_O_INTEGRIDAD

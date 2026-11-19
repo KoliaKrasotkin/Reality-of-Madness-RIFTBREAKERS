@@ -1,0 +1,632 @@
+{
+  "sceneBefore": "3D552FBE4480DBDCD5D3B0CCEFC02E1640FDF4E493E83BFE5841E17A4204CEBA",
+  "sceneAfter": "5AEEAFEFF31C724525ED014130E700420D5B56A83A95FEF7083F1AC850407EE4",
+  "nav": "B22F805300D430ECC7AE3FC602A01043A4E4BEF4AAAC4F0A5FB4AF31C4DEAE99",
+  "digest": "1F-49-02-8F-66-A2-3F-DB-AB-10-27-77-00-89-23-78-4C-42-92-85-4A-CC-B7-75-67-C1-43-AB-EC-62-44-C5",
+  "originalPhysics": "097A60B1AE22F1475617E126FA542C393BEC2C7D2763952D2A5017DBA35B1AEA",
+  "a03Before": "CEC090D9CDACED749A757FCB944A05C49D3FA2E4945022009053CC3036424E2D",
+  "a03After": "CEC090D9CDACED749A757FCB944A05C49D3FA2E4945022009053CC3036424E2D",
+  "error": "",
+  "saved": true,
+  "reloaded": true,
+  "originalCollidersPreserved": true,
+  "a03Preserved": true,
+  "navPreserved": true,
+  "gridPreserved": true,
+  "localRoutesClear": true,
+  "regressions": true,
+  "automaticRoutes": true,
+  "floorRenderers": 35,
+  "newColliders": 21,
+  "minimumNewColliderHeight": 4.070337295532227,
+  "minimumMeasuredHeadroom": 4.071347236633301,
+  "mounts": [
+    {
+      "requested": {
+        "x": 114.0,
+        "y": -10.279999732971191,
+        "z": 129.0
+      },
+      "point": {
+        "x": 114.0,
+        "y": 1.985209584236145,
+        "z": 129.0
+      },
+      "normal": {
+        "x": 0.02521332912147045,
+        "y": -0.9996820688247681,
+        "z": 0.0
+      },
+      "found": true,
+      "collider": "Subsuelo_34_Naves_Sin_Reticula/Nave 102/102 (30×42)/Boveda longitudinal"
+    },
+    {
+      "requested": {
+        "x": 120.0,
+        "y": -10.279999732971191,
+        "z": 129.0
+      },
+      "point": {
+        "x": 120.0,
+        "y": 1.985209584236145,
+        "z": 129.0
+      },
+      "normal": {
+        "x": -0.015313498675823212,
+        "y": -0.9998827576637268,
+        "z": 0.0
+      },
+      "found": true,
+      "collider": "Subsuelo_34_Naves_Sin_Reticula/Nave 102/102 (30×42)/Boveda longitudinal"
+    },
+    {
+      "requested": {
+        "x": 120.0,
+        "y": -10.279999732971191,
+        "z": 135.0
+      },
+      "point": {
+        "x": 120.0,
+        "y": 1.985209584236145,
+        "z": 135.0
+      },
+      "normal": {
+        "x": -0.015313498675823212,
+        "y": -0.9998827576637268,
+        "z": 0.0
+      },
+      "found": true,
+      "collider": "Subsuelo_34_Naves_Sin_Reticula/Nave 102/102 (30×42)/Boveda longitudinal"
+    },
+    {
+      "requested": {
+        "x": 114.0,
+        "y": -10.279999732971191,
+        "z": 135.0
+      },
+      "point": {
+        "x": 114.0,
+        "y": 1.985209584236145,
+        "z": 135.0
+      },
+      "normal": {
+        "x": 0.02521332912147045,
+        "y": -0.9996820688247681,
+        "z": 0.0
+      },
+      "found": true,
+      "collider": "Subsuelo_34_Naves_Sin_Reticula/Nave 102/102 (30×42)/Boveda longitudinal"
+    }
+  ],
+  "problems": [],
+  "regresionesPorEtapa": [
+    {
+      "stage": "Etapa 1",
+      "count": 1,
+      "passed": 1
+    },
+    {
+      "stage": "Etapa 2",
+      "count": 6,
+      "passed": 6
+    },
+    {
+      "stage": "Etapa 3",
+      "count": 3,
+      "passed": 3
+    },
+    {
+      "stage": "Etapa 4",
+      "count": 2,
+      "passed": 2
+    },
+    {
+      "stage": "Etapa 5",
+      "count": 2,
+      "passed": 2
+    },
+    {
+      "stage": "Etapa 6",
+      "count": 1,
+      "passed": 1
+    },
+    {
+      "stage": "Etapa 7",
+      "count": 1,
+      "passed": 1
+    },
+    {
+      "stage": "Continuidades encadenadas",
+      "count": 3,
+      "passed": 3
+    }
+  ],
+  "rutasAutomaticas": [
+    {
+      "route": "A03-P01_Humanoid_ida.json",
+      "navigable": true,
+      "identicalToA03": true,
+      "unsafeEdges": 25,
+      "fourLaneFailures": 162
+    },
+    {
+      "route": "A03-P01_Humanoid_vuelta.json",
+      "navigable": true,
+      "identicalToA03": true,
+      "unsafeEdges": 26,
+      "fourLaneFailures": 163
+    },
+    {
+      "route": "A03-P01_Warrior_ida.json",
+      "navigable": true,
+      "identicalToA03": true,
+      "unsafeEdges": 23,
+      "fourLaneFailures": 146
+    },
+    {
+      "route": "A03-P01_Warrior_vuelta.json",
+      "navigable": true,
+      "identicalToA03": true,
+      "unsafeEdges": 27,
+      "fourLaneFailures": 149
+    },
+    {
+      "route": "R21-P01_Humanoid_ida.json",
+      "navigable": true,
+      "identicalToA03": true,
+      "unsafeEdges": 41,
+      "fourLaneFailures": 139
+    },
+    {
+      "route": "R21-P01_Humanoid_vuelta.json",
+      "navigable": true,
+      "identicalToA03": true,
+      "unsafeEdges": 47,
+      "fourLaneFailures": 145
+    },
+    {
+      "route": "R21-P01_Warrior_ida.json",
+      "navigable": true,
+      "identicalToA03": true,
+      "unsafeEdges": 39,
+      "fourLaneFailures": 129
+    },
+    {
+      "route": "R21-P01_Warrior_vuelta.json",
+      "navigable": true,
+      "identicalToA03": true,
+      "unsafeEdges": 46,
+      "fourLaneFailures": 135
+    }
+  ],
+  "integridad": {
+    "deleted": [],
+    "unexpected": [],
+    "changedClasses": {
+      "1001": 35,
+      "23": 2,
+      "1660057539": 1
+    },
+    "addedClasses": {
+      "1": 64,
+      "4": 64,
+      "23": 59,
+      "65": 17,
+      "33": 59,
+      "64": 4,
+      "108": 4,
+      "114": 1
+    },
+    "originalTransformsUnchanged": true,
+    "originalCollidersUnchanged": true,
+    "protected": [
+      {
+        "path": "Assets/Scenes/Dungeon_Isla_del_Sol.unity",
+        "sha256": "5AEEAFEFF31C724525ED014130E700420D5B56A83A95FEF7083F1AC850407EE4",
+        "unchanged": false
+      },
+      {
+        "path": "Assets/Scenes/Dungeon_Isla_del_Sol.unity.meta",
+        "sha256": "BAF742BC0B4748C397924E31FCABA240BF93E3972DC05EACFA7989B9A8CB2B17",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/Scenes/Dungeon_Isla_del_Sol/NavMesh-NavMesh_Exterior_CiudadDelSol.asset",
+        "sha256": "B22F805300D430ECC7AE3FC602A01043A4E4BEF4AAAC4F0A5FB4AF31C4DEAE99",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/Scenes/Dungeon_Isla_del_Sol/NavMesh-NavMesh_Exterior_CiudadDelSol.asset.meta",
+        "sha256": "E8A210B900FAAD601F086EA60405BE3278C65248133EF02AD76F0027AB902B58",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Resources/CiudadDelSol/PopulationExterior.asset",
+        "sha256": "73041A22F2216FB0A4960826D0FFC904037F2EBF2B8F459836FF36B8EE53F1D4",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/CiudadDelSolSalasMonumentales/PiedraOpaca.mat",
+        "sha256": "F694CE21D4A2428A8DAF796BFA06DF8C422ABF842C8E1DA343B0E31D59A37DD0",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/Standard Assets/Eternal Temple/Source_FBX/Materials/Atlas_Architecture_01.mat",
+        "sha256": "A17587C01AC5E84DFC695CC38FC975050CD6CB679AA7A23EA35D1B0392133FCE",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Editor/CiudadDelSolInteriorA03Atmosphere.cs",
+        "sha256": "A9E28D0D4E1F09B87C5D88C80ED6460BA2D4A9E70454ADC82321F12CC830C78C",
+        "unchanged": true
+      },
+      {
+        "path": "ProjectSettings/GraphicsSettings.asset",
+        "sha256": "6AB1954AE57DFBD5515EBCEE887DA838F03290505337EF829602E0F2CDF258A4",
+        "unchanged": true
+      },
+      {
+        "path": "ProjectSettings/QualitySettings.asset",
+        "sha256": "77D998673F80390A4A7A3E408D58E2F66F680200A0CC2F13AE9D7D0087BA273C",
+        "unchanged": true
+      },
+      {
+        "path": "Packages/manifest.json",
+        "sha256": "60FF95C4A25EBF7012EA5A832DE89E66F48BAACCF096A91C62860595786C5839",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/01_Sol_erosionado_arco_a.asset",
+        "sha256": "177D996E5A4C770F63EEA887E3DDE034DDE6C507D67DCA8AB02036BC8659449E",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/01_Sol_erosionado_arco_a.asset.meta",
+        "sha256": "AF788B23C58CAA8BD3BA091A0D594EC17F816FD3B6584D89793BADA20CBF6794",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/02_Sol_erosionado_arco_b.asset",
+        "sha256": "C58EF3F5E79500877B998A42CB522E81FF71EFC8108975B2A256BAFC867CCD91",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/02_Sol_erosionado_arco_b.asset.meta",
+        "sha256": "8EA419C9846586426B8B8F4AA9FE5B8181DCB833605A9B5F76029986AA0F89BD",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/03_Sol_erosionado_arco_c.asset",
+        "sha256": "298133F87A4167289E65E13759009BEC256C43628651B20DCBB3A92EA22A1C66",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/03_Sol_erosionado_arco_c.asset.meta",
+        "sha256": "96ED7D047D51F7A1CBCF92758DD18C4F8CC4F79B2882D8D8F4270823144496E0",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/04_Nucleo_solar.asset",
+        "sha256": "3028AE35A5BD664B1817E554E3796C14FBC1CBD9F4C67A39D387BB07329A711A",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/04_Nucleo_solar.asset.meta",
+        "sha256": "CE08E397DCE0F5DDCA2A0521B4ACE9089BAC54B16AF4F793F7150402AD807C56",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_0.asset",
+        "sha256": "4365E9B25BB0E56BE446DE3C0150080E379BFADA9516124B71D33DEBEC01987F",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_0.asset.meta",
+        "sha256": "E8973966A69349CF707E07EE88FE077A520CAF9083E5B86610D43636C9B52D18",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_1.asset",
+        "sha256": "B789D824B31AE9557F3386A2ACB62EE041CF3B6DCFCD4283EA372EB792479294",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_1.asset.meta",
+        "sha256": "C503103353629ED4D511175764F8821AF602EC1B5DEB4D1133A72B5B2F3C0FEA",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_2.asset",
+        "sha256": "93CFA49329AD3C8C7D8EB74DE2A243E37F126D9BB00B1C30F49F5F930D9F8FD4",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_2.asset.meta",
+        "sha256": "06B76403A4CE9A3FECFABE95A51901C24D58EC457B3090CF1C6CE2B262721DAF",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_3.asset",
+        "sha256": "891D1FE4413BF1166A1A021022EF4DA26B320F0292BA47FE146238C0CF49724A",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_3.asset.meta",
+        "sha256": "BB122FB4E0649E592860542945E90087BC3BB523667B5EE9094B28367C6C592F",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_4.asset",
+        "sha256": "A42645C11C51F1D6F39058627FDD3DB7C24B530FA462C1250FBE65BE0743BCE7",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_4.asset.meta",
+        "sha256": "1A0243D9D71A5B961830961EF7D2D62084D20412EC3F0E664849E30867A13930",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_5.asset",
+        "sha256": "4C82100B99E1BBC7A100922F92C46E289B095113160F286EA6C543080DBE2042",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_5.asset.meta",
+        "sha256": "54A0434021A49E4ADA826B022D73D101A256E984D9C541FE14A542B54BF4B3DF",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_6.asset",
+        "sha256": "F97E33955982BC8525318BC101E835F8BA917DDF06BE6E2D5BFEEEFFB835851E",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_6.asset.meta",
+        "sha256": "6276A5587D7F6EC53AB02DF31FC918202B34D227269263B87CE501AF50CD25EF",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_7.asset",
+        "sha256": "7517264C3BEE65803260507FF61C93169F6E60AB7D3CB1BE1FE0BC3328A521D0",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_7.asset.meta",
+        "sha256": "F9FB89E89CBF8F4441E2C69914E2F9C631D66AA58BE9C2B1FDFE04A42DCC1413",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_8.asset",
+        "sha256": "C26B5D7EA9CA8165EB9F5B2E0FAC852B518D6FF323E9F8C43BCC0A483FBA1481",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_8.asset.meta",
+        "sha256": "0BEBD4860471A894E32C191AEAA25648DB2A943BEAA168723185390A6E7D294D",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_9.asset",
+        "sha256": "0C02502EA67B761A9F5759D945B013403993D419B0D927BECB8543B723720C48",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/05_Rayo_9.asset.meta",
+        "sha256": "D2CD3E73006E25B21AC0F99EFED3762F1D781998D3C2D007F3464447CE75985E",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/06_Glifo_antiguo_uno.asset",
+        "sha256": "2695ACED106373A4584E24A31DA87D70275E916284CCA26547383C3742247663",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/06_Glifo_antiguo_uno.asset.meta",
+        "sha256": "82658D6BFE885E0A1F957969D2DEC4E90B0B9E813977F3039BF2C5B459EF329E",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/07_Glifo_antiguo_dos.asset",
+        "sha256": "845B365E1CE9DABB4F9DCE70AC3696006B774931E3EAF05689F9E65E5FA3080E",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/07_Glifo_antiguo_dos.asset.meta",
+        "sha256": "104B1BC304FA9425C294AF6352F04A7B6943D1C18754E147E4A3FCBD2DA940B4",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/08_Glifo_antiguo_tres.asset",
+        "sha256": "3EDA74AD54FA60E09B203357A49B47CF4D39FD24C6FF08EE4BD72DCC499E2996",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/08_Glifo_antiguo_tres.asset.meta",
+        "sha256": "3568D77A4F8E15549E6C669A454B61F9A55B57D8698188404354F485CCC68B29",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/09_Anclaje_este.asset",
+        "sha256": "DE57FF43D467B772D0B051553A27499BBD760F468A8B04C3EBC241C91BAC0151",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/09_Anclaje_este.asset.meta",
+        "sha256": "2528F11D7295E85E2DF6E1B791DADC4382EDFB1B964433524154830238D6AF72",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/09_Anclaje_oeste.asset",
+        "sha256": "0AF9DFB0647C6DC13745B0630E68BDF5A87728D15E4A4AB89083A88E9FC4CBF5",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/09_Anclaje_oeste.asset.meta",
+        "sha256": "84C20B6F2CCCE89FEFDE4DD7C2E839F67B92E98D004DA2B18141CB23706127CF",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/10_Argolla_rota_este.asset",
+        "sha256": "A6E63EAB16EEC1C283B53AAC86878247CEDCB196DF9887A49D3BDEA3A1162418",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/10_Argolla_rota_este.asset.meta",
+        "sha256": "2D2546AAACD874EAC897EDB18650BF4B1937F1A0198BF5043E9EBADF5DE4E8C8",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/10_Argolla_rota_oeste.asset",
+        "sha256": "B07025ED05E4527F4475862286E6BF1B37DA5164F5861558DF36BD20DDB549B1",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/10_Argolla_rota_oeste.asset.meta",
+        "sha256": "3C0E21DC4071965E28CEC134E0DAA6A52378E1D382774D3360BE58F40D6F6C0E",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/11_Fractura_piedra.asset",
+        "sha256": "933F2E52C48DF53D0EF584CDAE4AEC8930A413C4B1479AEC9A170730DA2B28D4",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/11_Fractura_piedra.asset.meta",
+        "sha256": "1E5502AB1A7278BBB9534C1DDD2F73A00C1D82343B907F31299C279C7D6B4D66",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/12_Filamento_violeta.asset",
+        "sha256": "C7C0E32A18771B7CFD3EC1F5EC40820E13FAE57C71AC4440B2CE912C0DC28832",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/12_Filamento_violeta.asset.meta",
+        "sha256": "F9791DE0227B7DCDCD4E14E137DEE8F70E81D4CB1C7EEDF3E79F95104B085294",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/13_Ramificacion_fractura.asset",
+        "sha256": "081670A2A80AF4DE95A5BC30016DFA58565272920BA3B09B33C34CB4A59D0902",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/13_Ramificacion_fractura.asset.meta",
+        "sha256": "87D97F99967BE954C827F3D817E7376F10C9457B67C23F0F90F93D90F1318BA1",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Ambar_luminaria.mat",
+        "sha256": "E5280DF5CDCEDD7EEF6C1F8B01ECE02A71D1E859B57330DA4264C750BC171719",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Ambar_luminaria.mat.meta",
+        "sha256": "A0AD992643EE524D912F88F98D62F0073984AEED64B6F6DFF982B0A6A64C5B30",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Bronce_envejecido.mat",
+        "sha256": "CA1FE4107085164BA14455705D74D30F3D3A156AE823C798D84B77BE332B9028",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Bronce_envejecido.mat.meta",
+        "sha256": "02E9AB6363ABD5CCEC73A6DA1CEC6FA4F602551DE4336EAD126732AF8B9DD44E",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Fractura_violeta.mat",
+        "sha256": "0654A3CA17D856E8691F7473DAA6B176BCB1334C707F3A31CBA9070E7F20BC2F",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Fractura_violeta.mat.meta",
+        "sha256": "674135821AFA6C203A4C14B5C502C602E53A902448447F0B00DEA5BC941BA165",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Incision_oscura.mat",
+        "sha256": "C30BB5CD3DC29DB493B32C0B18E404AE6902FB9A1D0086D684CEACF3B10604EB",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Incision_oscura.mat.meta",
+        "sha256": "12BF6CDAABFD734AB8AE97707AA0BDD59292A7279686FAC1028A264C52D72BE3",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Luminaria_atlas_0.mat",
+        "sha256": "6361C5962F8634973B14E29B24792D8A712AF15B5F7AFEC9D8304D533DAEE588",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Luminaria_atlas_0.mat.meta",
+        "sha256": "F24C6E84DC9819EC816E790E0CF5BF139D1D765E6BB98A38C71D494E447C69D7",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Pavimento_antiguo.mat",
+        "sha256": "7FB7332519393BA8DB0635A9ADE879E7981533CBFA1F4CF3B796D6AEB5395EBE",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Pavimento_antiguo.mat.meta",
+        "sha256": "9DAF784C332B276E7652F585DF8B2DB1C0A210228272D33F685C33C336703A52",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Piedra_barandas.mat",
+        "sha256": "2307D74CF989B4C393066CD5D0B61B477BB0D2224720ABF707A8B43998541AAF",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Piedra_barandas.mat.meta",
+        "sha256": "FBE27A0A6962DC63F0173DD33902E7413423713C996E0DB1C0FC6D7A803CCF91",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Piedra_oscurecida.mat",
+        "sha256": "5656359FF3B940A6EFAEF630CCA431662C5A95E6682CF3142A792EE30972CB78",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Piedra_oscurecida.mat.meta",
+        "sha256": "B5A06BD6644A147DAE55D673C744A672E3C15D81F068449ECECD1643BE9678EE",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Relieve_solar.mat",
+        "sha256": "D9DB8E0ED3517741930F708F00C0ED294966C8140F1DCE6B6A4DF95AFAF9CE80",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/A03_Relieve_solar.mat.meta",
+        "sha256": "66689910BBA1C8D2D36F279FC61543D5663F8C5A0D5E8795C8AF44B2DA80775A",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/Anclaje_volumetrico_este.asset",
+        "sha256": "3C87F406550219790144624A83871739FB8EF6FE167EA81F51ED69EEE8E3D4AB",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/Anclaje_volumetrico_este.asset.meta",
+        "sha256": "AC46D13F93AF602271BC4D173D2E94A90473C1AC2F9556A3F7D01BA2F5F659A0",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/Anclaje_volumetrico_oeste.asset",
+        "sha256": "D86CB816BBB79DCF883BC4A5F314A2C547FED7B6AF9B12E05B3B63540D438A45",
+        "unchanged": true
+      },
+      {
+        "path": "Assets/ROM/Art/CiudadDelSol/Interior/A03/Anclaje_volumetrico_oeste.asset.meta",
+        "sha256": "8E1F4E9D41BD06BA52AB0CD98A93253765BB3BCA3BCDF174B761B8851F3BF30C",
+        "unchanged": true
+      }
+    ]
+  },
+  "anchuras": 164,
+  "anchuraMinima": 6.0
+}

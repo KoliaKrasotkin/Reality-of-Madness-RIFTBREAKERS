@@ -1,0 +1,7 @@
+# Última recepción real de Regresión Etapa 3
+2026-11-18T22:01:33.4030208Z → 2026-11-18T22:01:37.3226100Z
+Aprobadas técnicamente: 0/3. Cuatro jugadores reales: no probado.
+Integridad: False. Error: 
+- VE01: RECEPCION_INVALIDA; REVISAR_ERROR_O_INTEGRIDAD
+- VE02: RECEPCION_INVALIDA; REVISAR_ERROR_O_INTEGRIDAD
+- VD01: RECEPCION_INVALIDA; REVISAR_ERROR_O_INTEGRIDAD

@@ -1,0 +1,98 @@
+
+        const string RoomsReport = "Docs/CiudadDelSol/Interior/Fase2_Salas_20261118";
+        static Newtonsoft.Json.Linq.JArray roomPlan;
+        static int roomView;
+        [InitializeOnLoadMethod] static void InstallRoomsReadOnly()
+        {
+            if(File.Exists(RoomsReport+"/Auditar.pending")) EditorApplication.delayCall+=ConsumeRoomsReadOnly;
+        }
+        static void ConsumeRoomsReadOnly()
+        {
+            if(EditorApplication.isCompiling||EditorApplication.isUpdating){EditorApplication.delayCall+=ConsumeRoomsReadOnly;return;}
+            if(!File.Exists(RoomsReport+"/Auditar.pending"))return;
+            File.Move(RoomsReport+"/Auditar.pending",RoomsReport+"/Auditar.consumed."+Guid.NewGuid());
+            try{AuditRoomsReadOnly();}catch(Exception e){File.WriteAllText(RoomsReport+"/Error_Unity.txt",e.ToString());Debug.LogException(e);}
+        }
+        static string RoomHierarchy(Transform t)=> t.parent?RoomHierarchy(t.parent)+"/"+t.name:t.name;
+        static string RoomNormalized(string s)=>s.Replace("\"","");
+        static void AuditRoomsReadOnly()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Solo Edit Mode.");
+            if(Enumerable.Range(0,SceneManager.sceneCount).Any(i=>SceneManager.GetSceneAt(i).isDirty))throw new InvalidOperationException("Hay cambios sin guardar.");
+            var scene=SceneManager.GetSceneByPath(ScenePath);if(!scene.isLoaded)scene=EditorSceneManager.OpenScene(ScenePath,OpenSceneMode.Single);
+            var before=File.ReadAllBytes(ScenePath);roomPlan=Newtonsoft.Json.Linq.JArray.Parse(File.ReadAllText("Docs/CiudadDelSol/Interior/Plan_20261117/Salas.json"));
+            var all=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Transform>(true)).ToArray();
+            var indexed=all.GroupBy(t=>RoomNormalized(RoomHierarchy(t))).ToDictionary(g=>g.Key,g=>g.First());
+            var renderers=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Renderer>(true)).ToArray();
+            var lights=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Light>(true)).ToArray();
+            var actor=typeof(CiudadDelSolInteriorStageTwo);var flags=System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static;
+            var cfg=actor.GetMethod("ConstructionConfig4",flags).Invoke(null,new object[]{scene});
+            var probe=actor.GetMethod("Probe",flags);var sweep=actor.GetMethod("Sweep",flags);
+            var physics=scene.GetPhysicsScene();var filter=new UnityEngine.AI.NavMeshQueryFilter{agentTypeID=0,areaMask=UnityEngine.AI.NavMesh.AllAreas};
+            UnityEngine.AI.NavMesh.SamplePosition(new Vector3(156,-16,99),out var entrance,.35f,filter);
+            var rooms=new Newtonsoft.Json.Linq.JArray();Physics.SyncTransforms();
+            foreach(Newtonsoft.Json.Linq.JObject plan in roomPlan)
+            {
+                string id=(string)plan["id"],source=(string)plan["source"];indexed.TryGetValue(RoomNormalized(source),out var tr);
+                var x=(float)plan["x"];var y=(float)plan["floor"];var z=(float)plan["z"];var w=(float)plan["w"];var d=(float)plan["d"];
+                var r=new Newtonsoft.Json.Linq.JObject{["id"]=id,["matchedHierarchy"]=tr?RoomHierarchy(tr):null,["active"]=tr&&tr.gameObject.activeInHierarchy,["samples"]=new Newtonsoft.Json.Linq.JArray()};
+                var children=tr?tr.GetComponentsInChildren<Collider>(true):Array.Empty<Collider>();
+                var rs=tr?tr.GetComponentsInChildren<Renderer>(true):Array.Empty<Renderer>();
+                r["colliders"]=new Newtonsoft.Json.Linq.JArray(children.Select(c=>new Newtonsoft.Json.Linq.JObject{["path"]=RoomHierarchy(c.transform),["active"]=c.gameObject.activeInHierarchy,["enabled"]=c.enabled,["trigger"]=c.isTrigger,["type"]=c.GetType().Name,["bounds"]=Newtonsoft.Json.Linq.JObject.Parse(JsonUtility.ToJson(c.bounds)),["id"]=GlobalObjectId.GetGlobalObjectIdSlow(c).ToString()}));
+                r["renderers"]=new Newtonsoft.Json.Linq.JArray(rs.Select(c=>new Newtonsoft.Json.Linq.JObject{["path"]=RoomHierarchy(c.transform),["active"]=c.gameObject.activeInHierarchy&&c.enabled,["bounds"]=Newtonsoft.Json.Linq.JObject.Parse(JsonUtility.ToJson(c.bounds)),["materials"]=new Newtonsoft.Json.Linq.JArray(c.sharedMaterials.Select(m=>m?AssetDatabase.GetAssetPath(m):"MISSING"))}));
+                var region=new Bounds(new Vector3(x,y+7,z),new Vector3(w,14,d));
+                r["lightsInEnvelope"]=new Newtonsoft.Json.Linq.JArray(lights.Where(l=>region.Contains(l.transform.position)).Select(l=>new Newtonsoft.Json.Linq.JObject{["path"]=RoomHierarchy(l.transform),["active"]=l.enabled&&l.gameObject.activeInHierarchy,["type"]=l.type.ToString(),["intensity"]=l.intensity,["range"]=l.range,["shadows"]=l.shadows.ToString()}));
+                int nx=Math.Max(1,Mathf.CeilToInt(w/2)),nz=Math.Max(1,Mathf.CeilToInt(d/2));
+                var samples=(Newtonsoft.Json.Linq.JArray)r["samples"];var available=new List<CiudadDelSolInteriorStageTwo.Station>();
+                for(int iz=0;iz<nz;iz++)for(int ix=0;ix<nx;ix++)
+                {
+                    var p=new Vector3(x-w/2+(ix+.5f)*w/nx,y,z-d/2+(iz+.5f)*d/nz);
+                    var s=(CiudadDelSolInteriorStageTwo.Station)probe.Invoke(null,new object[]{p,cfg,false,.35f});
+                    var sample=Newtonsoft.Json.Linq.JObject.Parse(JsonUtility.ToJson(s));sample["ix"]=ix;sample["iz"]=iz;
+                    if(s.support&&physics.Raycast(s.floor+Vector3.up*.08f,Vector3.up,out var roof,100,~0,QueryTriggerInteraction.Ignore)){sample["headroom"]=roof.distance+.08f;sample["ceilingObject"]=RoomHierarchy(roof.collider.transform);}
+                    else sample["headroom"]=null;
+                    samples.Add(sample);if(s.Clear&&s.nav)available.Add(s);
+                }
+                r["gridNX"]=nx;r["gridNZ"]=nz;r["cellArea"]=w*d/(nx*nz);
+                r["clearSamples"]=available.Count;
+                var seed=available.OrderBy(s=>Vector3.Distance(s.floor,new Vector3(x,y,z))).FirstOrDefault();
+                if(seed!=null)
+                {
+                    r["seed"]=Newtonsoft.Json.Linq.JObject.Parse(JsonUtility.ToJson(seed));
+                    var path=new UnityEngine.AI.NavMeshPath();var back=new UnityEngine.AI.NavMeshPath();
+                    r["entrancePath"]=UnityEngine.AI.NavMesh.CalculatePath(entrance.position,seed.navPosition,filter,path)?path.status.ToString():"NoPath";
+                    r["entranceReturn"]=UnityEngine.AI.NavMesh.CalculatePath(seed.navPosition,entrance.position,filter,back)?back.status.ToString():"NoPath";
+                    r["entranceCorners"]=new Newtonsoft.Json.Linq.JArray(path.corners.Select(v=>Newtonsoft.Json.Linq.JObject.Parse(JsonUtility.ToJson(v))));
+                    int connected=0;foreach(var s in available)
+                    {var cp=new UnityEngine.AI.NavMeshPath();if(UnityEngine.AI.NavMesh.CalculatePath(seed.navPosition,s.navPosition,filter,cp)&&cp.status==UnityEngine.AI.NavMeshPathStatus.PathComplete)connected++;}
+                    r["navSamplesConnectedToSeed"]=connected;
+                }
+                rooms.Add(r);File.WriteAllText(RoomsReport+"/Unity_68.json",rooms.ToString());
+            }
+            var result=new Newtonsoft.Json.Linq.JObject{["scene"]=scene.path,["timeUTC"]=DateTime.UtcNow.ToString("o"),["unity"]=Application.unityVersion,["rooms"]=rooms.Count,["dirty"]=scene.isDirty,["sceneBytesUnchanged"]=before.SequenceEqual(File.ReadAllBytes(ScenePath)),["method"]="Real PhysX Probe reused from StageTwo; 2m stratified room grid; native NavMesh topology; not whole-room functional certification"};
+            File.WriteAllText(RoomsReport+"/Unity_Resumen.json",result.ToString());
+            Debug.Log("CIUDAD_SALAS_FASE2_AUDITORIA: "+rooms.Count+" espacios medidos sin modificar escena.");
+            ShowRoomReadOnly("R21");
+        }
+        [MenuItem("ROM/Dungeon Ciudad del Sol/Rediseño subsuelo/Fase 2 - siguiente sala (solo vista)")]
+        static void NextRoomReadOnly(){if(roomPlan==null)roomPlan=Newtonsoft.Json.Linq.JArray.Parse(File.ReadAllText("Docs/CiudadDelSol/Interior/Plan_20261117/Salas.json"));roomView=(roomView+1)%roomPlan.Count;ShowRoomReadOnly((string)roomPlan[roomView]["id"]);}
+        static void ShowRoomReadOnly(string id)
+        {
+            var room=(Newtonsoft.Json.Linq.JObject)roomPlan.First(r=>(string)r["id"]==id);roomView=roomPlan.IndexOf(room);
+            var scene=SceneManager.GetSceneByPath(ScenePath);SceneVisibilityManager.instance.Isolate(scene.GetRootGameObjects().Where(g=>g.name.StartsWith("Subsuelo_")||g.name.StartsWith("Umbral_")||g.name=="Nucleo_Monumental_Conjunto"||g.name.StartsWith("CiudadDelSol_Etapa")||g.name.StartsWith("CiudadDelSol_Automaticas")).ToArray(),true);
+            var x=(float)room["x"];var y=(float)room["floor"];var z=(float)room["z"];var w=(float)room["w"];var d=(float)room["d"];
+            var eye=new Vector3(x+w*.28f,y+3.5f,z-d*.32f);var target=new Vector3(x-w*.15f,y+3,z+d*.25f);
+            var view=SceneView.lastActiveSceneView??EditorWindow.GetWindow<SceneView>();view.cameraSettings.fieldOfView=70;view.drawGizmos=false;
+            view.LookAtDirect(target,Quaternion.LookRotation(target-eye),Vector3.Distance(target,eye)*.55f);view.Focus();view.Repaint();
+            SceneView.duringSceneGui-=RoomToolbarReadOnly;SceneView.duringSceneGui+=RoomToolbarReadOnly;
+            var shot=new Newtonsoft.Json.Linq.JObject{["id"]=id,["title"]=(string)room["name"],["eye"]=Newtonsoft.Json.Linq.JObject.Parse(JsonUtility.ToJson(eye)),["target"]=Newtonsoft.Json.Linq.JObject.Parse(JsonUtility.ToJson(target))};
+            File.WriteAllText(RoomsReport+"/Vista_actual.json",shot.ToString());
+        }
+        static void RoomToolbarReadOnly(SceneView view)
+        {
+            Handles.BeginGUI();GUILayout.BeginArea(new Rect(45,45,950,65),EditorStyles.helpBox);GUILayout.BeginHorizontal();
+            if(GUILayout.Button("Anterior",GUILayout.Width(90))){roomView=(roomView+roomPlan.Count-1)%roomPlan.Count;ShowRoomReadOnly((string)roomPlan[roomView]["id"]);}
+            if(GUILayout.Button("Siguiente",GUILayout.Width(90)))NextRoomReadOnly();
+            if(GUILayout.Button("Restaurar vista",GUILayout.Width(130))){SceneVisibilityManager.instance.ExitIsolation();SceneView.duringSceneGui-=RoomToolbarReadOnly;SceneView.RepaintAll();}
+            GUILayout.Label((string)roomPlan[roomView]["id"]+" "+(string)roomPlan[roomView]["name"]);GUILayout.EndHorizontal();GUILayout.EndArea();Handles.EndGUI();
+        }

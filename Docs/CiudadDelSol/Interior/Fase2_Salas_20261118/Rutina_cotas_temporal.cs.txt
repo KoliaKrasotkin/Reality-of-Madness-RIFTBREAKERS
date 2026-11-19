@@ -1,0 +1,29 @@
+
+        const string RoomBoundsOut="Docs/CiudadDelSol/Interior/Fase2_Salas_20261118";
+        [InitializeOnLoadMethod] static void InstallRoomBoundsReadOnly(){if(File.Exists(RoomBoundsOut+"/Bounds.pending"))EditorApplication.delayCall+=ReadRoomBounds;}
+        static Newtonsoft.Json.Linq.JObject RoomBounds(Bounds b)=>new Newtonsoft.Json.Linq.JObject{["center"]=Newtonsoft.Json.Linq.JObject.Parse(JsonUtility.ToJson(b.center)),["size"]=Newtonsoft.Json.Linq.JObject.Parse(JsonUtility.ToJson(b.size))};
+        static void ReadRoomBounds()
+        {
+          if(EditorApplication.isCompiling||EditorApplication.isUpdating){EditorApplication.delayCall+=ReadRoomBounds;return;}
+          if(!File.Exists(RoomBoundsOut+"/Bounds.pending"))return;
+          File.Move(RoomBoundsOut+"/Bounds.pending",RoomBoundsOut+"/Bounds.consumed."+Guid.NewGuid());
+          try
+          {
+            var scene=SceneManager.GetSceneByPath(ScenePath);if(!scene.isLoaded||scene.isDirty||EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Requiere escena limpia en Edit Mode.");
+            var r=Newtonsoft.Json.Linq.JArray.Parse(File.ReadAllText(RoomBoundsOut+"/Unity_68.json"));
+            string H(Transform t)=>t.parent?H(t.parent)+"/"+t.name:t.name;
+            var all=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Transform>(true)).GroupBy(t=>H(t)).ToDictionary(g=>g.Key,g=>g.First());
+            foreach(Newtonsoft.Json.Linq.JObject item in r)
+            {
+              string h=(string)item["matchedHierarchy"];if(h==null)continue;
+              var root=all[h];var renderers=root.GetComponentsInChildren<Renderer>(true);var colliders=root.GetComponentsInChildren<Collider>(true);
+              foreach(Newtonsoft.Json.Linq.JObject rr in item["renderers"]){var real=renderers.First(c=>H(c.transform)==(string)rr["path"]);rr["bounds"]=RoomBounds(real.bounds);}
+              foreach(Newtonsoft.Json.Linq.JObject cc in item["colliders"]){if(!GlobalObjectId.TryParse((string)cc["id"],out var id)||!(GlobalObjectId.GlobalObjectIdentifierToObjectSlow(id) is Collider c))throw new InvalidOperationException("Collider no coincide");cc["bounds"]=RoomBounds(c.bounds);}
+              var visible=renderers.Where(c=>c.enabled&&c.gameObject.activeInHierarchy).ToArray();if(visible.Length>0){var bound=visible[0].bounds;foreach(var v in visible.Skip(1))bound.Encapsulate(v.bounds);item["sourceVisualBounds"]=RoomBounds(bound);}
+            }
+            File.WriteAllText(RoomBoundsOut+"/Unity_68.json",r.ToString());
+            var globals=new Newtonsoft.Json.Linq.JObject{["timeUTC"]=DateTime.UtcNow.ToString("o"),["dirty"]=scene.isDirty,["ambientMode"]=RenderSettings.ambientMode.ToString(),["ambientIntensity"]=RenderSettings.ambientIntensity,["lightmapCount"]=LightmapSettings.lightmaps.Length,["lights"]=new Newtonsoft.Json.Linq.JArray(scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Light>(true)).Select(l=>new Newtonsoft.Json.Linq.JObject{["path"]=H(l.transform),["active"]=l.enabled&&l.gameObject.activeInHierarchy,["type"]=l.type.ToString(),["intensity"]=l.intensity,["range"]=l.range,["shadows"]=l.shadows.ToString()}))};
+            File.WriteAllText(RoomBoundsOut+"/Unity_Cotas_y_luz.json",globals.ToString());Debug.Log("CIUDAD_SALAS_COTAS: 67 jerarquias y luminarias medidas; escena intacta.");
+          }
+          catch(Exception e){File.WriteAllText(RoomBoundsOut+"/Error_Cotas.txt",e.ToString());Debug.LogException(e);}
+        }
