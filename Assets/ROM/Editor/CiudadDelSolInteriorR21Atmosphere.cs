@@ -52,6 +52,18 @@ namespace ROM.EditorTools
     else if(r.action=="uniform")ApplyUniformInterior(s);
     else if(r.action=="uniform-finish")FinishUniformConnections(s);
     else if(r.action=="balance")BalanceInteriorVisual(s);
+    else if(r.action=="annex-survey")SurveyAnnexSites(s);
+    else if(r.action=="annex-runes")UnifyAnnexRunes(s);
+    else if(r.action=="build-dependencies")BuildDependencies(s);
+    else if(r.action=="receive-dependencies")ReceiveDependencies(s);
+    else if(r.action=="annex-review")
+    {
+     if(!SessionState.GetBool(MultiFPS.Preloader.Preloader.CityDevelopmentEnabledKey,false))
+      EditorApplication.ExecuteMenuItem("ROM/Preparar Ciudad del Sol para pruebas");
+     if(!SessionState.GetBool(MultiFPS.Preloader.Preloader.CityDevelopmentEnabledKey,false))
+      throw new InvalidOperationException("El bootstrap original no pudo preparar un Warrior seleccionado.");
+     SessionState.SetBool("ROM.Uniform.Review",true);BeginAtmospherePlay(s);
+    }
     else if(r.action=="uniform-review"){SessionState.SetBool("ROM.Uniform.Review",true);BeginAtmospherePlay(s);}
     else if(r.action=="refresh")AssetDatabase.Refresh();
     else if(r.action=="details")R21Details(s);

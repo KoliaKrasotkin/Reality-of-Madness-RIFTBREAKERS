@@ -44,6 +44,22 @@ half CityAgeStone(inout InputData data,inout SurfaceData surface)
  surface.emission=lerp(surface.emission,aged*half3(.12h,.025h,.22h)*lerp(.55h,1.0h,dirt.b),mask);
  // A faint upward-facing floor bounce preserves route legibility, without lighting the whole room.
  half floorGuide=smoothstep(.45h,.85h,data.normalWS.y);
+ // D01 pilot: fade before reaching the adjoining masonry or another storey.
+ float2 edgeDistance=float2(27,33)-abs(data.positionWS.xz-float2(105,63));
+ half room=smoothstep(0,2,min(edgeDistance.x,edgeDistance.y))*
+           (1-smoothstep(.15,.55,abs(data.positionWS.y+34)));
+ half puddle=room*floorGuide*mask*smoothstep(.43h,.65h,dirt.r*.7h+dirt.b*.3h);
+ surface.albedo*=1-.20h*puddle;
+ surface.smoothness=lerp(surface.smoothness,.78h,puddle);
+ surface.specular=lerp(surface.specular,half3(.09h,.065h,.125h),puddle);
+ if (puddle > .015h)
+ {
+     half3 reflected = GlossyEnvironmentReflection(reflect(-data.viewDirectionWS, data.normalWS),
+         data.positionWS, .24h, 1.0h, data.normalizedScreenSpaceUV);
+     half grazing = 1.0h - saturate(dot(data.viewDirectionWS, data.normalWS));
+     surface.emission += min(dot(reflected, half3(.213h,.715h,.072h)), .65h)
+         * half3(.13h,.08h,.22h) * grazing * grazing * puddle;
+ }
  surface.emission+=aged*half3(.12h,.08h,.26h)*floorGuide*mask;
  surface.emission+=half3(.002h,.0015h,.004h)*mask;
  return mask;
